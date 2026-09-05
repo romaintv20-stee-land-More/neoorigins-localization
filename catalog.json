@@ -73,10 +73,48 @@
       "languages": {
         "fr_fr": {
           "name": "Français",
-          "status": "test_partial",
+          "status": "supported",
           "review": "manual_review",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/fr_fr.json",
-          "note": "Initial test coverage uses Medieval Origins-only entries: Goblin, High Elf, Plague Victim and Yeti."
+          "coverage_keys": 401,
+          "source_keys": 401,
+          "note": "Traduction complète de la branche 1.21.1-fabric. Aucun fr_fr officiel n'est fourni en amont."
+        },
+        "de_de": {
+          "name": "Deutsch",
+          "status": "supported",
+          "review": "manual_review_pending_native_feedback",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/de_de.json",
+          "coverage_keys": 401,
+          "source_keys": 401,
+          "note": "Vollständige Abdeckung der 401 englischen Schlüssel; Rückmeldungen von Muttersprachlern erwünscht."
+        },
+        "es_es": {
+          "name": "Español",
+          "status": "supported",
+          "review": "manual_review_pending_native_feedback",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/es_es.json",
+          "coverage_keys": 401,
+          "source_keys": 401,
+          "note": "Cobertura completa de las 401 claves inglesas; se agradecen comentarios de hablantes nativos."
+        },
+        "pt_br": {
+          "name": "Português (Brasil)",
+          "status": "supported",
+          "review": "manual_review_pending_native_feedback",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/pt_br.json",
+          "coverage_keys": 401,
+          "source_keys": 401,
+          "note": "Cobertura completa das 401 chaves em inglês; feedback de falantes nativos é bem-vindo."
+        },
+        "nl_nl": {
+          "name": "Nederlands",
+          "status": "supported",
+          "review": "manual_review_pending_native_feedback",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/nl_nl.json",
+          "coverage_keys": 401,
+          "source_keys": 401,
+          "note": "Volledige dekking van alle 401 Engelse sleutels; feedback van moedertaalsprekers is welkom."
         }
       }
     }

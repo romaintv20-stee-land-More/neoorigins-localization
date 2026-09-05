@@ -24,10 +24,10 @@ jobs:
           gradle-version: '8.14.3'
 
       - name: Audit NeoOrigins upstream locales
-        run: python3 scripts/audit_neoorigins_upstream.py --ref v2.2.25
+        run: python3 scripts/audit_neoorigins_upstream.py --ref v2.2.25 --fail-on-overlap
 
       - name: Audit Medieval Origins upstream locales
-        run: python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --fail-on-placeholders
+        run: python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --fail-on-overlap --fail-on-missing --fail-on-placeholders
 
       - name: Upload upstream locale audits
         uses: actions/upload-artifact@v4

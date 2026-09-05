@@ -19,14 +19,36 @@
           "name": "Français",
           "status": "supported",
           "review": "manual_review",
-          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins/lang/fr_fr.json"
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins/lang/fr_fr.json",
+          "note": "Fallback limité aux clés absentes de la traduction officielle NeoOrigins 2.2.25."
+        },
+        "de_de": {
+          "name": "Deutsch",
+          "status": "supported",
+          "review": "manual_review_pending_native_feedback",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins/lang/de_de.json",
+          "note": "Fallback limité aux clés absentes de la traduction officielle NeoOrigins 2.2.25."
+        },
+        "es_es": {
+          "name": "Español",
+          "status": "supported",
+          "review": "manual_review_pending_native_feedback",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins/lang/es_es.json",
+          "note": "Fallback limité aux clés absentes de la traduction officielle NeoOrigins 2.2.25."
+        },
+        "pt_br": {
+          "name": "Português (Brasil)",
+          "status": "supported",
+          "review": "manual_review_pending_native_feedback",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins/lang/pt_br.json",
+          "note": "Fallback limité aux clés absentes de la traduction officielle NeoOrigins 2.2.25."
         },
         "nl_nl": {
           "name": "Nederlands",
           "status": "test_partial",
           "review": "manual_review_pending_native_feedback",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins/lang/nl_nl.json",
-          "note": "Initial test coverage used to validate fallback loading. NeoOrigins currently has no official nl_nl localization."
+          "note": "NeoOrigins ne fournit pas encore nl_nl : notre fichier doit donc devenir une traduction complète. Travail en cours."
         }
       }
     },

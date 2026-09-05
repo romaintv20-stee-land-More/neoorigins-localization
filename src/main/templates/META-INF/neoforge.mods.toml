@@ -11,6 +11,9 @@ displayTest="IGNORE_ALL_VERSION"
 description='''Client-side localization companion for NeoOrigins and supported add-ons.
 Official translations remain higher priority; this mod supplies reviewed fallback translations for missing keys.'''
 
+[[mixins]]
+config="neoorigins_localization.mixins.json"
+
 [[dependencies.${mod_id}]]
 modId="neoforge"
 type="required"

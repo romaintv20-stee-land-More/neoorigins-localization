@@ -57,7 +57,7 @@ neoForge.ideSyncTask generateModMetadata
 
 tasks.named('jar', Jar) {
     from('LICENSE') {
-        rename { "LICENSE_${mod_id}" }
+        rename { 'LICENSE_neoorigins_localization' }
     }
     from('docs/ATTRIBUTIONS.md') {
         into 'META-INF'

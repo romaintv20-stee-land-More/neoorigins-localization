@@ -26,11 +26,16 @@ jobs:
       - name: Audit NeoOrigins upstream locales
         run: python3 scripts/audit_neoorigins_upstream.py --ref v2.2.25
 
-      - name: Upload upstream locale audit
+      - name: Audit Medieval Origins upstream locales
+        run: python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --fail-on-placeholders
+
+      - name: Upload upstream locale audits
         uses: actions/upload-artifact@v4
         with:
-          name: neoorigins-upstream-audit-${{ github.sha }}
-          path: build/upstream-audit
+          name: upstream-localization-audits-${{ github.sha }}
+          path: |
+            build/upstream-audit
+            build/medievalorigins-upstream-audit
           if-no-files-found: error
 
       - name: Validate localization files

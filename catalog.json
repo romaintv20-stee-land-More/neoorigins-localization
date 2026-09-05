@@ -45,10 +45,12 @@
         },
         "nl_nl": {
           "name": "Nederlands",
-          "status": "test_partial",
+          "status": "supported",
           "review": "manual_review_pending_native_feedback",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins/lang/nl_nl.json",
-          "note": "NeoOrigins ne fournit pas encore nl_nl : notre fichier doit donc devenir une traduction complète. Travail en cours."
+          "coverage_keys": 2281,
+          "source_keys": 2281,
+          "note": "NeoOrigins 2.2.25 ne fournit pas de nl_nl. Les 2 281 clés anglaises sont couvertes par notre traduction néerlandaise, répartie en plusieurs namespaces de ressources sans doublons. Relecture native et retours joueurs toujours souhaités."
         }
       }
     },

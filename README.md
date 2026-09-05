@@ -40,9 +40,15 @@ La branche `1.21.1-fabric` de Medieval Origins Revival ne fournit actuellement a
 
 La compatibilité via `config/originpacks/` et la traduction d'un Origin importé ont déjà été validées en jeu. Les fichiers complets restent ouverts aux retours de locuteurs natifs pour affiner la formulation et la terminologie.
 
+## ibarn's quartet origins addon
+
+La version **1.7.1 pour Minecraft 1.21.1** ne fournit actuellement que `en_us`. Notre fallback couvre donc ses **69 clés anglaises** dans les cinq langues cibles.
+
+Contrairement à Medieval Origins Revival, cet add-on contient du **code Java**, des effets et des entités personnalisés. Sa version NeoForge doit donc être installée comme un mod classique dans `mods/`, et non dans `config/originpacks/`. La couverture de traduction est complète ; un passage de validation en jeu avec NeoOrigins reste à faire avant de considérer la compatibilité gameplay comme confirmée.
+
 ## Nettoyage lors des mises à jour
 
-Les scripts `scripts/audit_neoorigins_upstream.py` et `scripts/audit_medievalorigins_upstream.py` comparent nos fichiers avec les versions officielles. Ils permettent notamment de repérer :
+Les scripts `scripts/audit_neoorigins_upstream.py`, `scripts/audit_medievalorigins_upstream.py` et `scripts/audit_ibarnorigins_upstream.py` comparent nos fichiers avec les versions officielles. Ils permettent notamment de repérer :
 
 - les nouvelles clés anglaises à traduire ;
 - les clés qu'un projet vient de traduire officiellement ;
@@ -58,6 +64,7 @@ Le CI exécute ces audits à chaque build. L'objectif est de retirer de notre mo
 |---|---|---|---|
 | NeoOrigins | CyberDay | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/neoorigins) | FR/DE/ES/PT-BR complétés en fallback, NL complet |
 | Medieval Origins Revival | MuonR / muon-rw | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/medieval-origins-revival) | FR/DE/ES/PT-BR/NL complets |
+| ibarn's quartet origins addon | ibarnstormer | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/ibarns-custom-origins-addon) | FR/DE/ES/PT-BR/NL complets, test gameplay NeoOrigins à faire |
 
 Le fichier `catalog.json` est la source de vérité de cette liste. Voir aussi [`CATALOG.md`](CATALOG.md).
 
@@ -81,6 +88,7 @@ Voir [`docs/ADDING_ADDON.md`](docs/ADDING_ADDON.md).
 python scripts/validate.py
 python scripts/audit_neoorigins_upstream.py --fail-on-overlap
 python scripts/audit_medievalorigins_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+python scripts/audit_ibarnorigins_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
 ```
 
 ## État actuel
@@ -90,6 +98,8 @@ python scripts/audit_medievalorigins_upstream.py --fail-on-overlap --fail-on-mis
 - architecture multilingue et multi-namespace
 - base NeoOrigins en cinq langues complète pour la version 2.2.25
 - Medieval Origins Revival couvert dans les cinq langues cibles pour la branche 1.21.1-fabric
+- ibarn's quartet origins addon 1.7.1 couvert dans les cinq langues cibles
 - fallback NeoOrigins validé en jeu
 - import `originpacks` et traduction des Origins importés validés avec Medieval Origins Revival
+- test gameplay NeoOrigins + ibarn 1.7.1 encore à effectuer
 - audits des traductions officielles intégrés au CI

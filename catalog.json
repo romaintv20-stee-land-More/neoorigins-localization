@@ -29,6 +29,32 @@
           "note": "Initial test coverage used to validate fallback loading. NeoOrigins currently has no official nl_nl localization."
         }
       }
+    },
+    {
+      "id": "medievalorigins",
+      "name": "Medieval Origins Revival",
+      "author": "muon-rw / MuonR",
+      "namespace": "medievalorigins",
+      "curseforge": "https://www.curseforge.com/minecraft/mc-mods/medieval-origins-revival",
+      "source": "https://github.com/muon-rw/Medieval-Origins-Revival",
+      "license": {
+        "code": "MIT",
+        "assets_and_documentation": "CC BY 4.0",
+        "attribution_required": true
+      },
+      "compatibility": {
+        "method": "NeoOrigins originpacks import",
+        "note": "The 1.21.1 upstream build is Fabric, but NeoOrigins can load Origins mod JARs directly from originpacks/. Gameplay compatibility must still be tested because unsupported custom powers can be skipped."
+      },
+      "languages": {
+        "fr_fr": {
+          "name": "Français",
+          "status": "test_partial",
+          "review": "manual_review",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/fr_fr.json",
+          "note": "Initial test coverage: Dwarf, Gorgon and Siren plus selected powers."
+        }
+      }
     }
   ]
 }

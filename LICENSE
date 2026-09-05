@@ -1,4 +1,5 @@
-All Rights Reserved.
+Except where a third-party notice says otherwise, the original code and documentation of NeoOrigins Localization are All Rights Reserved.
 
-The project code and localization data are not licensed for redistribution
-until permissions for the translated third-party material have been clarified.
+Third-party-derived localization data is redistributed only when the upstream license permits it. Those files remain subject to the applicable upstream license and attribution requirements listed in docs/ATTRIBUTIONS.md.
+
+Nothing in this license adds restrictions to material that is governed by an upstream open license.

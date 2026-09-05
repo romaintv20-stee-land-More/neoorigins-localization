@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "project": {
+    "name": "NeoOrigins Localization",
+    "minecraft": "1.21.1",
+    "loader": "NeoForge",
+    "localization_mode": "low_priority_fallback"
+  },
+  "supported_projects": [
+    {
+      "id": "neoorigins",
+      "name": "NeoOrigins",
+      "author": "CyberDay",
+      "namespace": "neoorigins",
+      "curseforge": "https://www.curseforge.com/minecraft/mc-mods/neoorigins",
+      "source": "https://github.com/CyberDay1/NeoOrigins",
+      "languages": {
+        "fr_fr": {
+          "name": "Français",
+          "status": "supported",
+          "review": "manual_review",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins/lang/fr_fr.json"
+        }
+      }
+    }
+  ]
+}

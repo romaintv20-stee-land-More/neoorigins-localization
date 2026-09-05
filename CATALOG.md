@@ -2,4 +2,4 @@
 
 | Mod / add-on | Auteur | Lien | Langues disponibles |
 |---|---|---|---|
-| NeoOrigins | CyberDay | [Projet](https://www.curseforge.com/minecraft/mc-mods/neoorigins) | Français (`fr_fr`) |
+| NeoOrigins | CyberDay | [Projet](https://www.curseforge.com/minecraft/mc-mods/neoorigins) | Français (`fr_fr`) · Nederlands (`nl_nl`, test partiel) |

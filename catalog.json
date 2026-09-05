@@ -117,6 +117,71 @@
           "note": "Volledige dekking van alle 401 Engelse sleutels; feedback van moedertaalsprekers is welkom."
         }
       }
+    },
+    {
+      "id": "ibarnorigins",
+      "name": "ibarn's quartet origins addon",
+      "author": "ibarnstormer",
+      "namespace": "ibarnorigins",
+      "curseforge": "https://www.curseforge.com/minecraft/mc-mods/ibarns-custom-origins-addon",
+      "source": "https://github.com/ibarn-Recreational/ibarn-origins-addon",
+      "license": {
+        "code_and_localization": "MIT",
+        "attribution_required": true
+      },
+      "compatibility": {
+        "method": "NeoForge mod in mods/",
+        "version": "1.7.1 / Minecraft 1.21.1",
+        "source_ref": "multiloader-1.21.1-new-pack-format",
+        "note": "This add-on contains Java code, custom effects and entities, so the NeoForge build belongs in mods/ rather than originpacks/. Translation coverage is complete; gameplay compatibility with NeoOrigins still needs an in-game validation pass."
+      },
+      "languages": {
+        "fr_fr": {
+          "name": "Français",
+          "status": "translation_complete_test_pending",
+          "review": "ai_assisted_human_directed_review",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/fr_fr.json",
+          "coverage_keys": 69,
+          "source_keys": 69,
+          "note": "Couverture complète des 69 clés anglaises de la branche 1.21.1."
+        },
+        "de_de": {
+          "name": "Deutsch",
+          "status": "translation_complete_test_pending",
+          "review": "ai_assisted_human_directed_review_pending_native_feedback",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/de_de.json",
+          "coverage_keys": 69,
+          "source_keys": 69,
+          "note": "Vollständige Abdeckung aller 69 englischen Schlüssel; Rückmeldungen von Muttersprachlern erwünscht."
+        },
+        "es_es": {
+          "name": "Español",
+          "status": "translation_complete_test_pending",
+          "review": "ai_assisted_human_directed_review_pending_native_feedback",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/es_es.json",
+          "coverage_keys": 69,
+          "source_keys": 69,
+          "note": "Cobertura completa de las 69 claves inglesas; se agradecen comentarios de hablantes nativos."
+        },
+        "pt_br": {
+          "name": "Português (Brasil)",
+          "status": "translation_complete_test_pending",
+          "review": "ai_assisted_human_directed_review_pending_native_feedback",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/pt_br.json",
+          "coverage_keys": 69,
+          "source_keys": 69,
+          "note": "Cobertura completa das 69 chaves em inglês; feedback de falantes nativos é bem-vindo."
+        },
+        "nl_nl": {
+          "name": "Nederlands",
+          "status": "translation_complete_test_pending",
+          "review": "ai_assisted_human_directed_review_pending_native_feedback",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/nl_nl.json",
+          "coverage_keys": 69,
+          "source_keys": 69,
+          "note": "Volledige dekking van alle 69 Engelse sleutels; feedback van moedertaalsprekers is welkom."
+        }
+      }
     }
   ]
 }

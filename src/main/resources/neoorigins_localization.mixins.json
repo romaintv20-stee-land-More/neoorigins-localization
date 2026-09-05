@@ -1,0 +1,12 @@
+{
+  "required": false,
+  "minVersion": "0.8",
+  "package": "fr.rtv20.neooriginslocalization.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "OriginLocalizationMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

@@ -29,6 +29,9 @@ jobs:
       - name: Audit Medieval Origins upstream locales
         run: python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --fail-on-overlap --fail-on-missing --fail-on-placeholders
 
+      - name: Audit ibarn origins upstream locales
+        run: python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
       - name: Upload upstream locale audits
         uses: actions/upload-artifact@v4
         with:
@@ -36,6 +39,7 @@ jobs:
           path: |
             build/upstream-audit
             build/medievalorigins-upstream-audit
+            build/ibarnorigins-upstream-audit
           if-no-files-found: error
 
       - name: Validate localization files

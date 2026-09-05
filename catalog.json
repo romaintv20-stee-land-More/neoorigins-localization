@@ -52,7 +52,7 @@
           "status": "test_partial",
           "review": "manual_review",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/fr_fr.json",
-          "note": "Initial test coverage: Dwarf, Gorgon and Siren plus selected powers."
+          "note": "Initial test coverage uses Medieval Origins-only entries: Goblin, High Elf, Plague Victim and Yeti."
         }
       }
     }

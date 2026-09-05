@@ -20,6 +20,13 @@
           "status": "supported",
           "review": "manual_review",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins/lang/fr_fr.json"
+        },
+        "nl_nl": {
+          "name": "Nederlands",
+          "status": "test_partial",
+          "review": "manual_review_pending_native_feedback",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins/lang/nl_nl.json",
+          "note": "Initial test coverage used to validate fallback loading. NeoOrigins currently has no official nl_nl localization."
         }
       }
     }

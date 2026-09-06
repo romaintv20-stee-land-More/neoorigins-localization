@@ -43,13 +43,13 @@ jobs:
             pack_format: '84'
             source_variant: 'mc26_1'
             upstream_ref: 'v2.2.25'
-            mod_version: '0.6.0-beta+26.1'
+            mod_version: '0.7.0-beta+26.1'
             audit_addons: false
-            audit_locales: ''
-            audit_extra_namespace: ''
-            audit_namespace_glob: ''
+            audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn'
+            audit_extra_namespace: 'neoorigins_121_batch1'
+            audit_namespace_glob: 'neoorigins_tr_*'
             include_addon_translations: false
-            include_121_expanded_translations: false
+            include_121_expanded_translations: true
             include_26_2_translations: false
           - target: mc-26.2
             minecraft: '26.2'

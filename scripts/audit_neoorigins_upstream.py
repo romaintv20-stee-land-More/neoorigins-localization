@@ -2,6 +2,7 @@
 from pathlib import Path
 import argparse
 import json
+import time
 import urllib.error
 import urllib.request
 
@@ -14,14 +15,30 @@ LOCALES = ("fr_fr", "nl_nl", "es_es", "de_de", "pt_br")
 BASE = "https://raw.githubusercontent.com/CyberDay1/NeoOrigins/{ref}/src/main/resources/assets/neoorigins/lang/{locale}.json"
 
 
-def fetch_json(url: str, allow_missing: bool = False):
-    try:
-        with urllib.request.urlopen(url, timeout=30) as response:
-            return json.load(response)
-    except urllib.error.HTTPError as exc:
-        if allow_missing and exc.code == 404:
-            return {}
-        raise
+def fetch_json(url: str, allow_missing: bool = False, attempts: int = 4):
+    request = urllib.request.Request(url, headers={"User-Agent": "NeoOrigins-Localization-Audit/0.6.0"})
+    last_error = None
+
+    for attempt in range(1, attempts + 1):
+        try:
+            with urllib.request.urlopen(request, timeout=30) as response:
+                return json.load(response)
+        except urllib.error.HTTPError as exc:
+            if allow_missing and exc.code == 404:
+                return {}
+            last_error = exc
+            if exc.code not in (408, 429, 500, 502, 503, 504) or attempt == attempts:
+                raise
+        except (urllib.error.URLError, ConnectionResetError, TimeoutError) as exc:
+            last_error = exc
+            if attempt == attempts:
+                raise
+
+        delay = 2 ** (attempt - 1)
+        print(f"Transient upstream fetch error ({attempt}/{attempts}) for {url}: {last_error}; retrying in {delay}s")
+        time.sleep(delay)
+
+    raise last_error
 
 
 def fallback_paths(locale: str, extra_namespaces=()):

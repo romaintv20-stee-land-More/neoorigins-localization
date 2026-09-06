@@ -137,6 +137,10 @@ jobs:
         if: matrix.audit_addons
         run: python3 scripts/audit_origins_backgrounds_iss_upstream.py --annotate-missing --fail-on-overlap --fail-on-missing --fail-on-placeholders
 
+      - name: Audit Origins Furries upstream locales
+        if: matrix.audit_addons
+        run: python3 scripts/audit_origins_furries_upstream.py --annotate-missing --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
       - name: Upload upstream locale audits
         if: always()
         uses: actions/upload-artifact@v4
@@ -150,6 +154,7 @@ jobs:
             build/origins-backgrounds-upstream-audit
             build/origins-more-backgrounds-upstream-audit
             build/origins-backgrounds-iss-upstream-audit
+            build/origins-furries-upstream-audit
           if-no-files-found: warn
 
       - name: Validate localization files

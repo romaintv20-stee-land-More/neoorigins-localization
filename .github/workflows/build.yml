@@ -24,6 +24,7 @@ jobs:
             upstream_ref: '1.21.1'
             mod_version: '0.6.0-beta+1.21.1'
             audit_addons: true
+            include_addon_translations: true
           - target: mc-26.1.x
             minecraft: '26.1.2'
             minecraft_range: '[26.1,26.2)'
@@ -37,6 +38,7 @@ jobs:
             upstream_ref: 'v2.2.25'
             mod_version: '0.6.0-beta+26.1'
             audit_addons: false
+            include_addon_translations: false
 
     runs-on: ubuntu-latest
     name: Build ${{ matrix.target }}
@@ -91,6 +93,7 @@ jobs:
             "-Puse_parchment=${{ matrix.parchment }}" \
             "-Presource_pack_format=${{ matrix.pack_format }}" \
             "-Psource_variant=${{ matrix.source_variant }}" \
+            "-Pinclude_addon_translations=${{ matrix.include_addon_translations }}" \
             "-Pminecraft_version=${{ matrix.minecraft }}" \
             "-Pminecraft_version_range=${{ matrix.minecraft_range }}" \
             "-Pneo_version=${{ matrix.neoforge }}" \

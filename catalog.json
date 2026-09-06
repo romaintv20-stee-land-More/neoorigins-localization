@@ -2,9 +2,50 @@
   "schema_version": 1,
   "project": {
     "name": "NeoOrigins Localization",
-    "minecraft": "1.21.1",
+    "minecraft": [
+      "1.21.1",
+      "26.1",
+      "26.1.1",
+      "26.1.2",
+      "26.2"
+    ],
     "loader": "NeoForge",
-    "localization_mode": "low_priority_fallback"
+    "localization_mode": "low_priority_fallback",
+    "builds": {
+      "1.21.1": {
+        "version": "0.6.0-beta+1.21.1",
+        "java": 21,
+        "in_game_tested": true,
+        "included_projects": [
+          "neoorigins",
+          "medievalorigins",
+          "ibarnorigins"
+        ]
+      },
+      "26.1.x": {
+        "minecraft": [
+          "26.1",
+          "26.1.1",
+          "26.1.2"
+        ],
+        "version": "0.6.0-beta+26.1",
+        "java": 25,
+        "in_game_tested": [
+          "26.1.2"
+        ],
+        "included_projects": [
+          "neoorigins"
+        ]
+      },
+      "26.2": {
+        "version": "0.6.0-beta+26.2",
+        "java": 25,
+        "in_game_tested": true,
+        "included_projects": [
+          "neoorigins"
+        ]
+      }
+    }
   },
   "supported_projects": [
     {
@@ -14,43 +55,62 @@
       "namespace": "neoorigins",
       "curseforge": "https://www.curseforge.com/minecraft/mc-mods/neoorigins",
       "source": "https://github.com/CyberDay1/NeoOrigins",
+      "compatibility": {
+        "version": "2.2.25",
+        "minecraft": [
+          "1.21.1",
+          "26.1",
+          "26.1.1",
+          "26.1.2",
+          "26.2"
+        ],
+        "in_game_validation": {
+          "1.21.1": "validated",
+          "26.1.2": "validated",
+          "26.2": "validated"
+        },
+        "note": "The 26.x builds only package NeoOrigins localization. Minecraft 26.2 uses a dedicated translation delta for keys added or changed on the 26.2 branch."
+      },
       "languages": {
         "fr_fr": {
           "name": "Français",
           "status": "supported",
           "review": "manual_review",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins/lang/fr_fr.json",
-          "note": "Fallback limité aux clés absentes de la traduction officielle NeoOrigins 2.2.25."
+          "note": "Fallback limité aux clés absentes des traductions officielles de NeoOrigins 2.2.25, avec delta spécifique 26.2 lorsque nécessaire."
         },
         "de_de": {
           "name": "Deutsch",
           "status": "supported",
           "review": "manual_review_pending_native_feedback",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins/lang/de_de.json",
-          "note": "Fallback limité aux clés absentes de la traduction officielle NeoOrigins 2.2.25."
+          "note": "Fallback limité aux clés absentes des traductions officielles de NeoOrigins 2.2.25, avec delta spécifique 26.2 lorsque nécessaire."
         },
         "es_es": {
           "name": "Español",
           "status": "supported",
           "review": "manual_review_pending_native_feedback",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins/lang/es_es.json",
-          "note": "Fallback limité aux clés absentes de la traduction officielle NeoOrigins 2.2.25."
+          "note": "Fallback limité aux clés absentes des traductions officielles de NeoOrigins 2.2.25, avec delta spécifique 26.2 lorsque nécessaire."
         },
         "pt_br": {
           "name": "Português (Brasil)",
           "status": "supported",
           "review": "manual_review_pending_native_feedback",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins/lang/pt_br.json",
-          "note": "Fallback limité aux clés absentes de la traduction officielle NeoOrigins 2.2.25."
+          "note": "Fallback limité aux clés absentes des traductions officielles de NeoOrigins 2.2.25, avec delta spécifique 26.2 lorsque nécessaire."
         },
         "nl_nl": {
           "name": "Nederlands",
           "status": "supported",
           "review": "manual_review_pending_native_feedback",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins/lang/nl_nl.json",
-          "coverage_keys": 2281,
-          "source_keys": 2281,
-          "note": "NeoOrigins 2.2.25 ne fournit pas de nl_nl. Les 2 281 clés anglaises sont couvertes par notre traduction néerlandaise, répartie en plusieurs namespaces de ressources sans doublons. Relecture native et retours joueurs toujours souhaités."
+          "coverage_by_target": {
+            "1.21.1": 2281,
+            "26.1.x": 2281,
+            "26.2": 2292
+          },
+          "note": "NeoOrigins 2.2.25 ne fournit pas de nl_nl. La base 1.21.1/26.1.x couvre 2 281 clés anglaises et la cible 26.2 couvre 2 292 clés grâce au delta spécifique. Relecture native et retours joueurs toujours souhaités."
         }
       }
     },
@@ -68,7 +128,11 @@
       },
       "compatibility": {
         "method": "NeoOrigins originpacks import",
-        "note": "The 1.21.1 upstream build is Fabric, but NeoOrigins can load Origins mod JARs directly from originpacks/. Gameplay compatibility must still be tested because unsupported custom powers can be skipped."
+        "minecraft": [
+          "1.21.1"
+        ],
+        "in_game_validation": "validated",
+        "note": "The 1.21.1 upstream build is Fabric, but NeoOrigins can load Origins mod JARs directly from originpacks/. Translation of an imported Origin has been validated in-game on 1.21.1. The project is not packaged in the 26.x builds."
       },
       "languages": {
         "fr_fr": {
@@ -133,12 +197,13 @@
         "method": "NeoForge mod in mods/",
         "version": "1.7.1 / Minecraft 1.21.1",
         "source_ref": "multiloader-1.21.1-new-pack-format",
-        "note": "This add-on contains Java code, custom effects and entities, so the NeoForge build belongs in mods/ rather than originpacks/. Translation coverage is complete; gameplay compatibility with NeoOrigins still needs an in-game validation pass."
+        "in_game_validation": "validated",
+        "note": "The four Origins and their localization were validated in-game on NeoForge 1.21.1. The add-on contains Java code, custom effects and entities, so it belongs in mods/. Its translations are not packaged in the 26.x builds because a compatible NeoForge 26.x integration has not been validated."
       },
       "languages": {
         "fr_fr": {
           "name": "Français",
-          "status": "translation_complete_test_pending",
+          "status": "supported",
           "review": "ai_assisted_human_directed_review",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/fr_fr.json",
           "coverage_keys": 69,
@@ -147,7 +212,7 @@
         },
         "de_de": {
           "name": "Deutsch",
-          "status": "translation_complete_test_pending",
+          "status": "supported",
           "review": "ai_assisted_human_directed_review_pending_native_feedback",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/de_de.json",
           "coverage_keys": 69,
@@ -156,7 +221,7 @@
         },
         "es_es": {
           "name": "Español",
-          "status": "translation_complete_test_pending",
+          "status": "supported",
           "review": "ai_assisted_human_directed_review_pending_native_feedback",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/es_es.json",
           "coverage_keys": 69,
@@ -165,7 +230,7 @@
         },
         "pt_br": {
           "name": "Português (Brasil)",
-          "status": "translation_complete_test_pending",
+          "status": "supported",
           "review": "ai_assisted_human_directed_review_pending_native_feedback",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/pt_br.json",
           "coverage_keys": 69,
@@ -174,7 +239,7 @@
         },
         "nl_nl": {
           "name": "Nederlands",
-          "status": "translation_complete_test_pending",
+          "status": "supported",
           "review": "ai_assisted_human_directed_review_pending_native_feedback",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/nl_nl.json",
           "coverage_keys": 69,

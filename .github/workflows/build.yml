@@ -24,7 +24,7 @@ jobs:
             pack_format: '34'
             source_variant: 'mc1_21_1'
             upstream_ref: '1.21.1'
-            mod_version: '0.7.0-beta+1.21.1'
+            mod_version: '0.8.0-beta+1.21.1'
             audit_addons: true
             audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn'
             audit_extra_namespace: 'neoorigins_121_batch1'
@@ -44,7 +44,7 @@ jobs:
             pack_format: '84'
             source_variant: 'mc26_1'
             upstream_ref: 'v2.2.25'
-            mod_version: '0.7.0-beta+26.1'
+            mod_version: '0.8.0-beta+26.1'
             audit_addons: false
             audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn'
             audit_extra_namespace: 'neoorigins_121_batch1'
@@ -64,7 +64,7 @@ jobs:
             pack_format: '84'
             source_variant: 'mc26_1'
             upstream_ref: '26.2'
-            mod_version: '0.7.0-beta+26.2'
+            mod_version: '0.8.0-beta+26.2'
             audit_addons: false
             audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn'
             audit_extra_namespace: 'neoorigins_26_2'
@@ -125,6 +125,10 @@ jobs:
         if: matrix.audit_addons
         run: python3 scripts/audit_origins_fantasy_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
 
+      - name: Audit Origins Backgrounds upstream locales
+        if: matrix.audit_addons
+        run: python3 scripts/audit_origins_backgrounds_upstream.py --annotate-missing --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
       - name: Upload upstream locale audits
         if: always()
         uses: actions/upload-artifact@v4
@@ -135,6 +139,7 @@ jobs:
             build/medievalorigins-upstream-audit
             build/ibarnorigins-upstream-audit
             build/origins-fantasy-upstream-audit
+            build/origins-backgrounds-upstream-audit
           if-no-files-found: warn
 
       - name: Validate localization files

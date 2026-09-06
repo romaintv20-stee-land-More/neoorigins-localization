@@ -24,7 +24,7 @@ jobs:
             pack_format: '34'
             source_variant: 'mc1_21_1'
             upstream_ref: '1.21.1'
-            mod_version: '0.6.0-beta+1.21.1'
+            mod_version: '0.7.0-beta+1.21.1'
             audit_addons: true
             audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn'
             audit_extra_namespace: 'neoorigins_121_batch1'

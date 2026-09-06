@@ -17,12 +17,14 @@ jobs:
           ref: work/070-26-2-locales
       - name: Prepare deltas and translation queue
         run: python3 scripts/prepare_26_2_locales.py
+      - name: Apply translated 26.2 delta strings
+        run: python3 scripts/apply_26_2_translations.py
       - name: Commit generated files
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_26_2/lang tmp/26_2_translation_needed
           if ! git diff --cached --quiet; then
-            git commit -m "Prepare 26.2 translation delta for 0.7.0 locales"
+            git commit -m "Translate 26.2 delta for 0.7.0 locales"
             git push origin HEAD:work/070-26-2-locales
           fi

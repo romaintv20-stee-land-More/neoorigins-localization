@@ -30,7 +30,8 @@ jobs:
             audit_extra_namespace: 'neoorigins_121_batch1'
             audit_namespace_glob: 'neoorigins_tr_*'
             include_addon_translations: true
-            include_121_expanded_translations: true
+            include_121_batch_translations: true
+            include_turkish_split_translations: true
             include_26_2_translations: false
           - target: mc-26.1.x
             minecraft: '26.1.2'
@@ -49,7 +50,8 @@ jobs:
             audit_extra_namespace: 'neoorigins_121_batch1'
             audit_namespace_glob: 'neoorigins_tr_*'
             include_addon_translations: false
-            include_121_expanded_translations: true
+            include_121_batch_translations: true
+            include_turkish_split_translations: true
             include_26_2_translations: false
           - target: mc-26.2
             minecraft: '26.2'
@@ -62,13 +64,14 @@ jobs:
             pack_format: '84'
             source_variant: 'mc26_1'
             upstream_ref: '26.2'
-            mod_version: '0.6.0-beta+26.2'
+            mod_version: '0.7.0-beta+26.2'
             audit_addons: false
-            audit_locales: ''
+            audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn'
             audit_extra_namespace: 'neoorigins_26_2'
-            audit_namespace_glob: ''
+            audit_namespace_glob: 'neoorigins_tr_*'
             include_addon_translations: false
-            include_121_expanded_translations: false
+            include_121_batch_translations: false
+            include_turkish_split_translations: true
             include_26_2_translations: true
 
     runs-on: ubuntu-latest
@@ -145,7 +148,8 @@ jobs:
             "-Presource_pack_format=${{ matrix.pack_format }}" \
             "-Psource_variant=${{ matrix.source_variant }}" \
             "-Pinclude_addon_translations=${{ matrix.include_addon_translations }}" \
-            "-Pinclude_121_expanded_translations=${{ matrix.include_121_expanded_translations }}" \
+            "-Pinclude_121_batch_translations=${{ matrix.include_121_batch_translations }}" \
+            "-Pinclude_turkish_split_translations=${{ matrix.include_turkish_split_translations }}" \
             "-Pinclude_26_2_translations=${{ matrix.include_26_2_translations }}" \
             "-Pminecraft_version=${{ matrix.minecraft }}" \
             "-Pminecraft_version_range=${{ matrix.minecraft_range }}" \

@@ -1,0 +1,31 @@
+name: Extract Origins Fantasy English
+
+on:
+  push:
+    branches:
+      - release/0.8.0-czech
+    paths:
+      - .github/workflows/extract-fantasy-en.yml
+  workflow_dispatch:
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Extract pinned English locale
+        run: |
+          python3 - <<'PY'
+          import io, json, zipfile
+          from scripts.audit_origins_fantasy_upstream import download_jar, read_locale
+          data, source = download_jar('8816068', 'Origins-Fantasy-1.21.1-NeoOrigins-1.1.3.jar')
+          with zipfile.ZipFile(io.BytesIO(data)) as jar:
+              en = read_locale(jar, 'en_us')
+              cs = read_locale(jar, 'cs_cz')
+          print('SOURCE=' + source)
+          print('ENGLISH_KEYS=' + str(len(en)))
+          print('OFFICIAL_CS_KEYS=' + str(len(cs)))
+          print('---BEGIN_EN_US---')
+          print(json.dumps(en, ensure_ascii=False, indent=2))
+          print('---END_EN_US---')
+          PY

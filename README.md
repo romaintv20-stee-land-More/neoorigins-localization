@@ -7,22 +7,24 @@ Mod client NeoForge fournissant des **traductions complémentaires en priorité 
 | Cible | Version | Java | Langues | Contenu empaqueté |
 |---|---|---:|---:|---|
 | Minecraft 1.21.1 | `0.7.0-beta+1.21.1` | 21 | 10 | NeoOrigins + Medieval Origins Revival + ibarn's quartet origins addon + Origins Fantasy for NeoOrigins |
-| Minecraft 26.1 / 26.1.1 / 26.1.2 | `0.6.0-beta+26.1` | 25 | 5 | NeoOrigins uniquement |
+| Minecraft 26.1 / 26.1.1 / 26.1.2 | `0.7.0-beta+26.1` | 25 | 10 | NeoOrigins uniquement |
 | Minecraft 26.2 | `0.6.0-beta+26.2` | 25 | 5 | NeoOrigins uniquement + delta 26.2 |
 
-Les builds 26.x n'embarquent pas les traductions des add-ons 1.21.1. Minecraft 26.1.2 et 26.2 ont déjà été validés en jeu avec NeoOrigins Localization ; l'intégration 0.7.0 de Minecraft 1.21.1 doit encore recevoir sa validation finale en jeu après build.
+Les builds 26.x n'embarquent pas les traductions des add-ons 1.21.1. Minecraft 26.1.2 avait déjà été validé en jeu avec la génération précédente ; l'extension 0.7.0 à dix langues doit encore recevoir sa validation visuelle finale. Minecraft 26.2 reste pour l'instant sur la génération 0.6.0 à cinq langues.
 
 ## Langues
 
-Le build **1.21.1 / 0.7.0 Beta** prend en charge : Français (`fr_fr`), Allemand (`de_de`), Espagnol (`es_es`), Portugais brésilien (`pt_br`), Néerlandais (`nl_nl`), Italien (`it_it`), Polonais (`pl_pl`), Russe (`ru_ru`), Turc (`tr_tr`) et Chinois simplifié (`zh_cn`).
+Les builds **1.21.1 / 0.7.0 Beta** et **26.1.x / 0.7.0 Beta** prennent en charge : Français (`fr_fr`), Allemand (`de_de`), Espagnol (`es_es`), Portugais brésilien (`pt_br`), Néerlandais (`nl_nl`), Italien (`it_it`), Polonais (`pl_pl`), Russe (`ru_ru`), Turc (`tr_tr`) et Chinois simplifié (`zh_cn`).
 
-Les cinq nouvelles langues de 0.7.0 sont actuellement limitées au build 1.21.1. Les branches 26.x restent sur les cinq langues de 0.6.0 jusqu'à leur extension dédiée.
+La cible **26.2** reste temporairement sur les cinq langues de 0.6.0 jusqu'à son adaptation dédiée à 0.7.0.
 
 ## Projets pris en charge
 
 ### NeoOrigins
 
-NeoOrigins 2.2.25 est requis. Pour les langues déjà traduites officiellement par NeoOrigins, le fallback ne conserve que les clés absentes en amont. Le néerlandais est fourni intégralement par NeoOrigins Localization. La cible 26.2 utilise un delta dédié pour ses clés supplémentaires.
+NeoOrigins 2.2.25 est requis. Pour les langues déjà traduites officiellement par NeoOrigins, le fallback ne conserve que les clés absentes en amont. Le néerlandais est fourni intégralement par NeoOrigins Localization.
+
+Les références amont `1.21.1` et `v2.2.25` de NeoOrigins pointent actuellement vers le même commit. Le premier lot de cinq nouvelles langues de 0.7.0 peut donc être partagé entre Minecraft 1.21.1 et 26.1.x, tout en étant audité séparément pour chaque build. La cible 26.2 utilise un delta dédié pour ses clés supplémentaires et sera adaptée séparément.
 
 ### Medieval Origins Revival — Minecraft 1.21.1
 

@@ -75,6 +75,7 @@ def main():
     )
     parser.add_argument("--prune", action="store_true", help="Remove fallback keys that now exist upstream")
     parser.add_argument("--fail-on-overlap", action="store_true", help="Fail when fallback contains keys already translated upstream")
+    parser.add_argument("--fail-on-missing", action="store_true", help="Fail when an upstream-missing key is not covered by the fallback")
     args = parser.parse_args()
 
     out_dir = Path(args.output)
@@ -89,6 +90,7 @@ def main():
         "locales": {},
     }
     has_overlap = False
+    has_missing = False
 
     for locale in LOCALES:
         official = fetch_json(BASE.format(ref=args.ref, locale=locale), allow_missing=True)
@@ -99,6 +101,7 @@ def main():
         stale = sorted(set(fallback) - set(en))
         untranslated = sorted(set(missing) - set(fallback))
         has_overlap |= bool(overlap)
+        has_missing |= bool(untranslated)
 
         (out_dir / f"{locale}_missing_en.json").write_text(
             json.dumps(missing, ensure_ascii=False, indent=2) + "\n",
@@ -152,6 +155,8 @@ def main():
 
     if args.fail_on_overlap and has_overlap:
         raise SystemExit("Fallback overlap detected: run this script with --prune, review the diff, then commit.")
+    if args.fail_on_missing and has_missing:
+        raise SystemExit("Incomplete fallback detected: translate every key listed in *_untranslated_keys.json.")
 
 
 if __name__ == "__main__":

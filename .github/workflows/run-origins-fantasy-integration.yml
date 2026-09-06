@@ -1,0 +1,42 @@
+name: Run Origins Fantasy integration
+
+on:
+  push:
+    branches: [ work/070-origins-fantasy ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  integrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: work/070-origins-fantasy
+          fetch-depth: 0
+
+      - name: Download completed translation artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh run download 34052754187 --repo "$GITHUB_REPOSITORY" --dir build/origins-fantasy-artifacts
+
+      - name: Integrate reviewed translations
+        run: python3 scripts/integrate_origins_fantasy_artifacts.py
+
+      - name: Validate translations
+        run: |
+          python3 scripts/validate.py
+          python3 scripts/audit_origins_fantasy_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Commit translation files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang
+          if ! git diff --cached --quiet; then
+            git commit -m "Integrate Origins Fantasy translations for 0.7.0"
+            git push origin HEAD:work/070-origins-fantasy
+          fi

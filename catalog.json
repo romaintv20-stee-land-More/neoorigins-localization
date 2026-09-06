@@ -2,7 +2,13 @@
   "schema_version": 1,
   "project": {
     "name": "NeoOrigins Localization",
-    "minecraft": ["1.21.1", "26.1", "26.1.1", "26.1.2", "26.2"],
+    "minecraft": [
+      "1.21.1",
+      "26.1",
+      "26.1.1",
+      "26.1.2",
+      "26.2"
+    ],
     "loader": "NeoForge",
     "localization_mode": "low_priority_fallback",
     "builds": {
@@ -10,20 +16,39 @@
         "version": "0.8.0-beta+1.21.1",
         "java": 21,
         "in_game_tested": false,
-        "included_projects": ["neoorigins", "medievalorigins", "ibarnorigins", "origins_fantasy", "origins_backgrounds", "origins_backgrounds_two", "origins_backgrounds_iss", "origins_furries"]
+        "included_projects": [
+          "neoorigins",
+          "medievalorigins",
+          "ibarnorigins",
+          "origins_fantasy",
+          "origins_backgrounds",
+          "origins_backgrounds_two",
+          "origins_backgrounds_iss",
+          "origins_furries",
+          "origins_classes_ex",
+          "origins_classes_iss"
+        ]
       },
       "26.1.x": {
-        "minecraft": ["26.1", "26.1.1", "26.1.2"],
+        "minecraft": [
+          "26.1",
+          "26.1.1",
+          "26.1.2"
+        ],
         "version": "0.8.0-beta+26.1",
         "java": 25,
         "in_game_tested": false,
-        "included_projects": ["neoorigins"]
+        "included_projects": [
+          "neoorigins"
+        ]
       },
       "26.2": {
         "version": "0.8.0-beta+26.2",
         "java": 25,
         "in_game_tested": false,
-        "included_projects": ["neoorigins"]
+        "included_projects": [
+          "neoorigins"
+        ]
       }
     }
   },
@@ -37,21 +62,116 @@
       "source": "https://github.com/CyberDay1/NeoOrigins",
       "compatibility": {
         "version": "2.2.25",
-        "minecraft": ["1.21.1", "26.1", "26.1.1", "26.1.2", "26.2"],
-        "in_game_validation": {"1.21.1": "validated", "26.1.2": "validated", "26.2": "validated"},
+        "minecraft": [
+          "1.21.1",
+          "26.1",
+          "26.1.1",
+          "26.1.2",
+          "26.2"
+        ],
+        "in_game_validation": {
+          "1.21.1": "validated",
+          "26.1.2": "validated",
+          "26.2": "validated"
+        },
         "note": "Les builds 26.x n'embarquent que la localisation NeoOrigins ; Minecraft 26.2 utilise un delta dédié."
       },
       "languages": {
-        "fr_fr": {"name": "Français", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins/lang/fr_fr.json", "targets": ["1.21.1", "26.1.x", "26.2"]},
-        "de_de": {"name": "Deutsch", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins/lang/de_de.json", "targets": ["1.21.1", "26.1.x", "26.2"]},
-        "es_es": {"name": "Español", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins/lang/es_es.json", "targets": ["1.21.1", "26.1.x", "26.2"]},
-        "pt_br": {"name": "Português (Brasil)", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins/lang/pt_br.json", "targets": ["1.21.1", "26.1.x", "26.2"]},
-        "nl_nl": {"name": "Nederlands", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins/lang/nl_nl.json", "targets": ["1.21.1", "26.1.x", "26.2"]},
-        "it_it": {"name": "Italiano", "status": "supported", "targets": ["1.21.1", "26.1.x", "26.2"]},
-        "pl_pl": {"name": "Polski", "status": "supported", "targets": ["1.21.1", "26.1.x", "26.2"]},
-        "ru_ru": {"name": "Русский", "status": "supported", "targets": ["1.21.1", "26.1.x", "26.2"]},
-        "tr_tr": {"name": "Türkçe", "status": "supported", "targets": ["1.21.1", "26.1.x", "26.2"]},
-        "zh_cn": {"name": "简体中文", "status": "supported", "targets": ["1.21.1", "26.1.x", "26.2"]}
+        "fr_fr": {
+          "name": "Français",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins/lang/fr_fr.json",
+          "targets": [
+            "1.21.1",
+            "26.1.x",
+            "26.2"
+          ]
+        },
+        "de_de": {
+          "name": "Deutsch",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins/lang/de_de.json",
+          "targets": [
+            "1.21.1",
+            "26.1.x",
+            "26.2"
+          ]
+        },
+        "es_es": {
+          "name": "Español",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins/lang/es_es.json",
+          "targets": [
+            "1.21.1",
+            "26.1.x",
+            "26.2"
+          ]
+        },
+        "pt_br": {
+          "name": "Português (Brasil)",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins/lang/pt_br.json",
+          "targets": [
+            "1.21.1",
+            "26.1.x",
+            "26.2"
+          ]
+        },
+        "nl_nl": {
+          "name": "Nederlands",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins/lang/nl_nl.json",
+          "targets": [
+            "1.21.1",
+            "26.1.x",
+            "26.2"
+          ]
+        },
+        "it_it": {
+          "name": "Italiano",
+          "status": "supported",
+          "targets": [
+            "1.21.1",
+            "26.1.x",
+            "26.2"
+          ]
+        },
+        "pl_pl": {
+          "name": "Polski",
+          "status": "supported",
+          "targets": [
+            "1.21.1",
+            "26.1.x",
+            "26.2"
+          ]
+        },
+        "ru_ru": {
+          "name": "Русский",
+          "status": "supported",
+          "targets": [
+            "1.21.1",
+            "26.1.x",
+            "26.2"
+          ]
+        },
+        "tr_tr": {
+          "name": "Türkçe",
+          "status": "supported",
+          "targets": [
+            "1.21.1",
+            "26.1.x",
+            "26.2"
+          ]
+        },
+        "zh_cn": {
+          "name": "简体中文",
+          "status": "supported",
+          "targets": [
+            "1.21.1",
+            "26.1.x",
+            "26.2"
+          ]
+        }
       }
     },
     {
@@ -61,20 +181,84 @@
       "namespace": "medievalorigins",
       "curseforge": "https://www.curseforge.com/minecraft/mc-mods/medieval-origins-revival",
       "source": "https://github.com/muon-rw/Medieval-Origins-Revival",
-      "license": {"code": "MIT", "assets_and_documentation": "CC BY 4.0", "attribution_required": true},
-      "compatibility": {"method": "NeoOrigins originpacks import", "minecraft": ["1.21.1"], "in_game_validation": "validated", "note": "401/401 clés anglaises couvertes dans les dix langues ; absent des builds 26.x."},
-      "coverage": {"source_keys": 401, "fallback_keys_per_locale": 401},
+      "license": {
+        "code": "MIT",
+        "assets_and_documentation": "CC BY 4.0",
+        "attribution_required": true
+      },
+      "compatibility": {
+        "method": "NeoOrigins originpacks import",
+        "minecraft": [
+          "1.21.1"
+        ],
+        "in_game_validation": "validated",
+        "note": "401/401 clés anglaises couvertes dans les dix langues ; absent des builds 26.x."
+      },
+      "coverage": {
+        "source_keys": 401,
+        "fallback_keys_per_locale": 401
+      },
       "languages": {
-        "fr_fr": {"name": "Français", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/fr_fr.json"},
-        "de_de": {"name": "Deutsch", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/de_de.json"},
-        "es_es": {"name": "Español", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/es_es.json"},
-        "pt_br": {"name": "Português (Brasil)", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/pt_br.json"},
-        "nl_nl": {"name": "Nederlands", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/nl_nl.json"},
-        "it_it": {"name": "Italiano", "status": "supported", "targets": ["1.21.1"]},
-        "pl_pl": {"name": "Polski", "status": "supported", "targets": ["1.21.1"]},
-        "ru_ru": {"name": "Русский", "status": "supported", "targets": ["1.21.1"]},
-        "tr_tr": {"name": "Türkçe", "status": "supported", "targets": ["1.21.1"]},
-        "zh_cn": {"name": "简体中文", "status": "supported", "targets": ["1.21.1"]}
+        "fr_fr": {
+          "name": "Français",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/fr_fr.json"
+        },
+        "de_de": {
+          "name": "Deutsch",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/de_de.json"
+        },
+        "es_es": {
+          "name": "Español",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/es_es.json"
+        },
+        "pt_br": {
+          "name": "Português (Brasil)",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/pt_br.json"
+        },
+        "nl_nl": {
+          "name": "Nederlands",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/nl_nl.json"
+        },
+        "it_it": {
+          "name": "Italiano",
+          "status": "supported",
+          "targets": [
+            "1.21.1"
+          ]
+        },
+        "pl_pl": {
+          "name": "Polski",
+          "status": "supported",
+          "targets": [
+            "1.21.1"
+          ]
+        },
+        "ru_ru": {
+          "name": "Русский",
+          "status": "supported",
+          "targets": [
+            "1.21.1"
+          ]
+        },
+        "tr_tr": {
+          "name": "Türkçe",
+          "status": "supported",
+          "targets": [
+            "1.21.1"
+          ]
+        },
+        "zh_cn": {
+          "name": "简体中文",
+          "status": "supported",
+          "targets": [
+            "1.21.1"
+          ]
+        }
       }
     },
     {
@@ -84,20 +268,82 @@
       "namespace": "ibarnorigins",
       "curseforge": "https://www.curseforge.com/minecraft/mc-mods/ibarns-custom-origins-addon",
       "source": "https://github.com/ibarn-Recreational/ibarn-origins-addon",
-      "license": {"code_and_localization": "MIT", "attribution_required": true},
-      "compatibility": {"method": "NeoForge mod in mods/", "version": "1.7.1 / Minecraft 1.21.1", "source_ref": "multiloader-1.21.1-new-pack-format", "in_game_validation": "validated", "note": "69/69 clés anglaises couvertes dans les dix langues ; absent des builds 26.x."},
-      "coverage": {"source_keys": 69, "fallback_keys_per_locale": 69},
+      "license": {
+        "code_and_localization": "MIT",
+        "attribution_required": true
+      },
+      "compatibility": {
+        "method": "NeoForge mod in mods/",
+        "version": "1.7.1 / Minecraft 1.21.1",
+        "source_ref": "multiloader-1.21.1-new-pack-format",
+        "in_game_validation": "validated",
+        "note": "69/69 clés anglaises couvertes dans les dix langues ; absent des builds 26.x."
+      },
+      "coverage": {
+        "source_keys": 69,
+        "fallback_keys_per_locale": 69
+      },
       "languages": {
-        "fr_fr": {"name": "Français", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/fr_fr.json"},
-        "de_de": {"name": "Deutsch", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/de_de.json"},
-        "es_es": {"name": "Español", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/es_es.json"},
-        "pt_br": {"name": "Português (Brasil)", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/pt_br.json"},
-        "nl_nl": {"name": "Nederlands", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/nl_nl.json"},
-        "it_it": {"name": "Italiano", "status": "supported", "targets": ["1.21.1"]},
-        "pl_pl": {"name": "Polski", "status": "supported", "targets": ["1.21.1"]},
-        "ru_ru": {"name": "Русский", "status": "supported", "targets": ["1.21.1"]},
-        "tr_tr": {"name": "Türkçe", "status": "supported", "targets": ["1.21.1"]},
-        "zh_cn": {"name": "简体中文", "status": "supported", "targets": ["1.21.1"]}
+        "fr_fr": {
+          "name": "Français",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/fr_fr.json"
+        },
+        "de_de": {
+          "name": "Deutsch",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/de_de.json"
+        },
+        "es_es": {
+          "name": "Español",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/es_es.json"
+        },
+        "pt_br": {
+          "name": "Português (Brasil)",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/pt_br.json"
+        },
+        "nl_nl": {
+          "name": "Nederlands",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/nl_nl.json"
+        },
+        "it_it": {
+          "name": "Italiano",
+          "status": "supported",
+          "targets": [
+            "1.21.1"
+          ]
+        },
+        "pl_pl": {
+          "name": "Polski",
+          "status": "supported",
+          "targets": [
+            "1.21.1"
+          ]
+        },
+        "ru_ru": {
+          "name": "Русский",
+          "status": "supported",
+          "targets": [
+            "1.21.1"
+          ]
+        },
+        "tr_tr": {
+          "name": "Türkçe",
+          "status": "supported",
+          "targets": [
+            "1.21.1"
+          ]
+        },
+        "zh_cn": {
+          "name": "简体中文",
+          "status": "supported",
+          "targets": [
+            "1.21.1"
+          ]
+        }
       }
     },
     {
@@ -106,20 +352,75 @@
       "author": "DraconicArcher",
       "namespace": "origins_fantasy",
       "curseforge": "https://www.curseforge.com/minecraft/mc-mods/origins-fantsy-neoorigins",
-      "license": {"localization_redistribution": "explicit_author_permission", "permission_date": "2026-09-06", "attribution_required": true},
-      "compatibility": {"method": "NeoForge mod in mods/", "version": "1.1.3 / Minecraft 1.21.1", "minecraft": ["1.21.1"], "in_game_validation": "pending", "note": "Audité contre le JAR CurseForge 8816068 ; absent des builds 26.x."},
-      "coverage": {"source_keys": 240, "fallback_keys_per_locale": 240},
+      "license": {
+        "localization_redistribution": "explicit_author_permission",
+        "permission_date": "2026-09-06",
+        "attribution_required": true
+      },
+      "compatibility": {
+        "method": "NeoForge mod in mods/",
+        "version": "1.1.3 / Minecraft 1.21.1",
+        "minecraft": [
+          "1.21.1"
+        ],
+        "in_game_validation": "pending",
+        "note": "Audité contre le JAR CurseForge 8816068 ; absent des builds 26.x."
+      },
+      "coverage": {
+        "source_keys": 240,
+        "fallback_keys_per_locale": 240
+      },
       "languages": {
-        "fr_fr": {"name": "Français", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/fr_fr.json"},
-        "de_de": {"name": "Deutsch", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/de_de.json"},
-        "es_es": {"name": "Español", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/es_es.json"},
-        "pt_br": {"name": "Português (Brasil)", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/pt_br.json"},
-        "nl_nl": {"name": "Nederlands", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/nl_nl.json"},
-        "it_it": {"name": "Italiano", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/it_it.json"},
-        "pl_pl": {"name": "Polski", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/pl_pl.json"},
-        "ru_ru": {"name": "Русский", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/ru_ru.json"},
-        "tr_tr": {"name": "Türkçe", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/tr_tr.json"},
-        "zh_cn": {"name": "简体中文", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/zh_cn.json"}
+        "fr_fr": {
+          "name": "Français",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/fr_fr.json"
+        },
+        "de_de": {
+          "name": "Deutsch",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/de_de.json"
+        },
+        "es_es": {
+          "name": "Español",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/es_es.json"
+        },
+        "pt_br": {
+          "name": "Português (Brasil)",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/pt_br.json"
+        },
+        "nl_nl": {
+          "name": "Nederlands",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/nl_nl.json"
+        },
+        "it_it": {
+          "name": "Italiano",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/it_it.json"
+        },
+        "pl_pl": {
+          "name": "Polski",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/pl_pl.json"
+        },
+        "ru_ru": {
+          "name": "Русский",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/ru_ru.json"
+        },
+        "tr_tr": {
+          "name": "Türkçe",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/tr_tr.json"
+        },
+        "zh_cn": {
+          "name": "简体中文",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/zh_cn.json"
+        }
       }
     },
     {
@@ -128,20 +429,75 @@
       "author": "DraconicArcher",
       "namespace": "origins_backgrounds",
       "curseforge": "https://www.curseforge.com/minecraft/mc-mods/origins-backgrounds-for-neoorigins",
-      "license": {"localization_redistribution": "explicit_author_permission", "permission_date": "2026-09-06", "attribution_required": true},
-      "compatibility": {"method": "NeoForge mod in mods/", "version": "1.0.2 / Minecraft 1.21.1", "minecraft": ["1.21.1"], "in_game_validation": "pending", "note": "Audité contre le JAR CurseForge 8397335 ; aucune traduction officielle parmi les dix langues ciblées ; absent des builds 26.x."},
-      "coverage": {"source_keys": 65, "fallback_keys_per_locale": 65},
+      "license": {
+        "localization_redistribution": "explicit_author_permission",
+        "permission_date": "2026-09-06",
+        "attribution_required": true
+      },
+      "compatibility": {
+        "method": "NeoForge mod in mods/",
+        "version": "1.0.2 / Minecraft 1.21.1",
+        "minecraft": [
+          "1.21.1"
+        ],
+        "in_game_validation": "pending",
+        "note": "Audité contre le JAR CurseForge 8397335 ; aucune traduction officielle parmi les dix langues ciblées ; absent des builds 26.x."
+      },
+      "coverage": {
+        "source_keys": 65,
+        "fallback_keys_per_locale": 65
+      },
       "languages": {
-        "fr_fr": {"name": "Français", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/fr_fr.json"},
-        "de_de": {"name": "Deutsch", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/de_de.json"},
-        "es_es": {"name": "Español", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/es_es.json"},
-        "pt_br": {"name": "Português (Brasil)", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/pt_br.json"},
-        "nl_nl": {"name": "Nederlands", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/nl_nl.json"},
-        "it_it": {"name": "Italiano", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/it_it.json"},
-        "pl_pl": {"name": "Polski", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/pl_pl.json"},
-        "ru_ru": {"name": "Русский", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/ru_ru.json"},
-        "tr_tr": {"name": "Türkçe", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/tr_tr.json"},
-        "zh_cn": {"name": "简体中文", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/zh_cn.json"}
+        "fr_fr": {
+          "name": "Français",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/fr_fr.json"
+        },
+        "de_de": {
+          "name": "Deutsch",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/de_de.json"
+        },
+        "es_es": {
+          "name": "Español",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/es_es.json"
+        },
+        "pt_br": {
+          "name": "Português (Brasil)",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/pt_br.json"
+        },
+        "nl_nl": {
+          "name": "Nederlands",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/nl_nl.json"
+        },
+        "it_it": {
+          "name": "Italiano",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/it_it.json"
+        },
+        "pl_pl": {
+          "name": "Polski",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/pl_pl.json"
+        },
+        "ru_ru": {
+          "name": "Русский",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/ru_ru.json"
+        },
+        "tr_tr": {
+          "name": "Türkçe",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/tr_tr.json"
+        },
+        "zh_cn": {
+          "name": "简体中文",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/zh_cn.json"
+        }
       }
     },
     {
@@ -150,20 +506,77 @@
       "author": "DraconicArcher",
       "namespace": "origins_backgrounds_two",
       "curseforge": "https://www.curseforge.com/minecraft/mc-mods/origins-more-backgrounds-for-neoorigins",
-      "license": {"localization_redistribution": "explicit_author_permission", "permission_date": "2026-09-06", "attribution_required": true},
-      "compatibility": {"method": "NeoForge mod in mods/", "version": "1.0.2 / Minecraft 1.21.1", "minecraft": ["1.21.1"], "in_game_validation": "pending", "note": "Audité contre le JAR CurseForge 8650744 ; 39 clés propres au namespace et 5 clés partagées réutilisées depuis origins_backgrounds ; absent des builds 26.x."},
-      "coverage": {"source_keys": 44, "primary_fallback_keys_per_locale": 39, "shared_keys_reused": 5, "effective_coverage_per_locale": 44},
+      "license": {
+        "localization_redistribution": "explicit_author_permission",
+        "permission_date": "2026-09-06",
+        "attribution_required": true
+      },
+      "compatibility": {
+        "method": "NeoForge mod in mods/",
+        "version": "1.0.2 / Minecraft 1.21.1",
+        "minecraft": [
+          "1.21.1"
+        ],
+        "in_game_validation": "pending",
+        "note": "Audité contre le JAR CurseForge 8650744 ; 39 clés propres au namespace et 5 clés partagées réutilisées depuis origins_backgrounds ; absent des builds 26.x."
+      },
+      "coverage": {
+        "source_keys": 44,
+        "primary_fallback_keys_per_locale": 39,
+        "shared_keys_reused": 5,
+        "effective_coverage_per_locale": 44
+      },
       "languages": {
-        "fr_fr": {"name": "Français", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/fr_fr.json"},
-        "de_de": {"name": "Deutsch", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/de_de.json"},
-        "es_es": {"name": "Español", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/es_es.json"},
-        "pt_br": {"name": "Português (Brasil)", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/pt_br.json"},
-        "nl_nl": {"name": "Nederlands", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/nl_nl.json"},
-        "it_it": {"name": "Italiano", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/it_it.json"},
-        "pl_pl": {"name": "Polski", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/pl_pl.json"},
-        "ru_ru": {"name": "Русский", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/ru_ru.json"},
-        "tr_tr": {"name": "Türkçe", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/tr_tr.json"},
-        "zh_cn": {"name": "简体中文", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/zh_cn.json"}
+        "fr_fr": {
+          "name": "Français",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/fr_fr.json"
+        },
+        "de_de": {
+          "name": "Deutsch",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/de_de.json"
+        },
+        "es_es": {
+          "name": "Español",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/es_es.json"
+        },
+        "pt_br": {
+          "name": "Português (Brasil)",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/pt_br.json"
+        },
+        "nl_nl": {
+          "name": "Nederlands",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/nl_nl.json"
+        },
+        "it_it": {
+          "name": "Italiano",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/it_it.json"
+        },
+        "pl_pl": {
+          "name": "Polski",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/pl_pl.json"
+        },
+        "ru_ru": {
+          "name": "Русский",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/ru_ru.json"
+        },
+        "tr_tr": {
+          "name": "Türkçe",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/tr_tr.json"
+        },
+        "zh_cn": {
+          "name": "简体中文",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/zh_cn.json"
+        }
       }
     },
     {
@@ -172,20 +585,81 @@
       "author": "DraconicArcher",
       "namespace": "origins_backgrounds_iss",
       "curseforge": "https://www.curseforge.com/minecraft/mc-mods/origins-backgrounds-iss-for-neoorigins",
-      "license": {"localization_redistribution": "explicit_author_permission", "permission_date": "2026-09-06", "attribution_required": true},
-      "compatibility": {"method": "NeoForge mod in mods/", "version": "1.0.1 / Minecraft 1.21.1", "minecraft": ["1.21.1"], "dependencies": ["NeoOrigins", "Iron's Spells 'n Spellbooks"], "in_game_validation": "pending", "note": "Audité contre le JAR CurseForge 8409604 ; 77 clés propres au namespace et 2 clés Fresh Face réutilisées depuis origins_backgrounds ; absent des builds 26.x."},
-      "coverage": {"source_keys": 79, "primary_fallback_keys_per_locale": 77, "shared_keys_reused": 2, "effective_coverage_per_locale": 79},
+      "license": {
+        "localization_redistribution": "explicit_author_permission",
+        "permission_date": "2026-09-06",
+        "attribution_required": true
+      },
+      "compatibility": {
+        "method": "NeoForge mod in mods/",
+        "version": "1.0.1 / Minecraft 1.21.1",
+        "minecraft": [
+          "1.21.1"
+        ],
+        "dependencies": [
+          "NeoOrigins",
+          "Iron's Spells 'n Spellbooks"
+        ],
+        "in_game_validation": "pending",
+        "note": "Audité contre le JAR CurseForge 8409604 ; 77 clés propres au namespace et 2 clés Fresh Face réutilisées depuis origins_backgrounds ; absent des builds 26.x."
+      },
+      "coverage": {
+        "source_keys": 79,
+        "primary_fallback_keys_per_locale": 77,
+        "shared_keys_reused": 2,
+        "effective_coverage_per_locale": 79
+      },
       "languages": {
-        "fr_fr": {"name": "Français", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/fr_fr.json"},
-        "de_de": {"name": "Deutsch", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/de_de.json"},
-        "es_es": {"name": "Español", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/es_es.json"},
-        "pt_br": {"name": "Português (Brasil)", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/pt_br.json"},
-        "nl_nl": {"name": "Nederlands", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/nl_nl.json"},
-        "it_it": {"name": "Italiano", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/it_it.json"},
-        "pl_pl": {"name": "Polski", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/pl_pl.json"},
-        "ru_ru": {"name": "Русский", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/ru_ru.json"},
-        "tr_tr": {"name": "Türkçe", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/tr_tr.json"},
-        "zh_cn": {"name": "简体中文", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/zh_cn.json"}
+        "fr_fr": {
+          "name": "Français",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/fr_fr.json"
+        },
+        "de_de": {
+          "name": "Deutsch",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/de_de.json"
+        },
+        "es_es": {
+          "name": "Español",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/es_es.json"
+        },
+        "pt_br": {
+          "name": "Português (Brasil)",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/pt_br.json"
+        },
+        "nl_nl": {
+          "name": "Nederlands",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/nl_nl.json"
+        },
+        "it_it": {
+          "name": "Italiano",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/it_it.json"
+        },
+        "pl_pl": {
+          "name": "Polski",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/pl_pl.json"
+        },
+        "ru_ru": {
+          "name": "Русский",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/ru_ru.json"
+        },
+        "tr_tr": {
+          "name": "Türkçe",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/tr_tr.json"
+        },
+        "zh_cn": {
+          "name": "简体中文",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/zh_cn.json"
+        }
       }
     },
     {
@@ -194,20 +668,239 @@
       "author": "DraconicArcher",
       "namespace": "origins_furries",
       "curseforge": "https://www.curseforge.com/minecraft/mc-mods/origins-furries-for-neoorigins",
-      "license": {"localization_redistribution": "explicit_author_permission", "permission_date": "2026-09-06", "attribution_required": true},
-      "compatibility": {"method": "NeoForge mod in mods/", "version": "1.0.0 / Minecraft 1.21.1", "minecraft": ["1.21.1"], "dependencies": ["NeoOrigins"], "in_game_validation": "pending", "note": "Audité contre le JAR CurseForge 8397352 ; aucune traduction officielle parmi les dix langues ciblées ; absent des builds 26.x."},
-      "coverage": {"source_keys": 117, "fallback_keys_per_locale": 117},
+      "license": {
+        "localization_redistribution": "explicit_author_permission",
+        "permission_date": "2026-09-06",
+        "attribution_required": true
+      },
+      "compatibility": {
+        "method": "NeoForge mod in mods/",
+        "version": "1.0.0 / Minecraft 1.21.1",
+        "minecraft": [
+          "1.21.1"
+        ],
+        "dependencies": [
+          "NeoOrigins"
+        ],
+        "in_game_validation": "pending",
+        "note": "Audité contre le JAR CurseForge 8397352 ; aucune traduction officielle parmi les dix langues ciblées ; absent des builds 26.x."
+      },
+      "coverage": {
+        "source_keys": 117,
+        "fallback_keys_per_locale": 117
+      },
       "languages": {
-        "fr_fr": {"name": "Français", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/fr_fr.json"},
-        "de_de": {"name": "Deutsch", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/de_de.json"},
-        "es_es": {"name": "Español", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/es_es.json"},
-        "pt_br": {"name": "Português (Brasil)", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/pt_br.json"},
-        "nl_nl": {"name": "Nederlands", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/nl_nl.json"},
-        "it_it": {"name": "Italiano", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/it_it.json"},
-        "pl_pl": {"name": "Polski", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/pl_pl.json"},
-        "ru_ru": {"name": "Русский", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/ru_ru.json"},
-        "tr_tr": {"name": "Türkçe", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/tr_tr.json"},
-        "zh_cn": {"name": "简体中文", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/zh_cn.json"}
+        "fr_fr": {
+          "name": "Français",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/fr_fr.json"
+        },
+        "de_de": {
+          "name": "Deutsch",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/de_de.json"
+        },
+        "es_es": {
+          "name": "Español",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/es_es.json"
+        },
+        "pt_br": {
+          "name": "Português (Brasil)",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/pt_br.json"
+        },
+        "nl_nl": {
+          "name": "Nederlands",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/nl_nl.json"
+        },
+        "it_it": {
+          "name": "Italiano",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/it_it.json"
+        },
+        "pl_pl": {
+          "name": "Polski",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/pl_pl.json"
+        },
+        "ru_ru": {
+          "name": "Русский",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/ru_ru.json"
+        },
+        "tr_tr": {
+          "name": "Türkçe",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/tr_tr.json"
+        },
+        "zh_cn": {
+          "name": "简体中文",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/zh_cn.json"
+        }
+      }
+    },
+    {
+      "id": "origins_classes_ex",
+      "name": "Origins: Classes Extended for NeoOrigins",
+      "author": "DraconicArcher",
+      "namespace": "origins_classes_ex",
+      "curseforge": "https://www.curseforge.com/minecraft/mc-mods/origins-classes-extended-for-neoorigins",
+      "license": {
+        "localization_redistribution": "explicit_author_permission",
+        "permission_date": "2026-09-06",
+        "attribution_required": true
+      },
+      "compatibility": {
+        "method": "NeoForge mod in mods/",
+        "version": "1.0.1 / Minecraft 1.21.1",
+        "minecraft": [
+          "1.21.1"
+        ],
+        "dependencies": [
+          "NeoOrigins"
+        ],
+        "in_game_validation": "pending",
+        "note": "Audité contre le JAR CurseForge 8393343 ; 124/124 clés dans les dix langues ciblées ; aucune traduction officielle détectée ; absent des builds 26.x."
+      },
+      "coverage": {
+        "source_keys": 124,
+        "fallback_keys_per_locale": 124
+      },
+      "languages": {
+        "fr_fr": {
+          "name": "Français",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/fr_fr.json"
+        },
+        "de_de": {
+          "name": "Deutsch",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/de_de.json"
+        },
+        "es_es": {
+          "name": "Español",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/es_es.json"
+        },
+        "pt_br": {
+          "name": "Português (Brasil)",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/pt_br.json"
+        },
+        "nl_nl": {
+          "name": "Nederlands",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/nl_nl.json"
+        },
+        "it_it": {
+          "name": "Italiano",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/it_it.json"
+        },
+        "pl_pl": {
+          "name": "Polski",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/pl_pl.json"
+        },
+        "ru_ru": {
+          "name": "Русский",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/ru_ru.json"
+        },
+        "tr_tr": {
+          "name": "Türkçe",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/tr_tr.json"
+        },
+        "zh_cn": {
+          "name": "简体中文",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/zh_cn.json"
+        }
+      }
+    },
+    {
+      "id": "origins_classes_iss",
+      "name": "Origins: Classes ISS for NeoOrigins",
+      "author": "DraconicArcher",
+      "namespace": "origins_classes_iss",
+      "curseforge": "https://www.curseforge.com/minecraft/mc-mods/origins-classes-iss-for-neoorigins",
+      "license": {
+        "localization_redistribution": "explicit_author_permission",
+        "permission_date": "2026-09-06",
+        "attribution_required": true
+      },
+      "compatibility": {
+        "method": "NeoForge mod in mods/",
+        "version": "1.0.1 / Minecraft 1.21.1",
+        "minecraft": [
+          "1.21.1"
+        ],
+        "dependencies": [
+          "NeoOrigins",
+          "Iron's Spells 'n Spellbooks"
+        ],
+        "in_game_validation": "pending",
+        "note": "Audité contre le JAR CurseForge 8592095 ; 99/99 clés dans les dix langues ciblées ; aucune traduction officielle détectée ; absent des builds 26.x."
+      },
+      "coverage": {
+        "source_keys": 99,
+        "fallback_keys_per_locale": 99
+      },
+      "languages": {
+        "fr_fr": {
+          "name": "Français",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/fr_fr.json"
+        },
+        "de_de": {
+          "name": "Deutsch",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/de_de.json"
+        },
+        "es_es": {
+          "name": "Español",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/es_es.json"
+        },
+        "pt_br": {
+          "name": "Português (Brasil)",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/pt_br.json"
+        },
+        "nl_nl": {
+          "name": "Nederlands",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/nl_nl.json"
+        },
+        "it_it": {
+          "name": "Italiano",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/it_it.json"
+        },
+        "pl_pl": {
+          "name": "Polski",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/pl_pl.json"
+        },
+        "ru_ru": {
+          "name": "Русский",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/ru_ru.json"
+        },
+        "tr_tr": {
+          "name": "Türkçe",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/tr_tr.json"
+        },
+        "zh_cn": {
+          "name": "简体中文",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/zh_cn.json"
+        }
       }
     }
   ]

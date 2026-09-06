@@ -15,6 +15,7 @@ def targetJavaVersion = (project.findProperty('java_version') ?: '21') as int
 def targetResourcePackFormat = project.property('resource_pack_format').toString()
 def sourceVariant = project.findProperty('source_variant') ?: 'mc1_21_1'
 def includeAddonTranslations = (project.findProperty('include_addon_translations') ?: 'true').toBoolean()
+def include121ExpandedTranslations = (project.findProperty('include_121_expanded_translations') ?: 'true').toBoolean()
 def include26_2Translations = (project.findProperty('include_26_2_translations') ?: 'false').toBoolean()
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
@@ -68,6 +69,7 @@ neoForge.ideSyncTask generateModMetadata
 tasks.named('processResources', ProcessResources) {
     inputs.property 'resource_pack_format', targetResourcePackFormat
     inputs.property 'include_addon_translations', includeAddonTranslations
+    inputs.property 'include_121_expanded_translations', include121ExpandedTranslations
     inputs.property 'include_26_2_translations', include26_2Translations
 
     filesMatching('resourcepacks/fallback_localizations/pack.mcmeta') {
@@ -76,7 +78,13 @@ tasks.named('processResources', ProcessResources) {
 
     if (!includeAddonTranslations) {
         exclude 'resourcepacks/fallback_localizations/assets/medievalorigins/**'
+        exclude 'resourcepacks/fallback_localizations/assets/medievalorigins_*/**'
         exclude 'resourcepacks/fallback_localizations/assets/ibarnorigins/**'
+    }
+
+    if (!include121ExpandedTranslations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_121_batch1/**'
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_tr_*/**'
     }
 
     if (!include26_2Translations) {

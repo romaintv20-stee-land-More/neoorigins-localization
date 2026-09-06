@@ -64,4 +64,18 @@ La notice MIT du projet amont doit être conservée lorsque des portions substan
 - Priorité amont : le JAR ciblé ne fournit actuellement aucune des dix localisations prises en charge ici. Si une traduction officielle apparaît ensuite, elle doit garder la priorité et les clés correspondantes de notre fallback doivent être retirées.
 - Le mod original reste requis pour utiliser ces traductions.
 
+## Origins: More Backgrounds for NeoOrigins
+
+- Projet : Origins: More Backgrounds for NeoOrigins
+- Auteur : DraconicArcher
+- CurseForge : https://www.curseforge.com/minecraft/mc-mods/origins-more-backgrounds-for-neoorigins
+- Project ID CurseForge : `1578580`
+- Version ciblée : fichier CurseForge `Origins-More-Backgrounds-1.21.1-NeoOrigins-1.0.2.jar` (file ID `8650744`) pour Minecraft 1.21.1
+- Namespace principal : `origins_backgrounds_two`
+- Utilisation ici : localisations `fr_fr`, `de_de`, `es_es`, `pt_br`, `nl_nl`, `it_it`, `pl_pl`, `ru_ru`, `tr_tr` et `zh_cn` des 44 chaînes du fichier anglais. Cinq clés partagées avec `Origins: Backgrounds for NeoOrigins` réutilisent les traductions déjà présentes dans `origins_backgrounds`; les 39 nouvelles clés sont stockées dans `origins_backgrounds_two`.
+- Autorisation : couverte par l'autorisation explicite accordée par DraconicArcher le 6 septembre 2026 pour l'intégration des traductions de ses add-ons à NeoOrigins Localization, avec redistribution limitée aux chaînes de localisation traduites, attribution claire et lien vers le projet original.
+- Limite de redistribution : NeoOrigins Localization ne redistribue pas le code, les textures, les modèles, les données de gameplay ni les autres assets de l'add-on ; seuls les fichiers de localisation traduits nécessaires sont inclus.
+- Priorité amont : le JAR ciblé ne fournit actuellement aucune des dix localisations prises en charge ici. Si une traduction officielle apparaît ensuite, elle doit garder la priorité et les clés correspondantes de notre fallback doivent être retirées.
+- Le mod original reste requis pour utiliser ces traductions.
+
 Aucune attribution ne signifie que les auteurs amont approuvent ou sponsorisent NeoOrigins Localization au-delà des autorisations explicitement mentionnées ci-dessus.

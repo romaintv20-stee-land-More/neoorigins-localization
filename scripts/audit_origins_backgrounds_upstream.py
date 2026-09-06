@@ -11,7 +11,7 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 PACK_ROOT = ROOT / "src/main/resources/resourcepacks/fallback_localizations/assets"
-LOCALES = ("fr_fr", "de_de", "es_es", "pt_br", "nl_nl", "it_it", "pl_pl", "ru_ru", "tr_tr", "zh_cn")
+LOCALES = ("fr_fr", "de_de", "es_es", "pt_br", "nl_nl", "it_it", "pl_pl", "ru_ru", "tr_tr", "zh_cn", "cs_cz")
 DEFAULT_FILE_ID = "8397335"
 DEFAULT_FILENAME = "Origins-Backgrounds-1.21.1-NeoOrigins-1.0.2.jar"
 DEFAULT_NAMESPACE = "origins_backgrounds"

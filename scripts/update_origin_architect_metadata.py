@@ -4,6 +4,7 @@ import json
 
 ROOT = Path(__file__).resolve().parents[1]
 
+# Metadata updater for the stacked Origin Architect integration branch.
 # README
 readme_path = ROOT / "README.md"
 readme = readme_path.read_text(encoding="utf-8")

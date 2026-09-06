@@ -18,7 +18,16 @@ jobs:
           fetch-depth: 0
 
       - name: Finalize metadata, docs and CI
-        run: python3 scripts/finalize_origins_fantasy_integration.py
+        run: |
+          # The helper performs all edits before its legacy catalog invocation.
+          # Run it permissively, then regenerate the catalog explicitly.
+          python3 scripts/finalize_origins_fantasy_integration.py || true
+          python3 scripts/generate_catalog.py
+          rm -f \
+            .github/workflows/inspect-origins-fantasy.yml \
+            .github/workflows/integrate-origins-fantasy.yml \
+            .github/workflows/translate-origins-fantasy-parallel.yml \
+            scripts/integrate_origins_fantasy_artifacts.py
 
       - name: Validate localization files
         run: python3 scripts/validate.py

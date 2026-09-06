@@ -10,7 +10,7 @@
         "version": "0.8.0-beta+1.21.1",
         "java": 21,
         "in_game_tested": false,
-        "included_projects": ["neoorigins", "medievalorigins", "ibarnorigins", "origins_fantasy", "origins_backgrounds", "origins_backgrounds_two", "origins_backgrounds_iss"]
+        "included_projects": ["neoorigins", "medievalorigins", "ibarnorigins", "origins_fantasy", "origins_backgrounds", "origins_backgrounds_two", "origins_backgrounds_iss", "origins_furries"]
       },
       "26.1.x": {
         "minecraft": ["26.1", "26.1.1", "26.1.2"],
@@ -186,6 +186,28 @@
         "ru_ru": {"name": "Русский", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/ru_ru.json"},
         "tr_tr": {"name": "Türkçe", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/tr_tr.json"},
         "zh_cn": {"name": "简体中文", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/zh_cn.json"}
+      }
+    },
+    {
+      "id": "origins_furries",
+      "name": "Origins Furries for NeoOrigins",
+      "author": "DraconicArcher",
+      "namespace": "origins_furries",
+      "curseforge": "https://www.curseforge.com/minecraft/mc-mods/origins-furries-for-neoorigins",
+      "license": {"localization_redistribution": "explicit_author_permission", "permission_date": "2026-09-06", "attribution_required": true},
+      "compatibility": {"method": "NeoForge mod in mods/", "version": "1.0.0 / Minecraft 1.21.1", "minecraft": ["1.21.1"], "dependencies": ["NeoOrigins"], "in_game_validation": "pending", "note": "Audité contre le JAR CurseForge 8397352 ; aucune traduction officielle parmi les dix langues ciblées ; absent des builds 26.x."},
+      "coverage": {"source_keys": 117, "fallback_keys_per_locale": 117},
+      "languages": {
+        "fr_fr": {"name": "Français", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/fr_fr.json"},
+        "de_de": {"name": "Deutsch", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/de_de.json"},
+        "es_es": {"name": "Español", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/es_es.json"},
+        "pt_br": {"name": "Português (Brasil)", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/pt_br.json"},
+        "nl_nl": {"name": "Nederlands", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/nl_nl.json"},
+        "it_it": {"name": "Italiano", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/it_it.json"},
+        "pl_pl": {"name": "Polski", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/pl_pl.json"},
+        "ru_ru": {"name": "Русский", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/ru_ru.json"},
+        "tr_tr": {"name": "Türkçe", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/tr_tr.json"},
+        "zh_cn": {"name": "简体中文", "status": "supported", "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/zh_cn.json"}
       }
     }
   ]

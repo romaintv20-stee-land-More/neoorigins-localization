@@ -1,6 +1,17 @@
 # NeoOrigins Localization
 
-Mod client NeoForge 1.21.1 fournissant des **traductions complémentaires** pour NeoOrigins et des packs/add-ons compatibles.
+Mod client NeoForge fournissant des **traductions complémentaires** pour NeoOrigins et des packs/add-ons compatibles.
+
+## Versions Minecraft
+
+La bêta `0.6.0` est actuellement construite pour deux cibles :
+
+- **Minecraft 1.21.1** — Java 21 — build `0.6.0-beta+1.21.1`
+- **Minecraft 26.1.x** (`26.1`, `26.1.1`, `26.1.2`) — Java 25 — build `0.6.0-beta+26.1`
+
+Le build 26.1.x compile contre **Minecraft 26.1.2 / NeoForge 26.1.2.29-beta** et déclare une plage Minecraft `[26.1,26.2)`, comme la branche 26.1.x de NeoOrigins. La compilation et l'audit de localisation sont validés ; la validation en jeu reste à effectuer avant de considérer cette cible comme stable.
+
+Les add-ons tiers ne sont annoncés comme compatibles que sur les versions où leur intégration a été vérifiée. Medieval Origins Revival et la version NeoForge d'ibarn's quartet origins addon restent pour l'instant documentés comme supportés sur Minecraft 1.21.1 uniquement.
 
 ## Principe
 
@@ -38,13 +49,15 @@ La branche `1.21.1-fabric` de Medieval Origins Revival ne fournit actuellement a
 - Portugais brésilien (`pt_br`)
 - Néerlandais (`nl_nl`)
 
-La compatibilité via `config/originpacks/` et la traduction d'un Origin importé ont déjà été validées en jeu. Les fichiers complets restent ouverts aux retours de locuteurs natifs pour affiner la formulation et la terminologie.
+La compatibilité via `config/originpacks/` et la traduction d'un Origin importé ont déjà été validées en jeu sur Minecraft 1.21.1. Les fichiers complets restent ouverts aux retours de locuteurs natifs pour affiner la formulation et la terminologie.
 
 ## ibarn's quartet origins addon
 
 La version **1.7.1 pour Minecraft 1.21.1** ne fournit actuellement que `en_us`. Notre fallback couvre donc ses **69 clés anglaises** dans les cinq langues cibles.
 
-Contrairement à Medieval Origins Revival, cet add-on contient du **code Java**, des effets et des entités personnalisés. Sa version NeoForge doit donc être installée comme un mod classique dans `mods/`, et non dans `config/originpacks/`. La couverture de traduction est complète ; un passage de validation en jeu avec NeoOrigins reste à faire avant de considérer la compatibilité gameplay comme confirmée.
+Contrairement à Medieval Origins Revival, cet add-on contient du **code Java**, des effets et des entités personnalisés. Sa version NeoForge 1.21.1 doit donc être installée comme un mod classique dans `mods/`, et non dans `config/originpacks/`.
+
+Une branche 26.1 existe en amont pour ibarn, mais elle est actuellement destinée à Fabric et sa structure de localisation diffère de la version NeoForge 1.21.1. Elle n'est donc pas annoncée comme compatible avec notre build NeoForge 26.1.x tant qu'une intégration réelle n'a pas été validée.
 
 ## Nettoyage lors des mises à jour
 
@@ -56,17 +69,17 @@ Les scripts `scripts/audit_neoorigins_upstream.py`, `scripts/audit_medievalorigi
 - les éventuelles clés obsolètes ;
 - les erreurs de placeholders comme `%s`, `%1$s` et `%d`.
 
-Le CI exécute ces audits à chaque build. L'objectif est de retirer de notre mod toute entrée devenue officielle afin de garder les fichiers légers et de laisser la priorité au projet d'origine.
+Le CI exécute l'audit NeoOrigins sur chaque cible Minecraft. Les audits Medieval Origins Revival et ibarn restent associés au build 1.21.1 tant que ces add-ons ne sont pas validés sur 26.1.x.
 
 ## Add-ons actuellement suivis
 
 | Mod / add-on | Auteur | Lien | État |
 |---|---|---|---|
-| NeoOrigins | CyberDay | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/neoorigins) | FR/DE/ES/PT-BR complétés en fallback, NL complet |
-| Medieval Origins Revival | MuonR / muon-rw | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/medieval-origins-revival) | FR/DE/ES/PT-BR/NL complets |
-| ibarn's quartet origins addon | ibarnstormer | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/ibarns-custom-origins-addon) | FR/DE/ES/PT-BR/NL complets, test gameplay NeoOrigins à faire |
+| NeoOrigins | CyberDay | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/neoorigins) | 1.21.1 + 26.1.x bêta ; FR/DE/ES/PT-BR complétés en fallback, NL complet |
+| Medieval Origins Revival | MuonR / muon-rw | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/medieval-origins-revival) | 1.21.1 : FR/DE/ES/PT-BR/NL complets |
+| ibarn's quartet origins addon | ibarnstormer | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/ibarns-custom-origins-addon) | NeoForge 1.21.1 : FR/DE/ES/PT-BR/NL complets ; 26.1.x non annoncé |
 
-Le fichier `catalog.json` est la source de vérité de cette liste. Voir aussi [`CATALOG.md`](CATALOG.md).
+Le fichier `catalog.json` reste la source de vérité de la liste des contenus traduits. Voir aussi [`CATALOG.md`](CATALOG.md).
 
 ## Politique sur les noms
 
@@ -91,15 +104,17 @@ python scripts/audit_medievalorigins_upstream.py --fail-on-overlap --fail-on-mis
 python scripts/audit_ibarnorigins_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
 ```
 
+Le workflow GitHub Actions génère automatiquement les JAR 1.21.1 et 26.1.x avec leurs versions de Java, NeoForge et format de resource pack respectifs.
+
 ## État actuel
 
-- Minecraft 1.21.1
+- Minecraft 1.21.1 : build et tests de localisation existants validés
+- Minecraft 26.1.x : build `0.6.0-beta+26.1` compilé avec Java 25, test en jeu à faire
 - NeoForge
-- architecture multilingue et multi-namespace
-- base NeoOrigins en cinq langues complète pour la version 2.2.25
+- architecture multilingue, multi-namespace et désormais multi-version
+- base NeoOrigins 2.2.25 en cinq langues complète techniquement sur les deux cibles auditées
 - Medieval Origins Revival couvert dans les cinq langues cibles pour la branche 1.21.1-fabric
-- ibarn's quartet origins addon 1.7.1 couvert dans les cinq langues cibles
-- fallback NeoOrigins validé en jeu
-- import `originpacks` et traduction des Origins importés validés avec Medieval Origins Revival
-- test gameplay NeoOrigins + ibarn 1.7.1 encore à effectuer
+- ibarn's quartet origins addon 1.7.1 NeoForge couvert dans les cinq langues cibles pour Minecraft 1.21.1
+- fallback NeoOrigins validé en jeu sur 1.21.1
+- import `originpacks` et traduction des Origins importés validés avec Medieval Origins Revival sur 1.21.1
 - audits des traductions officielles intégrés au CI

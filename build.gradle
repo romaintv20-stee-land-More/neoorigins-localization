@@ -14,6 +14,7 @@ base {
 def targetJavaVersion = (project.findProperty('java_version') ?: '21') as int
 def targetResourcePackFormat = project.property('resource_pack_format').toString()
 def sourceVariant = project.findProperty('source_variant') ?: 'mc1_21_1'
+def includeAddonTranslations = (project.findProperty('include_addon_translations') ?: 'true').toBoolean()
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
 
@@ -65,8 +66,15 @@ neoForge.ideSyncTask generateModMetadata
 
 tasks.named('processResources', ProcessResources) {
     inputs.property 'resource_pack_format', targetResourcePackFormat
+    inputs.property 'include_addon_translations', includeAddonTranslations
+
     filesMatching('resourcepacks/fallback_localizations/pack.mcmeta') {
         expand(resource_pack_format: targetResourcePackFormat)
+    }
+
+    if (!includeAddonTranslations) {
+        exclude 'resourcepacks/fallback_localizations/assets/medievalorigins/**'
+        exclude 'resourcepacks/fallback_localizations/assets/ibarnorigins/**'
     }
 }
 

@@ -30,7 +30,7 @@ jobs:
             minecraft_range: '[26.1,26.2)'
             java: '25'
             gradle: '9.4.1'
-            neoforge: '26.1.2.31-beta'
+            neoforge: '26.1.2.29-beta'
             loader_range: '[4,)'
             parchment: 'false'
             pack_format: '84'

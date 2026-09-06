@@ -64,7 +64,7 @@ lines.extend([
     "## Notes",
     "",
     "- Les builds 26.x n'embarquent actuellement que les traductions NeoOrigins.",
-    "- Medieval Origins Revival et ibarn's quartet origins addon restent inclus uniquement dans le build 1.21.1 tant que leur compatibilité NeoForge 26.x n'est pas validée.",
+    "- Medieval Origins Revival, ibarn's quartet origins addon et Origins Fantasy for NeoOrigins restent inclus uniquement dans le build 1.21.1 tant que leur compatibilité NeoForge 26.x n'est pas validée.",
     "- Les traductions officielles de NeoOrigins gardent toujours la priorité ; notre pack ne fournit que les clés manquantes.",
     "- La cible 26.2 utilise un delta de localisation dédié pour couvrir les nouvelles clés sans les ajouter aux builds plus anciens.",
 ])

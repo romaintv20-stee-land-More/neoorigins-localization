@@ -80,6 +80,7 @@ tasks.named('processResources', ProcessResources) {
         exclude 'resourcepacks/fallback_localizations/assets/medievalorigins/**'
         exclude 'resourcepacks/fallback_localizations/assets/medievalorigins_*/**'
         exclude 'resourcepacks/fallback_localizations/assets/ibarnorigins/**'
+        exclude 'resourcepacks/fallback_localizations/assets/origins_fantasy/**'
     }
 
     if (!include121ExpandedTranslations) {

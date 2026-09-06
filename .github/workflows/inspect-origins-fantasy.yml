@@ -1,0 +1,72 @@
+name: Inspect Origins Fantasy
+
+on:
+  push:
+    branches: [ work/070-origins-fantasy ]
+  workflow_dispatch:
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch latest Origins Fantasy JAR and inspect localization data
+        run: |
+          python3 - <<'PY'
+          import html, json, re, urllib.request, zipfile
+          from pathlib import Path
+
+          project_url = 'https://www.curseforge.com/minecraft/mc-mods/origins-fantsy-neoorigins/files/all?page=1&pageSize=50'
+          req = urllib.request.Request(project_url, headers={'User-Agent': 'Mozilla/5.0'})
+          text = urllib.request.urlopen(req, timeout=30).read().decode('utf-8', 'replace')
+          name = 'Origins-Fantasy-1.21.1-NeoOrigins-1.1.3.jar'
+          # CurseForge file links are embedded in HTML near the filename.
+          candidates = []
+          for m in re.finditer(r'href="([^"]*/files/(\d+)[^"]*)"[^>]*>[^<]*' + re.escape(name), text):
+              candidates.append((m.group(2), html.unescape(m.group(1))))
+          if not candidates:
+              # Fallback: look around every filename occurrence for a /files/<id> link.
+              for pos in [m.start() for m in re.finditer(re.escape(name), text)]:
+                  chunk = text[max(0, pos-4000):pos+1000]
+                  ids = re.findall(r'/files/(\d+)', chunk)
+                  if ids:
+                      candidates.append((ids[-1], ''))
+          if not candidates:
+              Path('build').mkdir(exist_ok=True)
+              Path('build/curseforge-page.html').write_text(text, encoding='utf-8')
+              raise SystemExit('Could not find current CurseForge file id')
+          file_id = candidates[0][0]
+          a, b = file_id[:-3], file_id[-3:]
+          cdn = f'https://mediafilez.forgecdn.net/files/{a}/{b}/{name}'
+          print('File ID:', file_id)
+          print('Download:', cdn)
+          req = urllib.request.Request(cdn, headers={'User-Agent': 'Mozilla/5.0'})
+          data = urllib.request.urlopen(req, timeout=60).read()
+          Path('build/fantasy.jar').write_bytes(data)
+
+          out = Path('build/origins-fantasy-inspection')
+          out.mkdir(parents=True, exist_ok=True)
+          with zipfile.ZipFile('build/fantasy.jar') as z:
+              names = z.namelist()
+              relevant = [n for n in names if ('/lang/' in n and n.endswith('.json')) or ('/origin' in n and n.endswith('.json')) or n.endswith('neoforge.mods.toml') or n.endswith('mods.toml')]
+              (out/'entries.txt').write_text('\n'.join(relevant)+'\n', encoding='utf-8')
+              for n in relevant:
+                  try:
+                      raw = z.read(n)
+                      raw.decode('utf-8')
+                  except Exception:
+                      continue
+                  dest = out / n
+                  dest.parent.mkdir(parents=True, exist_ok=True)
+                  dest.write_bytes(raw)
+          (out/'metadata.json').write_text(json.dumps({'file_id': file_id, 'filename': name, 'cdn': cdn}, indent=2)+'\n', encoding='utf-8')
+          PY
+
+      - name: Upload inspection
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: origins-fantasy-inspection-${{ github.sha }}
+          path: build/origins-fantasy-inspection
+          if-no-files-found: error

@@ -11,12 +11,12 @@ PACK = ROOT / "src/main/resources/resourcepacks/fallback_localizations"
 PACK_ASSETS = PACK / "assets"
 PACK_LANG = PACK_ASSETS / "neoorigins/lang"
 DEFAULT_REF = "v2.2.25"
-LOCALES = ("fr_fr", "nl_nl", "es_es", "de_de", "pt_br")
+DEFAULT_LOCALES = ("fr_fr", "nl_nl", "es_es", "de_de", "pt_br")
 BASE = "https://raw.githubusercontent.com/CyberDay1/NeoOrigins/{ref}/src/main/resources/assets/neoorigins/lang/{locale}.json"
 
 
 def fetch_json(url: str, allow_missing: bool = False, attempts: int = 4):
-    request = urllib.request.Request(url, headers={"User-Agent": "NeoOrigins-Localization-Audit/0.6.0"})
+    request = urllib.request.Request(url, headers={"User-Agent": "NeoOrigins-Localization-Audit"})
     last_error = None
 
     for attempt in range(1, attempts + 1):
@@ -41,21 +41,31 @@ def fetch_json(url: str, allow_missing: bool = False, attempts: int = 4):
     raise last_error
 
 
-def fallback_paths(locale: str, extra_namespaces=()):
+def fallback_paths(locale: str, extra_namespaces=(), namespace_globs=()):
     paths = [PACK_LANG / f"{locale}.json"]
     if locale == "nl_nl":
         paths.extend(sorted(PACK_ASSETS.glob("neoorigins_nl_*/lang/nl_nl.json")))
     for namespace in extra_namespaces:
         if namespace:
             paths.append(PACK_ASSETS / namespace / "lang" / f"{locale}.json")
-    return [path for path in paths if path.exists()]
+    for pattern in namespace_globs:
+        if pattern:
+            paths.extend(sorted(PACK_ASSETS.glob(f"{pattern}/lang/{locale}.json")))
+
+    unique = []
+    seen = set()
+    for path in paths:
+        if path.exists() and path not in seen:
+            unique.append(path)
+            seen.add(path)
+    return unique
 
 
-def load_fallback(locale: str, extra_namespaces=()):
+def load_fallback(locale: str, extra_namespaces=(), namespace_globs=()):
     merged = {}
     owners = {}
     duplicates = []
-    for path in fallback_paths(locale, extra_namespaces):
+    for path in fallback_paths(locale, extra_namespaces, namespace_globs):
         data = json.loads(path.read_text(encoding="utf-8"))
         for key, value in data.items():
             if key in merged:
@@ -72,8 +82,8 @@ def load_fallback(locale: str, extra_namespaces=()):
     return merged
 
 
-def prune_locale(locale: str, official: dict, extra_namespaces=()):
-    for path in fallback_paths(locale, extra_namespaces):
+def prune_locale(locale: str, official: dict, extra_namespaces=(), namespace_globs=()):
+    for path in fallback_paths(locale, extra_namespaces, namespace_globs):
         data = json.loads(path.read_text(encoding="utf-8"))
         pruned = {key: value for key, value in data.items() if key not in official}
         if pruned != data:
@@ -85,16 +95,29 @@ def main():
     parser.add_argument("--ref", default=DEFAULT_REF, help="Upstream NeoOrigins tag/branch/commit")
     parser.add_argument("--output", default=str(ROOT / "build/upstream-audit"))
     parser.add_argument(
+        "--locale",
+        action="append",
+        default=[],
+        help="Locale to audit. Repeat for multiple locales. Defaults to the stable five-language set.",
+    )
+    parser.add_argument(
         "--extra-namespace",
         action="append",
         default=[],
-        help="Additional fallback asset namespace to include in the audit (for version-specific deltas)",
+        help="Additional exact fallback asset namespace to include in the audit (for version-specific deltas)",
+    )
+    parser.add_argument(
+        "--fallback-namespace-glob",
+        action="append",
+        default=[],
+        help="Additional fallback asset namespace glob, for split target-specific locale files",
     )
     parser.add_argument("--prune", action="store_true", help="Remove fallback keys that now exist upstream")
     parser.add_argument("--fail-on-overlap", action="store_true", help="Fail when fallback contains keys already translated upstream")
     parser.add_argument("--fail-on-missing", action="store_true", help="Fail when an upstream-missing key is not covered by the fallback")
     args = parser.parse_args()
 
+    locales = tuple(dict.fromkeys(args.locale or DEFAULT_LOCALES))
     out_dir = Path(args.output)
     out_dir.mkdir(parents=True, exist_ok=True)
 
@@ -102,16 +125,18 @@ def main():
     report = {
         "upstream": "CyberDay1/NeoOrigins",
         "ref": args.ref,
+        "locales_requested": list(locales),
         "extra_namespaces": args.extra_namespace,
+        "fallback_namespace_globs": args.fallback_namespace_glob,
         "english_keys": len(en),
         "locales": {},
     }
     has_overlap = False
     has_missing = False
 
-    for locale in LOCALES:
+    for locale in locales:
         official = fetch_json(BASE.format(ref=args.ref, locale=locale), allow_missing=True)
-        fallback = load_fallback(locale, args.extra_namespace)
+        fallback = load_fallback(locale, args.extra_namespace, args.fallback_namespace_glob)
 
         missing = {key: value for key, value in en.items() if key not in official}
         overlap = sorted(set(fallback) & set(official))
@@ -138,8 +163,8 @@ def main():
         )
 
         if args.prune and overlap:
-            prune_locale(locale, official, args.extra_namespace)
-            fallback = load_fallback(locale, args.extra_namespace)
+            prune_locale(locale, official, args.extra_namespace, args.fallback_namespace_glob)
+            fallback = load_fallback(locale, args.extra_namespace, args.fallback_namespace_glob)
             overlap = sorted(set(fallback) & set(official))
             stale = sorted(set(fallback) - set(en))
             untranslated = sorted(set(missing) - set(fallback))
@@ -149,7 +174,7 @@ def main():
             "official_keys": len(official),
             "missing_upstream_keys": len(missing),
             "fallback_keys": len(fallback),
-            "fallback_files": len(fallback_paths(locale, args.extra_namespace)),
+            "fallback_files": len(fallback_paths(locale, args.extra_namespace, args.fallback_namespace_glob)),
             "fallback_overlap_with_official": len(overlap),
             "fallback_stale_keys": len(stale),
             "missing_not_yet_in_fallback": len(untranslated),
@@ -161,6 +186,8 @@ def main():
     print(f"English: {len(en)} keys")
     if args.extra_namespace:
         print(f"Extra fallback namespaces: {', '.join(args.extra_namespace)}")
+    if args.fallback_namespace_glob:
+        print(f"Fallback namespace globs: {', '.join(args.fallback_namespace_glob)}")
     for locale, stats in report["locales"].items():
         print(
             f"{locale}: official={stats['official_keys']} | missing={stats['missing_upstream_keys']} | "

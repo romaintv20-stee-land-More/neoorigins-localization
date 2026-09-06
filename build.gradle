@@ -15,7 +15,9 @@ def targetJavaVersion = (project.findProperty('java_version') ?: '21') as int
 def targetResourcePackFormat = project.property('resource_pack_format').toString()
 def sourceVariant = project.findProperty('source_variant') ?: 'mc1_21_1'
 def includeAddonTranslations = (project.findProperty('include_addon_translations') ?: 'true').toBoolean()
-def include121ExpandedTranslations = (project.findProperty('include_121_expanded_translations') ?: 'true').toBoolean()
+def legacyExpanded = project.findProperty('include_121_expanded_translations')
+def include121BatchTranslations = (project.findProperty('include_121_batch_translations') ?: legacyExpanded ?: 'true').toBoolean()
+def includeTurkishSplitTranslations = (project.findProperty('include_turkish_split_translations') ?: legacyExpanded ?: 'true').toBoolean()
 def include26_2Translations = (project.findProperty('include_26_2_translations') ?: 'false').toBoolean()
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
@@ -69,7 +71,8 @@ neoForge.ideSyncTask generateModMetadata
 tasks.named('processResources', ProcessResources) {
     inputs.property 'resource_pack_format', targetResourcePackFormat
     inputs.property 'include_addon_translations', includeAddonTranslations
-    inputs.property 'include_121_expanded_translations', include121ExpandedTranslations
+    inputs.property 'include_121_batch_translations', include121BatchTranslations
+    inputs.property 'include_turkish_split_translations', includeTurkishSplitTranslations
     inputs.property 'include_26_2_translations', include26_2Translations
 
     filesMatching('resourcepacks/fallback_localizations/pack.mcmeta') {
@@ -83,8 +86,11 @@ tasks.named('processResources', ProcessResources) {
         exclude 'resourcepacks/fallback_localizations/assets/origins_fantasy/**'
     }
 
-    if (!include121ExpandedTranslations) {
+    if (!include121BatchTranslations) {
         exclude 'resourcepacks/fallback_localizations/assets/neoorigins_121_batch1/**'
+    }
+
+    if (!includeTurkishSplitTranslations) {
         exclude 'resourcepacks/fallback_localizations/assets/neoorigins_tr_*/**'
     }
 

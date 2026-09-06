@@ -37,9 +37,9 @@
         ]
       },
       "26.2": {
-        "version": "0.6.0-beta+26.2",
+        "version": "0.7.0-beta+26.2",
         "java": 25,
-        "in_game_tested": true,
+        "in_game_tested": false,
         "included_projects": [
           "neoorigins"
         ]
@@ -68,7 +68,7 @@
           "26.1.2": "validated",
           "26.2": "validated"
         },
-        "note": "The 26.x builds only package NeoOrigins localization. Minecraft 26.2 uses a dedicated translation delta for keys added or changed on the 26.2 branch."
+        "note": "Les builds 26.x n'embarquent que la localisation NeoOrigins. Minecraft 26.2 utilise un delta dédié. La base 26.2 a déjà été validée en jeu ; l'extension 0.7.0 des cinq nouvelles langues doit encore recevoir un contrôle visuel."
       },
       "languages": {
         "fr_fr": {
@@ -117,9 +117,10 @@
           "review": "ai_assisted_human_directed_review_pending_native_feedback",
           "targets": [
             "1.21.1",
-            "26.1.x"
+            "26.1.x",
+            "26.2"
           ],
-          "note": "Couverture de fallback auditée pour Minecraft 1.21.1 et 26.1.x contre NeoOrigins ; les traductions officielles amont gardent la priorité."
+          "note": "Couverture auditée sur 1.21.1, 26.1.x et 26.2. Sur 26.2, NeoOrigins fournit 2 172/2 292 clés officielles ; notre delta basse priorité couvre uniquement les 120 clés absentes."
         },
         "pl_pl": {
           "name": "Polski",
@@ -127,9 +128,10 @@
           "review": "ai_assisted_human_directed_review_pending_native_feedback",
           "targets": [
             "1.21.1",
-            "26.1.x"
+            "26.1.x",
+            "26.2"
           ],
-          "note": "Couverture de fallback auditée pour Minecraft 1.21.1 et 26.1.x contre NeoOrigins ; les traductions officielles amont gardent la priorité."
+          "note": "Couverture auditée sur 1.21.1, 26.1.x et 26.2. Sur 26.2, NeoOrigins fournit 2 172/2 292 clés officielles ; notre delta basse priorité couvre uniquement les 120 clés absentes."
         },
         "ru_ru": {
           "name": "Русский",
@@ -137,9 +139,10 @@
           "review": "ai_assisted_human_directed_review_pending_native_feedback",
           "targets": [
             "1.21.1",
-            "26.1.x"
+            "26.1.x",
+            "26.2"
           ],
-          "note": "Couverture de fallback auditée pour Minecraft 1.21.1 et 26.1.x contre NeoOrigins ; les traductions officielles amont gardent la priorité."
+          "note": "Couverture auditée sur 1.21.1, 26.1.x et 26.2. Sur 26.2, NeoOrigins fournit 2 172/2 292 clés officielles ; notre delta basse priorité couvre uniquement les 120 clés absentes."
         },
         "tr_tr": {
           "name": "Türkçe",
@@ -147,9 +150,10 @@
           "review": "ai_assisted_human_directed_review_pending_native_feedback",
           "targets": [
             "1.21.1",
-            "26.1.x"
+            "26.1.x",
+            "26.2"
           ],
-          "note": "Couverture de fallback auditée pour Minecraft 1.21.1 et 26.1.x contre NeoOrigins ; les traductions officielles amont gardent la priorité."
+          "note": "Couverture complète sur 1.21.1, 26.1.x et 26.2. NeoOrigins 26.2 ne fournit pas de tr_tr : le fallback existant couvre 2 278 clés et le delta 26.2 ajoute les 14 nouvelles clés, soit 2 292/2 292."
         },
         "zh_cn": {
           "name": "简体中文",
@@ -157,9 +161,10 @@
           "review": "ai_assisted_human_directed_review_pending_native_feedback",
           "targets": [
             "1.21.1",
-            "26.1.x"
+            "26.1.x",
+            "26.2"
           ],
-          "note": "Couverture de fallback auditée pour Minecraft 1.21.1 et 26.1.x contre NeoOrigins ; les traductions officielles amont gardent la priorité."
+          "note": "Couverture auditée sur 1.21.1, 26.1.x et 26.2. Sur 26.2, NeoOrigins fournit 2 172/2 292 clés officielles ; notre delta basse priorité couvre uniquement les 120 clés absentes."
         }
       }
     },

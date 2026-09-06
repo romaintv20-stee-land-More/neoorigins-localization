@@ -8,21 +8,21 @@ Mod client NeoForge fournissant des **traductions complémentaires en priorité 
 |---|---|---:|---:|---|
 | Minecraft 1.21.1 | `0.7.0-beta+1.21.1` | 21 | 10 | NeoOrigins + Medieval Origins Revival + ibarn's quartet origins addon + Origins Fantasy for NeoOrigins |
 | Minecraft 26.1 / 26.1.1 / 26.1.2 | `0.7.0-beta+26.1` | 25 | 10 | NeoOrigins uniquement |
-| Minecraft 26.2 | `0.6.0-beta+26.2` | 25 | 5 | NeoOrigins uniquement + delta 26.2 |
+| Minecraft 26.2 | `0.7.0-beta+26.2` | 25 | 10 | NeoOrigins uniquement + delta 26.2 |
 
-Les builds 26.x n'embarquent pas les traductions des add-ons 1.21.1. La base Minecraft 26.1.2 et Minecraft 26.2 ont déjà été validées en jeu avec NeoOrigins Localization ; les nouvelles langues de la 0.7.0 sur 26.1.x doivent encore recevoir un contrôle visuel en jeu.
+Les builds 26.x n'embarquent pas les traductions des add-ons 1.21.1. Les bases Minecraft 26.1.2 et 26.2 ont déjà été validées en jeu avec NeoOrigins Localization ; les cinq langues ajoutées en 0.7.0 sur les branches 26.x doivent encore recevoir un contrôle visuel en jeu.
 
 ## Langues
 
 Le build **1.21.1 / 0.7.0 Beta** prend en charge : Français (`fr_fr`), Allemand (`de_de`), Espagnol (`es_es`), Portugais brésilien (`pt_br`), Néerlandais (`nl_nl`), Italien (`it_it`), Polonais (`pl_pl`), Russe (`ru_ru`), Turc (`tr_tr`) et Chinois simplifié (`zh_cn`).
 
-Les cinq nouvelles langues de 0.7.0 sont disponibles sur les builds 1.21.1 et 26.1.x. Minecraft 26.2 reste provisoirement sur les cinq langues de 0.6.0 jusqu'à son port dédié.
+Les dix langues de la 0.7.0 sont maintenant disponibles sur les trois builds : 1.21.1, 26.1.x et 26.2.
 
 ## Projets pris en charge
 
 ### NeoOrigins
 
-NeoOrigins 2.2.25 est requis. Pour les langues déjà traduites officiellement par NeoOrigins, le fallback ne conserve que les clés absentes en amont. Le néerlandais est fourni intégralement par NeoOrigins Localization. La cible 26.2 utilise un delta dédié pour ses clés supplémentaires.
+NeoOrigins 2.2.25 est requis. Pour les langues déjà traduites officiellement par NeoOrigins, le fallback ne conserve que les clés absentes en amont. Le néerlandais est fourni intégralement par NeoOrigins Localization. Sur 26.2, l'italien, le polonais, le russe et le chinois simplifié disposent chacun de 2 172 clés officielles ; notre delta couvre uniquement les 120 clés manquantes. Le turc n'a pas de traduction officielle 26.2 : son fallback complet couvre les 2 292 clés grâce aux 14 entrées supplémentaires du delta 26.2.
 
 ### Medieval Origins Revival — Minecraft 1.21.1
 

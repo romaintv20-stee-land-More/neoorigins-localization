@@ -10,13 +10,13 @@ La bêta `0.6.0` est actuellement construite pour trois cibles :
 - **Minecraft 26.1.x** (`26.1`, `26.1.1`, `26.1.2`) — Java 25 — build `0.6.0-beta+26.1`
 - **Minecraft 26.2** — Java 25 — build `0.6.0-beta+26.2`
 
-Le build 26.1.x compile contre **Minecraft 26.1.2 / NeoForge 26.1.2.31-beta** et déclare une plage Minecraft `[26.1,26.2)`. Cette version minimale de NeoForge correspond au minimum actuellement demandé par NeoOrigins 2.2.25 sur Minecraft 26.1.2.
+Le build 26.1.x compile contre **Minecraft 26.1.2 / NeoForge 26.1.2.29-beta** et déclare une plage Minecraft `[26.1,26.2)`, conformément à la branche 26.1.x de NeoOrigins 2.2.25. Le chargement en jeu et la localisation néerlandaise ont été validés sur Minecraft 26.1.2.
 
 Le build 26.2 compile contre **Minecraft 26.2 / NeoForge 26.2.0.3-beta** et déclare une plage Minecraft `[26.2,26.3)`, correspondant à la branche 26.2 de NeoOrigins 2.2.25.
 
 Les builds 26.x n'embarquent actuellement que les traductions NeoOrigins. Les traductions de Medieval Origins Revival et d'ibarn's quartet origins addon restent présentes dans le dépôt mais ne sont empaquetées que dans le build 1.21.1 tant que leur compatibilité 26.x n'est pas validée.
 
-La compilation et les audits de localisation sont validés sur les trois cibles. Les builds 26.1.x et 26.2 restent en bêta tant que leur validation en jeu n'est pas terminée.
+La compilation et les audits de localisation sont validés sur les trois cibles. Le build 26.1.x a également été validé en jeu ; le build 26.2 reste en bêta tant que sa validation en jeu n'est pas terminée.
 
 ## Principe
 
@@ -114,13 +114,13 @@ Le workflow GitHub Actions génère automatiquement les JAR 1.21.1, 26.1.x et 26
 ## État actuel
 
 - Minecraft 1.21.1 : build et tests de localisation existants validés
-- Minecraft 26.1.x : build `0.6.0-beta+26.1` compilé avec Java 25 / NeoForge 26.1.2.31-beta, test en jeu en cours
+- Minecraft 26.1.x : build `0.6.0-beta+26.1` compilé avec Java 25 / NeoForge 26.1.2.29-beta, chargement et localisation néerlandaise validés en jeu sur Minecraft 26.1.2
 - Minecraft 26.2 : build `0.6.0-beta+26.2` compilé avec Java 25 / NeoForge 26.2.0.3-beta, test en jeu à faire
 - NeoForge
 - architecture multilingue, multi-namespace et multi-version
 - base NeoOrigins 2.2.25 en cinq langues couverte techniquement sur les trois cibles auditées
 - Medieval Origins Revival couvert dans les cinq langues cibles pour la branche 1.21.1-fabric
 - ibarn's quartet origins addon 1.7.1 NeoForge couvert dans les cinq langues cibles pour Minecraft 1.21.1
-- fallback NeoOrigins validé en jeu sur 1.21.1
+- fallback NeoOrigins validé en jeu sur 1.21.1 et 26.1.2
 - import `originpacks` et traduction des Origins importés validés avec Medieval Origins Revival sur 1.21.1
 - audits des traductions officielles intégrés au CI

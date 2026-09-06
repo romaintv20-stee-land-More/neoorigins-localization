@@ -4,7 +4,7 @@
 
 | Cible | Version du mod | Java | Contenu inclus | Validation en jeu |
 |---|---|---:|---|---|
-| 1.21.1 | `0.8.0-beta+1.21.1` | 21 | neoorigins, medievalorigins, ibarnorigins, origins_fantasy, origins_backgrounds, origins_backgrounds_two, origins_backgrounds_iss, origins_furries, origins_classes_ex, origins_classes_iss | Non |
+| 1.21.1 | `0.8.0-beta+1.21.1` | 21 | neoorigins, medievalorigins, ibarnorigins, origins_fantasy, origins_backgrounds, origins_backgrounds_two, origins_backgrounds_iss, origins_furries, origins_classes_ex, origins_classes_iss, originsmodernui | Non |
 | 26.1.x | `0.8.0-beta+26.1` | 25 | neoorigins | Non |
 | 26.2 | `0.8.0-beta+26.2` | 25 | neoorigins | Non |
 
@@ -22,6 +22,7 @@
 | [Origins Furries for NeoOrigins](https://www.curseforge.com/minecraft/mc-mods/origins-furries-for-neoorigins) | DraconicArcher | 1.21.1 | Français (`fr_fr`) · Deutsch (`de_de`) · Español (`es_es`) · Português (Brasil) (`pt_br`) · Nederlands (`nl_nl`) · Italiano (`it_it`) · Polski (`pl_pl`) · Русский (`ru_ru`) · Türkçe (`tr_tr`) · 简体中文 (`zh_cn`) |
 | [Origins: Classes Extended for NeoOrigins](https://www.curseforge.com/minecraft/mc-mods/origins-classes-extended-for-neoorigins) | DraconicArcher | 1.21.1 | Français (`fr_fr`) · Deutsch (`de_de`) · Español (`es_es`) · Português (Brasil) (`pt_br`) · Nederlands (`nl_nl`) · Italiano (`it_it`) · Polski (`pl_pl`) · Русский (`ru_ru`) · Türkçe (`tr_tr`) · 简体中文 (`zh_cn`) |
 | [Origins: Classes ISS for NeoOrigins](https://www.curseforge.com/minecraft/mc-mods/origins-classes-iss-for-neoorigins) | DraconicArcher | 1.21.1 | Français (`fr_fr`) · Deutsch (`de_de`) · Español (`es_es`) · Português (Brasil) (`pt_br`) · Nederlands (`nl_nl`) · Italiano (`it_it`) · Polski (`pl_pl`) · Русский (`ru_ru`) · Türkçe (`tr_tr`) · 简体中文 (`zh_cn`) |
+| [Origin Architect (NeoOrigins Addon)](https://www.curseforge.com/minecraft/mc-mods/origin-architect) | reotpak | 3.0.1 / Minecraft 1.21.1 | Français (`fr_fr`) · Deutsch (`de_de`) · Español (`es_es`) · Português (Brasil) (`pt_br`) · Nederlands (`nl_nl`) · Italiano (`it_it`) · Polski (`pl_pl`) · Русский (`ru_ru`) · Türkçe (`tr_tr`) · 简体中文 (`zh_cn`) |
 
 ## Notes
 
@@ -33,5 +34,6 @@
 - Origins Furries 1.0.0 contient 117 clés anglaises dans `origins_furries` ; les dix langues couvrent 117/117 clés. L'add-on ajoute dix Origins animaux et reste limité à Minecraft 1.21.1.
 - Origins: Classes Extended 1.0.1 contient 124 clés anglaises dans `origins_classes_ex` ; les dix langues couvrent 124/124 clés. L'add-on ajoute Crusader, Duskblade, Gladiator, Ninja, Ranger, Druid, Warblade et Artificer et reste limité à Minecraft 1.21.1.
 - Origins: Classes ISS 1.0.1 contient 99 clés anglaises dans `origins_classes_iss` ; les dix langues couvrent 99/99 clés. L'add-on ajoute Archmagus, Bard, Mystic, Shadowcaster, Sorcerer, Warlock, Warmage et Wizard, nécessite Iron's Spells 'n Spellbooks et reste limité à Minecraft 1.21.1.
+- Origin Architect 3.0.1 contient 22 clés anglaises dans `originsmodernui` ; les dix langues couvrent 22/22 clés. Le projet amont fournit actuellement l'anglais et le roumain, mais aucune des dix langues ciblées par NeoOrigins Localization.
 - Les traductions officielles des projets amont gardent toujours la priorité ; notre pack ne fournit que les clés manquantes.
 - La cible 26.2 utilise un delta de localisation dédié pour couvrir les nouvelles clés sans les ajouter aux builds plus anciens.

@@ -107,4 +107,19 @@ La notice MIT du projet amont doit être conservée lorsque des portions substan
 - Priorité amont : le JAR ciblé ne fournit actuellement aucune des dix localisations prises en charge ici. Si une traduction officielle apparaît ensuite, elle doit garder la priorité et les clés correspondantes de notre fallback doivent être retirées.
 - NeoOrigins et le mod original restent requis pour utiliser ces traductions.
 
+## Origins: Classes Extended for NeoOrigins
+
+- Projet : Origins: Classes Extended for NeoOrigins
+- Auteur : DraconicArcher
+- CurseForge : https://www.curseforge.com/minecraft/mc-mods/origins-classes-extended-for-neoorigins
+- Project ID CurseForge : `1602395`
+- Version ciblée : fichier CurseForge `Origins-Classes-Ex-1.21.1-NeoOrigins-1.0.1.jar` (file ID `8393343`) pour Minecraft 1.21.1
+- Namespace : `origins_classes_ex`
+- Dépendance amont : NeoOrigins.
+- Utilisation ici : localisations `fr_fr`, `de_de`, `es_es`, `pt_br`, `nl_nl`, `it_it`, `pl_pl`, `ru_ru`, `tr_tr` et `zh_cn` des 124 chaînes du fichier anglais `assets/origins_classes_ex/lang/en_us.json`.
+- Autorisation : couverte par l'autorisation explicite accordée par DraconicArcher le 6 septembre 2026 pour l'intégration des traductions de ses add-ons à NeoOrigins Localization, avec redistribution limitée aux chaînes de localisation traduites, attribution claire et lien vers le projet original.
+- Limite de redistribution : NeoOrigins Localization ne redistribue pas le code, les textures, les modèles, les données de gameplay ni les autres assets de l'add-on ; seuls les fichiers de localisation traduits nécessaires sont inclus.
+- Priorité amont : le JAR ciblé ne fournit actuellement aucune des dix localisations prises en charge ici. Si une traduction officielle apparaît ensuite, elle doit garder la priorité et les clés correspondantes de notre fallback doivent être retirées.
+- NeoOrigins et le mod original restent requis pour utiliser ces traductions.
+
 Aucune attribution ne signifie que les auteurs amont approuvent ou sponsorisent NeoOrigins Localization au-delà des autorisations explicitement mentionnées ci-dessus.

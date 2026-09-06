@@ -13,13 +13,14 @@
     "localization_mode": "low_priority_fallback",
     "builds": {
       "1.21.1": {
-        "version": "0.6.0-beta+1.21.1",
+        "version": "0.7.0-beta+1.21.1",
         "java": 21,
-        "in_game_tested": true,
+        "in_game_tested": false,
         "included_projects": [
           "neoorigins",
           "medievalorigins",
-          "ibarnorigins"
+          "ibarnorigins",
+          "origins_fantasy"
         ]
       },
       "26.1.x": {
@@ -111,6 +112,51 @@
             "26.2": 2292
           },
           "note": "NeoOrigins 2.2.25 ne fournit pas de nl_nl. La base 1.21.1/26.1.x couvre 2 281 clés anglaises et la cible 26.2 couvre 2 292 clés grâce au delta spécifique. Relecture native et retours joueurs toujours souhaités."
+        },
+        "it_it": {
+          "name": "Italiano",
+          "status": "supported",
+          "review": "ai_assisted_human_directed_review_pending_native_feedback",
+          "targets": [
+            "1.21.1"
+          ],
+          "note": "Couverture de fallback Minecraft 1.21.1 auditée contre NeoOrigins ; les traductions officielles amont gardent la priorité."
+        },
+        "pl_pl": {
+          "name": "Polski",
+          "status": "supported",
+          "review": "ai_assisted_human_directed_review_pending_native_feedback",
+          "targets": [
+            "1.21.1"
+          ],
+          "note": "Couverture de fallback Minecraft 1.21.1 auditée contre NeoOrigins ; les traductions officielles amont gardent la priorité."
+        },
+        "ru_ru": {
+          "name": "Русский",
+          "status": "supported",
+          "review": "ai_assisted_human_directed_review_pending_native_feedback",
+          "targets": [
+            "1.21.1"
+          ],
+          "note": "Couverture de fallback Minecraft 1.21.1 auditée contre NeoOrigins ; les traductions officielles amont gardent la priorité."
+        },
+        "tr_tr": {
+          "name": "Türkçe",
+          "status": "supported",
+          "review": "ai_assisted_human_directed_review_pending_native_feedback",
+          "targets": [
+            "1.21.1"
+          ],
+          "note": "Couverture de fallback Minecraft 1.21.1 auditée contre NeoOrigins ; les traductions officielles amont gardent la priorité."
+        },
+        "zh_cn": {
+          "name": "简体中文",
+          "status": "supported",
+          "review": "ai_assisted_human_directed_review_pending_native_feedback",
+          "targets": [
+            "1.21.1"
+          ],
+          "note": "Couverture de fallback Minecraft 1.21.1 auditée contre NeoOrigins ; les traductions officielles amont gardent la priorité."
         }
       }
     },
@@ -179,6 +225,61 @@
           "coverage_keys": 401,
           "source_keys": 401,
           "note": "Volledige dekking van alle 401 Engelse sleutels; feedback van moedertaalsprekers is welkom."
+        },
+        "it_it": {
+          "name": "Italiano",
+          "status": "supported",
+          "review": "ai_assisted_human_directed_review_pending_native_feedback",
+          "targets": [
+            "1.21.1"
+          ],
+          "coverage_keys": 401,
+          "source_keys": 401,
+          "note": "Couverture complète des 401 clés anglaises pour Minecraft 1.21.1 ; retours de locuteurs natifs bienvenus."
+        },
+        "pl_pl": {
+          "name": "Polski",
+          "status": "supported",
+          "review": "ai_assisted_human_directed_review_pending_native_feedback",
+          "targets": [
+            "1.21.1"
+          ],
+          "coverage_keys": 401,
+          "source_keys": 401,
+          "note": "Couverture complète des 401 clés anglaises pour Minecraft 1.21.1 ; retours de locuteurs natifs bienvenus."
+        },
+        "ru_ru": {
+          "name": "Русский",
+          "status": "supported",
+          "review": "ai_assisted_human_directed_review_pending_native_feedback",
+          "targets": [
+            "1.21.1"
+          ],
+          "coverage_keys": 401,
+          "source_keys": 401,
+          "note": "Couverture complète des 401 clés anglaises pour Minecraft 1.21.1 ; retours de locuteurs natifs bienvenus."
+        },
+        "tr_tr": {
+          "name": "Türkçe",
+          "status": "supported",
+          "review": "ai_assisted_human_directed_review_pending_native_feedback",
+          "targets": [
+            "1.21.1"
+          ],
+          "coverage_keys": 401,
+          "source_keys": 401,
+          "note": "Couverture complète des 401 clés anglaises pour Minecraft 1.21.1 ; retours de locuteurs natifs bienvenus."
+        },
+        "zh_cn": {
+          "name": "简体中文",
+          "status": "supported",
+          "review": "ai_assisted_human_directed_review_pending_native_feedback",
+          "targets": [
+            "1.21.1"
+          ],
+          "coverage_keys": 401,
+          "source_keys": 401,
+          "note": "Couverture complète des 401 clés anglaises pour Minecraft 1.21.1 ; retours de locuteurs natifs bienvenus."
         }
       }
     },
@@ -245,6 +346,204 @@
           "coverage_keys": 69,
           "source_keys": 69,
           "note": "Volledige dekking van alle 69 Engelse sleutels; feedback van moedertaalsprekers is welkom."
+        },
+        "it_it": {
+          "name": "Italiano",
+          "status": "supported",
+          "review": "ai_assisted_human_directed_review_pending_native_feedback",
+          "targets": [
+            "1.21.1"
+          ],
+          "coverage_keys": 69,
+          "source_keys": 69,
+          "note": "Couverture complète des 69 clés anglaises pour Minecraft 1.21.1 ; retours de locuteurs natifs bienvenus."
+        },
+        "pl_pl": {
+          "name": "Polski",
+          "status": "supported",
+          "review": "ai_assisted_human_directed_review_pending_native_feedback",
+          "targets": [
+            "1.21.1"
+          ],
+          "coverage_keys": 69,
+          "source_keys": 69,
+          "note": "Couverture complète des 69 clés anglaises pour Minecraft 1.21.1 ; retours de locuteurs natifs bienvenus."
+        },
+        "ru_ru": {
+          "name": "Русский",
+          "status": "supported",
+          "review": "ai_assisted_human_directed_review_pending_native_feedback",
+          "targets": [
+            "1.21.1"
+          ],
+          "coverage_keys": 69,
+          "source_keys": 69,
+          "note": "Couverture complète des 69 clés anglaises pour Minecraft 1.21.1 ; retours de locuteurs natifs bienvenus."
+        },
+        "tr_tr": {
+          "name": "Türkçe",
+          "status": "supported",
+          "review": "ai_assisted_human_directed_review_pending_native_feedback",
+          "targets": [
+            "1.21.1"
+          ],
+          "coverage_keys": 69,
+          "source_keys": 69,
+          "note": "Couverture complète des 69 clés anglaises pour Minecraft 1.21.1 ; retours de locuteurs natifs bienvenus."
+        },
+        "zh_cn": {
+          "name": "简体中文",
+          "status": "supported",
+          "review": "ai_assisted_human_directed_review_pending_native_feedback",
+          "targets": [
+            "1.21.1"
+          ],
+          "coverage_keys": 69,
+          "source_keys": 69,
+          "note": "Couverture complète des 69 clés anglaises pour Minecraft 1.21.1 ; retours de locuteurs natifs bienvenus."
+        }
+      }
+    },
+    {
+      "id": "origins_fantasy",
+      "name": "Origins Fantasy for NeoOrigins",
+      "author": "DraconicArcher",
+      "namespace": "origins_fantasy",
+      "curseforge": "https://www.curseforge.com/minecraft/mc-mods/origins-fantsy-neoorigins",
+      "license": {
+        "localization_redistribution": "explicit_author_permission",
+        "permission_date": "2026-09-06",
+        "attribution_required": true
+      },
+      "compatibility": {
+        "method": "NeoForge mod in mods/",
+        "version": "1.1.3 / Minecraft 1.21.1",
+        "minecraft": [
+          "1.21.1"
+        ],
+        "in_game_validation": "pending",
+        "note": "Les fichiers de localisation sont audités contre le JAR CurseForge 8816068. Le support de traduction n'implique pas une validation complète du gameplay. Le projet n'est pas empaqueté dans les builds 26.x."
+      },
+      "languages": {
+        "fr_fr": {
+          "name": "Français",
+          "status": "supported",
+          "review": "ai_assisted_human_directed_review_pending_native_feedback",
+          "targets": [
+            "1.21.1"
+          ],
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/fr_fr.json",
+          "coverage_keys": 240,
+          "source_keys": 240,
+          "note": "240/240 clés couvertes ; audit sans overlap, clé manquante ni erreur de placeholder."
+        },
+        "de_de": {
+          "name": "Deutsch",
+          "status": "supported",
+          "review": "ai_assisted_human_directed_review_pending_native_feedback",
+          "targets": [
+            "1.21.1"
+          ],
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/de_de.json",
+          "coverage_keys": 240,
+          "source_keys": 240,
+          "note": "240/240 clés couvertes ; audit sans overlap, clé manquante ni erreur de placeholder."
+        },
+        "es_es": {
+          "name": "Español",
+          "status": "supported",
+          "review": "ai_assisted_human_directed_review_pending_native_feedback",
+          "targets": [
+            "1.21.1"
+          ],
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/es_es.json",
+          "coverage_keys": 240,
+          "source_keys": 240,
+          "note": "240/240 clés couvertes ; audit sans overlap, clé manquante ni erreur de placeholder."
+        },
+        "pt_br": {
+          "name": "Português (Brasil)",
+          "status": "supported",
+          "review": "ai_assisted_human_directed_review_pending_native_feedback",
+          "targets": [
+            "1.21.1"
+          ],
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/pt_br.json",
+          "coverage_keys": 240,
+          "source_keys": 240,
+          "note": "240/240 clés couvertes ; audit sans overlap, clé manquante ni erreur de placeholder."
+        },
+        "nl_nl": {
+          "name": "Nederlands",
+          "status": "supported",
+          "review": "ai_assisted_human_directed_review_pending_native_feedback",
+          "targets": [
+            "1.21.1"
+          ],
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/nl_nl.json",
+          "coverage_keys": 240,
+          "source_keys": 240,
+          "note": "240/240 clés couvertes ; audit sans overlap, clé manquante ni erreur de placeholder."
+        },
+        "it_it": {
+          "name": "Italiano",
+          "status": "supported",
+          "review": "ai_assisted_human_directed_review_pending_native_feedback",
+          "targets": [
+            "1.21.1"
+          ],
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/it_it.json",
+          "coverage_keys": 240,
+          "source_keys": 240,
+          "note": "240/240 clés couvertes ; audit sans overlap, clé manquante ni erreur de placeholder."
+        },
+        "pl_pl": {
+          "name": "Polski",
+          "status": "supported",
+          "review": "ai_assisted_human_directed_review_pending_native_feedback",
+          "targets": [
+            "1.21.1"
+          ],
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/pl_pl.json",
+          "coverage_keys": 240,
+          "source_keys": 240,
+          "note": "240/240 clés couvertes ; audit sans overlap, clé manquante ni erreur de placeholder."
+        },
+        "ru_ru": {
+          "name": "Русский",
+          "status": "supported",
+          "review": "ai_assisted_human_directed_review_pending_native_feedback",
+          "targets": [
+            "1.21.1"
+          ],
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/ru_ru.json",
+          "coverage_keys": 240,
+          "source_keys": 240,
+          "note": "240/240 clés couvertes ; audit sans overlap, clé manquante ni erreur de placeholder."
+        },
+        "tr_tr": {
+          "name": "Türkçe",
+          "status": "supported",
+          "review": "ai_assisted_human_directed_review_pending_native_feedback",
+          "targets": [
+            "1.21.1"
+          ],
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/tr_tr.json",
+          "coverage_keys": 240,
+          "source_keys": 240,
+          "note": "240/240 clés couvertes ; audit sans overlap, clé manquante ni erreur de placeholder."
+        },
+        "zh_cn": {
+          "name": "简体中文",
+          "status": "supported",
+          "review": "ai_assisted_human_directed_review_pending_native_feedback",
+          "targets": [
+            "1.21.1"
+          ],
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/zh_cn.json",
+          "coverage_keys": 240,
+          "source_keys": 240,
+          "note": "240/240 clés couvertes ; audit sans overlap, clé manquante ni erreur de placeholder."
         }
       }
     }

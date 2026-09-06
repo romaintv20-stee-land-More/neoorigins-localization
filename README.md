@@ -1,128 +1,75 @@
 # NeoOrigins Localization
 
-Mod client NeoForge fournissant des **traductions complémentaires** pour NeoOrigins et des packs/add-ons compatibles.
+Mod client NeoForge fournissant des **traductions complémentaires en priorité basse** pour NeoOrigins et des add-ons compatibles. Une traduction officielle amont garde toujours la priorité ; notre pack ne remplit que les clés absentes.
 
-## Versions Minecraft
+## Builds Minecraft
 
-La bêta `0.6.0` est actuellement construite pour trois cibles :
+| Cible | Version | Java | Langues | Contenu empaqueté |
+|---|---|---:|---:|---|
+| Minecraft 1.21.1 | `0.7.0-beta+1.21.1` | 21 | 10 | NeoOrigins + Medieval Origins Revival + ibarn's quartet origins addon + Origins Fantasy for NeoOrigins |
+| Minecraft 26.1 / 26.1.1 / 26.1.2 | `0.6.0-beta+26.1` | 25 | 5 | NeoOrigins uniquement |
+| Minecraft 26.2 | `0.6.0-beta+26.2` | 25 | 5 | NeoOrigins uniquement + delta 26.2 |
 
-- **Minecraft 1.21.1** — Java 21 — build `0.6.0-beta+1.21.1`
-- **Minecraft 26.1.x** (`26.1`, `26.1.1`, `26.1.2`) — Java 25 — build `0.6.0-beta+26.1`
-- **Minecraft 26.2** — Java 25 — build `0.6.0-beta+26.2`
+Les builds 26.x n'embarquent pas les traductions des add-ons 1.21.1. Minecraft 26.1.2 et 26.2 ont déjà été validés en jeu avec NeoOrigins Localization ; l'intégration 0.7.0 de Minecraft 1.21.1 doit encore recevoir sa validation finale en jeu après build.
 
-Le build 26.1.x compile contre **Minecraft 26.1.2 / NeoForge 26.1.2.29-beta** et déclare une plage Minecraft `[26.1,26.2)`, conformément à la branche 26.1.x de NeoOrigins 2.2.25. Le chargement en jeu et la localisation néerlandaise ont été validés sur Minecraft 26.1.2.
+## Langues
 
-Le build 26.2 compile contre **Minecraft 26.2 / NeoForge 26.2.0.3-beta** et déclare une plage Minecraft `[26.2,26.3)`, correspondant à la branche 26.2 de NeoOrigins 2.2.25. Cette cible possède un delta de traduction dédié afin de couvrir les clés ajoutées ou modifiées sur la branche 26.2 sans alourdir les builds plus anciens.
+Le build **1.21.1 / 0.7.0 Beta** prend en charge : Français (`fr_fr`), Allemand (`de_de`), Espagnol (`es_es`), Portugais brésilien (`pt_br`), Néerlandais (`nl_nl`), Italien (`it_it`), Polonais (`pl_pl`), Russe (`ru_ru`), Turc (`tr_tr`) et Chinois simplifié (`zh_cn`).
 
-Les builds 26.x n'embarquent actuellement que les traductions NeoOrigins. Les traductions de Medieval Origins Revival et d'ibarn's quartet origins addon restent présentes dans le dépôt mais ne sont empaquetées que dans le build 1.21.1 tant que leur compatibilité 26.x n'est pas validée.
+Les cinq nouvelles langues de 0.7.0 sont actuellement limitées au build 1.21.1. Les branches 26.x restent sur les cinq langues de 0.6.0 jusqu'à leur extension dédiée.
 
-La compilation et les audits de localisation sont validés sur les trois cibles. Le build 26.1.x a également été validé en jeu ; le build 26.2 reste en bêta tant que sa validation en jeu n'est pas terminée.
+## Projets pris en charge
 
-## Principe
+### NeoOrigins
 
-Le projet ne doit pas écraser volontairement une traduction déjà fournie par le mod d'origine.
+NeoOrigins 2.2.25 est requis. Pour les langues déjà traduites officiellement par NeoOrigins, le fallback ne conserve que les clés absentes en amont. Le néerlandais est fourni intégralement par NeoOrigins Localization. La cible 26.2 utilise un delta dédié pour ses clés supplémentaires.
 
-Les traductions sont chargées depuis un resource pack intégré placé en **priorité basse** :
+### Medieval Origins Revival — Minecraft 1.21.1
 
-1. le mod/add-on installé fournit sa traduction officielle ;
-2. les resource packs normaux peuvent la modifier ;
-3. notre pack sert de **fallback** pour les clés absentes.
+Les **401 clés anglaises** sont couvertes dans les dix langues du build 0.7.0. L'import via `config/originpacks/` et l'affichage traduit d'un Origin ont déjà été validés en jeu sur 1.21.1.
 
-Aucune traduction automatique n'est faite dans Minecraft. Chaque langue/add-on ajouté au projet doit être traduit, vérifié et maintenu avant publication.
+### ibarn's quartet origins addon — Minecraft 1.21.1
 
-## Langues NeoOrigins
+Les **69 clés anglaises** sont couvertes dans les dix langues du build 0.7.0. L'add-on NeoForge 1.7.1 s'installe dans `mods/`. La localisation des quatre Origins a déjà été validée en jeu sur 1.21.1 avec la génération précédente.
 
-La première base couvre cinq langues :
+### Origins Fantasy for NeoOrigins — Minecraft 1.21.1
 
-- Français (`fr_fr`)
-- Allemand (`de_de`)
-- Espagnol (`es_es`)
-- Portugais brésilien (`pt_br`)
-- Néerlandais (`nl_nl`)
+Avec l'autorisation explicite de **DraconicArcher**, NeoOrigins Localization fournit les traductions des **240 clés anglaises** de la version 1.1.3 dans les dix langues du build 0.7.0. Les dix fichiers sont contrôlés contre le JAR CurseForge de référence : 240/240 clés couvertes, aucune clé manquante, aucun overlap avec une traduction officielle et aucun placeholder invalide.
 
-NeoOrigins 2.2.25 fournit déjà `fr_fr`, `de_de`, `es_es` et `pt_br`. Pour ces quatre langues, notre fallback contient **uniquement les clés absentes de l'upstream**. À la date du contrôle, cela représente 52 clés par langue sur la base 1.21.1.
+Cette intégration n'embarque ni code, ni textures, ni modèles, ni données de gameplay d'Origins Fantasy. Le mod original reste nécessaire. La validation en jeu spécifique à Origins Fantasy reste à faire ; l'audit actuel valide la structure et la couverture des localisations, pas le gameplay.
 
-Sur Minecraft 26.2, la base anglaise contient **2 292 clés**. Les localisations officielles FR/DE/ES/PT-BR en couvrent 2 172 chacune ; notre fallback couvre les **120 clés restantes** dans chacune de ces langues. La branche 26.2 ajoute notamment 64 raccourcis configurables, deux compétences supplémentaires et des textes d'interface associés.
+## Fonctionnement
 
-NeoOrigins 2.2.25 ne fournit pas de néerlandais. Notre traduction `nl_nl` couvre donc les **2 292 clés actives** de la base 26.2, avec un delta dédié pour les nouvelles options de configuration de cette branche. Pour faciliter la maintenance, le néerlandais reste réparti dans plusieurs namespaces de ressources complémentaires. Il reste ouvert aux retours de locuteurs natifs même si la couverture technique est complète.
+Le resource pack intégré est placé en priorité basse :
 
-## Medieval Origins Revival
+1. les traductions officielles du mod/add-on sont prioritaires ;
+2. les resource packs normaux peuvent les modifier ;
+3. NeoOrigins Localization sert de fallback pour les clés restantes.
 
-La branche `1.21.1-fabric` de Medieval Origins Revival ne fournit actuellement aucune traduction officielle pour nos cinq langues cibles. Notre fallback couvre donc l'intégralité des **401 clés anglaises** en :
+Aucune traduction n'est générée à l'exécution dans Minecraft.
 
-- Français (`fr_fr`)
-- Allemand (`de_de`)
-- Espagnol (`es_es`)
-- Portugais brésilien (`pt_br`)
-- Néerlandais (`nl_nl`)
+## Audits et maintenance
 
-La compatibilité via `config/originpacks/` et la traduction d'un Origin importé ont déjà été validées en jeu sur Minecraft 1.21.1. Les fichiers complets restent ouverts aux retours de locuteurs natifs pour affiner la formulation et la terminologie.
-
-## ibarn's quartet origins addon
-
-La version **1.7.1 pour Minecraft 1.21.1** ne fournit actuellement que `en_us`. Notre fallback couvre donc ses **69 clés anglaises** dans les cinq langues cibles.
-
-Contrairement à Medieval Origins Revival, cet add-on contient du **code Java**, des effets et des entités personnalisés. Sa version NeoForge 1.21.1 doit donc être installée comme un mod classique dans `mods/`, et non dans `config/originpacks/`.
-
-Les variantes 26.x ne sont pas annoncées comme compatibles avec nos builds NeoForge 26.x tant qu'une intégration réelle n'a pas été validée.
-
-## Nettoyage lors des mises à jour
-
-Les scripts `scripts/audit_neoorigins_upstream.py`, `scripts/audit_medievalorigins_upstream.py` et `scripts/audit_ibarnorigins_upstream.py` comparent nos fichiers avec les versions officielles. Ils permettent notamment de repérer :
-
-- les nouvelles clés anglaises à traduire ;
-- les clés qu'un projet vient de traduire officiellement ;
-- les entrées devenues inutiles dans notre fallback ;
-- les éventuelles clés obsolètes ;
-- les erreurs de placeholders comme `%s`, `%1$s` et `%d`.
-
-Le CI exécute l'audit NeoOrigins sur chaque cible Minecraft et échoue désormais également si une clé manquante en amont n'est pas couverte par notre fallback. Les audits Medieval Origins Revival et ibarn restent associés au build 1.21.1 tant que ces add-ons ne sont pas validés sur 26.x.
-
-## Add-ons actuellement suivis
-
-| Mod / add-on | Auteur | Lien | État |
-|---|---|---|---|
-| NeoOrigins | CyberDay | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/neoorigins) | 1.21.1 + 26.1.x + 26.2 bêta ; FR/DE/ES/PT-BR complétés en fallback, NL complet |
-| Medieval Origins Revival | MuonR / muon-rw | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/medieval-origins-revival) | 1.21.1 : FR/DE/ES/PT-BR/NL complets |
-| ibarn's quartet origins addon | ibarnstormer | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/ibarns-custom-origins-addon) | NeoForge 1.21.1 : FR/DE/ES/PT-BR/NL complets ; 26.x non annoncé |
-
-Le fichier `catalog.json` reste la source de vérité de la liste des contenus traduits. Voir aussi [`CATALOG.md`](CATALOG.md).
-
-## Politique sur les noms
-
-Un nom d'Origin est traduit seulement si la traduction reste naturelle, identifiable et suffisamment courte pour l'interface. Sinon, le nom anglais est conservé. La largeur réelle dans l'interface prime sur le simple nombre de caractères.
-
-Pour le néerlandais notamment, plusieurs noms canoniques restent en anglais afin de préserver la recherche, l'identification et la compatibilité visuelle. Les retours joueurs pourront justifier quelques traductions ciblées.
-
-## Licences tierces
-
-Seuls les projets dont la licence permet clairement la redistribution/adaptation sont intégrés sans autorisation préalable. Les attributions et licences applicables sont documentées dans [`docs/ATTRIBUTIONS.md`](docs/ATTRIBUTIONS.md).
-
-## Ajouter un add-on
-
-Voir [`docs/ADDING_ADDON.md`](docs/ADDING_ADDON.md).
-
-## Vérification
+Le CI vérifie les JSON, les clés manquantes, les overlaps avec les traductions officielles, les placeholders et la compilation. Les scripts suivis incluent :
 
 ```bash
 python scripts/validate.py
 python scripts/audit_neoorigins_upstream.py --fail-on-overlap --fail-on-missing
 python scripts/audit_medievalorigins_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
 python scripts/audit_ibarnorigins_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+python scripts/audit_origins_fantasy_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
 ```
 
-Le workflow GitHub Actions génère automatiquement les JAR 1.21.1, 26.1.x et 26.2 avec leurs versions de Java, NeoForge et format de resource pack respectifs.
+Lorsqu'un projet amont ajoute une traduction officielle, les clés devenues inutiles doivent être retirées de notre fallback.
 
-## État actuel
+## Traduction et retours
 
-- Minecraft 1.21.1 : build et tests de localisation existants validés
-- Minecraft 26.1.x : build `0.6.0-beta+26.1` compilé avec Java 25 / NeoForge 26.1.2.29-beta, chargement et localisation néerlandaise validés en jeu sur Minecraft 26.1.2
-- Minecraft 26.2 : build `0.6.0-beta+26.2` compilé avec Java 25 / NeoForge 26.2.0.3-beta, couverture de traduction complète auditée, test en jeu à faire
-- NeoForge
-- architecture multilingue, multi-namespace et multi-version
-- base NeoOrigins 2.2.25 en cinq langues couverte techniquement sur les trois cibles auditées
-- Medieval Origins Revival couvert dans les cinq langues cibles pour la branche 1.21.1-fabric
-- ibarn's quartet origins addon 1.7.1 NeoForge couvert dans les cinq langues cibles pour Minecraft 1.21.1
-- fallback NeoOrigins validé en jeu sur 1.21.1 et 26.1.2
-- import `originpacks` et traduction des Origins importés validés avec Medieval Origins Revival sur 1.21.1
-- audits des traductions officielles intégrés au CI
+Les traductions et leur maintenance utilisent une assistance générative/automatisée importante, avec contrôles de structure et direction humaine. Elles ne sont pas présentées comme des traductions intégralement relues par des locuteurs natifs. Les corrections de formulation et de terminologie sont donc bienvenues.
+
+Un nom d'Origin est traduit seulement lorsque le résultat reste naturel, identifiable et lisible dans l'interface ; sinon le nom anglais peut être conservé.
+
+## Licences et attributions
+
+Le code et la documentation originaux de NeoOrigins Localization sont sous licence MIT. Les éléments dérivés de projets tiers restent soumis aux licences ou autorisations amont applicables. Voir [`docs/ATTRIBUTIONS.md`](docs/ATTRIBUTIONS.md).
+
+Le fichier [`catalog.json`](catalog.json) est la source de vérité du contenu suivi ; [`CATALOG.md`](CATALOG.md) en est la vue lisible.

@@ -7,16 +7,16 @@ Mod client NeoForge fournissant des **traductions complémentaires en priorité 
 | Cible | Version | Java | Langues | Contenu empaqueté |
 |---|---|---:|---:|---|
 | Minecraft 1.21.1 | `0.7.0-beta+1.21.1` | 21 | 10 | NeoOrigins + Medieval Origins Revival + ibarn's quartet origins addon + Origins Fantasy for NeoOrigins |
-| Minecraft 26.1 / 26.1.1 / 26.1.2 | `0.6.0-beta+26.1` | 25 | 5 | NeoOrigins uniquement |
+| Minecraft 26.1 / 26.1.1 / 26.1.2 | `0.7.0-beta+26.1` | 25 | 10 | NeoOrigins uniquement |
 | Minecraft 26.2 | `0.6.0-beta+26.2` | 25 | 5 | NeoOrigins uniquement + delta 26.2 |
 
-Les builds 26.x n'embarquent pas les traductions des add-ons 1.21.1. Minecraft 26.1.2 et 26.2 ont déjà été validés en jeu avec NeoOrigins Localization ; l'intégration 0.7.0 de Minecraft 1.21.1 doit encore recevoir sa validation finale en jeu après build.
+Les builds 26.x n'embarquent pas les traductions des add-ons 1.21.1. La base Minecraft 26.1.2 et Minecraft 26.2 ont déjà été validées en jeu avec NeoOrigins Localization ; les nouvelles langues de la 0.7.0 sur 26.1.x doivent encore recevoir un contrôle visuel en jeu.
 
 ## Langues
 
 Le build **1.21.1 / 0.7.0 Beta** prend en charge : Français (`fr_fr`), Allemand (`de_de`), Espagnol (`es_es`), Portugais brésilien (`pt_br`), Néerlandais (`nl_nl`), Italien (`it_it`), Polonais (`pl_pl`), Russe (`ru_ru`), Turc (`tr_tr`) et Chinois simplifié (`zh_cn`).
 
-Les cinq nouvelles langues de 0.7.0 sont actuellement limitées au build 1.21.1. Les branches 26.x restent sur les cinq langues de 0.6.0 jusqu'à leur extension dédiée.
+Les cinq nouvelles langues de 0.7.0 sont disponibles sur les builds 1.21.1 et 26.1.x. Minecraft 26.2 reste provisoirement sur les cinq langues de 0.6.0 jusqu'à son port dédié.
 
 ## Projets pris en charge
 

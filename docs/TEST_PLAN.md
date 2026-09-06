@@ -5,7 +5,7 @@
 | Cible | Java | NeoOrigins | Contenu du build | État |
 |---|---:|---|---|---|
 | Minecraft 1.21.1 | 21 | 2.2.25 | NeoOrigins + Medieval Origins Revival + ibarn + Origins Fantasy | Build/CI à valider, puis test final en jeu |
-| Minecraft 26.1.x | 25 | 2.2.25 | NeoOrigins uniquement | Validé en jeu sur 26.1.2 |
+| Minecraft 26.1.x | 25 | 2.2.25 | NeoOrigins uniquement, 10 langues en 0.7.0 | Base validée en jeu sur 26.1.2 ; nouvelles langues à contrôler visuellement |
 | Minecraft 26.2 | 25 | 2.2.25 | NeoOrigins uniquement + delta 26.2 | Validé en jeu |
 
 ## Priorité du fallback
@@ -15,6 +15,10 @@ Installer NeoOrigins et NeoOrigins Localization. Vérifier dans une langue offic
 ## Langues 1.21.1
 
 Le build 0.7.0 doit proposer les ressources pour `fr_fr`, `de_de`, `es_es`, `pt_br`, `nl_nl`, `it_it`, `pl_pl`, `ru_ru`, `tr_tr` et `zh_cn`. Pour chaque langue testée, contrôler au minimum l'écran de sélection, un nom d'Origin et une description longue afin de repérer les problèmes de coupure ou de formulation.
+
+## Langues 26.1.x
+
+Le build `0.7.0-beta+26.1` doit proposer les mêmes dix langues NeoOrigins que la 1.21.1 : `fr_fr`, `de_de`, `es_es`, `pt_br`, `nl_nl`, `it_it`, `pl_pl`, `ru_ru`, `tr_tr` et `zh_cn`. Les cinq nouvelles langues sont auditées contre NeoOrigins `v2.2.25`. Vérifier en jeu au minimum l'écran de sélection, un nom d'Origin et une description longue dans plusieurs de ces langues. Les add-ons 1.21.1 doivent rester absents du JAR 26.1.x.
 
 ## Medieval Origins Revival — 1.21.1
 

@@ -1,0 +1,16 @@
+{
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Gameplay",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "NeoOrigins Gameplay Settings",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Admin & Permissions",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "NeoOrigins Admin Settings",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Power Overrides",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "NeoOrigins Power Overrides",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Origins & Classes",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "NeoOrigins Origin & Class Toggles",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Client Display",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "NeoOrigins Client Settings",
+  "neoorigins.configuration.show_cooldown_countdown": "Show cooldown countdown",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Cooldown countdown opacity (%)",
+  "neoorigins.configuration.hud_ability_display": "Ability HUD display mode",
+  "neoorigins.configuration.always_show_ability_icons": "Always show ability icons"
+}

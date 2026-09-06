@@ -88,6 +88,7 @@ tasks.named('processResources', ProcessResources) {
         exclude 'resourcepacks/fallback_localizations/assets/origins_backgrounds_two/**'
         exclude 'resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/**'
         exclude 'resourcepacks/fallback_localizations/assets/origins_furries/**'
+        exclude 'resourcepacks/fallback_localizations/assets/origins_classes_ex/**'
     }
 
     if (!include121BatchTranslations) {

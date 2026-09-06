@@ -1,0 +1,51 @@
+name: Audit Czech Origins Backgrounds ISS
+
+on:
+  push:
+    branches:
+      - release/0.8.0-czech
+    paths:
+      - .github/workflows/audit-czech-backgrounds-iss.yml
+      - scripts/audit_origins_backgrounds_iss_upstream.py
+      - src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/cs_cz.json
+      - src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/cs_cz.json
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate localization JSON
+        run: python3 scripts/validate.py
+      - name: Audit Czech Origins Backgrounds ISS
+        run: python3 scripts/audit_origins_backgrounds_iss_upstream.py --output build/czech-backgrounds-iss-audit --fail-on-overlap --fail-on-missing --fail-on-placeholders
+      - name: Verify exact effective Czech coverage
+        run: |
+          python3 - <<'PY'
+          import io, json, re, zipfile
+          from scripts.audit_origins_backgrounds_iss_upstream import download_jar, detect_namespace, read_locale
+          data, _ = download_jar('8409604', 'Origins-ISS-Backgrounds-1.21.1-NeoOrigins-1.0.1.jar')
+          with zipfile.ZipFile(io.BytesIO(data)) as jar:
+              ns = detect_namespace(jar, 'origins_backgrounds_iss')
+              en = read_locale(jar, ns, 'en_us')
+              official_cs = read_locale(jar, ns, 'cs_cz')
+          with open('src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/cs_cz.json', encoding='utf-8') as f:
+              shared = json.load(f)
+          with open('src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/cs_cz.json', encoding='utf-8') as f:
+              primary = json.load(f)
+          relevant_shared = {k:v for k,v in shared.items() if k in en}
+          combined = dict(relevant_shared)
+          overlap = set(combined) & set(primary)
+          assert not overlap, sorted(overlap)
+          combined.update(primary)
+          assert not official_cs, len(official_cs)
+          assert len(en) == 79, len(en)
+          assert len(primary) == 77, len(primary)
+          assert len(relevant_shared) == 2, len(relevant_shared)
+          assert set(combined) == set(en), (len(combined), len(en), sorted(set(en)-set(combined)))
+          token = re.compile(r'%(?:\d+\$)?[sd]')
+          errors = [key for key in en if sorted(token.findall(str(en[key]))) != sorted(token.findall(str(combined[key])))]
+          assert not errors, errors[:20]
+          print('Czech Origins Backgrounds ISS: primary=77, shared=2, effective=79/79, official cs=0, placeholders OK')
+          PY

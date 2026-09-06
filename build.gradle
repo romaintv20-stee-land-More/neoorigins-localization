@@ -13,7 +13,11 @@ base {
 
 def targetJavaVersion = (project.findProperty('java_version') ?: '21') as int
 def targetResourcePackFormat = project.property('resource_pack_format').toString()
+def sourceVariant = project.findProperty('source_variant') ?: 'mc1_21_1'
+
 java.toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+
+sourceSets.main.java.setSrcDirs(["src/${sourceVariant}/java"])
 
 neoForge {
     version = project.neo_version

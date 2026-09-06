@@ -6,7 +6,7 @@ Mod client NeoForge fournissant des **traductions complémentaires en priorité 
 
 | Cible | Version | Java | Langues | Contenu empaqueté |
 |---|---|---:|---:|---|
-| Minecraft 1.21.1 | `0.8.0-beta+1.21.1` | 21 | 10 | NeoOrigins + Medieval Origins Revival + ibarn's quartet origins addon + Origins Fantasy for NeoOrigins + Origins: Backgrounds for NeoOrigins + Origins: More Backgrounds for NeoOrigins |
+| Minecraft 1.21.1 | `0.8.0-beta+1.21.1` | 21 | 10 | NeoOrigins + Medieval Origins Revival + ibarn's quartet origins addon + Origins Fantasy for NeoOrigins + Origins: Backgrounds for NeoOrigins + Origins: More Backgrounds for NeoOrigins + Origins: Backgrounds ISS for NeoOrigins |
 | Minecraft 26.1 / 26.1.1 / 26.1.2 | `0.8.0-beta+26.1` | 25 | 10 | NeoOrigins uniquement |
 | Minecraft 26.2 | `0.8.0-beta+26.2` | 25 | 10 | NeoOrigins uniquement + delta 26.2 |
 
@@ -50,6 +50,12 @@ La 0.8.0 Beta ajoute aussi les traductions de **Origins: More Backgrounds for Ne
 
 L'audit vérifie conjointement les namespaces `origins_backgrounds` et `origins_backgrounds_two`, ainsi que les clés manquantes, les éventuels overlaps futurs et les placeholders. Le mod original reste requis et aucun code, texture, modèle ou donnée de gameplay de l'add-on n'est redistribué.
 
+### Origins: Backgrounds ISS for NeoOrigins — Minecraft 1.21.1
+
+La 0.8.0 Beta ajoute les traductions de **Origins: Backgrounds ISS for NeoOrigins 1.0.1**, toujours avec l'autorisation de **DraconicArcher**. Le JAR CurseForge de référence contient **79 clés anglaises** et aucune traduction officielle dans les dix langues ciblées. Deux clés `Fresh Face` sont communes à Origins: Backgrounds et réutilisent le fallback existant ; les **77 autres clés** sont fournies sous `origins_backgrounds_iss`, soit 79/79 clés couvertes dans chaque langue.
+
+Cet add-on nécessite **NeoOrigins** et **Iron's Spells 'n Spellbooks**. NeoOrigins Localization ne redistribue que les chaînes traduites ; les mods originaux restent requis. Cette intégration est limitée au build Minecraft 1.21.1.
+
 ## Fonctionnement
 
 Le resource pack intégré est placé en priorité basse :
@@ -72,6 +78,7 @@ python scripts/audit_ibarnorigins_upstream.py --fail-on-overlap --fail-on-missin
 python scripts/audit_origins_fantasy_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
 python scripts/audit_origins_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
 python scripts/audit_origins_more_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+python scripts/audit_origins_backgrounds_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
 ```
 
 Lorsqu'un projet amont ajoute une traduction officielle, les clés devenues inutiles doivent être retirées de notre fallback.

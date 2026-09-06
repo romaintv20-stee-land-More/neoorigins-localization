@@ -24,7 +24,9 @@ jobs:
             upstream_ref: '1.21.1'
             mod_version: '0.6.0-beta+1.21.1'
             audit_addons: true
+            audit_extra_namespace: ''
             include_addon_translations: true
+            include_26_2_translations: false
           - target: mc-26.1.x
             minecraft: '26.1.2'
             minecraft_range: '[26.1,26.2)'
@@ -38,7 +40,9 @@ jobs:
             upstream_ref: 'v2.2.25'
             mod_version: '0.6.0-beta+26.1'
             audit_addons: false
+            audit_extra_namespace: ''
             include_addon_translations: false
+            include_26_2_translations: false
           - target: mc-26.2
             minecraft: '26.2'
             minecraft_range: '[26.2,26.3)'
@@ -52,7 +56,9 @@ jobs:
             upstream_ref: '26.2'
             mod_version: '0.6.0-beta+26.2'
             audit_addons: false
+            audit_extra_namespace: 'neoorigins_26_2'
             include_addon_translations: false
+            include_26_2_translations: true
 
     runs-on: ubuntu-latest
     name: Build ${{ matrix.target }}
@@ -73,11 +79,16 @@ jobs:
           gradle-version: ${{ matrix.gradle }}
 
       - name: Audit NeoOrigins upstream locales
-        run: >-
-          python3 scripts/audit_neoorigins_upstream.py
-          --ref "${{ matrix.upstream_ref }}"
-          --output "build/upstream-audit-${{ matrix.target }}"
-          --fail-on-overlap
+        run: |
+          EXTRA_ARGS=()
+          if [ -n "${{ matrix.audit_extra_namespace }}" ]; then
+            EXTRA_ARGS+=(--extra-namespace "${{ matrix.audit_extra_namespace }}")
+          fi
+          python3 scripts/audit_neoorigins_upstream.py \
+            --ref "${{ matrix.upstream_ref }}" \
+            --output "build/upstream-audit-${{ matrix.target }}" \
+            --fail-on-overlap \
+            "${EXTRA_ARGS[@]}"
 
       - name: Audit Medieval Origins upstream locales
         if: matrix.audit_addons
@@ -108,6 +119,7 @@ jobs:
             "-Presource_pack_format=${{ matrix.pack_format }}" \
             "-Psource_variant=${{ matrix.source_variant }}" \
             "-Pinclude_addon_translations=${{ matrix.include_addon_translations }}" \
+            "-Pinclude_26_2_translations=${{ matrix.include_26_2_translations }}" \
             "-Pminecraft_version=${{ matrix.minecraft }}" \
             "-Pminecraft_version_range=${{ matrix.minecraft_range }}" \
             "-Pneo_version=${{ matrix.neoforge }}" \

@@ -11,7 +11,7 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 PACK_ROOT = ROOT / "src/main/resources/resourcepacks/fallback_localizations/assets"
-LOCALES = ("fr_fr", "de_de", "es_es", "pt_br", "nl_nl", "it_it", "pl_pl", "ru_ru", "tr_tr", "zh_cn")
+LOCALES = ("fr_fr", "de_de", "es_es", "pt_br", "nl_nl", "it_it", "pl_pl", "ru_ru", "tr_tr", "zh_cn", "cs_cz")
 DEFAULT_FILE_ID = "8409604"
 DEFAULT_FILENAME = "Origins-ISS-Backgrounds-1.21.1-NeoOrigins-1.0.1.jar"
 DEFAULT_NAMESPACE = "origins_backgrounds_iss"
@@ -137,6 +137,14 @@ def main():
             if primary_overlap:
                 primary = {k: v for k, v in primary.items() if k not in official}
                 primary_path.write_text(json.dumps(primary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+                combined = {}
+                for shared_namespace in SHARED_FALLBACK_NAMESPACES:
+                    combined.update(read_json(PACK_ROOT / shared_namespace / "lang" / f"{locale}.json"))
+                combined.update(primary)
+                relevant = {k: v for k, v in combined.items() if k in en}
+                overlap = sorted(set(relevant) & set(official))
+                stale = sorted(set(primary) - set(en))
+                missing = sorted(set(missing_upstream) - set(relevant))
 
         any_overlap |= bool(overlap)
         any_missing |= bool(missing)

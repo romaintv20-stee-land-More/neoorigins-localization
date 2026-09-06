@@ -12,7 +12,7 @@ La bêta `0.6.0` est actuellement construite pour trois cibles :
 
 Le build 26.1.x compile contre **Minecraft 26.1.2 / NeoForge 26.1.2.29-beta** et déclare une plage Minecraft `[26.1,26.2)`, conformément à la branche 26.1.x de NeoOrigins 2.2.25. Le chargement en jeu et la localisation néerlandaise ont été validés sur Minecraft 26.1.2.
 
-Le build 26.2 compile contre **Minecraft 26.2 / NeoForge 26.2.0.3-beta** et déclare une plage Minecraft `[26.2,26.3)`, correspondant à la branche 26.2 de NeoOrigins 2.2.25.
+Le build 26.2 compile contre **Minecraft 26.2 / NeoForge 26.2.0.3-beta** et déclare une plage Minecraft `[26.2,26.3)`, correspondant à la branche 26.2 de NeoOrigins 2.2.25. Cette cible possède un delta de traduction dédié afin de couvrir les clés ajoutées ou modifiées sur la branche 26.2 sans alourdir les builds plus anciens.
 
 Les builds 26.x n'embarquent actuellement que les traductions NeoOrigins. Les traductions de Medieval Origins Revival et d'ibarn's quartet origins addon restent présentes dans le dépôt mais ne sont empaquetées que dans le build 1.21.1 tant que leur compatibilité 26.x n'est pas validée.
 
@@ -42,7 +42,9 @@ La première base couvre cinq langues :
 
 NeoOrigins 2.2.25 fournit déjà `fr_fr`, `de_de`, `es_es` et `pt_br`. Pour ces quatre langues, notre fallback contient **uniquement les clés absentes de l'upstream**. À la date du contrôle, cela représente 52 clés par langue sur la base 1.21.1.
 
-NeoOrigins 2.2.25 ne fournit pas de néerlandais. Notre traduction `nl_nl` couvre donc la base anglaise suivie par le projet. Pour faciliter la maintenance, elle est répartie dans plusieurs namespaces de ressources complémentaires, sans clés dupliquées. Elle reste marquée comme nécessitant des retours de locuteurs natifs même si la couverture technique est complète.
+Sur Minecraft 26.2, la base anglaise contient **2 292 clés**. Les localisations officielles FR/DE/ES/PT-BR en couvrent 2 172 chacune ; notre fallback couvre les **120 clés restantes** dans chacune de ces langues. La branche 26.2 ajoute notamment 64 raccourcis configurables, deux compétences supplémentaires et des textes d'interface associés.
+
+NeoOrigins 2.2.25 ne fournit pas de néerlandais. Notre traduction `nl_nl` couvre donc les **2 292 clés actives** de la base 26.2, avec un delta dédié pour les nouvelles options de configuration de cette branche. Pour faciliter la maintenance, le néerlandais reste réparti dans plusieurs namespaces de ressources complémentaires. Il reste ouvert aux retours de locuteurs natifs même si la couverture technique est complète.
 
 ## Medieval Origins Revival
 
@@ -74,7 +76,7 @@ Les scripts `scripts/audit_neoorigins_upstream.py`, `scripts/audit_medievalorigi
 - les éventuelles clés obsolètes ;
 - les erreurs de placeholders comme `%s`, `%1$s` et `%d`.
 
-Le CI exécute l'audit NeoOrigins sur chaque cible Minecraft. Les audits Medieval Origins Revival et ibarn restent associés au build 1.21.1 tant que ces add-ons ne sont pas validés sur 26.x.
+Le CI exécute l'audit NeoOrigins sur chaque cible Minecraft et échoue désormais également si une clé manquante en amont n'est pas couverte par notre fallback. Les audits Medieval Origins Revival et ibarn restent associés au build 1.21.1 tant que ces add-ons ne sont pas validés sur 26.x.
 
 ## Add-ons actuellement suivis
 
@@ -104,7 +106,7 @@ Voir [`docs/ADDING_ADDON.md`](docs/ADDING_ADDON.md).
 
 ```bash
 python scripts/validate.py
-python scripts/audit_neoorigins_upstream.py --fail-on-overlap
+python scripts/audit_neoorigins_upstream.py --fail-on-overlap --fail-on-missing
 python scripts/audit_medievalorigins_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
 python scripts/audit_ibarnorigins_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
 ```
@@ -115,7 +117,7 @@ Le workflow GitHub Actions génère automatiquement les JAR 1.21.1, 26.1.x et 26
 
 - Minecraft 1.21.1 : build et tests de localisation existants validés
 - Minecraft 26.1.x : build `0.6.0-beta+26.1` compilé avec Java 25 / NeoForge 26.1.2.29-beta, chargement et localisation néerlandaise validés en jeu sur Minecraft 26.1.2
-- Minecraft 26.2 : build `0.6.0-beta+26.2` compilé avec Java 25 / NeoForge 26.2.0.3-beta, test en jeu à faire
+- Minecraft 26.2 : build `0.6.0-beta+26.2` compilé avec Java 25 / NeoForge 26.2.0.3-beta, couverture de traduction complète auditée, test en jeu à faire
 - NeoForge
 - architecture multilingue, multi-namespace et multi-version
 - base NeoOrigins 2.2.25 en cinq langues couverte techniquement sur les trois cibles auditées

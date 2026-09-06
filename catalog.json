@@ -26,7 +26,8 @@
           "origins_backgrounds_iss",
           "origins_furries",
           "origins_classes_ex",
-          "origins_classes_iss"
+          "origins_classes_iss",
+          "originsmodernui"
         ]
       },
       "26.1.x": {
@@ -900,6 +901,85 @@
           "name": "简体中文",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/zh_cn.json"
+        }
+      }
+    },
+    {
+      "id": "originsmodernui",
+      "name": "Origin Architect (NeoOrigins Addon)",
+      "author": "reotpak",
+      "namespace": "originsmodernui",
+      "curseforge": "https://www.curseforge.com/minecraft/mc-mods/origin-architect",
+      "source": "https://github.com/ReoTpak/origin-architect-modern-uI",
+      "license": {
+        "code_and_localization": "MIT",
+        "attribution_required": true
+      },
+      "compatibility": {
+        "method": "NeoForge mod in mods/",
+        "version": "3.0.1 / Minecraft 1.21.1",
+        "minecraft": [
+          "1.21.1"
+        ],
+        "source_ref": "f58a6261292942d4123c46ff221fbdade138a329",
+        "curseforge_file_id": 8568110,
+        "in_game_validation": "pending",
+        "note": "22/22 clés anglaises couvertes dans les dix langues ; aucune traduction officielle détectée parmi les dix locales ciblées ; absent des builds 26.x."
+      },
+      "coverage": {
+        "source_keys": 22,
+        "fallback_keys_per_locale": 22
+      },
+      "languages": {
+        "fr_fr": {
+          "name": "Français",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/fr_fr.json"
+        },
+        "de_de": {
+          "name": "Deutsch",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/de_de.json"
+        },
+        "es_es": {
+          "name": "Español",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/es_es.json"
+        },
+        "pt_br": {
+          "name": "Português (Brasil)",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/pt_br.json"
+        },
+        "nl_nl": {
+          "name": "Nederlands",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/nl_nl.json"
+        },
+        "it_it": {
+          "name": "Italiano",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/it_it.json"
+        },
+        "pl_pl": {
+          "name": "Polski",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/pl_pl.json"
+        },
+        "ru_ru": {
+          "name": "Русский",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/ru_ru.json"
+        },
+        "tr_tr": {
+          "name": "Türkçe",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/tr_tr.json"
+        },
+        "zh_cn": {
+          "name": "简体中文",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/zh_cn.json"
         }
       }
     }

@@ -6,7 +6,7 @@ Mod client NeoForge fournissant des **traductions complémentaires en priorité 
 
 | Cible | Version | Java | Langues | Contenu empaqueté |
 |---|---|---:|---:|---|
-| Minecraft 1.21.1 | `0.8.0-beta+1.21.1` | 21 | 10 | NeoOrigins + Medieval Origins Revival + ibarn's quartet origins addon + Origins Fantasy for NeoOrigins + Origins: Backgrounds for NeoOrigins + Origins: More Backgrounds for NeoOrigins + Origins: Backgrounds ISS for NeoOrigins + Origins Furries for NeoOrigins + Origins: Classes Extended for NeoOrigins + Origins: Classes ISS for NeoOrigins |
+| Minecraft 1.21.1 | `0.8.0-beta+1.21.1` | 21 | 10 | NeoOrigins + Medieval Origins Revival + ibarn's quartet origins addon + Origins Fantasy for NeoOrigins + Origins: Backgrounds for NeoOrigins + Origins: More Backgrounds for NeoOrigins + Origins: Backgrounds ISS for NeoOrigins + Origins Furries for NeoOrigins + Origins: Classes Extended for NeoOrigins + Origins: Classes ISS for NeoOrigins + Origin Architect (NeoOrigins Addon) |
 | Minecraft 26.1 / 26.1.1 / 26.1.2 | `0.8.0-beta+26.1` | 25 | 10 | NeoOrigins uniquement |
 | Minecraft 26.2 | `0.8.0-beta+26.2` | 25 | 10 | NeoOrigins uniquement + delta 26.2 |
 
@@ -74,6 +74,12 @@ La 0.8.0 Beta ajoute enfin les traductions de **Origins: Classes ISS for NeoOrig
 
 Cet add-on nécessite **NeoOrigins** et **Iron's Spells 'n Spellbooks**. Seules les chaînes de localisation traduites sont redistribuées ; les mods originaux restent requis. Cette intégration est limitée au build Minecraft 1.21.1.
 
+### Origin Architect (NeoOrigins Addon) — Minecraft 1.21.1
+
+La 0.8.0 Beta ajoute aussi les traductions de **Origin Architect 3.0.1** par **reotpak**. La version CurseForge de référence (project ID `1635001`, file ID `8568110`) est publiée sous licence MIT. Le namespace `originsmodernui` contient **22 clés anglaises** ; aucune des dix langues ciblées par NeoOrigins Localization n'est fournie officiellement en amont, donc le fallback couvre **22/22 clés dans chacune des dix langues**.
+
+L'audit est épinglé sur le commit source `f58a6261292942d4123c46ff221fbdade138a329`. Le mod original reste requis et cette intégration est limitée au build Minecraft 1.21.1 ; les builds 26.x excluent explicitement `originsmodernui`.
+
 ## Fonctionnement
 
 Le resource pack intégré est placé en priorité basse :
@@ -100,6 +106,7 @@ python scripts/audit_origins_backgrounds_iss_upstream.py --fail-on-overlap --fai
 python scripts/audit_origins_furries_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
 python scripts/audit_origins_classes_extended_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
 python scripts/audit_origins_classes_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+python scripts/audit_origin_architect_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
 ```
 
 Lorsqu'un projet amont ajoute une traduction officielle, les clés devenues inutiles doivent être retirées de notre fallback.

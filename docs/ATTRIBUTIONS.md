@@ -137,4 +137,20 @@ La notice MIT du projet amont doit être conservée lorsque des portions substan
 - Priorité amont : le JAR ciblé ne fournit actuellement aucune des dix localisations prises en charge ici. Si une traduction officielle apparaît ensuite, elle doit garder la priorité et les clés correspondantes de notre fallback doivent être retirées.
 - NeoOrigins, Iron's Spells 'n Spellbooks et le mod original restent requis pour utiliser ces traductions.
 
+## Origin Architect (NeoOrigins Addon)
+
+- Projet : Origin Architect (NeoOrigins Addon)
+- Auteur : reotpak / ReoTpak
+- CurseForge : https://www.curseforge.com/minecraft/mc-mods/origin-architect
+- Source : https://github.com/ReoTpak/origin-architect-modern-uI
+- Project ID CurseForge : `1635001`
+- Version ciblée : fichier CurseForge `originsmodernui-3.0.1-1.21.1.jar` (file ID `8568110`) pour Minecraft 1.21.1
+- Référence source auditée : commit `f58a6261292942d4123c46ff221fbdade138a329`
+- Namespace : `originsmodernui`
+- Licence amont : MIT (déclarée sur la page CurseForge du projet)
+- Utilisation ici : localisations `fr_fr`, `de_de`, `es_es`, `pt_br`, `nl_nl`, `it_it`, `pl_pl`, `ru_ru`, `tr_tr` et `zh_cn` des 22 chaînes de `assets/originsmodernui/lang/en_us.json`.
+- Modifications : traduction et adaptation linguistique ; le nom de produit `Origin Architect` est conservé comme nom propre.
+- Priorité amont : si une traduction officielle apparaît ensuite pour une langue ciblée, elle doit garder la priorité et les clés correspondantes de notre fallback doivent être retirées.
+- Le mod original reste requis pour utiliser ces traductions ; l'intégration est limitée au build Minecraft 1.21.1.
+
 Aucune attribution ne signifie que les auteurs amont approuvent ou sponsorisent NeoOrigins Localization au-delà des autorisations explicitement mentionnées ci-dessus.

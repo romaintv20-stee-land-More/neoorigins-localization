@@ -11,14 +11,17 @@ base {
     archivesName = mod_id
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+def targetJavaVersion = (project.findProperty('java_version') ?: '21') as int
+java.toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
 
 neoForge {
     version = project.neo_version
 
-    parchment {
-        mappingsVersion = project.parchment_mappings_version
-        minecraftVersion = project.parchment_minecraft_version
+    if ((project.findProperty('use_parchment') ?: 'true').toBoolean()) {
+        parchment {
+            mappingsVersion = project.parchment_mappings_version
+            minecraftVersion = project.parchment_minecraft_version
+        }
     }
 
     runs {
@@ -54,6 +57,13 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
 
 sourceSets.main.resources.srcDir generateModMetadata
 neoForge.ideSyncTask generateModMetadata
+
+tasks.named('processResources', ProcessResources) {
+    inputs.property 'resource_pack_format', resource_pack_format
+    filesMatching('resourcepacks/fallback_localizations/pack.mcmeta') {
+        expand(resource_pack_format: resource_pack_format)
+    }
+}
 
 tasks.named('jar', Jar) {
     from('LICENSE') {

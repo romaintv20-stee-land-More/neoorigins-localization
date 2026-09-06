@@ -6,7 +6,7 @@ Mod client NeoForge fournissant des **traductions complémentaires en priorité 
 
 | Cible | Version | Java | Langues | Contenu empaqueté |
 |---|---|---:|---:|---|
-| Minecraft 1.21.1 | `0.8.0-beta+1.21.1` | 21 | 10 | NeoOrigins + Medieval Origins Revival + ibarn's quartet origins addon + Origins Fantasy for NeoOrigins + Origins: Backgrounds for NeoOrigins + Origins: More Backgrounds for NeoOrigins + Origins: Backgrounds ISS for NeoOrigins + Origins Furries for NeoOrigins + Origins: Classes Extended for NeoOrigins |
+| Minecraft 1.21.1 | `0.8.0-beta+1.21.1` | 21 | 10 | NeoOrigins + Medieval Origins Revival + ibarn's quartet origins addon + Origins Fantasy for NeoOrigins + Origins: Backgrounds for NeoOrigins + Origins: More Backgrounds for NeoOrigins + Origins: Backgrounds ISS for NeoOrigins + Origins Furries for NeoOrigins + Origins: Classes Extended for NeoOrigins + Origins: Classes ISS for NeoOrigins |
 | Minecraft 26.1 / 26.1.1 / 26.1.2 | `0.8.0-beta+26.1` | 25 | 10 | NeoOrigins uniquement |
 | Minecraft 26.2 | `0.8.0-beta+26.2` | 25 | 10 | NeoOrigins uniquement + delta 26.2 |
 
@@ -68,6 +68,12 @@ La 0.8.0 Beta ajoute les traductions de **Origins: Classes Extended for NeoOrigi
 
 Le mod original et NeoOrigins restent requis. Seules les chaînes de localisation traduites sont redistribuées. Cette intégration est limitée au build Minecraft 1.21.1 et l'audit dédié est indépendant du suivi de la nouvelle version NeoOrigins 2.2.26, qui n'est pas encore intégrée à ce stade.
 
+### Origins: Classes ISS for NeoOrigins — Minecraft 1.21.1
+
+La 0.8.0 Beta ajoute enfin les traductions de **Origins: Classes ISS for NeoOrigins 1.0.1**, avec l'autorisation de **DraconicArcher**. Le JAR CurseForge de référence (file ID `8592095`) contient **99 clés anglaises** sous le namespace `origins_classes_iss` et aucune traduction officielle dans les dix langues ciblées. NeoOrigins Localization fournit donc **99/99 clés dans chacune des dix langues** pour Archmagus, Bard, Mystic, Shadowcaster, Sorcerer, Warlock, Warmage et Wizard.
+
+Cet add-on nécessite **NeoOrigins** et **Iron's Spells 'n Spellbooks**. Seules les chaînes de localisation traduites sont redistribuées ; les mods originaux restent requis. Cette intégration est limitée au build Minecraft 1.21.1.
+
 ## Fonctionnement
 
 Le resource pack intégré est placé en priorité basse :
@@ -93,6 +99,7 @@ python scripts/audit_origins_more_backgrounds_upstream.py --fail-on-overlap --fa
 python scripts/audit_origins_backgrounds_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
 python scripts/audit_origins_furries_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
 python scripts/audit_origins_classes_extended_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+python scripts/audit_origins_classes_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
 ```
 
 Lorsqu'un projet amont ajoute une traduction officielle, les clés devenues inutiles doivent être retirées de notre fallback.

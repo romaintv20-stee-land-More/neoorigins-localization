@@ -39,6 +39,20 @@ jobs:
             mod_version: '0.6.0-beta+26.1'
             audit_addons: false
             include_addon_translations: false
+          - target: mc-26.2
+            minecraft: '26.2'
+            minecraft_range: '[26.2,26.3)'
+            java: '25'
+            gradle: '9.4.1'
+            neoforge: '26.2.0.3-beta'
+            loader_range: '[4,)'
+            parchment: 'false'
+            pack_format: '84'
+            source_variant: 'mc26_1'
+            upstream_ref: '26.2'
+            mod_version: '0.6.0-beta+26.2'
+            audit_addons: false
+            include_addon_translations: false
 
     runs-on: ubuntu-latest
     name: Build ${{ matrix.target }}

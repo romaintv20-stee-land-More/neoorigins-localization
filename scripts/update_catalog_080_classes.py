@@ -19,12 +19,22 @@ langs = {
     "zh_cn": "简体中文",
 }
 
-target = data["build_targets"]["1.21.1"]
+target = data["project"]["builds"]["1.21.1"]
 for project_id in ("origins_classes_ex", "origins_classes_iss"):
     if project_id not in target["included_projects"]:
         target["included_projects"].append(project_id)
 
 projects = {project["id"]: project for project in data["supported_projects"]}
+
+def language_entries(namespace: str):
+    return {
+        locale: {
+            "name": name,
+            "status": "supported",
+            "file": f"src/main/resources/resourcepacks/fallback_localizations/assets/{namespace}/lang/{locale}.json"
+        }
+        for locale, name in langs.items()
+    }
 
 projects["origins_classes_ex"] = {
     "id": "origins_classes_ex",
@@ -49,13 +59,7 @@ projects["origins_classes_ex"] = {
         "source_keys": 124,
         "fallback_keys_per_locale": 124
     },
-    "languages": {
-        locale: {
-            "name": name,
-            "path": f"src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/{locale}.json"
-        }
-        for locale, name in langs.items()
-    }
+    "languages": language_entries("origins_classes_ex")
 }
 
 projects["origins_classes_iss"] = {
@@ -81,13 +85,7 @@ projects["origins_classes_iss"] = {
         "source_keys": 99,
         "fallback_keys_per_locale": 99
     },
-    "languages": {
-        locale: {
-            "name": name,
-            "path": f"src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/{locale}.json"
-        }
-        for locale, name in langs.items()
-    }
+    "languages": language_entries("origins_classes_iss")
 }
 
 ordered = []

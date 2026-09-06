@@ -10,7 +10,7 @@ import urllib.request
 ROOT = Path(__file__).resolve().parents[1]
 PACK_LANG = ROOT / "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang"
 DEFAULT_REF = "multiloader-1.21.1-new-pack-format"
-LOCALES = ("fr_fr", "de_de", "es_es", "pt_br", "nl_nl", "it_it", "pl_pl", "ru_ru", "tr_tr", "zh_cn")
+LOCALES = ("fr_fr", "de_de", "es_es", "pt_br", "nl_nl", "it_it", "pl_pl", "ru_ru", "tr_tr", "zh_cn", "cs_cz")
 BASE = "https://raw.githubusercontent.com/ibarn-Recreational/ibarn-origins-addon/{ref}/common/src/main/resources/assets/ibarnorigins/lang/{locale}.json"
 PLACEHOLDER_RE = re.compile(r"%(?:\d+\$)?[sd]")
 

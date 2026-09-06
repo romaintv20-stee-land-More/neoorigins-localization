@@ -109,6 +109,7 @@ def main():
             raise SystemExit("Origins Backgrounds audit failed: upstream en_us.json is missing")
         official_locales = {locale: read_locale(jar, namespace, locale) for locale in LOCALES}
 
+    (out_dir / "upstream_en_us.json").write_text(json.dumps(en, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     pack_lang = PACK_ROOT / namespace / "lang"
     report = {
         "upstream": "Origins: Backgrounds for NeoOrigins",

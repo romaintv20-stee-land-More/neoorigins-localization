@@ -1,0 +1,53 @@
+name: Audit Czech Medieval Origins
+
+on:
+  push:
+    branches:
+      - release/0.8.0-czech
+    paths:
+      - .github/workflows/audit-czech-medieval.yml
+      - scripts/audit_medievalorigins_upstream.py
+      - src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins_cs_*/lang/cs_cz.json
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate localization JSON
+        run: python3 scripts/validate.py
+      - name: Audit Czech Medieval Origins
+        run: python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --output build/czech-medieval-audit --fail-on-overlap --fail-on-missing --fail-on-placeholders
+      - name: Verify exact Czech key count
+        run: |
+          python3 - <<'PY'
+          import glob, json, re, urllib.request
+          url = 'https://raw.githubusercontent.com/muon-rw/Medieval-Origins-Revival/1.21.1-fabric/src/main/resources/assets/medievalorigins/lang/en_us.json'
+          with urllib.request.urlopen(url) as r:
+              en = json.load(r)
+          cs = {}
+          files = sorted(glob.glob('src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins_cs_*/lang/cs_cz.json'))
+          assert len(files) == 6, files
+          for path in files:
+              with open(path, encoding='utf-8') as f:
+                  data = json.load(f)
+              overlap = set(cs) & set(data)
+              assert not overlap, (path, sorted(overlap)[:10])
+              cs.update(data)
+          assert len(en) == 401, len(en)
+          assert set(cs) == set(en), (len(cs), len(en), sorted(set(en)-set(cs))[:10], sorted(set(cs)-set(en))[:10])
+          token = re.compile(r'%(?:\d+\$)?[sd]')
+          errors = []
+          for key in en:
+              a = sorted(token.findall(str(en[key])))
+              b = sorted(token.findall(str(cs[key])))
+              if a != b:
+                  errors.append((key, a, b))
+          assert not errors, errors[:20]
+          print(f'Czech Medieval Origins: {len(cs)}/{len(en)} keys; 6 files; placeholders OK')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: czech-medieval-audit
+          path: build/czech-medieval-audit

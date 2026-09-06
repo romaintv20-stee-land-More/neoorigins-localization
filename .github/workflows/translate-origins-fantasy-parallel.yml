@@ -1,0 +1,140 @@
+name: Translate Origins Fantasy Parallel
+
+on:
+  push:
+    branches: [ work/070-origins-fantasy ]
+  workflow_dispatch:
+
+jobs:
+  translate:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - locale: fr_fr
+            target: fra_Latn
+            requires: Nécessite
+          - locale: de_de
+            target: deu_Latn
+            requires: Benötigt
+          - locale: es_es
+            target: spa_Latn
+            requires: Requiere
+          - locale: pt_br
+            target: por_Latn
+            requires: Requer
+          - locale: nl_nl
+            target: nld_Latn
+            requires: Vereist
+          - locale: it_it
+            target: ita_Latn
+            requires: Richiede
+          - locale: pl_pl
+            target: pol_Latn
+            requires: Wymaga
+          - locale: ru_ru
+            target: rus_Cyrl
+            requires: Требуется
+          - locale: tr_tr
+            target: tur_Latn
+            requires: Gerektirir
+          - locale: zh_cn
+            target: zho_Hans
+            requires: 需要
+    runs-on: ubuntu-latest
+    name: Translate ${{ matrix.locale }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install 'torch>=2.4' 'transformers>=4.46,<5' sentencepiece
+      - name: Translate locale
+        env:
+          LOCALE: ${{ matrix.locale }}
+          TARGET: ${{ matrix.target }}
+          REQUIRES: ${{ matrix.requires }}
+        run: |
+          python3 - <<'PY'
+          import html, json, os, re, urllib.request, zipfile
+          from pathlib import Path
+          import torch
+          from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
+
+          locale = os.environ['LOCALE']
+          target = os.environ['TARGET']
+          requires = os.environ['REQUIRES']
+          project_url = 'https://www.curseforge.com/minecraft/mc-mods/origins-fantsy-neoorigins/files/all?page=1&pageSize=50'
+          req = urllib.request.Request(project_url, headers={'User-Agent': 'Mozilla/5.0'})
+          text = urllib.request.urlopen(req, timeout=30).read().decode('utf-8', 'replace')
+          name = 'Origins-Fantasy-1.21.1-NeoOrigins-1.1.3.jar'
+          candidates = []
+          for pos in [m.start() for m in re.finditer(re.escape(name), text)]:
+              chunk = text[max(0, pos-4000):pos+1000]
+              ids = re.findall(r'/files/(\d+)', chunk)
+              if ids:
+                  candidates.append(ids[-1])
+          if not candidates:
+              raise SystemExit('Could not find current CurseForge file id')
+          file_id = candidates[0]
+          a, b = file_id[:-3], file_id[-3:]
+          urls = [
+              f'https://edge.forgecdn.net/files/{a}/{b}/{name}',
+              f'https://mediafilez.forgecdn.net/files/{a}/{b}/{name}',
+          ]
+          data = None
+          for url in urls:
+              try:
+                  req = urllib.request.Request(url, headers={'User-Agent':'Mozilla/5.0','Referer':'https://www.curseforge.com/','Accept':'*/*'})
+                  x = urllib.request.urlopen(req, timeout=60).read()
+                  if x[:2] == b'PK': data=x; break
+              except Exception as exc:
+                  print(type(exc).__name__, exc)
+          if data is None:
+              raise SystemExit('Unable to download Origins Fantasy JAR')
+          with zipfile.ZipFile(__import__('io').BytesIO(data)) as z:
+              en = json.loads(z.read('assets/origins_fantasy/lang/en_us.json').decode('utf-8'))
+
+          torch.set_num_threads(2)
+          model_name='facebook/nllb-200-distilled-600M'
+          tok=AutoTokenizer.from_pretrained(model_name, src_lang='eng_Latn')
+          model=AutoModelForSeq2SeqLM.from_pretrained(model_name)
+          model.eval()
+          bos=tok.convert_tokens_to_ids(target)
+
+          def protect(s):
+              return (s.replace("Iron's Spells n Spellbooks", 'IRONSSPELLSBOOKS')
+                       .replace('Somake Spells', 'SOMAKESPELLS')
+                       .replace('y=50', 'YLEVELFIFTY')
+                       .replace('y level zero', 'YLEVELZERO')
+                       .replace('TNT', 'TNTTOKEN'))
+          def restore(s):
+              return (s.replace('IRONSSPELLSBOOKS', "Iron's Spells n Spellbooks")
+                       .replace('SOMAKESPELLS', 'Somake Spells')
+                       .replace('YLEVELFIFTY', 'y=50')
+                       .replace('YLEVELZERO', 'y level zero')
+                       .replace('TNTTOKEN', 'TNT'))
+
+          items=list(en.items()); out={}
+          for start in range(0,len(items),48):
+              batch=items[start:start+48]
+              enc=tok([protect(v) for _,v in batch],return_tensors='pt',padding=True,truncation=True,max_length=192)
+              with torch.inference_mode():
+                  gen=model.generate(**enc,forced_bos_token_id=bos,max_new_tokens=128,num_beams=1)
+              vals=tok.batch_decode(gen,skip_special_tokens=True)
+              for (key,src),val in zip(batch,vals):
+                  val=restore(val.strip())
+                  if "Iron's Spells n Spellbooks" in src:
+                      val=re.sub(r'\([^)]*Iron\'s Spells n Spellbooks[^)]*\)', f"({requires} Iron's Spells n Spellbooks)", val)
+                  if 'Somake Spells' in src:
+                      val=re.sub(r'\([^)]*Somake Spells[^)]*\)', f"({requires} Somake Spells)", val)
+                  out[key]=val
+          path=Path('build')/f'{locale}.json'; path.parent.mkdir(exist_ok=True)
+          path.write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(locale,len(out))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: origins-fantasy-${{ matrix.locale }}-${{ github.sha }}
+          path: build/${{ matrix.locale }}.json
+          if-no-files-found: error

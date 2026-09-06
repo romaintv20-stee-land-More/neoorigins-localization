@@ -1,0 +1,46 @@
+name: Finalize 26.2 locale port
+
+on:
+  push:
+    branches: [ work/070-26-2-locales ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: work/070-26-2-locales
+          fetch-depth: 0
+
+      - name: Update metadata and clean temporary files
+        run: python3 scripts/finalize_26_2_locales.py
+
+      - name: Validate localization files
+        run: python3 scripts/validate.py
+
+      - name: Audit 26.2 ten-language coverage
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py \
+            --ref 26.2 \
+            --output build/upstream-audit-mc-26.2 \
+            --locale fr_fr --locale nl_nl --locale es_es --locale de_de --locale pt_br \
+            --locale it_it --locale pl_pl --locale ru_ru --locale tr_tr --locale zh_cn \
+            --extra-namespace neoorigins_26_2 \
+            --fallback-namespace-glob 'neoorigins_tr_*' \
+            --fail-on-overlap --fail-on-missing
+
+      - name: Remove temporary finalizer and commit
+        run: |
+          rm -f scripts/finalize_26_2_locales.py .github/workflows/finalize-26-2-locales.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if ! git diff --cached --quiet; then
+            git commit -m "Finalize 0.7.0 support for Minecraft 26.2"
+            git push origin HEAD:work/070-26-2-locales
+          fi

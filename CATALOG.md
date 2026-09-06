@@ -6,7 +6,7 @@
 |---|---|---:|---|---|
 | 1.21.1 | `0.7.0-beta+1.21.1` | 21 | neoorigins, medievalorigins, ibarnorigins, origins_fantasy | Non |
 | 26.1.x | `0.7.0-beta+26.1` | 25 | neoorigins | Non |
-| 26.2 | `0.6.0-beta+26.2` | 25 | neoorigins | Oui |
+| 26.2 | `0.7.0-beta+26.2` | 25 | neoorigins | Non |
 
 ## Projets et langues
 

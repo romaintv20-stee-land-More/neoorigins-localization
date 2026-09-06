@@ -6,7 +6,7 @@
 |---|---:|---|---|---|
 | Minecraft 1.21.1 | 21 | 2.2.25 | NeoOrigins + Medieval Origins Revival + ibarn + Origins Fantasy | Build/CI à valider, puis test final en jeu |
 | Minecraft 26.1.x | 25 | 2.2.25 | NeoOrigins uniquement, 10 langues en 0.7.0 | Base validée en jeu sur 26.1.2 ; nouvelles langues à contrôler visuellement |
-| Minecraft 26.2 | 25 | 2.2.25 | NeoOrigins uniquement + delta 26.2 | Validé en jeu |
+| Minecraft 26.2 | 25 | 2.2.25 | NeoOrigins uniquement + delta 26.2, 10 langues en 0.7.0 | Base validée en jeu ; nouvelles langues à contrôler visuellement |
 
 ## Priorité du fallback
 
@@ -32,9 +32,9 @@ Installer la version NeoForge 1.7.1 dans `mods/`. Vérifier Ghaster, Sand Person
 
 Installer Origins Fantasy 1.1.3 avec NeoOrigins et NeoOrigins Localization. Vérifier au moins plusieurs Origins, leurs noms, descriptions et pouvoirs dans plusieurs des dix langues. L'audit automatisé doit d'abord confirmer 240/240 clés, zéro overlap, zéro clé manquante et zéro erreur de placeholder. La validation en jeu spécifique à cette nouvelle intégration reste distincte de l'audit structurel.
 
-## Minecraft 26.2
+## Langues Minecraft 26.2
 
-Vérifier que le delta `neoorigins_26_2` est chargé sur 26.2 et absent des builds plus anciens. Le chargement et la localisation ont déjà été validés en jeu sur 26.2.
+Le build `0.7.0-beta+26.2` doit proposer `fr_fr`, `de_de`, `es_es`, `pt_br`, `nl_nl`, `it_it`, `pl_pl`, `ru_ru`, `tr_tr` et `zh_cn`. Vérifier que le delta `neoorigins_26_2` est chargé sur 26.2 et absent des builds plus anciens. Pour `it_it`, `pl_pl`, `ru_ru` et `zh_cn`, les traductions officielles 26.2 restent prioritaires et notre fallback ne doit fournir que les 120 clés absentes. Pour `tr_tr`, vérifier que les namespaces `neoorigins_tr_*` et le delta de 14 clés couvrent ensemble les 2 292 clés. La base 26.2 a déjà été validée en jeu ; faire un contrôle visuel des nouvelles langues de la 0.7.0.
 
 ## Absence des add-ons dans les builds 26.x
 
@@ -43,7 +43,8 @@ Les JAR 26.1.x et 26.2 ne doivent contenir aucun fichier sous :
 - `assets/medievalorigins/**` et `assets/medievalorigins_*/**` ;
 - `assets/ibarnorigins/**` ;
 - `assets/origins_fantasy/**` ;
-- les namespaces d'expansion 1.21.1 `assets/neoorigins_121_batch1/**` et `assets/neoorigins_tr_*/**`.
+
+Les JAR 26.x doivent toujours exclure les add-ons ci-dessus. Pour les ressources NeoOrigins spécifiques : le JAR 26.1.x inclut `neoorigins_121_batch1/**` et `neoorigins_tr_*/**` mais exclut `neoorigins_26_2/**` ; le JAR 26.2 exclut `neoorigins_121_batch1/**`, inclut `neoorigins_tr_*/**` pour le turc et inclut `neoorigins_26_2/**` pour son delta dédié.
 
 ## Client uniquement
 

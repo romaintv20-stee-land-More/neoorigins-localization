@@ -20,6 +20,7 @@ jobs:
             loader_range: '[1,)'
             parchment: 'true'
             pack_format: '34'
+            source_variant: 'mc1_21_1'
             upstream_ref: '1.21.1'
             mod_version: '0.6.0-beta+1.21.1'
             audit_addons: true
@@ -32,6 +33,7 @@ jobs:
             loader_range: '[4,)'
             parchment: 'false'
             pack_format: '84'
+            source_variant: 'mc26_1'
             upstream_ref: 'v2.2.25'
             mod_version: '0.6.0-beta+26.1'
             audit_addons: false
@@ -88,6 +90,7 @@ jobs:
             "-Pjava_version=${{ matrix.java }}" \
             "-Puse_parchment=${{ matrix.parchment }}" \
             "-Presource_pack_format=${{ matrix.pack_format }}" \
+            "-Psource_variant=${{ matrix.source_variant }}" \
             "-Pminecraft_version=${{ matrix.minecraft }}" \
             "-Pminecraft_version_range=${{ matrix.minecraft_range }}" \
             "-Pneo_version=${{ matrix.neoforge }}" \

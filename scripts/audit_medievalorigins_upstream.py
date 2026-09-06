@@ -111,6 +111,7 @@ def main():
         overlap = sorted(set(fallback) & set(official))
         stale = sorted(set(fallback) - set(en))
         missing = sorted(set(missing_upstream) - set(fallback))
+        missing_en = {key: missing_upstream[key] for key in missing}
 
         placeholder_errors = []
         for key in sorted(set(fallback) & set(en)):
@@ -125,12 +126,14 @@ def main():
             overlap = sorted(set(fallback) & set(official))
             stale = sorted(set(fallback) - set(en))
             missing = sorted(set(missing_upstream) - set(fallback))
+            missing_en = {key: missing_upstream[key] for key in missing}
 
         any_overlap |= bool(overlap)
         any_missing |= bool(missing)
         any_placeholder_error |= bool(placeholder_errors)
 
         (out_dir / f"{locale}_missing_keys.json").write_text(json.dumps(missing, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        (out_dir / f"{locale}_missing_en.json").write_text(json.dumps(missing_en, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         (out_dir / f"{locale}_overlap.json").write_text(json.dumps(overlap, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         (out_dir / f"{locale}_placeholder_errors.json").write_text(json.dumps(placeholder_errors, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
@@ -162,7 +165,7 @@ def main():
         failures.append("fallback overlap with upstream translations")
     if args.fail_on_missing and any_missing:
         failures.append("missing fallback translations")
-    if args.fail_on_placeholders and any_placeholder_error:
+    if args.fail-on-placeholders and any_placeholder_error:
         failures.append("placeholder mismatch")
     if failures:
         raise SystemExit("Medieval Origins audit failed: " + "; ".join(failures))

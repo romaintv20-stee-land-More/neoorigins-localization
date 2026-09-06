@@ -7,50 +7,96 @@ on:
 
 jobs:
   build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: mc-1.21.1
+            minecraft: '1.21.1'
+            minecraft_range: '[1.21.1]'
+            java: '21'
+            gradle: '8.14.3'
+            neoforge: '21.1.248'
+            loader_range: '[1,)'
+            parchment: 'true'
+            pack_format: '34'
+            upstream_ref: '1.21.1'
+            mod_version: '0.6.0-beta+1.21.1'
+            audit_addons: true
+          - target: mc-26.1.x
+            minecraft: '26.1.2'
+            minecraft_range: '[26.1,26.2)'
+            java: '25'
+            gradle: '9.4.1'
+            neoforge: '26.1.2.29-beta'
+            loader_range: '[4,)'
+            parchment: 'false'
+            pack_format: '84'
+            upstream_ref: 'v2.2.25'
+            mod_version: '0.6.0-beta+26.1'
+            audit_addons: false
+
     runs-on: ubuntu-latest
+    name: Build ${{ matrix.target }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Java 21
+      - name: Set up Java ${{ matrix.java }}
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '21'
+          java-version: ${{ matrix.java }}
 
-      - name: Set up Gradle
+      - name: Set up Gradle ${{ matrix.gradle }}
         uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: '8.14.3'
+          gradle-version: ${{ matrix.gradle }}
 
       - name: Audit NeoOrigins upstream locales
-        run: python3 scripts/audit_neoorigins_upstream.py --ref v2.2.25 --fail-on-overlap
+        run: >-
+          python3 scripts/audit_neoorigins_upstream.py
+          --ref "${{ matrix.upstream_ref }}"
+          --output "build/upstream-audit-${{ matrix.target }}"
+          --fail-on-overlap
 
       - name: Audit Medieval Origins upstream locales
+        if: matrix.audit_addons
         run: python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --fail-on-overlap --fail-on-missing --fail-on-placeholders
 
       - name: Audit ibarn origins upstream locales
+        if: matrix.audit_addons
         run: python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --fail-on-overlap --fail-on-missing --fail-on-placeholders
 
       - name: Upload upstream locale audits
         uses: actions/upload-artifact@v4
         with:
-          name: upstream-localization-audits-${{ github.sha }}
+          name: upstream-localization-audits-${{ matrix.target }}-${{ github.sha }}
           path: |
-            build/upstream-audit
+            build/upstream-audit-${{ matrix.target }}
             build/medievalorigins-upstream-audit
             build/ibarnorigins-upstream-audit
-          if-no-files-found: error
+          if-no-files-found: warn
 
       - name: Validate localization files
         run: python3 scripts/validate.py
 
       - name: Build mod
-        run: gradle build --stacktrace
+        run: |
+          gradle build --stacktrace \
+            "-Pjava_version=${{ matrix.java }}" \
+            "-Puse_parchment=${{ matrix.parchment }}" \
+            "-Presource_pack_format=${{ matrix.pack_format }}" \
+            "-Pminecraft_version=${{ matrix.minecraft }}" \
+            "-Pminecraft_version_range=${{ matrix.minecraft_range }}" \
+            "-Pneo_version=${{ matrix.neoforge }}" \
+            "-Ploader_version_range=${{ matrix.loader_range }}" \
+            "-Pmod_version=${{ matrix.mod_version }}"
 
       - name: Upload JAR
         uses: actions/upload-artifact@v4
         with:
-          name: neoorigins-localization-${{ github.sha }}
+          name: neoorigins-localization-${{ matrix.target }}-${{ github.sha }}
           path: build/libs/*.jar
           if-no-files-found: error

@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PACK = ROOT / "src/main/resources/resourcepacks/fallback_localizations"
 PACK_ASSETS = PACK / "assets"
 PACK_LANG = PACK_ASSETS / "neoorigins/lang"
-DEFAULT_REF = "v2.2.25"
+DEFAULT_REF = "v2.2.26"
 DEFAULT_LOCALES = ("fr_fr", "nl_nl", "es_es", "de_de", "pt_br")
 BASE = "https://raw.githubusercontent.com/CyberDay1/NeoOrigins/{ref}/src/main/resources/assets/neoorigins/lang/{locale}.json"
 

@@ -45,3 +45,22 @@ jobs:
           python3 scripts/audit_origins_classes_extended_upstream.py
           python3 scripts/audit_origins_classes_iss_upstream.py
           python3 scripts/audit_origin_architect_upstream.py
+
+      - name: Upload Ukrainian preparation data
+        uses: actions/upload-artifact@v4
+        with:
+          name: ukrainian-preparation
+          path: |
+            build/uk-1211
+            build/uk-261
+            build/uk-262
+            build/medievalorigins-upstream-audit
+            build/ibarnorigins-upstream-audit
+            build/origins-fantasy-upstream-audit
+            build/origins-backgrounds-upstream-audit
+            build/origins-more-backgrounds-upstream-audit
+            build/origins-backgrounds-iss-upstream-audit
+            build/origins-furries-upstream-audit
+            build/origins-classes-extended-upstream-audit
+            build/origins-classes-iss-upstream-audit
+            build/origin-architect-upstream-audit

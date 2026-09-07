@@ -229,12 +229,12 @@ jobs:
           echo "Japanese localization files in ${{ matrix.target }}: $JA_COUNT"
           test "$JA_COUNT" -gt 0
 
-          ADDON_PATTERN='^assets/(medievalorigins|medievalorigins_[^/]*|ibarnorigins|origins_fantasy|origins_backgrounds|origins_backgrounds_two|origins_backgrounds_iss|origins_furries|origins_classes_ex|origins_classes_iss|originsmodernui)/'
+          ADDON_PATTERN='(^|/)assets/(medievalorigins|medievalorigins_[^/]*|ibarnorigins|origins_fantasy|origins_backgrounds|origins_backgrounds_two|origins_backgrounds_iss|origins_furries|origins_classes_ex|origins_classes_iss|originsmodernui)/'
 
           if [ "${{ matrix.include_addon_translations }}" = "true" ]; then
-            grep -Eq '^assets/medievalorigins_ja_[^/]*/lang/ja_jp\.json$' build/jar-contents-${{ matrix.target }}.txt
+            grep -Eq '(^|/)assets/medievalorigins_ja_[^/]*/lang/ja_jp\.json$' build/jar-contents-${{ matrix.target }}.txt
             for ns in ibarnorigins origins_fantasy origins_backgrounds origins_backgrounds_two origins_backgrounds_iss origins_furries origins_classes_ex origins_classes_iss originsmodernui; do
-              grep -q "^assets/$ns/lang/ja_jp.json$" build/jar-contents-${{ matrix.target }}.txt
+              grep -Eq "(^|/)assets/$ns/lang/ja_jp.json$" build/jar-contents-${{ matrix.target }}.txt
             done
             echo "Japanese addon packaging verified for ${{ matrix.target }}."
           else

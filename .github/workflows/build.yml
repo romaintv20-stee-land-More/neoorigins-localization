@@ -2,7 +2,7 @@ name: Build NeoOrigins Localization
 
 on:
   push:
-    branches: [ main, release/0.8.0-japanese, release/0.8.0-korean ]
+    branches: [ main, release/0.8.0-japanese, release/0.8.0-korean, release/0.8.0-ukrainian ]
   pull_request:
     branches: [ main ]
   workflow_dispatch:
@@ -26,7 +26,7 @@ jobs:
             upstream_ref: '860ecdb24e723983e93004ea8ceb5de90ccf0d70'
             mod_version: '0.8.0-beta+1.21.1'
             audit_addons: true
-            audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz hu_hu ja_jp ko_kr'
+            audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz hu_hu ja_jp ko_kr uk_ua'
             audit_extra_namespace: 'neoorigins_121_batch1'
             audit_226_namespace: 'neoorigins_226'
             audit_26_1_namespace: ''
@@ -51,7 +51,7 @@ jobs:
             upstream_ref: '3c1c7365507679c836d3c14af5d4dd0654652e87'
             mod_version: '0.8.0-beta+26.1'
             audit_addons: false
-            audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz hu_hu ja_jp ko_kr'
+            audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz hu_hu ja_jp ko_kr uk_ua'
             audit_extra_namespace: 'neoorigins_121_batch1'
             audit_226_namespace: 'neoorigins_226'
             audit_26_1_namespace: 'neoorigins_26_1'
@@ -76,7 +76,7 @@ jobs:
             upstream_ref: '65864716a5a796fa1c51ec3e8a6d9640abebb4ca'
             mod_version: '0.8.0-beta+26.2'
             audit_addons: false
-            audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz hu_hu ja_jp ko_kr'
+            audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz hu_hu ja_jp ko_kr uk_ua'
             audit_extra_namespace: 'neoorigins_26_2'
             audit_226_namespace: 'neoorigins_226'
             audit_26_1_namespace: ''
@@ -267,6 +267,32 @@ jobs:
             if grep -Eq "$ADDON_PATTERN" build/jar-contents-ko-${{ matrix.target }}.txt; then
               echo "Unexpected 1.21.1 addon localization found in ${{ matrix.target }}"
               grep -E "$ADDON_PATTERN" build/jar-contents-ko-${{ matrix.target }}.txt | head -n 50
+              exit 1
+            fi
+            echo "No 1.21.1 addon namespaces packaged in ${{ matrix.target }}."
+          fi
+
+      - name: Verify packaged Ukrainian localizations
+        run: |
+          JAR=$(find build/libs -type f -name '*.jar' ! -name '*-sources.jar' | head -n 1)
+          test -n "$JAR"
+          jar tf "$JAR" > build/jar-contents-uk-${{ matrix.target }}.txt
+          UK_COUNT=$(grep -cE '(^|/)lang/uk_ua\.json$' build/jar-contents-uk-${{ matrix.target }}.txt || true)
+          echo "Ukrainian localization files in ${{ matrix.target }}: $UK_COUNT"
+          test "$UK_COUNT" -gt 0
+
+          ADDON_PATTERN='(^|/)assets/(medievalorigins|medievalorigins_[^/]*|ibarnorigins|origins_fantasy|origins_backgrounds|origins_backgrounds_two|origins_backgrounds_iss|origins_furries|origins_classes_ex|origins_classes_iss|originsmodernui)/'
+
+          if [ "${{ matrix.include_addon_translations }}" = "true" ]; then
+            grep -Eq '(^|/)assets/medievalorigins/lang/uk_ua\.json$' build/jar-contents-uk-${{ matrix.target }}.txt
+            for ns in ibarnorigins origins_fantasy origins_backgrounds origins_backgrounds_two origins_backgrounds_iss origins_furries origins_classes_ex origins_classes_iss originsmodernui; do
+              grep -Eq "(^|/)assets/$ns/lang/uk_ua.json$" build/jar-contents-uk-${{ matrix.target }}.txt
+            done
+            echo "Ukrainian addon packaging verified for ${{ matrix.target }}."
+          else
+            if grep -Eq "$ADDON_PATTERN" build/jar-contents-uk-${{ matrix.target }}.txt; then
+              echo "Unexpected 1.21.1 addon localization found in ${{ matrix.target }}"
+              grep -E "$ADDON_PATTERN" build/jar-contents-uk-${{ matrix.target }}.txt | head -n 50
               exit 1
             fi
             echo "No 1.21.1 addon namespaces packaged in ${{ matrix.target }}."

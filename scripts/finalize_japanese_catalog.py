@@ -11,6 +11,7 @@ s = p.read_text(encoding="utf-8")
 s = s.replace("| 21 | 12 |", "| 21 | 13 |")
 s = s.replace("| 25 | 12 |", "| 25 | 13 |")
 s = s.replace("**Hongrois (`hu_hu`)**.", "**Hongrois (`hu_hu`)** et **Japonais (`ja_jp`)**.")
+s = s.replace("**Tchèque (`cs_cz`)** et **Hongrois (`hu_hu`)** et **Japonais (`ja_jp`)**.", "**Tchèque (`cs_cz`)**, **Hongrois (`hu_hu`)** et **Japonais (`ja_jp`)**.")
 s = s.replace("Les douze langues sont disponibles", "Les treize langues sont disponibles")
 s = s.replace("| Projet | Version/référence | Couverture CS / HU | Couverture effective par langue |", "| Projet | Version/référence | Couverture CS / HU / JA | Couverture effective par langue |")
 rows = {
@@ -72,4 +73,13 @@ for project in data.get("supported_projects", []):
         comp["note"] = comp["note"].replace("douze langues", "treize langues")
 p.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
-print("README.md, CATALOG.md and catalog.json finalized for ja_jp / 13 locales")
+# Main build workflow: make the thirteenth locale part of the normal release audit
+# and run the full matrix on the active release branch while it is being prepared.
+p = ROOT / ".github/workflows/build.yml"
+s = p.read_text(encoding="utf-8")
+s = s.replace("branches: [ main ]", "branches: [ main, release/0.8.0-japanese ]", 1)
+s = s.replace("audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz hu_hu'",
+              "audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz hu_hu ja_jp'")
+p.write_text(s, encoding="utf-8")
+
+print("README.md, CATALOG.md, catalog.json and build.yml finalized for ja_jp / 13 locales")

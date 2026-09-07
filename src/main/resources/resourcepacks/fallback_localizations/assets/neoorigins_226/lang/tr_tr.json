@@ -1,0 +1,17 @@
+{
+  "gui.neoorigins.picker.position": "%s / %s",
+  "gui.neoorigins.picker.back_to_grid": "< Izgara",
+  "gui.neoorigins.picker.no_results": "Aramanla eşleşen köken yok",
+  "power.neoorigins.caveborn_eat_copper.name": "Bakır Damak",
+  "power.neoorigins.caveborn_eat_copper.description": "Bakır külçesi, ham bakır, bakır cevheri, derin kayrak bakır cevheri ve ham bakır bloğu yiyebilir — taş ile demir arasında hafif bir öğün. Mide doluyken yenemez.",
+  "power.neoorigins.caveborn_eat_emerald.name": "Zümrüt Damak",
+  "power.neoorigins.caveborn_eat_emerald.description": "Zümrüt, zümrüt cevheri ve derin kayrak zümrüt cevheri yiyebilir — netheritten sonraki en zengin öğün. Mide doluyken yenemez.",
+  "power.neoorigins.caveborn_copper_bonus.name": "Bakır Patinası Akciğerleri",
+  "power.neoorigins.caveborn_copper_bonus.description": "Bakır yemek 60 saniyeliğine Suda Nefes Alma I verir.",
+  "power.neoorigins.caveborn_emerald_bonus.name": "Zümrüt Molası",
+  "power.neoorigins.caveborn_emerald_bonus.description": "Zümrüt yemek 5 dakikalığına Ateş Direnci verir — güneş ışığı seni hâlâ tutuşturur, ancak artık yakamaz.",
+  "power.neoorigins.step_assist_switch.name": "Basamak Yardımı",
+  "power.neoorigins.step_assist_switch.description": "Bloklara otomatik çıkma yeteneğini açar veya kapatır. Kapalıyken bloklara herkes gibi zıplayarak çıkarsın.",
+  "neoorigins.configuration.ui.picker_layout": "Seçici düzeni",
+  "neoorigins.configuration.picker_layout": "Seçici düzeni"
+}

@@ -1,0 +1,26 @@
+name: Audit Hungarian Origins Classes ISS
+
+on:
+  push:
+    branches:
+      - release/0.8.0-hungarian
+    paths:
+      - .github/workflows/audit-hungarian-classes-iss.yml
+      - scripts/audit_origins_classes_iss_upstream.py
+      - src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/hu_hu.json
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: release/0.8.0-hungarian
+      - name: Audit Classes ISS Hungarian
+        run: |
+          python3 scripts/audit_origins_classes_iss_upstream.py \
+            --file-id 8592095 \
+            --filename Origins-Classes-ISS-1.21.1-NeoOrigins-1.0.1.jar \
+            --fail-on-overlap \
+            --fail-on-missing \
+            --fail-on-placeholders

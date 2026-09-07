@@ -195,9 +195,9 @@ def main():
     failures = []
     if args.fail_on_overlap and any_overlap:
         failures.append("fallback overlap with upstream translations")
-    if args.fail_on-missing and any_missing:
+    if args.fail_on_missing and any_missing:
         failures.append("missing fallback translations")
-    if args.fail_on-placeholders and any_placeholder_error:
+    if args.fail_on_placeholders and any_placeholder_error:
         failures.append("placeholder mismatch")
     if failures:
         raise SystemExit("Origins More Backgrounds audit failed: " + "; ".join(failures))

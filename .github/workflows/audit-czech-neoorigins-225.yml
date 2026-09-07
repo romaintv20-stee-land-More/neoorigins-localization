@@ -1,0 +1,43 @@
+name: Audit Czech NeoOrigins 2.2.25
+
+on:
+  push:
+    branches:
+      - release/0.8.0-czech
+    paths:
+      - .github/workflows/audit-czech-neoorigins-225.yml
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: mc-1.21.1
+            upstream_ref: 2b409f3f9c27250665895cf3d0faa3f7adf9c4ac
+            extra_namespace: neoorigins_121_batch1
+            namespace_glob: neoorigins_tr_*
+          - target: mc-26.1.x
+            upstream_ref: v2.2.25
+            extra_namespace: neoorigins_121_batch1
+            namespace_glob: neoorigins_tr_*
+          - target: mc-26.2
+            upstream_ref: 86038d2d1b429255897c2bdac9097ecc50e07215
+            extra_namespace: neoorigins_26_2
+            namespace_glob: neoorigins_tr_*
+    steps:
+      - uses: actions/checkout@v4
+      - name: Audit Czech NeoOrigins 2.2.25
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py \
+            --ref "${{ matrix.upstream_ref }}" \
+            --locale cs_cz \
+            --extra-namespace "${{ matrix.extra_namespace }}" \
+            --fallback-namespace-glob "${{ matrix.namespace_glob }}" \
+            --output "build/czech-neoorigins-${{ matrix.target }}" \
+            --fail-on-overlap \
+            --fail-on-missing
+      - name: Show report
+        run: cat "build/czech-neoorigins-${{ matrix.target }}/report.json"

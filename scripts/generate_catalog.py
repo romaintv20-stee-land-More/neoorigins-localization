@@ -63,10 +63,11 @@ lines.extend([
     "",
     "## Notes",
     "",
+    "- Les onze langues ciblées sont : fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn et cs_cz.",
     "- Les builds 26.x n'embarquent actuellement que les traductions NeoOrigins.",
-    "- Medieval Origins Revival, ibarn's quartet origins addon et Origins Fantasy for NeoOrigins restent inclus uniquement dans le build 1.21.1 tant que leur compatibilité NeoForge 26.x n'est pas validée.",
-    "- Les traductions officielles de NeoOrigins gardent toujours la priorité ; notre pack ne fournit que les clés manquantes.",
-    "- La cible 26.2 utilise un delta de localisation dédié pour couvrir les nouvelles clés sans les ajouter aux builds plus anciens.",
+    "- Tous les add-ons listés restent inclus uniquement dans le build 1.21.1 tant que leur compatibilité NeoForge 26.x n'est pas validée.",
+    "- Les traductions officielles des projets amont gardent toujours la priorité ; notre pack ne fournit que les clés manquantes.",
+    "- La cible 26.2 utilise un delta de localisation dédié ; le tchèque y ajoute 14 clés à ses 19 fichiers NeoOrigins communs.",
 ])
 
 (ROOT / "CATALOG.md").write_text("\n".join(lines) + "\n", encoding="utf-8")

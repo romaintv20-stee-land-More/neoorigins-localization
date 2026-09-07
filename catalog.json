@@ -11,7 +11,7 @@
     ],
     "loader": "NeoForge",
     "localization_mode": "low_priority_fallback",
-    "supported_locale_count": 12,
+    "supported_locale_count": 13,
     "builds": {
       "1.21.1": {
         "version": "0.8.0-beta+1.21.1",
@@ -212,6 +212,15 @@
             "26.1.x",
             "26.2"
           ]
+        },
+        "ja_jp": {
+          "name": "日本語",
+          "status": "supported",
+          "targets": [
+            "1.21.1",
+            "26.1.x",
+            "26.2"
+          ]
         }
       }
     },
@@ -233,7 +242,7 @@
           "1.21.1"
         ],
         "in_game_validation": "validated",
-        "note": "401/401 clés anglaises couvertes dans les douze langues ; absent des builds 26.x."
+        "note": "401/401 clés anglaises couvertes dans les treize langues ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 401,
@@ -292,6 +301,11 @@
         "hu_hu": {
           "name": "Magyar",
           "status": "supported"
+        },
+        "ja_jp": {
+          "name": "日本語",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/ja_jp.json"
         }
       }
     },
@@ -311,7 +325,7 @@
         "version": "1.7.1 / Minecraft 1.21.1",
         "source_ref": "multiloader-1.21.1-new-pack-format",
         "in_game_validation": "validated",
-        "note": "69/69 clés anglaises couvertes dans les douze langues ; absent des builds 26.x."
+        "note": "69/69 clés anglaises couvertes dans les treize langues ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 69,
@@ -377,6 +391,11 @@
           "name": "Magyar",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/hu_hu.json"
+        },
+        "ja_jp": {
+          "name": "日本語",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/ja_jp.json"
         }
       }
     },
@@ -464,6 +483,11 @@
           "name": "Magyar",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/hu_hu.json"
+        },
+        "ja_jp": {
+          "name": "日本語",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/ja_jp.json"
         }
       }
     },
@@ -485,7 +509,7 @@
           "1.21.1"
         ],
         "in_game_validation": "pending",
-        "note": "Audité contre le JAR CurseForge 8397335 ; aucune traduction officielle parmi les douze langues ciblées ; absent des builds 26.x."
+        "note": "Audité contre le JAR CurseForge 8397335 ; aucune traduction officielle parmi les treize langues ciblées ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 65,
@@ -551,6 +575,11 @@
           "name": "Magyar",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/hu_hu.json"
+        },
+        "ja_jp": {
+          "name": "日本語",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/ja_jp.json"
         }
       }
     },
@@ -640,6 +669,11 @@
           "name": "Magyar",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/hu_hu.json"
+        },
+        "ja_jp": {
+          "name": "日本語",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/ja_jp.json"
         }
       }
     },
@@ -733,6 +767,11 @@
           "name": "Magyar",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/hu_hu.json"
+        },
+        "ja_jp": {
+          "name": "日本語",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/ja_jp.json"
         }
       }
     },
@@ -757,7 +796,7 @@
           "NeoOrigins"
         ],
         "in_game_validation": "pending",
-        "note": "Audité contre le JAR CurseForge 8397352 ; aucune traduction officielle parmi les douze langues ciblées ; absent des builds 26.x."
+        "note": "Audité contre le JAR CurseForge 8397352 ; aucune traduction officielle parmi les treize langues ciblées ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 117,
@@ -823,6 +862,11 @@
           "name": "Magyar",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/hu_hu.json"
+        },
+        "ja_jp": {
+          "name": "日本語",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/ja_jp.json"
         }
       }
     },
@@ -847,7 +891,7 @@
           "NeoOrigins"
         ],
         "in_game_validation": "pending",
-        "note": "Audité contre le JAR CurseForge 8393343 ; 124/124 clés dans les douze langues ciblées ; absent des builds 26.x."
+        "note": "Audité contre le JAR CurseForge 8393343 ; 124/124 clés dans les treize langues ciblées ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 124,
@@ -913,6 +957,11 @@
           "name": "Magyar",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/hu_hu.json"
+        },
+        "ja_jp": {
+          "name": "日本語",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/ja_jp.json"
         }
       }
     },
@@ -938,7 +987,7 @@
           "Iron's Spells 'n Spellbooks"
         ],
         "in_game_validation": "pending",
-        "note": "Audité contre le JAR CurseForge 8592095 ; 99/99 clés dans les douze langues ciblées ; absent des builds 26.x."
+        "note": "Audité contre le JAR CurseForge 8592095 ; 99/99 clés dans les treize langues ciblées ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 99,
@@ -1004,6 +1053,11 @@
           "name": "Magyar",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/hu_hu.json"
+        },
+        "ja_jp": {
+          "name": "日本語",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/ja_jp.json"
         }
       }
     },
@@ -1027,7 +1081,7 @@
         "source_ref": "f58a6261292942d4123c46ff221fbdade138a329",
         "curseforge_file_id": 8568110,
         "in_game_validation": "pending",
-        "note": "22/22 clés anglaises couvertes dans les douze langues ; aucune traduction officielle détectée parmi les onze locales ciblées ; absent des builds 26.x."
+        "note": "22/22 clés anglaises couvertes dans les treize langues ; aucune traduction officielle détectée parmi les onze locales ciblées ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 22,
@@ -1093,6 +1147,11 @@
           "name": "Magyar",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/hu_hu.json"
+        },
+        "ja_jp": {
+          "name": "日本語",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/ja_jp.json"
         }
       }
     }

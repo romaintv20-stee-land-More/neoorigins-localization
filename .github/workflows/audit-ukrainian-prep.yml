@@ -1,0 +1,47 @@
+name: Audit Ukrainian preparation
+
+on:
+  push:
+    branches: [ release/0.8.0-ukrainian ]
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Audit NeoOrigins Ukrainian coverage
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref 860ecdb24e723983e93004ea8ceb5de90ccf0d70 --locale uk_ua --output build/uk-1211
+          python3 scripts/audit_neoorigins_upstream.py --ref 3c1c7365507679c836d3c14af5d4dd0654652e87 --locale uk_ua --output build/uk-261
+          python3 scripts/audit_neoorigins_upstream.py --ref 65864716a5a796fa1c51ec3e8a6d9640abebb4ca --locale uk_ua --output build/uk-262
+
+      - name: Enable Ukrainian in addon audits for this run
+        run: |
+          for f in \
+            scripts/audit_medievalorigins_upstream.py \
+            scripts/audit_ibarnorigins_upstream.py \
+            scripts/audit_origins_fantasy_upstream.py \
+            scripts/audit_origins_backgrounds_upstream.py \
+            scripts/audit_origins_more_backgrounds_upstream.py \
+            scripts/audit_origins_backgrounds_iss_upstream.py \
+            scripts/audit_origins_furries_upstream.py \
+            scripts/audit_origins_classes_extended_upstream.py \
+            scripts/audit_origins_classes_iss_upstream.py \
+            scripts/audit_origin_architect_upstream.py; do
+            sed -i 's/"ko_kr")/"ko_kr", "uk_ua")/' "$f"
+          done
+
+      - name: Audit addon Ukrainian coverage
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format
+          python3 scripts/audit_origins_fantasy_upstream.py
+          python3 scripts/audit_origins_backgrounds_upstream.py
+          python3 scripts/audit_origins_more_backgrounds_upstream.py
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py
+          python3 scripts/audit_origins_furries_upstream.py
+          python3 scripts/audit_origins_classes_extended_upstream.py
+          python3 scripts/audit_origins_classes_iss_upstream.py
+          python3 scripts/audit_origin_architect_upstream.py

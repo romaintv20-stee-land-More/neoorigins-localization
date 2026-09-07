@@ -1,0 +1,9 @@
+{
+  "gui.neoorigins.picker.position": "%s / %s",
+  "gui.neoorigins.picker.back_to_grid": "< Grille",
+  "gui.neoorigins.picker.no_results": "Aucune origine ne correspond à votre recherche",
+  "power.neoorigins.step_assist_switch.name": "Aide à la montée",
+  "power.neoorigins.step_assist_switch.description": "Active ou désactive votre capacité à monter automatiquement les blocs. Désactivée, vous devez sauter pour monter les blocs, comme tout le monde.",
+  "neoorigins.configuration.ui.picker_layout": "Disposition du sélecteur",
+  "neoorigins.configuration.picker_layout": "Disposition du sélecteur"
+}

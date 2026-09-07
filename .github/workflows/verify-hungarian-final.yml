@@ -1,0 +1,233 @@
+name: Verify Hungarian final packaging
+
+on:
+  push:
+    branches:
+      - release/0.8.0-hungarian
+    paths:
+      - .github/workflows/verify-hungarian-final.yml
+
+jobs:
+  verify:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: mc-1.21.1
+            minecraft: '1.21.1'
+            minecraft_range: '[1.21.1]'
+            java: '21'
+            gradle: '8.14.3'
+            neoforge: '21.1.248'
+            loader_range: '[1,)'
+            parchment: 'true'
+            pack_format: '34'
+            source_variant: 'mc1_21_1'
+            upstream_ref: '860ecdb24e723983e93004ea8ceb5de90ccf0d70'
+            mod_version: '0.8.0-beta+1.21.1'
+            audit_addons: true
+            audit_extra_namespace: 'neoorigins_121_batch1'
+            audit_26_1_namespace: ''
+            include_addon_translations: true
+            include_121_batch_translations: true
+            include_26_1_translations: false
+            include_26_2_translations: false
+          - target: mc-26.1.x
+            minecraft: '26.1.2'
+            minecraft_range: '[26.1,26.2)'
+            java: '25'
+            gradle: '9.4.1'
+            neoforge: '26.1.2.29-beta'
+            loader_range: '[4,)'
+            parchment: 'false'
+            pack_format: '84'
+            source_variant: 'mc26_1'
+            upstream_ref: '3c1c7365507679c836d3c14af5d4dd0654652e87'
+            mod_version: '0.8.0-beta+26.1'
+            audit_addons: false
+            audit_extra_namespace: 'neoorigins_121_batch1'
+            audit_26_1_namespace: 'neoorigins_26_1'
+            include_addon_translations: false
+            include_121_batch_translations: true
+            include_26_1_translations: true
+            include_26_2_translations: false
+          - target: mc-26.2
+            minecraft: '26.2'
+            minecraft_range: '[26.2,26.3)'
+            java: '25'
+            gradle: '9.4.1'
+            neoforge: '26.2.0.3-beta'
+            loader_range: '[4,)'
+            parchment: 'false'
+            pack_format: '84'
+            source_variant: 'mc26_1'
+            upstream_ref: '65864716a5a796fa1c51ec3e8a6d9640abebb4ca'
+            mod_version: '0.8.0-beta+26.2'
+            audit_addons: false
+            audit_extra_namespace: 'neoorigins_26_2'
+            audit_26_1_namespace: ''
+            include_addon_translations: false
+            include_121_batch_translations: false
+            include_26_1_translations: false
+            include_26_2_translations: true
+
+    runs-on: ubuntu-latest
+    name: Verify ${{ matrix.target }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: release/0.8.0-hungarian
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: ${{ matrix.gradle }}
+
+      - name: Audit NeoOrigins including Hungarian
+        run: |
+          EXTRA_ARGS=(
+            --fallback-namespace-glob 'neoorigins_tr_*'
+            --fallback-namespace-glob 'neoorigins_cs_*'
+            --fallback-namespace-glob 'neoorigins_hu_*'
+            --extra-namespace neoorigins_226
+          )
+          if [ -n "${{ matrix.audit_extra_namespace }}" ]; then
+            EXTRA_ARGS+=(--extra-namespace "${{ matrix.audit_extra_namespace }}")
+          fi
+          if [ -n "${{ matrix.audit_26_1_namespace }}" ]; then
+            EXTRA_ARGS+=(--extra-namespace "${{ matrix.audit_26_1_namespace }}")
+          fi
+          for locale in fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz hu_hu; do
+            EXTRA_ARGS+=(--locale "$locale")
+          done
+          python3 scripts/audit_neoorigins_upstream.py \
+            --ref "${{ matrix.upstream_ref }}" \
+            --output "build/upstream-audit-${{ matrix.target }}" \
+            --fail-on-overlap \
+            --fail-on-missing \
+            "${EXTRA_ARGS[@]}"
+
+      - name: Audit all 1.21.1 add-ons
+        if: matrix.audit_addons
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_fantasy_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_furries_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_extended_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origin_architect_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Validate localization files
+        run: python3 scripts/validate.py
+
+      - name: Build mod
+        run: |
+          gradle build --stacktrace \
+            "-Pjava_version=${{ matrix.java }}" \
+            "-Puse_parchment=${{ matrix.parchment }}" \
+            "-Presource_pack_format=${{ matrix.pack_format }}" \
+            "-Psource_variant=${{ matrix.source_variant }}" \
+            "-Pinclude_addon_translations=${{ matrix.include_addon_translations }}" \
+            "-Pinclude_121_batch_translations=${{ matrix.include_121_batch_translations }}" \
+            "-Pinclude_turkish_split_translations=true" \
+            "-Pinclude_26_1_translations=${{ matrix.include_26_1_translations }}" \
+            "-Pinclude_26_2_translations=${{ matrix.include_26_2_translations }}" \
+            "-Pminecraft_version=${{ matrix.minecraft }}" \
+            "-Pminecraft_version_range=${{ matrix.minecraft_range }}" \
+            "-Pneo_version=${{ matrix.neoforge }}" \
+            "-Ploader_version_range=${{ matrix.loader_range }}" \
+            "-Pmod_version=${{ matrix.mod_version }}"
+
+      - name: Inspect built JAR packaging
+        env:
+          TARGET: ${{ matrix.target }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          import zipfile
+
+          jars = []
+          for path in Path('build/libs').glob('*.jar'):
+              try:
+                  with zipfile.ZipFile(path) as z:
+                      if 'META-INF/neoforge.mods.toml' in z.namelist():
+                          jars.append(path)
+              except zipfile.BadZipFile:
+                  pass
+          if len(jars) != 1:
+              raise SystemExit(f'Expected exactly one mod JAR, found: {jars}')
+          jar = jars[0]
+          target = os.environ['TARGET']
+          with zipfile.ZipFile(jar) as z:
+              names = set(z.namelist())
+              hu = sorted(n for n in names if n.endswith('/lang/hu_hu.json') and 'resourcepacks/fallback_localizations/assets/' in n)
+              for path in hu:
+                  json.loads(z.read(path).decode('utf-8'))
+
+          base = 'resourcepacks/fallback_localizations/assets/'
+          neo_hu = {f'{base}neoorigins_hu_{i:02d}/lang/hu_hu.json' for i in range(1, 20)}
+          missing_neo = sorted(neo_hu - names)
+          if missing_neo:
+              raise SystemExit(f'Missing packaged NeoOrigins Hungarian fragments: {missing_neo}')
+
+          addon_prefixes = (
+              'medievalorigins', 'ibarnorigins', 'origins_fantasy', 'origins_backgrounds',
+              'origins_backgrounds_two', 'origins_backgrounds_iss', 'origins_furries',
+              'origins_classes_ex', 'origins_classes_iss', 'originsmodernui'
+          )
+          addon_paths = [n for n in names if n.startswith(base) and n[len(base):].split('/', 1)[0].startswith(addon_prefixes)]
+
+          if target == 'mc-1.21.1':
+              required = {
+                  f'{base}ibarnorigins/lang/hu_hu.json',
+                  f'{base}origins_fantasy/lang/hu_hu.json',
+                  f'{base}origins_backgrounds/lang/hu_hu.json',
+                  f'{base}origins_backgrounds_two/lang/hu_hu.json',
+                  f'{base}origins_backgrounds_iss/lang/hu_hu.json',
+                  f'{base}origins_furries/lang/hu_hu.json',
+                  f'{base}origins_classes_ex/lang/hu_hu.json',
+                  f'{base}origins_classes_iss/lang/hu_hu.json',
+                  f'{base}originsmodernui/lang/hu_hu.json',
+              }
+              required |= {f'{base}medievalorigins_hu_{i:02d}/lang/hu_hu.json' for i in range(1, 6)}
+              missing = sorted(required - names)
+              if missing:
+                  raise SystemExit(f'Missing 1.21.1 Hungarian add-on files: {missing}')
+              if f'{base}neoorigins_26_1/lang/hu_hu.json' in names or f'{base}neoorigins_26_2/lang/hu_hu.json' in names:
+                  raise SystemExit('1.21.1 JAR contains a 26.x Hungarian delta')
+          else:
+              if addon_paths:
+                  raise SystemExit(f'{target} contains forbidden add-on paths, first entries: {addon_paths[:10]}')
+              if target == 'mc-26.1.x':
+                  if f'{base}neoorigins_26_1/lang/hu_hu.json' not in names:
+                      raise SystemExit('26.1.x JAR missing Hungarian 26.1 delta')
+                  if f'{base}neoorigins_26_2/lang/hu_hu.json' in names:
+                      raise SystemExit('26.1.x JAR contains Hungarian 26.2 delta')
+              if target == 'mc-26.2':
+                  if f'{base}neoorigins_26_2/lang/hu_hu.json' not in names:
+                      raise SystemExit('26.2 JAR missing Hungarian 26.2 delta')
+                  if f'{base}neoorigins_26_1/lang/hu_hu.json' in names:
+                      raise SystemExit('26.2 JAR contains Hungarian 26.1 delta')
+
+          print(f'JAR_OK target={target} jar={jar.name} hu_files={len(hu)} addon_paths={len(addon_paths)}')
+          print('HU_FILES')
+          for path in hu:
+              print(path)
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: verified-neoorigins-localization-${{ matrix.target }}-${{ github.sha }}
+          path: build/libs/*.jar
+          if-no-files-found: error

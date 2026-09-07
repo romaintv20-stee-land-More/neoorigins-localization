@@ -6,6 +6,7 @@ on:
       - release/0.8.0-hungarian
     paths:
       - .github/workflows/audit-hungarian-fantasy.yml
+      - scripts/audit_origins_fantasy_upstream.py
       - src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/hu_hu.json
 
 jobs:

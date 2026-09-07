@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Temporary release/0.8.0 Japanese catalog finalizer.
 from pathlib import Path
 import json
 

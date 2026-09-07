@@ -6,79 +6,48 @@ Mod client NeoForge fournissant des **traductions complémentaires en priorité 
 
 | Cible | Version | Java | Langues | Contenu empaqueté |
 |---|---|---:|---:|---|
-| Minecraft 1.21.1 | `0.8.0-beta+1.21.1` | 21 | 10 | NeoOrigins + Medieval Origins Revival + ibarn's quartet origins addon + Origins Fantasy for NeoOrigins + Origins: Backgrounds for NeoOrigins + Origins: More Backgrounds for NeoOrigins + Origins: Backgrounds ISS for NeoOrigins + Origins Furries for NeoOrigins + Origins: Classes Extended for NeoOrigins + Origins: Classes ISS for NeoOrigins + Origin Architect (NeoOrigins Addon) |
-| Minecraft 26.1 / 26.1.1 / 26.1.2 | `0.8.0-beta+26.1` | 25 | 10 | NeoOrigins uniquement |
-| Minecraft 26.2 | `0.8.0-beta+26.2` | 25 | 10 | NeoOrigins uniquement + delta 26.2 |
+| Minecraft 1.21.1 | `0.8.0-beta+1.21.1` | 21 | 11 | NeoOrigins + Medieval Origins Revival + ibarn's quartet origins addon + Origins Fantasy + Origins: Backgrounds + Origins: More Backgrounds + Origins: Backgrounds ISS + Origins Furries + Origins: Classes Extended + Origins: Classes ISS + Origin Architect |
+| Minecraft 26.1 / 26.1.1 / 26.1.2 | `0.8.0-beta+26.1` | 25 | 11 | NeoOrigins uniquement |
+| Minecraft 26.2 | `0.8.0-beta+26.2` | 25 | 11 | NeoOrigins uniquement + delta 26.2 |
 
-Les builds 26.x n'embarquent pas les traductions des add-ons 1.21.1. Les bases Minecraft 26.1.2 et 26.2 ont déjà été validées en jeu avec NeoOrigins Localization ; les cinq langues ajoutées en 0.7.0 sur les branches 26.x doivent encore recevoir un contrôle visuel en jeu.
+Les builds 26.x n'embarquent aucune traduction des add-ons 1.21.1. La CI construit et audite séparément les trois cibles.
 
 ## Langues
 
-La **0.8.0 Beta** prend en charge : Français (`fr_fr`), Allemand (`de_de`), Espagnol (`es_es`), Portugais brésilien (`pt_br`), Néerlandais (`nl_nl`), Italien (`it_it`), Polonais (`pl_pl`), Russe (`ru_ru`), Turc (`tr_tr`) et Chinois simplifié (`zh_cn`).
+La **0.8.0 Beta** prend en charge : Français (`fr_fr`), Allemand (`de_de`), Espagnol (`es_es`), Portugais brésilien (`pt_br`), Néerlandais (`nl_nl`), Italien (`it_it`), Polonais (`pl_pl`), Russe (`ru_ru`), Turc (`tr_tr`), Chinois simplifié (`zh_cn`) et **Tchèque (`cs_cz`)**.
 
-Les dix langues sont disponibles sur les trois builds pour NeoOrigins. Les traductions d'add-ons sont empaquetées uniquement sur 1.21.1 lorsqu'une version compatible de l'add-on est réellement disponible.
+Les onze langues sont disponibles sur les trois builds pour NeoOrigins. Les traductions d'add-ons sont empaquetées uniquement sur Minecraft 1.21.1 lorsqu'une version compatible de l'add-on est réellement disponible.
 
-## Projets pris en charge
+## Référence NeoOrigins
 
-### NeoOrigins
+La couverture de la 0.8.0 est auditée contre **NeoOrigins 2.2.25** :
 
-NeoOrigins 2.2.25 est requis. Pour les langues déjà traduites officiellement par NeoOrigins, le fallback ne conserve que les clés absentes en amont. Le néerlandais est fourni intégralement par NeoOrigins Localization. Sur 26.2, l'italien, le polonais, le russe et le chinois simplifié disposent chacun de 2 172 clés officielles ; notre delta couvre uniquement les 120 clés manquantes. Le turc n'a pas de traduction officielle 26.2 : son fallback complet couvre les 2 292 clés grâce aux 14 entrées supplémentaires du delta 26.2.
+- 1.21.1 : commit `2b409f3f9c27250665895cf3d0faa3f7adf9c4ac` ;
+- 26.1.x : tag `v2.2.25` ;
+- 26.2 : commit `86038d2d1b429255897c2bdac9097ecc50e07215`.
 
-### Medieval Origins Revival — Minecraft 1.21.1
+NeoOrigins Localization n'impose pas de dépendance dure sur la version 2.2.25 : le mod peut charger avec une version NeoOrigins plus récente, mais la **couverture complète garantie ici correspond à 2.2.25**. Les nouvelles clés de NeoOrigins 2.2.26 seront traitées séparément.
 
-Les **401 clés anglaises** sont couvertes dans les dix langues. L'import via `config/originpacks/` et l'affichage traduit d'un Origin ont déjà été validés en jeu sur 1.21.1.
+Pour le tchèque, NeoOrigins 2.2.25 est couvert intégralement par 19 namespaces `neoorigins_cs_01` à `neoorigins_cs_19` : **2 281/2 281 clés** sur 1.21.1 et 26.1.x. Minecraft 26.2 possède 14 clés supplémentaires dans `neoorigins_26_2`, soit **2 292/2 292 clés couvertes**. Trois anciennes clés de récompense présentes dans la base commune n'existent plus en 26.2 et restent sans effet.
 
-### ibarn's quartet origins addon — Minecraft 1.21.1
+## Projets pris en charge sur Minecraft 1.21.1
 
-Les **69 clés anglaises** sont couvertes dans les dix langues. L'add-on NeoForge 1.7.1 s'installe dans `mods/`. La localisation des quatre Origins a déjà été validée en jeu sur 1.21.1 avec la génération précédente.
+| Projet | Version/référence | Couverture tchèque | Couverture effective par langue |
+|---|---|---:|---:|
+| Medieval Origins Revival | branche `1.21.1-fabric` | 401/401 | 401/401 |
+| ibarn's quartet origins addon | 1.7.1 | 69/69 | 69/69 |
+| Origins Fantasy for NeoOrigins | 1.1.3 | 240/240 | 240/240 |
+| Origins: Backgrounds for NeoOrigins | 1.0.2 | 65/65 | 65/65 |
+| Origins: More Backgrounds for NeoOrigins | 1.0.2 | 44/44 | 39 propres + 5 partagées = 44/44 |
+| Origins: Backgrounds ISS for NeoOrigins | 1.0.1 | 79/79 | 77 propres + 2 partagées = 79/79 |
+| Origins Furries for NeoOrigins | 1.0.0 | 117/117 | 117/117 |
+| Origins: Classes Extended for NeoOrigins | 1.0.1 | 124/124 | 124/124 |
+| Origins: Classes ISS for NeoOrigins | 1.0.1 | 99/99 | 99/99 |
+| Origin Architect | 3.0.1 | 22/22 | 22/22 |
 
-### Origins Fantasy for NeoOrigins — Minecraft 1.21.1
+Les intégrations DraconicArcher sont réalisées avec son autorisation explicite pour redistribuer les **chaînes de localisation traduites**. Aucun code, texture, modèle ou autre asset de gameplay de ces add-ons n'est redistribué ; les mods originaux restent requis.
 
-Avec l'autorisation explicite de **DraconicArcher**, NeoOrigins Localization fournit les traductions des **240 clés anglaises** de la version 1.1.3 dans les dix langues. Les dix fichiers sont contrôlés contre le JAR CurseForge de référence : 240/240 clés couvertes, aucune clé manquante, aucun overlap avec une traduction officielle et aucun placeholder invalide.
-
-Cette intégration n'embarque ni code, ni textures, ni modèles, ni données de gameplay d'Origins Fantasy. Le mod original reste nécessaire.
-
-### Origins: Backgrounds for NeoOrigins — Minecraft 1.21.1
-
-La 0.8.0 Beta ajoute les traductions de **Origins: Backgrounds for NeoOrigins 1.0.2**, également avec l'autorisation de **DraconicArcher**. Le JAR de référence contient **65 clés anglaises** et ne fournit aucune traduction officielle pour les dix langues ciblées : NeoOrigins Localization fournit donc 65/65 clés dans chacune des dix langues.
-
-L'audit compare directement nos fallbacks au JAR CurseForge épinglé, contrôle les clés manquantes, les éventuels overlaps futurs et les placeholders. Seuls les fichiers de localisation traduits sont redistribués ; le mod original reste requis.
-
-### Origins: More Backgrounds for NeoOrigins — Minecraft 1.21.1
-
-La 0.8.0 Beta ajoute aussi les traductions de **Origins: More Backgrounds for NeoOrigins 1.0.2** avec l'autorisation de **DraconicArcher**. Le JAR de référence contient **44 clés anglaises** et aucune traduction officielle dans les dix langues ciblées. Cinq clés sont communes à Origins: Backgrounds et réutilisent le fallback déjà présent ; les **39 nouvelles clés** sont fournies dans `origins_backgrounds_two`, pour une couverture totale de 44/44 dans chaque langue.
-
-L'audit vérifie conjointement les namespaces `origins_backgrounds` et `origins_backgrounds_two`, ainsi que les clés manquantes, les éventuels overlaps futurs et les placeholders. Le mod original reste requis et aucun code, texture, modèle ou donnée de gameplay de l'add-on n'est redistribué.
-
-### Origins: Backgrounds ISS for NeoOrigins — Minecraft 1.21.1
-
-La 0.8.0 Beta ajoute les traductions de **Origins: Backgrounds ISS for NeoOrigins 1.0.1**, toujours avec l'autorisation de **DraconicArcher**. Le JAR CurseForge de référence contient **79 clés anglaises** et aucune traduction officielle dans les dix langues ciblées. Deux clés `Fresh Face` sont communes à Origins: Backgrounds et réutilisent le fallback existant ; les **77 autres clés** sont fournies sous `origins_backgrounds_iss`, soit 79/79 clés couvertes dans chaque langue.
-
-Cet add-on nécessite **NeoOrigins** et **Iron's Spells 'n Spellbooks**. NeoOrigins Localization ne redistribue que les chaînes traduites ; les mods originaux restent requis. Cette intégration est limitée au build Minecraft 1.21.1.
-
-### Origins Furries for NeoOrigins — Minecraft 1.21.1
-
-La 0.8.0 Beta ajoute également les traductions de **Origins Furries for NeoOrigins 1.0.0**, avec l'autorisation de **DraconicArcher**. Le JAR CurseForge de référence contient **117 clés anglaises** et aucune traduction officielle dans les dix langues ciblées. NeoOrigins Localization fournit donc les 117/117 clés dans chacune des dix langues pour les dix Origins animaux de l'add-on.
-
-Le mod original et NeoOrigins restent requis. Seules les chaînes de localisation traduites sont redistribuées, et cette intégration reste limitée au build Minecraft 1.21.1.
-
-### Origins: Classes Extended for NeoOrigins — Minecraft 1.21.1
-
-La 0.8.0 Beta ajoute les traductions de **Origins: Classes Extended for NeoOrigins 1.0.1**, avec l'autorisation de **DraconicArcher**. Le JAR CurseForge de référence (file ID `8393343`) contient **124 clés anglaises** sous le namespace `origins_classes_ex` et aucune traduction officielle dans les dix langues ciblées. NeoOrigins Localization fournit donc **124/124 clés dans chacune des dix langues** pour les huit classes Crusader, Duskblade, Gladiator, Ninja, Ranger, Druid, Warblade et Artificer.
-
-Le mod original et NeoOrigins restent requis. Seules les chaînes de localisation traduites sont redistribuées. Cette intégration est limitée au build Minecraft 1.21.1 et l'audit dédié est indépendant du suivi de la nouvelle version NeoOrigins 2.2.26, qui n'est pas encore intégrée à ce stade.
-
-### Origins: Classes ISS for NeoOrigins — Minecraft 1.21.1
-
-La 0.8.0 Beta ajoute enfin les traductions de **Origins: Classes ISS for NeoOrigins 1.0.1**, avec l'autorisation de **DraconicArcher**. Le JAR CurseForge de référence (file ID `8592095`) contient **99 clés anglaises** sous le namespace `origins_classes_iss` et aucune traduction officielle dans les dix langues ciblées. NeoOrigins Localization fournit donc **99/99 clés dans chacune des dix langues** pour Archmagus, Bard, Mystic, Shadowcaster, Sorcerer, Warlock, Warmage et Wizard.
-
-Cet add-on nécessite **NeoOrigins** et **Iron's Spells 'n Spellbooks**. Seules les chaînes de localisation traduites sont redistribuées ; les mods originaux restent requis. Cette intégration est limitée au build Minecraft 1.21.1.
-
-### Origin Architect (NeoOrigins Addon) — Minecraft 1.21.1
-
-La 0.8.0 Beta ajoute aussi les traductions de **Origin Architect 3.0.1** par **reotpak**. La version CurseForge de référence (project ID `1635001`, file ID `8568110`) est publiée sous licence MIT. Le namespace `originsmodernui` contient **22 clés anglaises** ; aucune des dix langues ciblées par NeoOrigins Localization n'est fournie officiellement en amont, donc le fallback couvre **22/22 clés dans chacune des dix langues**.
-
-L'audit est épinglé sur le commit source `f58a6261292942d4123c46ff221fbdade138a329`. Le mod original reste requis et cette intégration est limitée au build Minecraft 1.21.1 ; les builds 26.x excluent explicitement `originsmodernui`.
+Origins: Backgrounds ISS et Origins: Classes ISS nécessitent également **Iron's Spells 'n Spellbooks**. Origin Architect est suivi sur le commit source `f58a6261292942d4123c46ff221fbdade138a329`.
 
 ## Fonctionnement
 
@@ -92,7 +61,16 @@ Aucune traduction n'est générée à l'exécution dans Minecraft.
 
 ## Audits et maintenance
 
-Le CI vérifie les JSON, les clés manquantes, les overlaps avec les traductions officielles, les placeholders et la compilation. Les scripts suivis incluent :
+La CI vérifie :
+
+- la validité des JSON et l'absence de clés dupliquées ;
+- les clés manquantes par rapport aux sources/JAR amont épinglés ;
+- les overlaps avec les traductions officielles ;
+- les placeholders `%s`, `%1$s`, `%d`, etc. ;
+- l'empaquetage par cible ;
+- la compilation Java/NeoForge des trois builds.
+
+Les scripts suivis incluent :
 
 ```bash
 python scripts/validate.py
@@ -111,9 +89,20 @@ python scripts/audit_origin_architect_upstream.py --fail-on-overlap --fail-on-mi
 
 Lorsqu'un projet amont ajoute une traduction officielle, les clés devenues inutiles doivent être retirées de notre fallback.
 
+## Validation des JAR 0.8.0
+
+La CI de la branche 0.8.0 a validé la structure suivante :
+
+- **1.21.1** : 34 fichiers `cs_cz` empaquetés, couvrant NeoOrigins, Medieval Origins et tous les add-ons listés ;
+- **26.1.x** : 19 fichiers `cs_cz`, uniquement les namespaces NeoOrigins communs ;
+- **26.2** : 20 fichiers `cs_cz`, soit les 19 namespaces communs + `neoorigins_26_2` ;
+- aucun namespace d'add-on 1.21.1 n'est présent dans les JAR 26.x.
+
+La validation automatisée ne remplace pas un contrôle visuel en jeu pour la qualité de formulation ou les problèmes de largeur d'interface.
+
 ## Traduction et retours
 
-Les traductions et leur maintenance utilisent une assistance générative/automatisée importante, avec contrôles de structure et direction humaine. Elles ne sont pas présentées comme des traductions intégralement relues par des locuteurs natifs. Les corrections de formulation et de terminologie sont donc bienvenues.
+Les traductions et leur maintenance utilisent une assistance générative/automatisée importante, avec contrôles de structure et direction humaine. Elles ne sont pas présentées comme des traductions intégralement relues par des locuteurs natifs. Les corrections de formulation et de terminologie sont bienvenues.
 
 Un nom d'Origin est traduit seulement lorsque le résultat reste naturel, identifiable et lisible dans l'interface ; sinon le nom anglais peut être conservé.
 

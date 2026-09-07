@@ -305,7 +305,7 @@
         "ja_jp": {
           "name": "日本語",
           "status": "supported",
-          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/ja_jp.json"
+          "files_glob": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins_ja_*/lang/ja_jp.json"
         }
       }
     },

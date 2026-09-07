@@ -10,7 +10,6 @@ permissions:
 
 jobs:
   finish:
-    if: ${{ !contains(github.event.head_commit.message, '[korean-finish]') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -24,6 +23,8 @@ jobs:
           import copy
           import json
           import re
+
+          expr = '$' + '{{'
 
           audit_scripts = [
               'scripts/audit_medievalorigins_upstream.py',
@@ -76,9 +77,6 @@ jobs:
           for line in text.splitlines():
               for project, count in coverage.items():
                   if line.startswith(f'| {project} |') and line.count(' · ') == 2:
-                      marker = f' · {count} |'
-                      idx = line.find(' |', line.find(' · '))
-                      # Coverage column ends before the effective-coverage column.
                       parts = line.split(' | ')
                       if len(parts) >= 4:
                           parts[2] = parts[2] + f' · {count}'
@@ -151,39 +149,39 @@ jobs:
         run: |
           JAR=$(find build/libs -type f -name '*.jar' ! -name '*-sources.jar' | head -n 1)
           test -n "$JAR"
-          jar tf "$JAR" > build/jar-contents-${{ matrix.target }}.txt
+          jar tf "$JAR" > build/jar-contents-__EXPR__ matrix.target }}.txt
 
           for locale in ja_jp ko_kr; do
-            COUNT=$(grep -cE "(^|/)lang/$locale\\.json$" build/jar-contents-${{ matrix.target }}.txt || true)
-            echo "$locale localization files in ${{ matrix.target }}: $COUNT"
+            COUNT=$(grep -cE "(^|/)lang/$locale\\.json$" build/jar-contents-__EXPR__ matrix.target }}.txt || true)
+            echo "$locale localization files in __EXPR__ matrix.target }}: $COUNT"
             test "$COUNT" -gt 0
           done
 
           ADDON_PATTERN='(^|/)assets/(medievalorigins|medievalorigins_[^/]*|ibarnorigins|origins_fantasy|origins_backgrounds|origins_backgrounds_two|origins_backgrounds_iss|origins_furries|origins_classes_ex|origins_classes_iss|originsmodernui)/'
 
-          if [ "${{ matrix.include_addon_translations }}" = "true" ]; then
-            grep -Eq '(^|/)assets/medievalorigins_ja_[^/]*/lang/ja_jp\\.json$' build/jar-contents-${{ matrix.target }}.txt
-            grep -Eq '(^|/)assets/medievalorigins/lang/ko_kr\\.json$' build/jar-contents-${{ matrix.target }}.txt
+          if [ "__EXPR__ matrix.include_addon_translations }}" = "true" ]; then
+            grep -Eq '(^|/)assets/medievalorigins_ja_[^/]*/lang/ja_jp\\.json$' build/jar-contents-__EXPR__ matrix.target }}.txt
+            grep -Eq '(^|/)assets/medievalorigins/lang/ko_kr\\.json$' build/jar-contents-__EXPR__ matrix.target }}.txt
             for ns in ibarnorigins origins_fantasy origins_backgrounds origins_backgrounds_two origins_backgrounds_iss origins_furries origins_classes_ex origins_classes_iss originsmodernui; do
-              grep -Eq "(^|/)assets/$ns/lang/ja_jp.json$" build/jar-contents-${{ matrix.target }}.txt
-              grep -Eq "(^|/)assets/$ns/lang/ko_kr.json$" build/jar-contents-${{ matrix.target }}.txt
+              grep -Eq "(^|/)assets/$ns/lang/ja_jp.json$" build/jar-contents-__EXPR__ matrix.target }}.txt
+              grep -Eq "(^|/)assets/$ns/lang/ko_kr.json$" build/jar-contents-__EXPR__ matrix.target }}.txt
             done
-            echo "Japanese and Korean addon packaging verified for ${{ matrix.target }}."
+            echo "Japanese and Korean addon packaging verified for __EXPR__ matrix.target }}."
           else
-            if grep -Eq "$ADDON_PATTERN" build/jar-contents-${{ matrix.target }}.txt; then
-              echo "Unexpected 1.21.1 addon localization found in ${{ matrix.target }}"
-              grep -E "$ADDON_PATTERN" build/jar-contents-${{ matrix.target }}.txt | head -n 50
+            if grep -Eq "$ADDON_PATTERN" build/jar-contents-__EXPR__ matrix.target }}.txt; then
+              echo "Unexpected 1.21.1 addon localization found in __EXPR__ matrix.target }}"
+              grep -E "$ADDON_PATTERN" build/jar-contents-__EXPR__ matrix.target }}.txt | head -n 50
               exit 1
             fi
-            echo "No 1.21.1 addon namespaces packaged in ${{ matrix.target }}."
+            echo "No 1.21.1 addon namespaces packaged in __EXPR__ matrix.target }}."
           fi
 
-'''
+'''.replace('__EXPR__', expr)
           text = text[:start] + verify + text[end:]
           build.write_text(text, encoding='utf-8')
 
           korean_audit = Path('.github/workflows/audit-korean-bootstrap.yml')
-          korean_audit.write_text('''name: Audit Korean NeoOrigins bootstrap
+          permanent = '''name: Audit Korean NeoOrigins bootstrap
 
 on:
   push:
@@ -206,27 +204,28 @@ jobs:
             ref: '65864716a5a796fa1c51ec3e8a6d9640abebb4ca'
             extra: 'neoorigins_26_2'
     runs-on: ubuntu-latest
-    name: Audit ${{ matrix.target }}
+    name: Audit __EXPR__ matrix.target }}
     steps:
       - uses: actions/checkout@v4
       - name: Audit Korean fallback coverage
         run: |
           python3 scripts/audit_neoorigins_upstream.py \\
-            --ref "${{ matrix.ref }}" \\
-            --output "build/ko-audit-${{ matrix.target }}" \\
+            --ref "__EXPR__ matrix.ref }}" \\
+            --output "build/ko-audit-__EXPR__ matrix.target }}" \\
             --locale ko_kr \\
             --extra-namespace neoorigins_226 \\
-            --extra-namespace "${{ matrix.extra }}" \\
+            --extra-namespace "__EXPR__ matrix.extra }}" \\
             --fail-on-overlap \\
             --fail-on-missing
       - name: Print report
-        run: cat "build/ko-audit-${{ matrix.target }}/report.json"
+        run: cat "build/ko-audit-__EXPR__ matrix.target }}/report.json"
       - uses: actions/upload-artifact@v4
         with:
-          name: korean-audit-${{ matrix.target }}
-          path: build/ko-audit-${{ matrix.target }}
+          name: korean-audit-__EXPR__ matrix.target }}
+          path: build/ko-audit-__EXPR__ matrix.target }}
           if-no-files-found: error
-''', encoding='utf-8')
+'''.replace('__EXPR__', expr)
+          korean_audit.write_text(permanent, encoding='utf-8')
 
           Path('.github/workflows/finish-korean-integration.yml').unlink()
           PY

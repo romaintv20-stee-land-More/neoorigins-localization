@@ -27,9 +27,11 @@
 ## Notes
 
 - Les onze langues ciblées sont : `fr_fr`, `de_de`, `es_es`, `pt_br`, `nl_nl`, `it_it`, `pl_pl`, `ru_ru`, `tr_tr`, `zh_cn` et `cs_cz`.
+- La couverture NeoOrigins est épinglée sur **2.2.26** : `860ecdb24e723983e93004ea8ceb5de90ccf0d70` (1.21.1), `3c1c7365507679c836d3c14af5d4dd0654652e87` (26.1.x) et `65864716a5a796fa1c51ec3e8a6d9640abebb4ca` (26.2).
 - Les builds 26.x n'embarquent actuellement que les traductions NeoOrigins.
 - Tous les add-ons listés restent inclus uniquement dans le build 1.21.1 tant que leur compatibilité NeoForge 26.x n'est pas validée.
 - Les traductions officielles des projets amont gardent toujours la priorité ; notre pack ne fournit que les clés manquantes.
-- NeoOrigins tchèque couvre 2 281 clés sur 1.21.1/26.1.x via `neoorigins_cs_01` à `neoorigins_cs_19`. Le build 26.2 ajoute 14 clés dans `neoorigins_26_2`, soit 2 292 clés couvertes ; trois anciennes clés sans équivalent 26.2 restent sans effet.
+- NeoOrigins tchèque couvre **2 296/2 296** clés en 1.21.1, **2 307/2 307** en 26.1.x et **2 307/2 307** en 26.2. Les trois anciennes clés de récompense absentes des branches 26.x restent sans effet et sont signalées comme obsolètes par l'audit.
+- Le delta commun `neoorigins_226` contient les nouvelles chaînes de NeoOrigins 2.2.26. `neoorigins_26_1` est spécifique à la ligne 26.1.x et `neoorigins_26_2` à la ligne 26.2.
 - Origins: More Backgrounds réutilise 5 clés d'Origins: Backgrounds : 39 clés propres + 5 partagées = 44/44.
 - Origins: Backgrounds ISS réutilise 2 clés `Fresh Face` d'Origins: Backgrounds : 77 clés propres + 2 partagées = 79/79.

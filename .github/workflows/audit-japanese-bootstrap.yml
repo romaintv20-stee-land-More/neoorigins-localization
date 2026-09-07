@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - release/0.8.0-japanese
-    paths:
-      - .github/workflows/audit-japanese-bootstrap.yml
 
 jobs:
   audit:
@@ -26,19 +24,18 @@ jobs:
     name: Audit ${{ matrix.target }}
     steps:
       - uses: actions/checkout@v4
-      - name: Audit Japanese missing keys
+      - name: Audit Japanese fallback coverage
         run: |
           python3 scripts/audit_neoorigins_upstream.py \
             --ref "${{ matrix.ref }}" \
             --output "build/ja-audit-${{ matrix.target }}" \
             --locale ja_jp \
             --extra-namespace neoorigins_226 \
-            --extra-namespace "${{ matrix.extra }}"
-      - name: Print report and missing keys
-        run: |
-          cat "build/ja-audit-${{ matrix.target }}/report.json"
-          echo '--- MISSING ENGLISH KEYS ---'
-          cat "build/ja-audit-${{ matrix.target }}/ja_jp_missing_en.json"
+            --extra-namespace "${{ matrix.extra }}" \
+            --fail-on-overlap \
+            --fail-on-missing
+      - name: Print report
+        run: cat "build/ja-audit-${{ matrix.target }}/report.json"
       - uses: actions/upload-artifact@v4
         with:
           name: japanese-audit-${{ matrix.target }}

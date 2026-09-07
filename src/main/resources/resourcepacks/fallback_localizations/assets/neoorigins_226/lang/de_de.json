@@ -1,0 +1,9 @@
+{
+  "gui.neoorigins.picker.position": "%s / %s",
+  "gui.neoorigins.picker.back_to_grid": "< Raster",
+  "gui.neoorigins.picker.no_results": "Keine Herkunft entspricht deiner Suche",
+  "power.neoorigins.step_assist_switch.name": "Stufenhilfe",
+  "power.neoorigins.step_assist_switch.description": "Schaltet deine Fähigkeit zum automatischen Hinaufsteigen ein oder aus. Ist sie aus, musst du wie alle anderen springen, um Blöcke hinaufzukommen.",
+  "neoorigins.configuration.ui.picker_layout": "Auswahl-Layout",
+  "neoorigins.configuration.picker_layout": "Auswahl-Layout"
+}

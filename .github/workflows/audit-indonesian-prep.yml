@@ -1,0 +1,68 @@
+name: Audit Indonesian preparation
+
+on:
+  push:
+    branches:
+      - release/0.8.0-indonesian
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Audit NeoOrigins Indonesian coverage
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref 860ecdb24e723983e93004ea8ceb5de90ccf0d70 --locale id_id --output build/id-1211
+          python3 scripts/audit_neoorigins_upstream.py --ref 3c1c7365507679c836d3c14af5d4dd0654652e87 --locale id_id --output build/id-261
+          python3 scripts/audit_neoorigins_upstream.py --ref 65864716a5a796fa1c51ec3e8a6d9640abebb4ca --locale id_id --output build/id-262
+
+      - name: Enable Indonesian in addon audits for this run
+        run: |
+          for f in \
+            scripts/audit_medievalorigins_upstream.py \
+            scripts/audit_ibarnorigins_upstream.py \
+            scripts/audit_origins_fantasy_upstream.py \
+            scripts/audit_origins_backgrounds_upstream.py \
+            scripts/audit_origins_more_backgrounds_upstream.py \
+            scripts/audit_origins_backgrounds_iss_upstream.py \
+            scripts/audit_origins_furries_upstream.py \
+            scripts/audit_origins_classes_extended_upstream.py \
+            scripts/audit_origins_classes_iss_upstream.py \
+            scripts/audit_origin_architect_upstream.py; do
+            sed -i 's/"uk_ua")/"uk_ua", "id_id")/' "$f"
+          done
+
+      - name: Audit addon Indonesian coverage
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format
+          python3 scripts/audit_origins_fantasy_upstream.py
+          python3 scripts/audit_origins_backgrounds_upstream.py
+          python3 scripts/audit_origins_more_backgrounds_upstream.py
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py
+          python3 scripts/audit_origins_furries_upstream.py
+          python3 scripts/audit_origins_classes_extended_upstream.py
+          python3 scripts/audit_origins_classes_iss_upstream.py
+          python3 scripts/audit_origin_architect_upstream.py
+
+      - name: Upload Indonesian preparation data
+        uses: actions/upload-artifact@v4
+        with:
+          name: indonesian-preparation
+          path: |
+            build/id-1211
+            build/id-261
+            build/id-262
+            build/medievalorigins-upstream-audit
+            build/ibarnorigins-upstream-audit
+            build/origins-fantasy-upstream-audit
+            build/origins-backgrounds-upstream-audit
+            build/origins-more-backgrounds-upstream-audit
+            build/origins-backgrounds-iss-upstream-audit
+            build/origins-furries-upstream-audit
+            build/origins-classes-extended-upstream-audit
+            build/origins-classes-iss-upstream-audit
+            build/origin-architect-upstream-audit
+          if-no-files-found: error

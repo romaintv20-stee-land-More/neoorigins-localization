@@ -11,7 +11,7 @@
     ],
     "loader": "NeoForge",
     "localization_mode": "low_priority_fallback",
-    "supported_locale_count": 13,
+    "supported_locale_count": 14,
     "builds": {
       "1.21.1": {
         "version": "0.8.0-beta+1.21.1",
@@ -221,6 +221,15 @@
             "26.1.x",
             "26.2"
           ]
+        },
+        "ko_kr": {
+          "name": "한국어",
+          "status": "supported",
+          "targets": [
+            "1.21.1",
+            "26.1.x",
+            "26.2"
+          ]
         }
       }
     },
@@ -242,7 +251,7 @@
           "1.21.1"
         ],
         "in_game_validation": "validated",
-        "note": "401/401 clés anglaises couvertes dans les treize langues ; absent des builds 26.x."
+        "note": "401/401 clés anglaises couvertes dans les quatorze langues ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 401,
@@ -306,6 +315,13 @@
           "name": "日本語",
           "status": "supported",
           "files_glob": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins_ja_*/lang/ja_jp.json"
+        },
+        "ko_kr": {
+          "name": "한국어",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/ko_kr.json",
+          "official_keys": 305,
+          "fallback_keys": 102
         }
       }
     },
@@ -325,7 +341,7 @@
         "version": "1.7.1 / Minecraft 1.21.1",
         "source_ref": "multiloader-1.21.1-new-pack-format",
         "in_game_validation": "validated",
-        "note": "69/69 clés anglaises couvertes dans les treize langues ; absent des builds 26.x."
+        "note": "69/69 clés anglaises couvertes dans les quatorze langues ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 69,
@@ -396,6 +412,12 @@
           "name": "日本語",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/ja_jp.json"
+        },
+        "ko_kr": {
+          "name": "한국어",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/ko_kr.json",
+          "fallback_keys": 69
         }
       }
     },
@@ -488,6 +510,12 @@
           "name": "日本語",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/ja_jp.json"
+        },
+        "ko_kr": {
+          "name": "한국어",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/ko_kr.json",
+          "fallback_keys": 240
         }
       }
     },
@@ -509,7 +537,7 @@
           "1.21.1"
         ],
         "in_game_validation": "pending",
-        "note": "Audité contre le JAR CurseForge 8397335 ; aucune traduction officielle parmi les treize langues ciblées ; absent des builds 26.x."
+        "note": "Audité contre le JAR CurseForge 8397335 ; aucune traduction officielle parmi les quatorze langues ciblées ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 65,
@@ -580,6 +608,12 @@
           "name": "日本語",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/ja_jp.json"
+        },
+        "ko_kr": {
+          "name": "한국어",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/ko_kr.json",
+          "fallback_keys": 65
         }
       }
     },
@@ -674,6 +708,12 @@
           "name": "日本語",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/ja_jp.json"
+        },
+        "ko_kr": {
+          "name": "한국어",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/ko_kr.json",
+          "fallback_keys": 39
         }
       }
     },
@@ -772,6 +812,12 @@
           "name": "日本語",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/ja_jp.json"
+        },
+        "ko_kr": {
+          "name": "한국어",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/ko_kr.json",
+          "fallback_keys": 77
         }
       }
     },
@@ -796,7 +842,7 @@
           "NeoOrigins"
         ],
         "in_game_validation": "pending",
-        "note": "Audité contre le JAR CurseForge 8397352 ; aucune traduction officielle parmi les treize langues ciblées ; absent des builds 26.x."
+        "note": "Audité contre le JAR CurseForge 8397352 ; aucune traduction officielle parmi les quatorze langues ciblées ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 117,
@@ -867,6 +913,12 @@
           "name": "日本語",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/ja_jp.json"
+        },
+        "ko_kr": {
+          "name": "한국어",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/ko_kr.json",
+          "fallback_keys": 117
         }
       }
     },
@@ -891,7 +943,7 @@
           "NeoOrigins"
         ],
         "in_game_validation": "pending",
-        "note": "Audité contre le JAR CurseForge 8393343 ; 124/124 clés dans les treize langues ciblées ; absent des builds 26.x."
+        "note": "Audité contre le JAR CurseForge 8393343 ; 124/124 clés dans les quatorze langues ciblées ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 124,
@@ -962,6 +1014,12 @@
           "name": "日本語",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/ja_jp.json"
+        },
+        "ko_kr": {
+          "name": "한국어",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/ko_kr.json",
+          "fallback_keys": 124
         }
       }
     },
@@ -987,7 +1045,7 @@
           "Iron's Spells 'n Spellbooks"
         ],
         "in_game_validation": "pending",
-        "note": "Audité contre le JAR CurseForge 8592095 ; 99/99 clés dans les treize langues ciblées ; absent des builds 26.x."
+        "note": "Audité contre le JAR CurseForge 8592095 ; 99/99 clés dans les quatorze langues ciblées ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 99,
@@ -1058,6 +1116,12 @@
           "name": "日本語",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/ja_jp.json"
+        },
+        "ko_kr": {
+          "name": "한국어",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/ko_kr.json",
+          "fallback_keys": 99
         }
       }
     },
@@ -1081,7 +1145,7 @@
         "source_ref": "f58a6261292942d4123c46ff221fbdade138a329",
         "curseforge_file_id": 8568110,
         "in_game_validation": "pending",
-        "note": "22/22 clés anglaises couvertes dans les treize langues ; aucune traduction officielle détectée parmi les onze locales ciblées ; absent des builds 26.x."
+        "note": "22/22 clés anglaises couvertes dans les quatorze langues ; aucune traduction officielle détectée parmi les onze locales ciblées ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 22,
@@ -1152,6 +1216,12 @@
           "name": "日本語",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/ja_jp.json"
+        },
+        "ko_kr": {
+          "name": "한국어",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/ko_kr.json",
+          "fallback_keys": 22
         }
       }
     }

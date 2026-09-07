@@ -28,6 +28,27 @@ Ajouter une langue ne demande aucun changement de code Java. Exemple :
 
 Le fichier `catalog.json` décrit les projets et langues réellement supportés.
 
+### Namespaces fractionnés et deltas de version
+
+Une locale volumineuse peut être répartie dans plusieurs namespaces de fallback lorsque cela facilite les ajouts et la maintenance. L'audit recompose alors ces fichiers avant de comparer la couverture aux clés anglaises amont.
+
+La 0.8.0 utilise notamment :
+
+- `neoorigins_tr_*` pour la localisation turque fractionnée ;
+- `neoorigins_cs_*` pour la localisation tchèque fractionnée ;
+- `neoorigins_121_batch1` pour des compléments communs aux cibles 1.21.1 / 26.1.x ;
+- `neoorigins_26_2` pour les clés spécifiques à Minecraft 26.2.
+
+Les propriétés Gradle d'empaquetage déterminent quels namespaces sont inclus dans chaque JAR. Les add-ons compatibles uniquement avec Minecraft 1.21.1 sont explicitement exclus des builds 26.x.
+
+La branche 0.8.0 audite NeoOrigins contre des références **2.2.25 épinglées** plutôt que contre des branches mouvantes :
+
+- Minecraft 1.21.1 : `2b409f3f9c27250665895cf3d0faa3f7adf9c4ac` ;
+- Minecraft 26.1.x : `v2.2.25` ;
+- Minecraft 26.2 : `86038d2d1b429255897c2bdac9097ecc50e07215`.
+
+Cette référence fixe la couverture garantie ; elle ne constitue pas une dépendance dure empêchant le chargement avec une version NeoOrigins ultérieure.
+
 ## Politique de traduction
 
 - aucune traduction automatique en jeu ;

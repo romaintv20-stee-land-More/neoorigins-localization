@@ -2,7 +2,7 @@ name: Build NeoOrigins Localization
 
 on:
   push:
-    branches: [ main, release/0.8.0-czech ]
+    branches: [ main ]
   pull_request:
     branches: [ main ]
   workflow_dispatch:

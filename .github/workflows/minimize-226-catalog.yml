@@ -2,7 +2,8 @@ name: Minimize NeoOrigins 2.2.26 catalog diff
 
 on:
   push:
-    branches: [ release/0.8.0-neoorigins-2.2.26 ]
+    branches:
+      - release/0.8.0-neoorigins-2.2.26
     paths:
       - .github/workflows/minimize-226-catalog.yml
 
@@ -13,54 +14,15 @@ jobs:
   minimize:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           ref: release/0.8.0-neoorigins-2.2.26
           fetch-depth: 0
-      - name: Restore main catalog formatting and update NeoOrigins only
-        run: |
-          git checkout origin/main -- catalog.json
-          python3 - <<'PY'
-          from pathlib import Path
-          p = Path('catalog.json')
-          s = p.read_text(encoding='utf-8')
-          old = '''      "compatibility": {
-        "version": "2.2.25",
-        "minecraft": ["1.21.1", "26.1", "26.1.1", "26.1.2", "26.2"],
-        "in_game_validation": {"1.21.1": "validated", "26.1.2": "validated", "26.2": "validated"},
-        "audit_refs": {
-          "1.21.1": "2b409f3f9c27250665895cf3d0faa3f7adf9c4ac",
-          "26.1.x": "v2.2.25",
-          "26.2": "86038d2d1b429255897c2bdac9097ecc50e07215"
-        },
-        "note": "Les builds 26.x n'embarquent que la localisation NeoOrigins. Le tchèque est réparti dans neoorigins_cs_01 à neoorigins_cs_19 ; 26.2 ajoute 14 clés dans neoorigins_26_2."
-      },'''
-          new = '''      "compatibility": {
-        "version": "2.2.26",
-        "minecraft": ["1.21.1", "26.1", "26.1.1", "26.1.2", "26.2"],
-        "in_game_validation": {"1.21.1": "pending", "26.1.2": "pending", "26.2": "pending"},
-        "audit_refs": {
-          "1.21.1": "860ecdb24e723983e93004ea8ceb5de90ccf0d70",
-          "26.1.x": "3c1c7365507679c836d3c14af5d4dd0654652e87",
-          "26.2": "65864716a5a796fa1c51ec3e8a6d9640abebb4ca"
-        },
-        "coverage": {
-          "1.21.1": {"english_keys": 2296, "covered_keys": 2296},
-          "26.1.x": {"english_keys": 2307, "covered_keys": 2307, "stale_fallback_keys_full_fallback_locales": 3},
-          "26.2": {"english_keys": 2307, "covered_keys": 2307, "stale_fallback_keys_full_fallback_locales": 3}
-        },
-        "fallback_namespaces": {
-          "common_2_2_26": "neoorigins_226",
-          "mc_26_1": "neoorigins_26_1",
-          "mc_26_2": "neoorigins_26_2"
-        },
-        "note": "NeoOrigins 2.2.26 est audité séparément sur les trois cibles. neoorigins_226 est commun aux trois builds ; neoorigins_26_1 est réservé à 26.1.x ; neoorigins_26_2 est réservé à 26.2. Les trois clés reward.neoorigins.loot_pool* restent dans les fallbacks complets pour 1.21.1 et sont inoffensives sur 26.x."
-      },'''
-          if old not in s:
-              raise SystemExit('Expected NeoOrigins 2.2.25 compatibility block not found')
-          s = s.replace(old, new, 1)
-          p.write_text(s, encoding='utf-8')
-          PY
+      - name: Restore main catalog
+        run: git checkout origin/main -- catalog.json
+      - name: Update NeoOrigins compatibility block
+        run: python3 .github/scripts/minimize_226_catalog.py
       - name: Commit minimized catalog
         run: |
           git config user.name "github-actions[bot]"

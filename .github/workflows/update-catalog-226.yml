@@ -1,0 +1,52 @@
+name: Update catalog for NeoOrigins 2.2.26
+
+on:
+  push:
+    branches: [ release/0.8.0-neoorigins-2.2.26 ]
+    paths: [ .github/workflows/update-catalog-226.yml ]
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: release/0.8.0-neoorigins-2.2.26
+      - name: Update NeoOrigins catalog metadata
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('catalog.json')
+          data = json.loads(p.read_text(encoding='utf-8'))
+          neo = next(x for x in data['supported_projects'] if x['id'] == 'neoorigins')
+          c = neo['compatibility']
+          c['version'] = '2.2.26'
+          c['in_game_validation'] = {'1.21.1': 'pending', '26.1.2': 'pending', '26.2': 'pending'}
+          c['audit_refs'] = {
+              '1.21.1': '860ecdb24e723983e93004ea8ceb5de90ccf0d70',
+              '26.1.x': '3c1c7365507679c836d3c14af5d4dd0654652e87',
+              '26.2': '65864716a5a796fa1c51ec3e8a6d9640abebb4ca',
+          }
+          c['coverage'] = {
+              '1.21.1': {'english_keys': 2296, 'covered_keys': 2296},
+              '26.1.x': {'english_keys': 2307, 'covered_keys': 2307, 'stale_fallback_keys_full_fallback_locales': 3},
+              '26.2': {'english_keys': 2307, 'covered_keys': 2307, 'stale_fallback_keys_full_fallback_locales': 3},
+          }
+          c['note'] = ('NeoOrigins 2.2.26 est audité séparément sur les trois cibles. '
+                       'neoorigins_226 est commun aux trois builds ; neoorigins_26_1 est réservé à 26.1.x ; '
+                       'neoorigins_26_2 est réservé à 26.2. Les builds 26.x n’embarquent que NeoOrigins.')
+          p.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          PY
+          python3 scripts/validate.py
+      - name: Commit catalog
+        run: |
+          git config user.name 'romaintv-Steel-and-More'
+          git config user.email '130081555+romaintv20-stee-land-More@users.noreply.github.com'
+          git add catalog.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Update catalog to NeoOrigins 2.2.26'
+          git push origin HEAD:release/0.8.0-neoorigins-2.2.26

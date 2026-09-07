@@ -7,7 +7,7 @@
   "neoorigins.night_vision.off": "Éjjellátás kikapcsolva",
   "neoorigins.night_vision.disabled_by_server": "Az éjjellátás le van tiltva ezen a szerveren.",
   "neoorigins.night_vision.no_power": "Az eredeted nem rendelkezik éjjellátással.",
-  "neoorigins.ultimine.no_power": "Az eredeted nem képes érércet bányászni.",
+  "neoorigins.ultimine.no_power": "Az eredeted nem képes érctelepeket egyszerre kibányászni.",
   "neoorigins.sleep.remember_spawn": "Nincs szükséged alvásra — de emlékszel erre a helyre.",
   "message.neoorigins.food_restriction.cannot_eat": "Az étrended tiltja ezt az ételt.",
   "origins.layer.origin": "Eredet",

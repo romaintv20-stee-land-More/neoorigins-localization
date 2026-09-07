@@ -40,6 +40,12 @@ jobs:
             --output "build/czech-neoorigins-${{ matrix.target }}" \
             --fail-on-overlap \
             --fail-on-missing
-      - name: Show report
+      - name: Show report and delta keys
         if: always()
-        run: cat "build/czech-neoorigins-${{ matrix.target }}/report.json" || true
+        run: |
+          DIR="build/czech-neoorigins-${{ matrix.target }}"
+          cat "$DIR/report.json" || true
+          echo '--- untranslated ---'
+          cat "$DIR/cs_cz_untranslated_keys.json" || true
+          echo '--- stale ---'
+          cat "$DIR/cs_cz_stale_keys.json" || true

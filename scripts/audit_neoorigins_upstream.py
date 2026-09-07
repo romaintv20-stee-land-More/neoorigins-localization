@@ -2,6 +2,7 @@
 from pathlib import Path
 import argparse
 import json
+import re
 import time
 import urllib.error
 import urllib.request
@@ -13,6 +14,7 @@ PACK_LANG = PACK_ASSETS / "neoorigins/lang"
 DEFAULT_REF = "v2.2.26"
 DEFAULT_LOCALES = ("fr_fr", "nl_nl", "es_es", "de_de", "pt_br")
 BASE = "https://raw.githubusercontent.com/CyberDay1/NeoOrigins/{ref}/src/main/resources/assets/neoorigins/lang/{locale}.json"
+PLACEHOLDER_RE = re.compile(r"%(?:\d+\$)?[sd]")
 
 
 def fetch_json(url: str, allow_missing: bool = False, attempts: int = 4):
@@ -39,6 +41,10 @@ def fetch_json(url: str, allow_missing: bool = False, attempts: int = 4):
         time.sleep(delay)
 
     raise last_error
+
+
+def placeholders(text: str):
+    return sorted(PLACEHOLDER_RE.findall(text))
 
 
 def fallback_paths(locale: str, extra_namespaces=(), namespace_globs=()):
@@ -115,6 +121,7 @@ def main():
     parser.add_argument("--prune", action="store_true", help="Remove fallback keys that now exist upstream")
     parser.add_argument("--fail-on-overlap", action="store_true", help="Fail when fallback contains keys already translated upstream")
     parser.add_argument("--fail-on-missing", action="store_true", help="Fail when an upstream-missing key is not covered by the fallback")
+    parser.add_argument("--fail-on-placeholders", action="store_true", help="Fail when fallback placeholders differ from English")
     args = parser.parse_args()
 
     locales = tuple(dict.fromkeys(args.locale or DEFAULT_LOCALES))
@@ -133,6 +140,7 @@ def main():
     }
     has_overlap = False
     has_missing = False
+    has_placeholder_error = False
 
     for locale in locales:
         official = fetch_json(BASE.format(ref=args.ref, locale=locale), allow_missing=True)
@@ -142,8 +150,14 @@ def main():
         overlap = sorted(set(fallback) & set(official))
         stale = sorted(set(fallback) - set(en))
         untranslated = sorted(set(missing) - set(fallback))
+        placeholder_errors = []
+        for key in sorted(set(fallback) & set(en)):
+            expected, actual = placeholders(en[key]), placeholders(fallback[key])
+            if expected != actual:
+                placeholder_errors.append({"key": key, "expected": expected, "actual": actual})
         has_overlap |= bool(overlap)
         has_missing |= bool(untranslated)
+        has_placeholder_error |= bool(placeholder_errors)
 
         (out_dir / f"{locale}_missing_en.json").write_text(
             json.dumps(missing, ensure_ascii=False, indent=2) + "\n",
@@ -159,6 +173,10 @@ def main():
         )
         (out_dir / f"{locale}_untranslated_keys.json").write_text(
             json.dumps(untranslated, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        (out_dir / f"{locale}_placeholder_errors.json").write_text(
+            json.dumps(placeholder_errors, ensure_ascii=False, indent=2) + "\n",
             encoding="utf-8",
         )
 
@@ -178,6 +196,7 @@ def main():
             "fallback_overlap_with_official": len(overlap),
             "fallback_stale_keys": len(stale),
             "missing_not_yet_in_fallback": len(untranslated),
+            "placeholder_errors": len(placeholder_errors),
         }
 
     (out_dir / "report.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -194,13 +213,16 @@ def main():
             f"fallback={stats['fallback_keys']} ({stats['fallback_files']} file(s)) | "
             f"overlap={stats['fallback_overlap_with_official']} | "
             f"stale={stats['fallback_stale_keys']} | "
-            f"not-yet-translated={stats['missing_not_yet_in_fallback']}"
+            f"not-yet-translated={stats['missing_not_yet_in_fallback']} | "
+            f"placeholders={stats['placeholder_errors']}"
         )
 
     if args.fail_on_overlap and has_overlap:
         raise SystemExit("Fallback overlap detected: run this script with --prune, review the diff, then commit.")
     if args.fail_on_missing and has_missing:
         raise SystemExit("Incomplete fallback detected: translate every key listed in *_untranslated_keys.json.")
+    if args.fail_on_placeholders and has_placeholder_error:
+        raise SystemExit("Placeholder mismatch detected: review *_placeholder_errors.json.")
 
 
 if __name__ == "__main__":

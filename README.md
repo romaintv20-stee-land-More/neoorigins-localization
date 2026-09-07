@@ -6,17 +6,17 @@ Mod client NeoForge fournissant des **traductions complémentaires en priorité 
 
 | Cible | Version | Java | Langues | Contenu empaqueté |
 |---|---|---:|---:|---|
-| Minecraft 1.21.1 | `0.8.0-beta+1.21.1` | 21 | 15 | NeoOrigins + Medieval Origins Revival + ibarn's quartet origins addon + Origins Fantasy + Origins: Backgrounds + Origins: More Backgrounds + Origins: Backgrounds ISS + Origins Furries + Origins: Classes Extended + Origins: Classes ISS + Origin Architect |
-| Minecraft 26.1 / 26.1.1 / 26.1.2 | `0.8.0-beta+26.1` | 25 | 15 | NeoOrigins uniquement + delta 26.1 |
-| Minecraft 26.2 | `0.8.0-beta+26.2` | 25 | 15 | NeoOrigins uniquement + delta 26.2 |
+| Minecraft 1.21.1 | `0.8.0-beta+1.21.1` | 21 | 16 | NeoOrigins + Medieval Origins Revival + ibarn's quartet origins addon + Origins Fantasy + Origins: Backgrounds + Origins: More Backgrounds + Origins: Backgrounds ISS + Origins Furries + Origins: Classes Extended + Origins: Classes ISS + Origin Architect |
+| Minecraft 26.1 / 26.1.1 / 26.1.2 | `0.8.0-beta+26.1` | 25 | 16 | NeoOrigins uniquement + delta 26.1 |
+| Minecraft 26.2 | `0.8.0-beta+26.2` | 25 | 16 | NeoOrigins uniquement + delta 26.2 |
 
 Les builds 26.x n'embarquent aucune traduction des add-ons 1.21.1. La CI construit et audite séparément les trois cibles.
 
 ## Langues
 
-La **0.8.0 Beta** prend en charge : Français (`fr_fr`), Allemand (`de_de`), Espagnol (`es_es`), Portugais brésilien (`pt_br`), Néerlandais (`nl_nl`), Italien (`it_it`), Polonais (`pl_pl`), Russe (`ru_ru`), Turc (`tr_tr`), Chinois simplifié (`zh_cn`), **Tchèque (`cs_cz`)**, **Hongrois (`hu_hu`)**, **Japonais (`ja_jp`)**, **Coréen (`ko_kr`)** et **Ukrainien (`uk_ua`)**.
+La **0.8.0 Beta** prend en charge : Français (`fr_fr`), Allemand (`de_de`), Espagnol (`es_es`), Portugais brésilien (`pt_br`), Néerlandais (`nl_nl`), Italien (`it_it`), Polonais (`pl_pl`), Russe (`ru_ru`), Turc (`tr_tr`), Chinois simplifié (`zh_cn`), **Tchèque (`cs_cz`)**, **Hongrois (`hu_hu`)**, **Japonais (`ja_jp`)**, **Coréen (`ko_kr`)**, **Ukrainien (`uk_ua`)** et **Indonésien (`id_id`)**.
 
-Les quinze langues sont disponibles sur les trois builds pour NeoOrigins. Les traductions d'add-ons sont empaquetées uniquement sur Minecraft 1.21.1 lorsqu'une version compatible de l'add-on est réellement disponible.
+Les seize langues sont disponibles sur les trois builds pour NeoOrigins. Les traductions d'add-ons sont empaquetées uniquement sur Minecraft 1.21.1 lorsqu'une version compatible de l'add-on est réellement disponible.
 
 ## Référence NeoOrigins
 
@@ -54,22 +54,28 @@ Pour l'ukrainien :
 - **26.1.x : 2 307/2 307 clés** couvertes ;
 - **26.2 : 2 307/2 307 clés** couvertes.
 
+Pour l'indonésien :
+
+- **1.21.1 : 2 296/2 296 clés** couvertes ;
+- **26.1.x : 2 307/2 307 clés** couvertes ;
+- **26.2 : 2 307/2 307 clés** couvertes.
+
 Sur 26.x, trois anciennes clés de récompense restent dans les fichiers de fallback mais n'existent plus en amont ; elles sont signalées comme obsolètes par l'audit et restent sans effet.
 
 ## Projets pris en charge sur Minecraft 1.21.1
 
-| Projet | Version/référence | Couverture CS / HU / JA / KO / UK | Couverture effective par langue |
+| Projet | Version/référence | Couverture CS / HU / JA / KO / UK / ID | Couverture effective par langue |
 |---|---|---:|---:|
-| Medieval Origins Revival | branche `1.21.1-fabric` | 401/401 · 401/401 · 401/401 · 401/401 · 401/401 | 401/401 |
-| ibarn's quartet origins addon | 1.7.1 | 69/69 · 69/69 · 69/69 · 69/69 · 69/69 | 69/69 |
-| Origins Fantasy for NeoOrigins | 1.1.3 | 240/240 · 240/240 · 240/240 · 240/240 · 240/240 | 240/240 |
-| Origins: Backgrounds for NeoOrigins | 1.0.2 | 65/65 · 65/65 · 65/65 · 65/65 · 65/65 | 65/65 |
-| Origins: More Backgrounds for NeoOrigins | 1.0.2 | 44/44 · 44/44 · 44/44 · 44/44 · 44/44 | 39 propres + 5 partagées = 44/44 |
-| Origins: Backgrounds ISS for NeoOrigins | 1.0.1 | 79/79 · 79/79 · 79/79 · 79/79 · 79/79 | 77 propres + 2 partagées = 79/79 |
-| Origins Furries for NeoOrigins | 1.0.0 | 117/117 · 117/117 · 117/117 · 117/117 · 117/117 | 117/117 |
-| Origins: Classes Extended for NeoOrigins | 1.0.1 | 124/124 · 124/124 · 124/124 · 124/124 · 124/124 | 124/124 |
-| Origins: Classes ISS for NeoOrigins | 1.0.1 | 99/99 · 99/99 · 99/99 · 99/99 · 99/99 | 99/99 |
-| Origin Architect | 3.0.1 | 22/22 · 22/22 · 22/22 · 22/22 · 22/22 | 22/22 |
+| Medieval Origins Revival | branche `1.21.1-fabric` | 401/401 · 401/401 · 401/401 · 401/401 · 401/401 · 401/401 | 401/401 |
+| ibarn's quartet origins addon | 1.7.1 | 69/69 · 69/69 · 69/69 · 69/69 · 69/69 · 69/69 | 69/69 |
+| Origins Fantasy for NeoOrigins | 1.1.3 | 240/240 · 240/240 · 240/240 · 240/240 · 240/240 · 240/240 | 240/240 |
+| Origins: Backgrounds for NeoOrigins | 1.0.2 | 65/65 · 65/65 · 65/65 · 65/65 · 65/65 · 65/65 | 65/65 |
+| Origins: More Backgrounds for NeoOrigins | 1.0.2 | 44/44 · 44/44 · 44/44 · 44/44 · 44/44 · 44/44 | 39 propres + 5 partagées = 44/44 |
+| Origins: Backgrounds ISS for NeoOrigins | 1.0.1 | 79/79 · 79/79 · 79/79 · 79/79 · 79/79 · 79/79 | 77 propres + 2 partagées = 79/79 |
+| Origins Furries for NeoOrigins | 1.0.0 | 117/117 · 117/117 · 117/117 · 117/117 · 117/117 · 117/117 | 117/117 |
+| Origins: Classes Extended for NeoOrigins | 1.0.1 | 124/124 · 124/124 · 124/124 · 124/124 · 124/124 · 124/124 | 124/124 |
+| Origins: Classes ISS for NeoOrigins | 1.0.1 | 99/99 · 99/99 · 99/99 · 99/99 · 99/99 · 99/99 | 99/99 |
+| Origin Architect | 3.0.1 | 22/22 · 22/22 · 22/22 · 22/22 · 22/22 · 22/22 | 22/22 |
 
 Les intégrations DraconicArcher sont réalisées avec son autorisation explicite pour redistribuer les **chaînes de localisation traduites**. Aucun code, texture, modèle ou autre asset de gameplay de ces add-ons n'est redistribué ; les mods originaux restent requis.
 

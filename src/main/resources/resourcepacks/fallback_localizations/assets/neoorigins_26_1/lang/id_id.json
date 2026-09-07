@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Peralatan yang kamu buat memperoleh atribut bonus — toughness, kerusakan, atau kecepatan menambang.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Memperoleh XP dua kali lipat dari memasak makanan di smoker.",
+  "neoorigins.configuration.title": "Konfigurasi NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Gameplay",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "Pengaturan Gameplay NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Admin & Izin",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "Pengaturan Admin NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Penggantian Kekuatan",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "Penggantian Kekuatan NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Asal & Kelas",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "Aktif/Nonaktif Asal & Kelas NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Tampilan Klien",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "Pengaturan Klien NeoOrigins",
+  "neoorigins.configuration.show_cooldown_countdown": "Tampilkan hitung mundur waktu tunggu",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Opasitas hitung mundur waktu tunggu (%)",
+  "neoorigins.configuration.hud_ability_display": "Mode tampilan HUD kemampuan",
+  "neoorigins.configuration.always_show_ability_icons": "Selalu tampilkan ikon kemampuan"
+}

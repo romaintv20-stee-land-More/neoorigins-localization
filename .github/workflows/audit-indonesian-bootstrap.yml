@@ -1,0 +1,45 @@
+name: Audit Indonesian NeoOrigins bootstrap
+
+on:
+  push:
+    branches:
+      - release/0.8.0-indonesian
+  workflow_dispatch:
+
+jobs:
+  audit:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: mc-1.21.1
+            ref: '860ecdb24e723983e93004ea8ceb5de90ccf0d70'
+            extra: 'neoorigins_id_121'
+          - target: mc-26.1.x
+            ref: '3c1c7365507679c836d3c14af5d4dd0654652e87'
+            extra: 'neoorigins_26_1'
+          - target: mc-26.2
+            ref: '65864716a5a796fa1c51ec3e8a6d9640abebb4ca'
+            extra: 'neoorigins_26_2'
+    runs-on: ubuntu-latest
+    name: Audit ${{ matrix.target }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Audit Indonesian fallback coverage
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py \
+            --ref "${{ matrix.ref }}" \
+            --output "build/id-audit-${{ matrix.target }}" \
+            --locale id_id \
+            --fallback-namespace-glob 'neoorigins_id_common_*' \
+            --extra-namespace "${{ matrix.extra }}" \
+            --fail-on-overlap \
+            --fail-on-missing \
+            --fail-on-placeholders
+      - name: Print report
+        run: cat "build/id-audit-${{ matrix.target }}/report.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: indonesian-audit-${{ matrix.target }}
+          path: build/id-audit-${{ matrix.target }}
+          if-no-files-found: error

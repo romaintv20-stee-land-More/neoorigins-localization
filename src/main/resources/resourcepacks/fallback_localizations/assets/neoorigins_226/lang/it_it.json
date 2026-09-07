@@ -1,0 +1,9 @@
+{
+  "gui.neoorigins.picker.position": "%s / %s",
+  "gui.neoorigins.picker.back_to_grid": "< Griglia",
+  "gui.neoorigins.picker.no_results": "Nessuna origine corrisponde alla ricerca",
+  "power.neoorigins.step_assist_switch.name": "Assistenza al gradino",
+  "power.neoorigins.step_assist_switch.description": "Attiva o disattiva la capacità di salire automaticamente sui blocchi. Se disattivata, devi saltare per salire sui blocchi come tutti gli altri.",
+  "neoorigins.configuration.ui.picker_layout": "Layout del selettore",
+  "neoorigins.configuration.picker_layout": "Layout del selettore"
+}

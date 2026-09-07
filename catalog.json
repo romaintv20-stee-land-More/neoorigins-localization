@@ -11,7 +11,7 @@
     ],
     "loader": "NeoForge",
     "localization_mode": "low_priority_fallback",
-    "supported_locale_count": 14,
+    "supported_locale_count": 15,
     "builds": {
       "1.21.1": {
         "version": "0.8.0-beta+1.21.1",
@@ -230,6 +230,15 @@
             "26.1.x",
             "26.2"
           ]
+        },
+        "uk_ua": {
+          "name": "Українська",
+          "status": "supported",
+          "targets": [
+            "1.21.1",
+            "26.1.x",
+            "26.2"
+          ]
         }
       }
     },
@@ -251,7 +260,7 @@
           "1.21.1"
         ],
         "in_game_validation": "validated",
-        "note": "401/401 clés anglaises couvertes dans les quatorze langues ; absent des builds 26.x."
+        "note": "401/401 clés anglaises couvertes dans les quinze langues ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 401,
@@ -322,6 +331,12 @@
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/ko_kr.json",
           "official_keys": 305,
           "fallback_keys": 102
+        },
+        "uk_ua": {
+          "name": "Українська",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/uk_ua.json",
+          "fallback_keys": 401
         }
       }
     },
@@ -341,7 +356,7 @@
         "version": "1.7.1 / Minecraft 1.21.1",
         "source_ref": "multiloader-1.21.1-new-pack-format",
         "in_game_validation": "validated",
-        "note": "69/69 clés anglaises couvertes dans les quatorze langues ; absent des builds 26.x."
+        "note": "69/69 clés anglaises couvertes dans les quinze langues ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 69,
@@ -417,6 +432,12 @@
           "name": "한국어",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/ko_kr.json",
+          "fallback_keys": 69
+        },
+        "uk_ua": {
+          "name": "Українська",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/uk_ua.json",
           "fallback_keys": 69
         }
       }
@@ -516,6 +537,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/ko_kr.json",
           "fallback_keys": 240
+        },
+        "uk_ua": {
+          "name": "Українська",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/uk_ua.json",
+          "fallback_keys": 240
         }
       }
     },
@@ -537,7 +564,7 @@
           "1.21.1"
         ],
         "in_game_validation": "pending",
-        "note": "Audité contre le JAR CurseForge 8397335 ; aucune traduction officielle parmi les quatorze langues ciblées ; absent des builds 26.x."
+        "note": "Audité contre le JAR CurseForge 8397335 ; aucune traduction officielle parmi les quinze langues ciblées ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 65,
@@ -613,6 +640,12 @@
           "name": "한국어",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/ko_kr.json",
+          "fallback_keys": 65
+        },
+        "uk_ua": {
+          "name": "Українська",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/uk_ua.json",
           "fallback_keys": 65
         }
       }
@@ -713,6 +746,12 @@
           "name": "한국어",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/ko_kr.json",
+          "fallback_keys": 39
+        },
+        "uk_ua": {
+          "name": "Українська",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/uk_ua.json",
           "fallback_keys": 39
         }
       }
@@ -818,6 +857,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/ko_kr.json",
           "fallback_keys": 77
+        },
+        "uk_ua": {
+          "name": "Українська",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/uk_ua.json",
+          "fallback_keys": 77
         }
       }
     },
@@ -842,7 +887,7 @@
           "NeoOrigins"
         ],
         "in_game_validation": "pending",
-        "note": "Audité contre le JAR CurseForge 8397352 ; aucune traduction officielle parmi les quatorze langues ciblées ; absent des builds 26.x."
+        "note": "Audité contre le JAR CurseForge 8397352 ; aucune traduction officielle parmi les quinze langues ciblées ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 117,
@@ -919,6 +964,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/ko_kr.json",
           "fallback_keys": 117
+        },
+        "uk_ua": {
+          "name": "Українська",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/uk_ua.json",
+          "fallback_keys": 117
         }
       }
     },
@@ -943,7 +994,7 @@
           "NeoOrigins"
         ],
         "in_game_validation": "pending",
-        "note": "Audité contre le JAR CurseForge 8393343 ; 124/124 clés dans les quatorze langues ciblées ; absent des builds 26.x."
+        "note": "Audité contre le JAR CurseForge 8393343 ; 124/124 clés dans les quinze langues ciblées ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 124,
@@ -1020,6 +1071,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/ko_kr.json",
           "fallback_keys": 124
+        },
+        "uk_ua": {
+          "name": "Українська",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/uk_ua.json",
+          "fallback_keys": 124
         }
       }
     },
@@ -1045,7 +1102,7 @@
           "Iron's Spells 'n Spellbooks"
         ],
         "in_game_validation": "pending",
-        "note": "Audité contre le JAR CurseForge 8592095 ; 99/99 clés dans les quatorze langues ciblées ; absent des builds 26.x."
+        "note": "Audité contre le JAR CurseForge 8592095 ; 99/99 clés dans les quinze langues ciblées ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 99,
@@ -1122,6 +1179,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/ko_kr.json",
           "fallback_keys": 99
+        },
+        "uk_ua": {
+          "name": "Українська",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/uk_ua.json",
+          "fallback_keys": 99
         }
       }
     },
@@ -1145,7 +1208,7 @@
         "source_ref": "f58a6261292942d4123c46ff221fbdade138a329",
         "curseforge_file_id": 8568110,
         "in_game_validation": "pending",
-        "note": "22/22 clés anglaises couvertes dans les quatorze langues ; aucune traduction officielle détectée parmi les onze locales ciblées ; absent des builds 26.x."
+        "note": "22/22 clés anglaises couvertes dans les quinze langues ; aucune traduction officielle détectée parmi les onze locales ciblées ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 22,
@@ -1221,6 +1284,12 @@
           "name": "한국어",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/ko_kr.json",
+          "fallback_keys": 22
+        },
+        "uk_ua": {
+          "name": "Українська",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/uk_ua.json",
           "fallback_keys": 22
         }
       }

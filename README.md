@@ -7,7 +7,7 @@ Mod client NeoForge fournissant des **traductions complémentaires en priorité 
 | Cible | Version | Java | Langues | Contenu empaqueté |
 |---|---|---:|---:|---|
 | Minecraft 1.21.1 | `0.8.0-beta+1.21.1` | 21 | 11 | NeoOrigins + Medieval Origins Revival + ibarn's quartet origins addon + Origins Fantasy + Origins: Backgrounds + Origins: More Backgrounds + Origins: Backgrounds ISS + Origins Furries + Origins: Classes Extended + Origins: Classes ISS + Origin Architect |
-| Minecraft 26.1 / 26.1.1 / 26.1.2 | `0.8.0-beta+26.1` | 25 | 11 | NeoOrigins uniquement |
+| Minecraft 26.1 / 26.1.1 / 26.1.2 | `0.8.0-beta+26.1` | 25 | 11 | NeoOrigins uniquement + delta 26.1 |
 | Minecraft 26.2 | `0.8.0-beta+26.2` | 25 | 11 | NeoOrigins uniquement + delta 26.2 |
 
 Les builds 26.x n'embarquent aucune traduction des add-ons 1.21.1. La CI construit et audite séparément les trois cibles.
@@ -20,15 +20,23 @@ Les onze langues sont disponibles sur les trois builds pour NeoOrigins. Les trad
 
 ## Référence NeoOrigins
 
-La couverture de la 0.8.0 est auditée contre **NeoOrigins 2.2.25** :
+La couverture de la 0.8.0 est auditée contre **NeoOrigins 2.2.26** :
 
-- 1.21.1 : commit `2b409f3f9c27250665895cf3d0faa3f7adf9c4ac` ;
-- 26.1.x : tag `v2.2.25` ;
-- 26.2 : commit `86038d2d1b429255897c2bdac9097ecc50e07215`.
+- 1.21.1 : commit `860ecdb24e723983e93004ea8ceb5de90ccf0d70` ;
+- 26.1.x : commit `3c1c7365507679c836d3c14af5d4dd0654652e87` ;
+- 26.2 : commit `65864716a5a796fa1c51ec3e8a6d9640abebb4ca`.
 
-NeoOrigins Localization n'impose pas de dépendance dure sur la version 2.2.25 : le mod peut charger avec une version NeoOrigins plus récente, mais la **couverture complète garantie ici correspond à 2.2.25**. Les nouvelles clés de NeoOrigins 2.2.26 seront traitées séparément.
+NeoOrigins Localization n'impose pas de dépendance dure sur la version 2.2.26 : le mod peut charger avec une version NeoOrigins plus récente, mais la **couverture complète garantie ici correspond à 2.2.26**.
 
-Pour le tchèque, NeoOrigins 2.2.25 est couvert intégralement par 19 namespaces `neoorigins_cs_01` à `neoorigins_cs_19` : **2 281/2 281 clés** sur 1.21.1 et 26.1.x. Minecraft 26.2 possède 14 clés supplémentaires dans `neoorigins_26_2`, soit **2 292/2 292 clés couvertes**. Trois anciennes clés de récompense présentes dans la base commune n'existent plus en 26.2 et restent sans effet.
+La mise à jour 2.2.26 ajoute un delta commun `neoorigins_226` pour les nouvelles chaînes du sélecteur, Step Assist et Caveborn. La ligne 26.1.x possède en plus `neoorigins_26_1` pour ses raccourcis, compétences et réglages propres, tandis que 26.2 conserve `neoorigins_26_2`.
+
+Pour le tchèque :
+
+- **1.21.1 : 2 296/2 296 clés** couvertes ;
+- **26.1.x : 2 307/2 307 clés** couvertes ;
+- **26.2 : 2 307/2 307 clés** couvertes.
+
+Sur 26.x, trois anciennes clés de récompense restent dans les fichiers de fallback mais n'existent plus en amont ; elles sont signalées comme obsolètes par l'audit et restent sans effet.
 
 ## Projets pris en charge sur Minecraft 1.21.1
 
@@ -91,11 +99,11 @@ Lorsqu'un projet amont ajoute une traduction officielle, les clés devenues inut
 
 ## Validation des JAR 0.8.0
 
-La CI de la branche 0.8.0 a validé la structure suivante :
+L'inspection des JAR construits avec la référence NeoOrigins 2.2.26 a confirmé :
 
-- **1.21.1** : 34 fichiers `cs_cz` empaquetés, couvrant NeoOrigins, Medieval Origins et tous les add-ons listés ;
-- **26.1.x** : 19 fichiers `cs_cz`, uniquement les namespaces NeoOrigins communs ;
-- **26.2** : 20 fichiers `cs_cz`, soit les 19 namespaces communs + `neoorigins_26_2` ;
+- **1.21.1** : 35 fichiers `cs_cz` empaquetés, couvrant NeoOrigins, Medieval Origins et tous les add-ons listés ;
+- **26.1.x** : 21 fichiers `cs_cz`, uniquement les namespaces NeoOrigins communs + `neoorigins_226` + `neoorigins_26_1` ;
+- **26.2** : 21 fichiers `cs_cz`, uniquement les namespaces NeoOrigins communs + `neoorigins_226` + `neoorigins_26_2` ;
 - aucun namespace d'add-on 1.21.1 n'est présent dans les JAR 26.x.
 
 La validation automatisée ne remplace pas un contrôle visuel en jeu pour la qualité de formulation ou les problèmes de largeur d'interface.

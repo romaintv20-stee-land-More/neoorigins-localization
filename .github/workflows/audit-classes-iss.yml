@@ -1,0 +1,29 @@
+name: Audit Classes ISS
+
+on:
+  push:
+    branches: [ release/0.8.0-classes-iss ]
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Audit Origins Classes ISS upstream locales
+        run: python3 scripts/audit_origins_classes_iss_upstream.py --annotate-missing --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Upload audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: origins-classes-iss-upstream-audit-${{ github.sha }}
+          path: build/origins-classes-iss-upstream-audit
+          if-no-files-found: error

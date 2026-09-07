@@ -93,4 +93,64 @@ La notice MIT du projet amont doit être conservée lorsque des portions substan
 - Priorité amont : le JAR ciblé ne fournit actuellement aucune des dix localisations prises en charge ici. Si une traduction officielle apparaît ensuite, elle doit garder la priorité et les clés correspondantes de notre fallback doivent être retirées.
 - Les mods originaux restent requis pour utiliser ces traductions.
 
+## Origins Furries for NeoOrigins
+
+- Projet : Origins Furries for NeoOrigins
+- Auteur : DraconicArcher
+- CurseForge : https://www.curseforge.com/minecraft/mc-mods/origins-furries-for-neoorigins
+- Project ID CurseForge : `1592095`
+- Version ciblée : fichier CurseForge `Origins-Furries-1.21.1-NeoOrigins-1.0.0.jar` (file ID `8397352`) pour Minecraft 1.21.1
+- Namespace : `origins_furries`
+- Utilisation ici : localisations `fr_fr`, `de_de`, `es_es`, `pt_br`, `nl_nl`, `it_it`, `pl_pl`, `ru_ru`, `tr_tr` et `zh_cn` des 117 chaînes du fichier anglais `assets/origins_furries/lang/en_us.json`.
+- Autorisation : couverte par l'autorisation explicite accordée par DraconicArcher le 6 septembre 2026 pour l'intégration des traductions de ses add-ons à NeoOrigins Localization, avec redistribution limitée aux chaînes de localisation traduites, attribution claire et lien vers le projet original.
+- Limite de redistribution : NeoOrigins Localization ne redistribue pas le code, les textures, les modèles, les données de gameplay ni les autres assets de l'add-on ; seuls les fichiers de localisation traduits nécessaires sont inclus.
+- Priorité amont : le JAR ciblé ne fournit actuellement aucune des dix localisations prises en charge ici. Si une traduction officielle apparaît ensuite, elle doit garder la priorité et les clés correspondantes de notre fallback doivent être retirées.
+- NeoOrigins et le mod original restent requis pour utiliser ces traductions.
+
+## Origins: Classes Extended for NeoOrigins
+
+- Projet : Origins: Classes Extended for NeoOrigins
+- Auteur : DraconicArcher
+- CurseForge : https://www.curseforge.com/minecraft/mc-mods/origins-classes-extended-for-neoorigins
+- Project ID CurseForge : `1602395`
+- Version ciblée : fichier CurseForge `Origins-Classes-Ex-1.21.1-NeoOrigins-1.0.1.jar` (file ID `8393343`) pour Minecraft 1.21.1
+- Namespace : `origins_classes_ex`
+- Dépendance amont : NeoOrigins.
+- Utilisation ici : localisations `fr_fr`, `de_de`, `es_es`, `pt_br`, `nl_nl`, `it_it`, `pl_pl`, `ru_ru`, `tr_tr` et `zh_cn` des 124 chaînes du fichier anglais `assets/origins_classes_ex/lang/en_us.json`.
+- Autorisation : couverte par l'autorisation explicite accordée par DraconicArcher le 6 septembre 2026 pour l'intégration des traductions de ses add-ons à NeoOrigins Localization, avec redistribution limitée aux chaînes de localisation traduites, attribution claire et lien vers le projet original.
+- Limite de redistribution : NeoOrigins Localization ne redistribue pas le code, les textures, les modèles, les données de gameplay ni les autres assets de l'add-on ; seuls les fichiers de localisation traduits nécessaires sont inclus.
+- Priorité amont : le JAR ciblé ne fournit actuellement aucune des dix localisations prises en charge ici. Si une traduction officielle apparaît ensuite, elle doit garder la priorité et les clés correspondantes de notre fallback doivent être retirées.
+- NeoOrigins et le mod original restent requis pour utiliser ces traductions.
+
+## Origins: Classes ISS for NeoOrigins
+
+- Projet : Origins: Classes ISS for NeoOrigins
+- Auteur : DraconicArcher
+- CurseForge : https://www.curseforge.com/minecraft/mc-mods/origins-classes-iss-for-neoorigins
+- Project ID CurseForge : `1622039`
+- Version ciblée : fichier CurseForge `Origins-Classes-ISS-1.21.1-NeoOrigins-1.0.1.jar` (file ID `8592095`) pour Minecraft 1.21.1
+- Namespace : `origins_classes_iss`
+- Dépendances amont : NeoOrigins et Iron's Spells 'n Spellbooks.
+- Utilisation ici : localisations `fr_fr`, `de_de`, `es_es`, `pt_br`, `nl_nl`, `it_it`, `pl_pl`, `ru_ru`, `tr_tr` et `zh_cn` des 99 chaînes du fichier anglais `assets/origins_classes_iss/lang/en_us.json`.
+- Autorisation : couverte par l'autorisation explicite accordée par DraconicArcher le 6 septembre 2026 pour l'intégration des traductions de ses add-ons à NeoOrigins Localization, avec redistribution limitée aux chaînes de localisation traduites, attribution claire et lien vers le projet original.
+- Limite de redistribution : NeoOrigins Localization ne redistribue pas le code, les textures, les modèles, les données de gameplay ni les autres assets de l'add-on ; seuls les fichiers de localisation traduits nécessaires sont inclus.
+- Priorité amont : le JAR ciblé ne fournit actuellement aucune des dix localisations prises en charge ici. Si une traduction officielle apparaît ensuite, elle doit garder la priorité et les clés correspondantes de notre fallback doivent être retirées.
+- NeoOrigins, Iron's Spells 'n Spellbooks et le mod original restent requis pour utiliser ces traductions.
+
+## Origin Architect (NeoOrigins Addon)
+
+- Projet : Origin Architect (NeoOrigins Addon)
+- Auteur : reotpak / ReoTpak
+- CurseForge : https://www.curseforge.com/minecraft/mc-mods/origin-architect
+- Source : https://github.com/ReoTpak/origin-architect-modern-uI
+- Project ID CurseForge : `1635001`
+- Version ciblée : fichier CurseForge `originsmodernui-3.0.1-1.21.1.jar` (file ID `8568110`) pour Minecraft 1.21.1
+- Référence source auditée : commit `f58a6261292942d4123c46ff221fbdade138a329`
+- Namespace : `originsmodernui`
+- Licence amont : MIT (déclarée sur la page CurseForge du projet)
+- Utilisation ici : localisations `fr_fr`, `de_de`, `es_es`, `pt_br`, `nl_nl`, `it_it`, `pl_pl`, `ru_ru`, `tr_tr` et `zh_cn` des 22 chaînes de `assets/originsmodernui/lang/en_us.json`.
+- Modifications : traduction et adaptation linguistique ; le nom de produit `Origin Architect` est conservé comme nom propre.
+- Priorité amont : si une traduction officielle apparaît ensuite pour une langue ciblée, elle doit garder la priorité et les clés correspondantes de notre fallback doivent être retirées.
+- Le mod original reste requis pour utiliser ces traductions ; l'intégration est limitée au build Minecraft 1.21.1.
+
 Aucune attribution ne signifie que les auteurs amont approuvent ou sponsorisent NeoOrigins Localization au-delà des autorisations explicitement mentionnées ci-dessus.

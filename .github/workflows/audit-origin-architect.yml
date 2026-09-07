@@ -1,0 +1,24 @@
+name: Audit Origin Architect
+
+on:
+  push:
+    branches:
+      - release/0.8.0-origin-architect
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Audit Origin Architect upstream locales
+        run: python scripts/audit_origin_architect_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Upload Origin Architect audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: origin-architect-upstream-audit-${{ github.sha }}
+          path: build/origin-architect-upstream-audit

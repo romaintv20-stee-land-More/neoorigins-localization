@@ -1,0 +1,16 @@
+{
+  "neoorigins.configuration.always_show_ability_icons": "Vždy zobrazovat ikony schopností",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Krytí odpočtu obnovení (%)",
+  "neoorigins.configuration.hud_ability_display": "Režim zobrazení schopností v HUD",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Správa a oprávnění",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "Nastavení správy NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Zobrazení klienta",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "Klientská nastavení NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Původy a třídy",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "Přepínače původů a tříd NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Hratelnost",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "Nastavení hratelnosti NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Přepsání schopností",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "Přepsání schopností NeoOrigins",
+  "neoorigins.configuration.show_cooldown_countdown": "Zobrazovat odpočet obnovení"
+}

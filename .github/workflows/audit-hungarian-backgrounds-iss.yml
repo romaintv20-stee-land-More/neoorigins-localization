@@ -1,0 +1,27 @@
+name: Audit Hungarian Origins Backgrounds ISS
+
+on:
+  push:
+    branches:
+      - release/0.8.0-hungarian
+    paths:
+      - .github/workflows/audit-hungarian-backgrounds-iss.yml
+      - scripts/audit_origins_backgrounds_iss_upstream.py
+      - src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/hu_hu.json
+      - src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/hu_hu.json
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: release/0.8.0-hungarian
+      - name: Audit Origins Backgrounds ISS Hungarian
+        run: |
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py \
+            --file-id 8409604 \
+            --filename Origins-ISS-Backgrounds-1.21.1-NeoOrigins-1.0.1.jar \
+            --fail-on-overlap \
+            --fail-on-missing \
+            --fail-on-placeholders

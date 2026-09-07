@@ -1,0 +1,9 @@
+{
+  "gui.neoorigins.picker.position": "%s / %s",
+  "gui.neoorigins.picker.back_to_grid": "< Cuadrícula",
+  "gui.neoorigins.picker.no_results": "Ningún origen coincide con tu búsqueda",
+  "power.neoorigins.step_assist_switch.name": "Asistencia de subida",
+  "power.neoorigins.step_assist_switch.description": "Activa o desactiva tu capacidad de subir bloques automáticamente. Si está desactivada, tendrás que saltar para subir bloques como los demás.",
+  "neoorigins.configuration.ui.picker_layout": "Diseño del selector",
+  "neoorigins.configuration.picker_layout": "Diseño del selector"
+}

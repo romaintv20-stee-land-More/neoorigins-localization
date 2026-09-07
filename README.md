@@ -107,10 +107,11 @@ Lorsqu'un projet amont ajoute une traduction officielle, les clés devenues inut
 
 L'inspection des JAR construits avec la référence NeoOrigins 2.2.26 a confirmé :
 
-- **1.21.1** : 35 fichiers `cs_cz` empaquetés, couvrant NeoOrigins, Medieval Origins et tous les add-ons listés ;
-- **26.1.x** : 21 fichiers `cs_cz`, uniquement les namespaces NeoOrigins communs + `neoorigins_226` + `neoorigins_26_1` ;
-- **26.2** : 21 fichiers `cs_cz`, uniquement les namespaces NeoOrigins communs + `neoorigins_226` + `neoorigins_26_2` ;
-- aucun namespace d'add-on 1.21.1 n'est présent dans les JAR 26.x.
+- **1.21.1** : 35 fichiers `cs_cz` et **33 fichiers `hu_hu`** empaquetés, couvrant NeoOrigins, Medieval Origins et tous les add-ons listés ;
+- **26.1.x** : 21 fichiers `cs_cz` et **20 fichiers `hu_hu`**, uniquement les namespaces NeoOrigins communs + `neoorigins_226` + `neoorigins_26_1` ;
+- **26.2** : 21 fichiers `cs_cz` et **20 fichiers `hu_hu`**, uniquement les namespaces NeoOrigins communs + `neoorigins_226` + `neoorigins_26_2` ;
+- aucun namespace d'add-on 1.21.1 n'est présent dans les JAR 26.x ;
+- les trois builds compilent avec succès et leur contenu de localisation a été ouvert et validé après construction.
 
 La validation automatisée ne remplace pas un contrôle visuel en jeu pour la qualité de formulation ou les problèmes de largeur d'interface.
 

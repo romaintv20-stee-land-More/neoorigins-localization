@@ -11,7 +11,7 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 PACK_ROOT = ROOT / "src/main/resources/resourcepacks/fallback_localizations/assets"
-LOCALES = ("fr_fr", "de_de", "es_es", "pt_br", "nl_nl", "it_it", "pl_pl", "ru_ru", "tr_tr", "zh_cn", "cs_cz")
+LOCALES = ("fr_fr", "de_de", "es_es", "pt_br", "nl_nl", "it_it", "pl_pl", "ru_ru", "tr_tr", "zh_cn", "cs_cz", "hu_hu")
 DEFAULT_FILE_ID = "8650744"
 DEFAULT_FILENAME = "Origins-More-Backgrounds-1.21.1-NeoOrigins-1.0.2.jar"
 DEFAULT_NAMESPACE = "origins_backgrounds_two"
@@ -195,9 +195,9 @@ def main():
     failures = []
     if args.fail_on_overlap and any_overlap:
         failures.append("fallback overlap with upstream translations")
-    if args.fail_on_missing and any_missing:
+    if args.fail_on-missing and any_missing:
         failures.append("missing fallback translations")
-    if args.fail_on_placeholders and any_placeholder_error:
+    if args.fail_on-placeholders and any_placeholder_error:
         failures.append("placeholder mismatch")
     if failures:
         raise SystemExit("Origins More Backgrounds audit failed: " + "; ".join(failures))

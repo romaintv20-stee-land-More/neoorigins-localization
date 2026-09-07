@@ -1,0 +1,26 @@
+name: Audit Hungarian Origins Classes Extended
+
+on:
+  push:
+    branches:
+      - release/0.8.0-hungarian
+    paths:
+      - .github/workflows/audit-hungarian-classes-extended.yml
+      - scripts/audit_origins_classes_extended_upstream.py
+      - src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/hu_hu.json
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: release/0.8.0-hungarian
+      - name: Audit Classes Extended Hungarian
+        run: |
+          python3 scripts/audit_origins_classes_extended_upstream.py \
+            --file-id 8393343 \
+            --filename Origins-Classes-Ex-1.21.1-NeoOrigins-1.0.1.jar \
+            --fail-on-overlap \
+            --fail-on-missing \
+            --fail-on-placeholders

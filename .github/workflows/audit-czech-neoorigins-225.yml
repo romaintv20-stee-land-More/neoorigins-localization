@@ -6,6 +6,7 @@ on:
       - release/0.8.0-czech
     paths:
       - .github/workflows/audit-czech-neoorigins-225.yml
+      - src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_26_2/lang/cs_cz.json
   workflow_dispatch:
 
 jobs:

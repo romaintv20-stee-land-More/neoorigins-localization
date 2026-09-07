@@ -1,0 +1,46 @@
+name: Audit Japanese NeoOrigins bootstrap
+
+on:
+  push:
+    branches:
+      - release/0.8.0-japanese
+    paths:
+      - .github/workflows/audit-japanese-bootstrap.yml
+
+jobs:
+  audit:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: mc-1.21.1
+            ref: '860ecdb24e723983e93004ea8ceb5de90ccf0d70'
+            extra: 'neoorigins_121_batch1'
+          - target: mc-26.1.x
+            ref: '3c1c7365507679c836d3c14af5d4dd0654652e87'
+            extra: 'neoorigins_26_1'
+          - target: mc-26.2
+            ref: '65864716a5a796fa1c51ec3e8a6d9640abebb4ca'
+            extra: 'neoorigins_26_2'
+    runs-on: ubuntu-latest
+    name: Audit ${{ matrix.target }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Audit Japanese missing keys
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py \
+            --ref "${{ matrix.ref }}" \
+            --output "build/ja-audit-${{ matrix.target }}" \
+            --locale ja_jp \
+            --extra-namespace neoorigins_226 \
+            --extra-namespace "${{ matrix.extra }}"
+      - name: Print report and missing keys
+        run: |
+          cat "build/ja-audit-${{ matrix.target }}/report.json"
+          echo '--- MISSING ENGLISH KEYS ---'
+          cat "build/ja-audit-${{ matrix.target }}/ja_jp_missing_en.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: japanese-audit-${{ matrix.target }}
+          path: build/ja-audit-${{ matrix.target }}
+          if-no-files-found: error

@@ -22,13 +22,13 @@ jobs:
         run: python3 scripts/finalize_hungarian_integration.py
       - name: Validate catalog and localization JSON
         run: python3 scripts/validate.py
-      - name: Commit integration
+      - name: Commit documentation and catalog integration
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add .github/workflows/build.yml README.md CATALOG.md catalog.json
+          git add README.md CATALOG.md catalog.json
           if git diff --cached --quiet; then
-            echo "No integration changes to commit."
+            echo "No documentation/catalog changes to commit."
           else
             git commit -m "Integrate Hungarian as twelfth locale"
             git push origin HEAD:release/0.8.0-hungarian

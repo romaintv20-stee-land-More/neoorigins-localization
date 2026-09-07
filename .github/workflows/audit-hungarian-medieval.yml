@@ -1,0 +1,32 @@
+name: Audit Hungarian Medieval Origins
+
+on:
+  push:
+    branches:
+      - release/0.8.0-hungarian
+    paths:
+      - .github/workflows/audit-hungarian-medieval.yml
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: release/0.8.0-hungarian
+      - name: Audit Medieval Origins Hungarian
+        run: |
+          OUT="build/medieval-hu"
+          python3 scripts/audit_medievalorigins_upstream.py \
+            --ref 1.21.1-fabric \
+            --output "$OUT"
+          echo '--- Hungarian report ---'
+          python3 - <<'PY'
+          import json
+          r=json.load(open('build/medieval-hu/report.json', encoding='utf-8'))
+          print(json.dumps(r['locales']['hu_hu'], ensure_ascii=False, indent=2))
+          PY
+          echo '--- Hungarian missing English ---'
+          cat "$OUT/hu_hu_missing_en.json"
+          echo '--- Hungarian placeholder errors ---'
+          cat "$OUT/hu_hu_placeholder_errors.json"

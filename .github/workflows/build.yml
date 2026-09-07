@@ -29,11 +29,13 @@ jobs:
             audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz'
             audit_extra_namespace: 'neoorigins_121_batch1'
             audit_226_namespace: 'neoorigins_226'
+            audit_26_1_namespace: ''
             audit_namespace_glob: 'neoorigins_tr_*'
             audit_czech_namespace_glob: 'neoorigins_cs_*'
             include_addon_translations: true
             include_121_batch_translations: true
             include_turkish_split_translations: true
+            include_26_1_translations: false
             include_26_2_translations: false
           - target: mc-26.1.x
             minecraft: '26.1.2'
@@ -51,11 +53,13 @@ jobs:
             audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz'
             audit_extra_namespace: 'neoorigins_121_batch1'
             audit_226_namespace: 'neoorigins_226'
+            audit_26_1_namespace: 'neoorigins_26_1'
             audit_namespace_glob: 'neoorigins_tr_*'
             audit_czech_namespace_glob: 'neoorigins_cs_*'
             include_addon_translations: false
             include_121_batch_translations: true
             include_turkish_split_translations: true
+            include_26_1_translations: true
             include_26_2_translations: false
           - target: mc-26.2
             minecraft: '26.2'
@@ -73,11 +77,13 @@ jobs:
             audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz'
             audit_extra_namespace: 'neoorigins_26_2'
             audit_226_namespace: 'neoorigins_226'
+            audit_26_1_namespace: ''
             audit_namespace_glob: 'neoorigins_tr_*'
             audit_czech_namespace_glob: 'neoorigins_cs_*'
             include_addon_translations: false
             include_121_batch_translations: false
             include_turkish_split_translations: true
+            include_26_1_translations: false
             include_26_2_translations: true
 
     runs-on: ubuntu-latest
@@ -111,6 +117,9 @@ jobs:
           fi
           if [ -n "${{ matrix.audit_226_namespace }}" ]; then
             EXTRA_ARGS+=(--extra-namespace "${{ matrix.audit_226_namespace }}")
+          fi
+          if [ -n "${{ matrix.audit_26_1_namespace }}" ]; then
+            EXTRA_ARGS+=(--extra-namespace "${{ matrix.audit_26_1_namespace }}")
           fi
           if [ -n "${{ matrix.audit_namespace_glob }}" ]; then
             EXTRA_ARGS+=(--fallback-namespace-glob "${{ matrix.audit_namespace_glob }}")
@@ -197,6 +206,7 @@ jobs:
             "-Pinclude_addon_translations=${{ matrix.include_addon_translations }}" \
             "-Pinclude_121_batch_translations=${{ matrix.include_121_batch_translations }}" \
             "-Pinclude_turkish_split_translations=${{ matrix.include_turkish_split_translations }}" \
+            "-Pinclude_26_1_translations=${{ matrix.include_26_1_translations }}" \
             "-Pinclude_26_2_translations=${{ matrix.include_26_2_translations }}" \
             "-Pminecraft_version=${{ matrix.minecraft }}" \
             "-Pminecraft_version_range=${{ matrix.minecraft_range }}" \

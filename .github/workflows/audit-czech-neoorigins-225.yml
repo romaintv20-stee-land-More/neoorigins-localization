@@ -36,8 +36,10 @@ jobs:
             --locale cs_cz \
             --extra-namespace "${{ matrix.extra_namespace }}" \
             --fallback-namespace-glob "${{ matrix.namespace_glob }}" \
+            --fallback-namespace-glob "neoorigins_cs_*" \
             --output "build/czech-neoorigins-${{ matrix.target }}" \
             --fail-on-overlap \
             --fail-on-missing
       - name: Show report
-        run: cat "build/czech-neoorigins-${{ matrix.target }}/report.json"
+        if: always()
+        run: cat "build/czech-neoorigins-${{ matrix.target }}/report.json" || true

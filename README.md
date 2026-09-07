@@ -6,17 +6,17 @@ Mod client NeoForge fournissant des **traductions complémentaires en priorité 
 
 | Cible | Version | Java | Langues | Contenu empaqueté |
 |---|---|---:|---:|---|
-| Minecraft 1.21.1 | `0.8.0-beta+1.21.1` | 21 | 11 | NeoOrigins + Medieval Origins Revival + ibarn's quartet origins addon + Origins Fantasy + Origins: Backgrounds + Origins: More Backgrounds + Origins: Backgrounds ISS + Origins Furries + Origins: Classes Extended + Origins: Classes ISS + Origin Architect |
-| Minecraft 26.1 / 26.1.1 / 26.1.2 | `0.8.0-beta+26.1` | 25 | 11 | NeoOrigins uniquement + delta 26.1 |
-| Minecraft 26.2 | `0.8.0-beta+26.2` | 25 | 11 | NeoOrigins uniquement + delta 26.2 |
+| Minecraft 1.21.1 | `0.8.0-beta+1.21.1` | 21 | 12 | NeoOrigins + Medieval Origins Revival + ibarn's quartet origins addon + Origins Fantasy + Origins: Backgrounds + Origins: More Backgrounds + Origins: Backgrounds ISS + Origins Furries + Origins: Classes Extended + Origins: Classes ISS + Origin Architect |
+| Minecraft 26.1 / 26.1.1 / 26.1.2 | `0.8.0-beta+26.1` | 25 | 12 | NeoOrigins uniquement + delta 26.1 |
+| Minecraft 26.2 | `0.8.0-beta+26.2` | 25 | 12 | NeoOrigins uniquement + delta 26.2 |
 
 Les builds 26.x n'embarquent aucune traduction des add-ons 1.21.1. La CI construit et audite séparément les trois cibles.
 
 ## Langues
 
-La **0.8.0 Beta** prend en charge : Français (`fr_fr`), Allemand (`de_de`), Espagnol (`es_es`), Portugais brésilien (`pt_br`), Néerlandais (`nl_nl`), Italien (`it_it`), Polonais (`pl_pl`), Russe (`ru_ru`), Turc (`tr_tr`), Chinois simplifié (`zh_cn`) et **Tchèque (`cs_cz`)**.
+La **0.8.0 Beta** prend en charge : Français (`fr_fr`), Allemand (`de_de`), Espagnol (`es_es`), Portugais brésilien (`pt_br`), Néerlandais (`nl_nl`), Italien (`it_it`), Polonais (`pl_pl`), Russe (`ru_ru`), Turc (`tr_tr`), Chinois simplifié (`zh_cn`), **Tchèque (`cs_cz`)** et **Hongrois (`hu_hu`)**.
 
-Les onze langues sont disponibles sur les trois builds pour NeoOrigins. Les traductions d'add-ons sont empaquetées uniquement sur Minecraft 1.21.1 lorsqu'une version compatible de l'add-on est réellement disponible.
+Les douze langues sont disponibles sur les trois builds pour NeoOrigins. Les traductions d'add-ons sont empaquetées uniquement sur Minecraft 1.21.1 lorsqu'une version compatible de l'add-on est réellement disponible.
 
 ## Référence NeoOrigins
 
@@ -36,22 +36,28 @@ Pour le tchèque :
 - **26.1.x : 2 307/2 307 clés** couvertes ;
 - **26.2 : 2 307/2 307 clés** couvertes.
 
+Pour le hongrois :
+
+- **1.21.1 : 2 296/2 296 clés** couvertes ;
+- **26.1.x : 2 307/2 307 clés** couvertes ;
+- **26.2 : 2 307/2 307 clés** couvertes.
+
 Sur 26.x, trois anciennes clés de récompense restent dans les fichiers de fallback mais n'existent plus en amont ; elles sont signalées comme obsolètes par l'audit et restent sans effet.
 
 ## Projets pris en charge sur Minecraft 1.21.1
 
-| Projet | Version/référence | Couverture tchèque | Couverture effective par langue |
+| Projet | Version/référence | Couverture CS / HU | Couverture effective par langue |
 |---|---|---:|---:|
-| Medieval Origins Revival | branche `1.21.1-fabric` | 401/401 | 401/401 |
-| ibarn's quartet origins addon | 1.7.1 | 69/69 | 69/69 |
-| Origins Fantasy for NeoOrigins | 1.1.3 | 240/240 | 240/240 |
-| Origins: Backgrounds for NeoOrigins | 1.0.2 | 65/65 | 65/65 |
-| Origins: More Backgrounds for NeoOrigins | 1.0.2 | 44/44 | 39 propres + 5 partagées = 44/44 |
-| Origins: Backgrounds ISS for NeoOrigins | 1.0.1 | 79/79 | 77 propres + 2 partagées = 79/79 |
-| Origins Furries for NeoOrigins | 1.0.0 | 117/117 | 117/117 |
-| Origins: Classes Extended for NeoOrigins | 1.0.1 | 124/124 | 124/124 |
-| Origins: Classes ISS for NeoOrigins | 1.0.1 | 99/99 | 99/99 |
-| Origin Architect | 3.0.1 | 22/22 | 22/22 |
+| Medieval Origins Revival | branche `1.21.1-fabric` | 401/401 · 401/401 | 401/401 |
+| ibarn's quartet origins addon | 1.7.1 | 69/69 · 69/69 | 69/69 |
+| Origins Fantasy for NeoOrigins | 1.1.3 | 240/240 · 240/240 | 240/240 |
+| Origins: Backgrounds for NeoOrigins | 1.0.2 | 65/65 · 65/65 | 65/65 |
+| Origins: More Backgrounds for NeoOrigins | 1.0.2 | 44/44 · 44/44 | 39 propres + 5 partagées = 44/44 |
+| Origins: Backgrounds ISS for NeoOrigins | 1.0.1 | 79/79 · 79/79 | 77 propres + 2 partagées = 79/79 |
+| Origins Furries for NeoOrigins | 1.0.0 | 117/117 · 117/117 | 117/117 |
+| Origins: Classes Extended for NeoOrigins | 1.0.1 | 124/124 · 124/124 | 124/124 |
+| Origins: Classes ISS for NeoOrigins | 1.0.1 | 99/99 · 99/99 | 99/99 |
+| Origin Architect | 3.0.1 | 22/22 · 22/22 | 22/22 |
 
 Les intégrations DraconicArcher sont réalisées avec son autorisation explicite pour redistribuer les **chaînes de localisation traduites**. Aucun code, texture, modèle ou autre asset de gameplay de ces add-ons n'est redistribué ; les mods originaux restent requis.
 
@@ -101,10 +107,11 @@ Lorsqu'un projet amont ajoute une traduction officielle, les clés devenues inut
 
 L'inspection des JAR construits avec la référence NeoOrigins 2.2.26 a confirmé :
 
-- **1.21.1** : 35 fichiers `cs_cz` empaquetés, couvrant NeoOrigins, Medieval Origins et tous les add-ons listés ;
-- **26.1.x** : 21 fichiers `cs_cz`, uniquement les namespaces NeoOrigins communs + `neoorigins_226` + `neoorigins_26_1` ;
-- **26.2** : 21 fichiers `cs_cz`, uniquement les namespaces NeoOrigins communs + `neoorigins_226` + `neoorigins_26_2` ;
-- aucun namespace d'add-on 1.21.1 n'est présent dans les JAR 26.x.
+- **1.21.1** : 35 fichiers `cs_cz` et **33 fichiers `hu_hu`** empaquetés, couvrant NeoOrigins, Medieval Origins et tous les add-ons listés ;
+- **26.1.x** : 21 fichiers `cs_cz` et **20 fichiers `hu_hu`**, uniquement les namespaces NeoOrigins communs + `neoorigins_226` + `neoorigins_26_1` ;
+- **26.2** : 21 fichiers `cs_cz` et **20 fichiers `hu_hu`**, uniquement les namespaces NeoOrigins communs + `neoorigins_226` + `neoorigins_26_2` ;
+- aucun namespace d'add-on 1.21.1 n'est présent dans les JAR 26.x ;
+- les trois builds compilent avec succès et leur contenu de localisation a été ouvert et validé après construction.
 
 La validation automatisée ne remplace pas un contrôle visuel en jeu pour la qualité de formulation ou les problèmes de largeur d'interface.
 

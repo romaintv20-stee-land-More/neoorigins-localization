@@ -1,0 +1,38 @@
+name: Audit Hungarian NeoOrigins 26.x deltas
+
+on:
+  push:
+    branches:
+      - release/0.8.0-hungarian
+    paths:
+      - .github/workflows/audit-hungarian-26x.yml
+
+jobs:
+  audit:
+    strategy:
+      matrix:
+        include:
+          - target: 26.1.x
+            ref: 3c1c7365507679c836d3c14af5d4dd0654652e87
+            namespace: neoorigins_26_1
+          - target: 26.2
+            ref: 65864716a5a796fa1c51ec3e8a6d9640abebb4ca
+            namespace: neoorigins_26_2
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: release/0.8.0-hungarian
+      - name: Audit Hungarian ${{ matrix.target }}
+        run: |
+          OUT="build/hu-${{ matrix.target }}"
+          python3 scripts/audit_neoorigins_upstream.py \
+            --ref "${{ matrix.ref }}" \
+            --locale hu_hu \
+            --fallback-namespace-glob 'neoorigins_hu_*' \
+            --extra-namespace "${{ matrix.namespace }}" \
+            --fail-on-overlap \
+            --fail-on-missing \
+            --output "$OUT"
+          echo '--- stale ---'
+          cat "$OUT/hu_hu_stale_keys.json"

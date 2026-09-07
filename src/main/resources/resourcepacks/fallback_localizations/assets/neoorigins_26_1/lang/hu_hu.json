@@ -1,0 +1,16 @@
+{
+  "neoorigins.configuration.always_show_ability_icons": "Képességikonok mindig láthatók",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Újratöltési visszaszámlálás átlátszatlansága (%)",
+  "neoorigins.configuration.hud_ability_display": "Képességek HUD-megjelenítési módja",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Adminisztráció és jogosultságok",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "NeoOrigins adminisztrációs beállítások",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Kliens megjelenítés",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "NeoOrigins kliensbeállítások",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Eredetek és osztályok",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "NeoOrigins eredet- és osztálybeállítások",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Játékmenet",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "NeoOrigins játékmenet-beállítások",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Képesség-felülbírálások",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "NeoOrigins képesség-felülbírálások",
+  "neoorigins.configuration.show_cooldown_countdown": "Újratöltési visszaszámlálás megjelenítése"
+}

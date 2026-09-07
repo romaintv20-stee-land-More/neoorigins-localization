@@ -220,6 +220,32 @@ jobs:
             "-Ploader_version_range=${{ matrix.loader_range }}" \
             "-Pmod_version=${{ matrix.mod_version }}"
 
+      - name: Verify packaged Japanese localizations
+        run: |
+          JAR=$(find build/libs -type f -name '*.jar' ! -name '*-sources.jar' | head -n 1)
+          test -n "$JAR"
+          jar tf "$JAR" > build/jar-contents-${{ matrix.target }}.txt
+          JA_COUNT=$(grep -cE '(^|/)lang/ja_jp\.json$' build/jar-contents-${{ matrix.target }}.txt || true)
+          echo "Japanese localization files in ${{ matrix.target }}: $JA_COUNT"
+          test "$JA_COUNT" -gt 0
+
+          ADDON_PATTERN='^assets/(medievalorigins|medievalorigins_[^/]*|ibarnorigins|origins_fantasy|origins_backgrounds|origins_backgrounds_two|origins_backgrounds_iss|origins_furries|origins_classes_ex|origins_classes_iss|originsmodernui)/'
+
+          if [ "${{ matrix.include_addon_translations }}" = "true" ]; then
+            grep -Eq '^assets/medievalorigins_ja_[^/]*/lang/ja_jp\.json$' build/jar-contents-${{ matrix.target }}.txt
+            for ns in ibarnorigins origins_fantasy origins_backgrounds origins_backgrounds_two origins_backgrounds_iss origins_furries origins_classes_ex origins_classes_iss originsmodernui; do
+              grep -q "^assets/$ns/lang/ja_jp.json$" build/jar-contents-${{ matrix.target }}.txt
+            done
+            echo "Japanese addon packaging verified for ${{ matrix.target }}."
+          else
+            if grep -Eq "$ADDON_PATTERN" build/jar-contents-${{ matrix.target }}.txt; then
+              echo "Unexpected 1.21.1 addon localization found in ${{ matrix.target }}"
+              grep -E "$ADDON_PATTERN" build/jar-contents-${{ matrix.target }}.txt | head -n 50
+              exit 1
+            fi
+            echo "No 1.21.1 addon namespaces packaged in ${{ matrix.target }}."
+          fi
+
       - name: Upload JAR
         uses: actions/upload-artifact@v4
         with:

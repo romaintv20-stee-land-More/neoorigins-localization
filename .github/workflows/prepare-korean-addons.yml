@@ -1,0 +1,72 @@
+name: Prepare Korean addon coverage
+
+on:
+  push:
+    branches:
+      - release/0.8.0-korean
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Temporarily include Korean in addon audits
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          files = [
+              'scripts/audit_medievalorigins_upstream.py',
+              'scripts/audit_ibarnorigins_upstream.py',
+              'scripts/audit_origins_fantasy_upstream.py',
+              'scripts/audit_origins_backgrounds_upstream.py',
+              'scripts/audit_origins_more_backgrounds_upstream.py',
+              'scripts/audit_origins_backgrounds_iss_upstream.py',
+              'scripts/audit_origins_furries_upstream.py',
+              'scripts/audit_origins_classes_extended_upstream.py',
+              'scripts/audit_origins_classes_iss_upstream.py',
+              'scripts/audit_origin_architect_upstream.py',
+          ]
+          for name in files:
+              path = Path(name)
+              text = path.read_text(encoding='utf-8')
+              if '"ko_kr"' not in text:
+                  text = text.replace('"ja_jp")', '"ja_jp", "ko_kr")')
+                  text = text.replace('"ja_jp",\n)', '"ja_jp", "ko_kr",\n)')
+              path.write_text(text, encoding='utf-8')
+          PY
+      - name: Audit Medieval Origins
+        run: python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric
+      - name: Audit ibarn origins
+        run: python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format
+      - name: Audit Origins Fantasy
+        run: python3 scripts/audit_origins_fantasy_upstream.py
+      - name: Audit Origins Backgrounds
+        run: python3 scripts/audit_origins_backgrounds_upstream.py
+      - name: Audit Origins More Backgrounds
+        run: python3 scripts/audit_origins_more_backgrounds_upstream.py
+      - name: Audit Origins Backgrounds ISS
+        run: python3 scripts/audit_origins_backgrounds_iss_upstream.py
+      - name: Audit Origins Furries
+        run: python3 scripts/audit_origins_furries_upstream.py
+      - name: Audit Origins Classes Extended
+        run: python3 scripts/audit_origins_classes_extended_upstream.py
+      - name: Audit Origins Classes ISS
+        run: python3 scripts/audit_origins_classes_iss_upstream.py
+      - name: Audit Origin Architect
+        run: python3 scripts/audit_origin_architect_upstream.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: korean-addon-preparation
+          path: |
+            build/medievalorigins-upstream-audit
+            build/ibarnorigins-upstream-audit
+            build/origins-fantasy-upstream-audit
+            build/origins-backgrounds-upstream-audit
+            build/origins-more-backgrounds-upstream-audit
+            build/origins-backgrounds-iss-upstream-audit
+            build/origins-furries-upstream-audit
+            build/origins-classes-extended-upstream-audit
+            build/origins-classes-iss-upstream-audit
+            build/origin-architect-upstream-audit
+          if-no-files-found: warn

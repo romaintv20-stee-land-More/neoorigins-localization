@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Audit ${{ matrix.target }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Audit Japanese fallback coverage
         run: |
           python3 scripts/audit_neoorigins_upstream.py \
@@ -36,7 +36,7 @@ jobs:
             --fail-on-missing
       - name: Print report
         run: cat "build/ja-audit-${{ matrix.target }}/report.json"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: japanese-audit-${{ matrix.target }}
           path: build/ja-audit-${{ matrix.target }}

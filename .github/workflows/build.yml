@@ -100,16 +100,16 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Java ${{ matrix.java }}
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v6
         with:
           distribution: temurin
           java-version: ${{ matrix.java }}
 
       - name: Set up Gradle ${{ matrix.gradle }}
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v6
         with:
           gradle-version: ${{ matrix.gradle }}
 
@@ -200,7 +200,7 @@ jobs:
 
       - name: Upload upstream locale audits
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: upstream-localization-audits-${{ matrix.target }}-${{ github.sha }}
           path: |
@@ -362,7 +362,7 @@ jobs:
           fi
 
       - name: Upload JAR
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: neoorigins-localization-${{ matrix.target }}-${{ github.sha }}
           path: build/libs/*.jar

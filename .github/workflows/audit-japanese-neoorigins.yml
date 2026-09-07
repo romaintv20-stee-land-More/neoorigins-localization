@@ -24,7 +24,7 @@ jobs:
             ref: 65864716a5a796fa1c51ec3e8a6d9640abebb4ca
             extra: neoorigins_26_2
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Audit Japanese official coverage
         run: |
           python3 scripts/audit_neoorigins_upstream.py \

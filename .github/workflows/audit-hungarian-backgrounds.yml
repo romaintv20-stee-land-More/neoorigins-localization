@@ -1,0 +1,26 @@
+name: Audit Hungarian Origins Backgrounds
+
+on:
+  push:
+    branches:
+      - release/0.8.0-hungarian
+    paths:
+      - .github/workflows/audit-hungarian-backgrounds.yml
+      - scripts/audit_origins_backgrounds_upstream.py
+      - src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/hu_hu.json
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: release/0.8.0-hungarian
+      - name: Audit Origins Backgrounds Hungarian
+        run: |
+          python3 scripts/audit_origins_backgrounds_upstream.py \
+            --file-id 8397335 \
+            --filename Origins-Backgrounds-1.21.1-NeoOrigins-1.0.2.jar \
+            --fail-on-overlap \
+            --fail-on-missing \
+            --fail-on-placeholders

@@ -2,13 +2,13 @@
 
 ## Matrice de validation
 
-| Cible | Java | Référence NeoOrigins 2.2.25 | Contenu du build | État automatisé |
+| Cible | Java | Référence NeoOrigins 2.2.26 | Contenu du build | État automatisé |
 |---|---:|---|---|---|
-| Minecraft 1.21.1 | 21 | `2b409f3f9c27250665895cf3d0faa3f7adf9c4ac` | NeoOrigins + tous les add-ons 1.21.1 pris en charge | CI, audits et build validés |
-| Minecraft 26.1 / 26.1.1 / 26.1.2 | 25 | `v2.2.25` | NeoOrigins uniquement | CI, audit et build validés |
-| Minecraft 26.2 | 25 | `86038d2d1b429255897c2bdac9097ecc50e07215` | NeoOrigins uniquement + delta 26.2 | CI, audit et build validés |
+| Minecraft 1.21.1 | 21 | `860ecdb24e723983e93004ea8ceb5de90ccf0d70` | NeoOrigins + tous les add-ons 1.21.1 pris en charge | CI, audits et build validés |
+| Minecraft 26.1 / 26.1.1 / 26.1.2 | 25 | `3c1c7365507679c836d3c14af5d4dd0654652e87` | NeoOrigins uniquement + delta 26.1 | CI, audit et build validés |
+| Minecraft 26.2 | 25 | `65864716a5a796fa1c51ec3e8a6d9640abebb4ca` | NeoOrigins uniquement + delta 26.2 | CI, audit et build validés |
 
-La couverture garantie de cette version est basée sur NeoOrigins **2.2.25**. Le mod n'est pas verrouillé par une dépendance dure sur cette version, mais les clés ajoutées en NeoOrigins 2.2.26 sont suivies séparément.
+La couverture garantie de cette version est basée sur NeoOrigins **2.2.26**. Le mod n'est pas verrouillé par une dépendance dure sur cette version ; une future version peut charger, mais devra être réauditée pour garantir une couverture complète.
 
 ## Langues
 
@@ -18,25 +18,31 @@ Les trois builds doivent proposer NeoOrigins dans les onze locales suivantes :
 
 Pour chaque langue contrôlée en jeu, vérifier au minimum :
 
-- l'écran de sélection d'Origin ;
+- l'écran de sélection d'Origin et les nouveaux layouts du sélecteur ;
 - un nom d'Origin ;
 - une description longue ;
 - un pouvoir avec texte long ;
+- Step Assist et son interrupteur ;
+- les textes Caveborn modifiés en 2.2.26 ;
 - les écrans de configuration/HUD lorsqu'ils existent sur la cible.
 
 La validation automatisée garantit la structure, les clés, les placeholders et la compilation ; elle ne remplace pas la vérification visuelle de la qualité des formulations et de la largeur des textes.
 
 ## Tchèque — NeoOrigins
 
-### 1.21.1 et 26.1.x
+### 1.21.1
 
-Le tchèque est réparti dans les namespaces `neoorigins_cs_01` à `neoorigins_cs_19`. Ensemble, ils couvrent **2 281/2 281 clés** de NeoOrigins 2.2.25.
+Les namespaces `neoorigins_cs_01` à `neoorigins_cs_19` sont complétés par `neoorigins_226/lang/cs_cz.json`. Ensemble, ils couvrent **2 296/2 296 clés** de NeoOrigins 2.2.26.
+
+### 26.1.x
+
+Le build 26.1.x reprend les namespaces communs et `neoorigins_226`, puis ajoute `neoorigins_26_1/lang/cs_cz.json` pour les réglages propres à cette ligne. La couverture effective est de **2 307/2 307 clés**.
 
 ### 26.2
 
-Le build 26.2 reprend les 19 namespaces communs et ajoute `neoorigins_26_2/lang/cs_cz.json` avec **14 clés spécifiques à 26.2**, soit **2 292/2 292 clés** couvertes.
+Le build 26.2 reprend les namespaces communs et `neoorigins_226`, puis ajoute `neoorigins_26_2/lang/cs_cz.json`. La couverture effective est de **2 307/2 307 clés**.
 
-Trois anciennes clés `reward.neoorigins.loot_pool*` présentes dans la base commune n'existent plus dans NeoOrigins 26.2 ; leur présence est inoffensive et elles ne doivent pas être considérées comme des clés manquantes.
+Trois anciennes clés `reward.neoorigins.loot_pool*` présentes dans la base commune n'existent plus dans les branches 26.x ; leur présence est inoffensive, elles sont signalées comme obsolètes par l'audit et ne doivent pas être considérées comme des clés manquantes.
 
 Contrôle visuel tchèque encore recommandé : écran de sélection, descriptions longues, configuration client, affichage HUD et textes des add-ons 1.21.1.
 
@@ -86,6 +92,7 @@ Le JAR doit inclure les namespaces suivants :
 - `neoorigins_cs_*/**` ;
 - `neoorigins_tr_*/**` ;
 - `neoorigins_121_batch1/**` ;
+- `neoorigins_226/**` ;
 - `medievalorigins/**` et `medievalorigins_*/**` ;
 - `ibarnorigins/**` ;
 - `origins_fantasy/**` ;
@@ -97,7 +104,7 @@ Le JAR doit inclure les namespaces suivants :
 - `origins_classes_iss/**` ;
 - `originsmodernui/**`.
 
-Le delta `neoorigins_26_2/**` doit être absent.
+Les deltas `neoorigins_26_1/**` et `neoorigins_26_2/**` doivent être absents.
 
 ### Minecraft 26.1.x
 
@@ -106,7 +113,9 @@ Le JAR doit inclure :
 - les ressources NeoOrigins communes ;
 - `neoorigins_121_batch1/**` ;
 - `neoorigins_tr_*/**` ;
-- `neoorigins_cs_*/**`.
+- `neoorigins_cs_*/**` ;
+- `neoorigins_226/**` ;
+- `neoorigins_26_1/**`.
 
 Il doit exclure :
 
@@ -120,14 +129,16 @@ Le JAR doit inclure :
 - les ressources NeoOrigins communes ;
 - `neoorigins_tr_*/**` ;
 - `neoorigins_cs_*/**` ;
+- `neoorigins_226/**` ;
 - `neoorigins_26_2/**`.
 
 Il doit exclure :
 
 - `neoorigins_121_batch1/**` ;
+- `neoorigins_26_1/**` ;
 - tous les namespaces d'add-ons 1.21.1.
 
-L'inspection automatisée de la branche 0.8.0 a confirmé **34 fichiers `cs_cz`** dans le JAR 1.21.1, **19** dans le JAR 26.1.x et **20** dans le JAR 26.2, sans fuite des add-ons dans les builds 26.x.
+L'inspection automatisée des JAR NeoOrigins 2.2.26 a confirmé **35 fichiers `cs_cz`** dans le JAR 1.21.1, **21** dans le JAR 26.1.x et **21** dans le JAR 26.2, sans fuite des add-ons dans les builds 26.x.
 
 ## Client uniquement
 

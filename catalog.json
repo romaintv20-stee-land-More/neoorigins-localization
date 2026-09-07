@@ -37,15 +37,25 @@
       "curseforge": "https://www.curseforge.com/minecraft/mc-mods/neoorigins",
       "source": "https://github.com/CyberDay1/NeoOrigins",
       "compatibility": {
-        "version": "2.2.25",
+        "version": "2.2.26",
         "minecraft": ["1.21.1", "26.1", "26.1.1", "26.1.2", "26.2"],
-        "in_game_validation": {"1.21.1": "validated", "26.1.2": "validated", "26.2": "validated"},
+        "in_game_validation": {"1.21.1": "pending", "26.1.2": "pending", "26.2": "pending"},
         "audit_refs": {
-          "1.21.1": "2b409f3f9c27250665895cf3d0faa3f7adf9c4ac",
-          "26.1.x": "v2.2.25",
-          "26.2": "86038d2d1b429255897c2bdac9097ecc50e07215"
+          "1.21.1": "860ecdb24e723983e93004ea8ceb5de90ccf0d70",
+          "26.1.x": "3c1c7365507679c836d3c14af5d4dd0654652e87",
+          "26.2": "65864716a5a796fa1c51ec3e8a6d9640abebb4ca"
         },
-        "note": "Les builds 26.x n'embarquent que la localisation NeoOrigins. Le tchèque est réparti dans neoorigins_cs_01 à neoorigins_cs_19 ; 26.2 ajoute 14 clés dans neoorigins_26_2."
+        "coverage": {
+          "1.21.1": {"english_keys": 2296, "covered_keys": 2296},
+          "26.1.x": {"english_keys": 2307, "covered_keys": 2307, "stale_fallback_keys_full_fallback_locales": 3},
+          "26.2": {"english_keys": 2307, "covered_keys": 2307, "stale_fallback_keys_full_fallback_locales": 3}
+        },
+        "fallback_namespaces": {
+          "common_2_2_26": "neoorigins_226",
+          "mc_26_1": "neoorigins_26_1",
+          "mc_26_2": "neoorigins_26_2"
+        },
+        "note": "NeoOrigins 2.2.26 est audité séparément sur les trois cibles. neoorigins_226 est commun aux trois builds ; neoorigins_26_1 est réservé à 26.1.x ; neoorigins_26_2 est réservé à 26.2. Les trois clés reward.neoorigins.loot_pool* restent dans les fallbacks complets pour 1.21.1 et sont inoffensives sur 26.x."
       },
       "languages": {
         "fr_fr": {"name": "Français", "status": "supported", "targets": ["1.21.1", "26.1.x", "26.2"]},

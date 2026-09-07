@@ -1,0 +1,9 @@
+{
+  "gui.neoorigins.picker.position": "%s / %s",
+  "gui.neoorigins.picker.back_to_grid": "< Grade",
+  "gui.neoorigins.picker.no_results": "Nenhuma origem corresponde à sua pesquisa",
+  "power.neoorigins.step_assist_switch.name": "Auxílio de subida",
+  "power.neoorigins.step_assist_switch.description": "Ativa ou desativa sua capacidade de subir blocos automaticamente. Desativada, você precisa pular para subir blocos como todo mundo.",
+  "neoorigins.configuration.ui.picker_layout": "Layout do seletor",
+  "neoorigins.configuration.picker_layout": "Layout do seletor"
+}

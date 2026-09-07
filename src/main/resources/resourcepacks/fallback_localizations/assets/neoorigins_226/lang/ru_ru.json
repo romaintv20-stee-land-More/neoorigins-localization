@@ -1,0 +1,9 @@
+{
+  "gui.neoorigins.picker.position": "%s / %s",
+  "gui.neoorigins.picker.back_to_grid": "< Сетка",
+  "gui.neoorigins.picker.no_results": "Ни одно происхождение не соответствует поиску",
+  "power.neoorigins.step_assist_switch.name": "Помощь при подъёме",
+  "power.neoorigins.step_assist_switch.description": "Включает или выключает автоматический подъём на блоки. Если отключено, для подъёма нужно прыгать, как всем остальным.",
+  "neoorigins.configuration.ui.picker_layout": "Расположение выбора",
+  "neoorigins.configuration.picker_layout": "Расположение выбора"
+}

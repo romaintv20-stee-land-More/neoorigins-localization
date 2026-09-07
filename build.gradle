@@ -18,6 +18,7 @@ def includeAddonTranslations = (project.findProperty('include_addon_translations
 def legacyExpanded = project.findProperty('include_121_expanded_translations')
 def include121BatchTranslations = (project.findProperty('include_121_batch_translations') ?: legacyExpanded ?: 'true').toBoolean()
 def includeTurkishSplitTranslations = (project.findProperty('include_turkish_split_translations') ?: legacyExpanded ?: 'true').toBoolean()
+def include26_1Translations = (project.findProperty('include_26_1_translations') ?: 'false').toBoolean()
 def include26_2Translations = (project.findProperty('include_26_2_translations') ?: 'false').toBoolean()
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
@@ -73,6 +74,7 @@ tasks.named('processResources', ProcessResources) {
     inputs.property 'include_addon_translations', includeAddonTranslations
     inputs.property 'include_121_batch_translations', include121BatchTranslations
     inputs.property 'include_turkish_split_translations', includeTurkishSplitTranslations
+    inputs.property 'include_26_1_translations', include26_1Translations
     inputs.property 'include_26_2_translations', include26_2Translations
 
     filesMatching('resourcepacks/fallback_localizations/pack.mcmeta') {
@@ -99,6 +101,10 @@ tasks.named('processResources', ProcessResources) {
 
     if (!includeTurkishSplitTranslations) {
         exclude 'resourcepacks/fallback_localizations/assets/neoorigins_tr_*/**'
+    }
+
+    if (!include26_1Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_26_1/**'
     }
 
     if (!include26_2Translations) {

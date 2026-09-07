@@ -1,0 +1,16 @@
+{
+  "neoorigins.configuration.always_show_ability_icons": "Vaardigheidspictogrammen altijd weergeven",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Ondoorzichtigheid van de afkoeltijdaftelling (%)",
+  "neoorigins.configuration.hud_ability_display": "Weergavemodus van de vaardigheden-HUD",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Beheer en machtigingen",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "NeoOrigins-beheerinstellingen",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Clientweergave",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "NeoOrigins-clientinstellingen",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Origins en klassen",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "NeoOrigins-schakelaars voor Origins en klassen",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Gameplay",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "NeoOrigins-gameplayinstellingen",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Overschrijvingen voor krachten",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "NeoOrigins-overschrijvingen voor krachten",
+  "neoorigins.configuration.show_cooldown_countdown": "Aftelling van de afkoeltijd weergeven"
+}

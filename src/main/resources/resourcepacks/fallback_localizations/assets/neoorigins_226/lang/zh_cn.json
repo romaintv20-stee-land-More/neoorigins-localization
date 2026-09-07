@@ -1,0 +1,9 @@
+{
+  "gui.neoorigins.picker.position": "%s / %s",
+  "gui.neoorigins.picker.back_to_grid": "< 网格",
+  "gui.neoorigins.picker.no_results": "没有符合搜索条件的起源",
+  "power.neoorigins.step_assist_switch.name": "自动上台阶",
+  "power.neoorigins.step_assist_switch.description": "开启或关闭自动登上方块的能力。关闭后，你需要像其他人一样通过跳跃登上方块。",
+  "neoorigins.configuration.ui.picker_layout": "选择器布局",
+  "neoorigins.configuration.picker_layout": "选择器布局"
+}

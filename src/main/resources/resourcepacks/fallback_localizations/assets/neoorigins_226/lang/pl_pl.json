@@ -1,0 +1,9 @@
+{
+  "gui.neoorigins.picker.position": "%s / %s",
+  "gui.neoorigins.picker.back_to_grid": "< Siatka",
+  "gui.neoorigins.picker.no_results": "Żadne pochodzenie nie pasuje do wyszukiwania",
+  "power.neoorigins.step_assist_switch.name": "Wspomaganie wchodzenia",
+  "power.neoorigins.step_assist_switch.description": "Włącza lub wyłącza automatyczne wchodzenie na bloki. Po wyłączeniu musisz wskakiwać na bloki jak wszyscy inni.",
+  "neoorigins.configuration.ui.picker_layout": "Układ wyboru",
+  "neoorigins.configuration.picker_layout": "Układ wyboru"
+}

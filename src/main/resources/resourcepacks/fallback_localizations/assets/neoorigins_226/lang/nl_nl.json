@@ -1,0 +1,17 @@
+{
+  "gui.neoorigins.picker.position": "%s / %s",
+  "gui.neoorigins.picker.back_to_grid": "< Raster",
+  "gui.neoorigins.picker.no_results": "Geen oorsprongen komen overeen met je zoekopdracht",
+  "power.neoorigins.caveborn_eat_copper.name": "Kopersmaak",
+  "power.neoorigins.caveborn_eat_copper.description": "Kan koperbaren, ruw koper, kopererts, diepleisteen-kopererts en blokken ruw koper eten — een lichte maaltijd tussen steen en ijzer. Gaat niet naar binnen met een volle maag.",
+  "power.neoorigins.caveborn_eat_emerald.name": "Smaragdsmaak",
+  "power.neoorigins.caveborn_eat_emerald.description": "Kan smaragden, smaragderts en diepleisteen-smaragderts eten — de rijkste maaltijd na netherite. Gaat niet naar binnen met een volle maag.",
+  "power.neoorigins.caveborn_copper_bonus.name": "Patinalongen",
+  "power.neoorigins.caveborn_copper_bonus.description": "Koper eten geeft 60 seconden Waterademhaling I.",
+  "power.neoorigins.caveborn_emerald_bonus.name": "Smaragdrespijt",
+  "power.neoorigins.caveborn_emerald_bonus.description": "Smaragd eten geeft 5 minuten Vuurbestendigheid — zonlicht steekt je nog steeds in brand, maar kan je niet langer verbranden.",
+  "power.neoorigins.step_assist_switch.name": "Stapondersteuning",
+  "power.neoorigins.step_assist_switch.description": "Schakelt automatisch opstappen in of uit. Als het uit staat, klim je blokken op door te springen, net als iedereen.",
+  "neoorigins.configuration.ui.picker_layout": "Indeling van de kiezer",
+  "neoorigins.configuration.picker_layout": "Indeling van de kiezer"
+}

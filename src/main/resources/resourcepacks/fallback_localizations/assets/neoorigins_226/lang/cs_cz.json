@@ -1,0 +1,17 @@
+{
+  "gui.neoorigins.picker.position": "%s / %s",
+  "gui.neoorigins.picker.back_to_grid": "< Mřížka",
+  "gui.neoorigins.picker.no_results": "Žádný původ neodpovídá vašemu hledání",
+  "power.neoorigins.caveborn_eat_copper.name": "Měděný apetit",
+  "power.neoorigins.caveborn_eat_copper.description": "Můžeš jíst měděné ingoty, vytěženou měď, měděnou rudu, hlubinnou měděnou rudu a bloky vytěžené mědi — lehké jídlo mezi kamenem a železem. S plným žaludkem ho nesníš.",
+  "power.neoorigins.caveborn_eat_emerald.name": "Smaragdový apetit",
+  "power.neoorigins.caveborn_eat_emerald.description": "Můžeš jíst smaragdy, smaragdové ložisko a hlubinné smaragdové ložisko — nejvydatnější jídlo hned po netheritu. S plným žaludkem ho nesníš.",
+  "power.neoorigins.caveborn_copper_bonus.name": "Plíce s měděnkou",
+  "power.neoorigins.caveborn_copper_bonus.description": "Snědení mědi ti na 60 sekund udělí Dýchání pod vodou I.",
+  "power.neoorigins.caveborn_emerald_bonus.name": "Smaragdový oddech",
+  "power.neoorigins.caveborn_emerald_bonus.description": "Snědení smaragdu ti na 5 minut udělí Odolnost vůči ohni — sluneční světlo tě stále zapálí, ale už tě nemůže spálit.",
+  "power.neoorigins.step_assist_switch.name": "Pomoc při překonávání schodů",
+  "power.neoorigins.step_assist_switch.description": "Zapíná nebo vypíná automatické vystupování na bloky. Když je vypnuté, musíš na bloky vyskakovat jako všichni ostatní.",
+  "neoorigins.configuration.ui.picker_layout": "Rozložení výběru",
+  "neoorigins.configuration.picker_layout": "Rozložení výběru"
+}

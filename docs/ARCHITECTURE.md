@@ -37,15 +37,17 @@ La 0.8.0 utilise notamment :
 - `neoorigins_tr_*` pour la localisation turque fractionnée ;
 - `neoorigins_cs_*` pour la localisation tchèque fractionnée ;
 - `neoorigins_121_batch1` pour des compléments communs aux cibles 1.21.1 / 26.1.x ;
+- `neoorigins_226` pour les nouvelles chaînes communes à NeoOrigins 2.2.26 ;
+- `neoorigins_26_1` pour les clés spécifiques à Minecraft 26.1.x ;
 - `neoorigins_26_2` pour les clés spécifiques à Minecraft 26.2.
 
-Les propriétés Gradle d'empaquetage déterminent quels namespaces sont inclus dans chaque JAR. Les add-ons compatibles uniquement avec Minecraft 1.21.1 sont explicitement exclus des builds 26.x.
+Les propriétés Gradle d'empaquetage déterminent quels namespaces sont inclus dans chaque JAR. Les add-ons compatibles uniquement avec Minecraft 1.21.1 sont explicitement exclus des builds 26.x. Les deltas 26.1 et 26.2 sont mutuellement exclus afin de ne jamais injecter des clés spécifiques à une autre cible.
 
-La branche 0.8.0 audite NeoOrigins contre des références **2.2.25 épinglées** plutôt que contre des branches mouvantes :
+La branche 0.8.0 audite NeoOrigins contre des références **2.2.26 épinglées** plutôt que contre des branches mouvantes :
 
-- Minecraft 1.21.1 : `2b409f3f9c27250665895cf3d0faa3f7adf9c4ac` ;
-- Minecraft 26.1.x : `v2.2.25` ;
-- Minecraft 26.2 : `86038d2d1b429255897c2bdac9097ecc50e07215`.
+- Minecraft 1.21.1 : `860ecdb24e723983e93004ea8ceb5de90ccf0d70` ;
+- Minecraft 26.1.x : `3c1c7365507679c836d3c14af5d4dd0654652e87` ;
+- Minecraft 26.2 : `65864716a5a796fa1c51ec3e8a6d9640abebb4ca`.
 
 Cette référence fixe la couverture garantie ; elle ne constitue pas une dépendance dure empêchant le chargement avec une version NeoOrigins ultérieure.
 

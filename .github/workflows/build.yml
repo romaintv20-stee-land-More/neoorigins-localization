@@ -23,16 +23,19 @@ jobs:
             parchment: 'true'
             pack_format: '34'
             source_variant: 'mc1_21_1'
-            upstream_ref: '2b409f3f9c27250665895cf3d0faa3f7adf9c4ac'
+            upstream_ref: '860ecdb24e723983e93004ea8ceb5de90ccf0d70'
             mod_version: '0.8.0-beta+1.21.1'
             audit_addons: true
             audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz'
             audit_extra_namespace: 'neoorigins_121_batch1'
+            audit_226_namespace: 'neoorigins_226'
+            audit_26_1_namespace: ''
             audit_namespace_glob: 'neoorigins_tr_*'
             audit_czech_namespace_glob: 'neoorigins_cs_*'
             include_addon_translations: true
             include_121_batch_translations: true
             include_turkish_split_translations: true
+            include_26_1_translations: false
             include_26_2_translations: false
           - target: mc-26.1.x
             minecraft: '26.1.2'
@@ -44,16 +47,19 @@ jobs:
             parchment: 'false'
             pack_format: '84'
             source_variant: 'mc26_1'
-            upstream_ref: 'v2.2.25'
+            upstream_ref: '3c1c7365507679c836d3c14af5d4dd0654652e87'
             mod_version: '0.8.0-beta+26.1'
             audit_addons: false
             audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz'
             audit_extra_namespace: 'neoorigins_121_batch1'
+            audit_226_namespace: 'neoorigins_226'
+            audit_26_1_namespace: 'neoorigins_26_1'
             audit_namespace_glob: 'neoorigins_tr_*'
             audit_czech_namespace_glob: 'neoorigins_cs_*'
             include_addon_translations: false
             include_121_batch_translations: true
             include_turkish_split_translations: true
+            include_26_1_translations: true
             include_26_2_translations: false
           - target: mc-26.2
             minecraft: '26.2'
@@ -65,16 +71,19 @@ jobs:
             parchment: 'false'
             pack_format: '84'
             source_variant: 'mc26_1'
-            upstream_ref: '86038d2d1b429255897c2bdac9097ecc50e07215'
+            upstream_ref: '65864716a5a796fa1c51ec3e8a6d9640abebb4ca'
             mod_version: '0.8.0-beta+26.2'
             audit_addons: false
             audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz'
             audit_extra_namespace: 'neoorigins_26_2'
+            audit_226_namespace: 'neoorigins_226'
+            audit_26_1_namespace: ''
             audit_namespace_glob: 'neoorigins_tr_*'
             audit_czech_namespace_glob: 'neoorigins_cs_*'
             include_addon_translations: false
             include_121_batch_translations: false
             include_turkish_split_translations: true
+            include_26_1_translations: false
             include_26_2_translations: true
 
     runs-on: ubuntu-latest
@@ -105,6 +114,12 @@ jobs:
           fi
           if [ -n "${{ matrix.audit_extra_namespace }}" ]; then
             EXTRA_ARGS+=(--extra-namespace "${{ matrix.audit_extra_namespace }}")
+          fi
+          if [ -n "${{ matrix.audit_226_namespace }}" ]; then
+            EXTRA_ARGS+=(--extra-namespace "${{ matrix.audit_226_namespace }}")
+          fi
+          if [ -n "${{ matrix.audit_26_1_namespace }}" ]; then
+            EXTRA_ARGS+=(--extra-namespace "${{ matrix.audit_26_1_namespace }}")
           fi
           if [ -n "${{ matrix.audit_namespace_glob }}" ]; then
             EXTRA_ARGS+=(--fallback-namespace-glob "${{ matrix.audit_namespace_glob }}")
@@ -191,6 +206,7 @@ jobs:
             "-Pinclude_addon_translations=${{ matrix.include_addon_translations }}" \
             "-Pinclude_121_batch_translations=${{ matrix.include_121_batch_translations }}" \
             "-Pinclude_turkish_split_translations=${{ matrix.include_turkish_split_translations }}" \
+            "-Pinclude_26_1_translations=${{ matrix.include_26_1_translations }}" \
             "-Pinclude_26_2_translations=${{ matrix.include_26_2_translations }}" \
             "-Pminecraft_version=${{ matrix.minecraft }}" \
             "-Pminecraft_version_range=${{ matrix.minecraft_range }}" \

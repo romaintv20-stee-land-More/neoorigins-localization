@@ -1,0 +1,23 @@
+name: Audit Hungarian ibarn origins
+
+on:
+  push:
+    branches:
+      - release/0.8.0-hungarian
+    paths:
+      - .github/workflows/audit-hungarian-ibarn.yml
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: release/0.8.0-hungarian
+      - name: Audit ibarn Hungarian
+        run: |
+          python3 scripts/audit_ibarnorigins_upstream.py \
+            --ref multiloader-1.21.1-new-pack-format \
+            --fail-on-overlap \
+            --fail-on-missing \
+            --fail-on-placeholders

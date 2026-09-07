@@ -1,0 +1,57 @@
+name: Update 2.2.26 Caveborn fallback descriptions
+
+on:
+  push:
+    branches: [ release/0.8.0-neoorigins-2.2.26 ]
+    paths: [ .github/workflows/patch-226-caveborn.yml ]
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: release/0.8.0-neoorigins-2.2.26
+      - name: Apply upstream semantic changes
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          root = Path('src/main/resources/resourcepacks/fallback_localizations/assets')
+          targets = {
+            'nl_nl': (root/'neoorigins_nl_powers_a/lang/nl_nl.json', ' Ook geplaveide diepleisteen kan worden gegeten. Gaat niet naar binnen met een volle maag.', ' Gaat niet naar binnen met een volle maag.'),
+            'tr_tr': (root/'neoorigins_tr_03/lang/tr_tr.json', ' Ayrıca kırık derin kayrak da yenebilir. Mide doluyken yenemez.', ' Mide doluyken yenemez.'),
+            'cs_cz': (root/'neoorigins_cs_03/lang/cs_cz.json', ' Lze jíst i dlážděnou hlubinnou břidlici. S plným žaludkem to nesníš.', ' S plným žaludkem to nesníš.'),
+          }
+          keys = [
+            'power.neoorigins.caveborn_eat_stone.description',
+            'power.neoorigins.nether_fungus_diet.description',
+            'power.neoorigins.caveborn_eat_iron.description',
+            'power.neoorigins.caveborn_eat_gold.description',
+            'power.neoorigins.caveborn_eat_diamond.description',
+            'power.neoorigins.caveborn_eat_netherite.description',
+          ]
+          for locale, (path, stone_suffix, full_suffix) in targets.items():
+              data = json.loads(path.read_text(encoding='utf-8'))
+              missing = [k for k in keys if k not in data]
+              if missing:
+                  raise SystemExit(f'{locale}: missing Caveborn keys {missing}')
+              if full_suffix.strip() not in data[keys[0]]:
+                  data[keys[0]] = data[keys[0]].rstrip() + stone_suffix
+              for key in keys[1:]:
+                  if full_suffix.strip() not in data[key]:
+                      data[key] = data[key].rstrip() + full_suffix
+              path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+              print(locale, 'updated 6 Caveborn descriptions')
+          PY
+      - name: Commit updated descriptions
+        run: |
+          git config user.name 'romaintv-Steel-and-More'
+          git config user.email '130081555+romaintv20-stee-land-More@users.noreply.github.com'
+          git add src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_nl_powers_a/lang/nl_nl.json src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_tr_03/lang/tr_tr.json src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_cs_03/lang/cs_cz.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Update Caveborn fallback descriptions for NeoOrigins 2.2.26'
+          git push origin HEAD:release/0.8.0-neoorigins-2.2.26

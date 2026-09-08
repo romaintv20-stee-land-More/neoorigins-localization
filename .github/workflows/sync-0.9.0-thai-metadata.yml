@@ -61,3 +61,5 @@ jobs:
           git fetch origin release/0.9.0-beta
           git rebase origin/release/0.9.0-beta
           git push origin HEAD:release/0.9.0-beta
+
+# Triggered after validated Thai bootstrap commit.

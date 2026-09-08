@@ -37,3 +37,10 @@ namespace["MANUAL_OVERRIDES"] = {
 }
 
 namespace["main"]()
+
+# Origin Architect already ships a complete official Romanian locale (22/22) at
+# the pinned source ref. The fallback must not overlap it.
+oa_fallback = ROOT / "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/ro_ro.json"
+if oa_fallback.exists():
+    oa_fallback.unlink()
+    print("Removed Romanian Origin Architect fallback: upstream already provides 22/22 official strings")

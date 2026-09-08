@@ -221,3 +221,5 @@ jobs:
           name: neoorigins-localization-thai-${{ matrix.target }}-${{ github.sha }}
           path: build/libs/*.jar
           if-no-files-found: error
+
+# Triggered after validated Thai bootstrap commit.

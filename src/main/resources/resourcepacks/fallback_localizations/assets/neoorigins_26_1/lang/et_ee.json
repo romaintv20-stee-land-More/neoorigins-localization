@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Teie valmistatud seadmed saavad lisaatribuute – tugevust, kahjustusi või kaevandamiskiirust.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Suitsetusahjus toidu valmistamisel võidab topelt XP.",
+  "neoorigins.configuration.title": "NeoOriginsi konfiguratsioon",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Mängu käik",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "NeoOriginsi mänguseaded",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Administraator ja load",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "NeoOriginsi administraatori seaded",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Võimsus tühistab",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "Neoorigins võimu alistab",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Päritolu ja klassid",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "NeoOriginsi päritolu ja klassi lülitid",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Kliendikuva",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "NeoOriginsi kliendi seaded",
+  "neoorigins.configuration.show_cooldown_countdown": "Näita jahtumisloendust",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Jahutusloenduse läbipaistmatus (%)",
+  "neoorigins.configuration.hud_ability_display": "Võimalus HUD kuvarežiim",
+  "neoorigins.configuration.always_show_ability_icons": "Näita alati võimete ikoone"
+}

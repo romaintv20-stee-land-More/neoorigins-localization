@@ -9,21 +9,22 @@ if "Strict audit Romanian NeoOrigins coverage" in text:
     print("Romanian CI integration already present")
     raise SystemExit(0)
 
-# Matrix fields, packaging switch and expected counts.
+# Matrix fields, packaging switch and expected counts. The 1.21.1 JAR contains
+# only 9 Romanian add-on fallback files because Origin Architect already ships
+# 22/22 Romanian strings officially upstream.
 for old, new in [
     ("            norwegian_extra_namespace: 'neoorigins_no_121'\n", "            norwegian_extra_namespace: 'neoorigins_no_121'\n            romanian_extra_namespace: 'neoorigins_ro_121'\n"),
     ("            norwegian_extra_namespace: 'neoorigins_26_1'\n", "            norwegian_extra_namespace: 'neoorigins_26_1'\n            romanian_extra_namespace: 'neoorigins_26_1'\n"),
     ("            norwegian_extra_namespace: 'neoorigins_26_2'\n", "            norwegian_extra_namespace: 'neoorigins_26_2'\n            romanian_extra_namespace: 'neoorigins_26_2'\n"),
     ("            include_norwegian_121_translations: true\n", "            include_norwegian_121_translations: true\n            include_romanian_121_translations: true\n"),
     ("            include_norwegian_121_translations: false\n", "            include_norwegian_121_translations: false\n            include_romanian_121_translations: false\n"),
-    ("            expected_norwegian_files: '27'\n", "            expected_norwegian_files: '27'\n            expected_romanian_files: '27'\n"),
+    ("            expected_norwegian_files: '27'\n", "            expected_norwegian_files: '27'\n            expected_romanian_files: '26'\n"),
     ("            expected_norwegian_files: '17'\n", "            expected_norwegian_files: '17'\n            expected_romanian_files: '17'\n"),
 ]:
     if old not in text:
         raise RuntimeError(f"Romanian CI matrix anchor missing: {old!r}")
     text = text.replace(old, new)
 
-# NeoOrigins audit.
 marker = "\n      - name: Restrict add-on audits to Danish\n"
 block = """
       - name: Strict audit Romanian NeoOrigins coverage
@@ -40,7 +41,6 @@ if marker not in text:
     raise RuntimeError("Romanian NeoOrigins insertion marker missing")
 text = text.replace(marker, "\n" + block + marker, 1)
 
-# Add-on audits, inserted before validation.
 validate_marker = "\n      - name: Validate localization files\n"
 addon_block = """
       - name: Restrict add-on audits to Romanian
@@ -90,13 +90,11 @@ if validate_marker not in text:
     raise RuntimeError("Romanian add-on insertion marker missing")
 text = text.replace(validate_marker, "\n" + addon_block + validate_marker, 1)
 
-# Gradle switch.
 gradle_anchor = '            "-Pinclude_norwegian_121_translations=${{ matrix.include_norwegian_121_translations }}" \\\n'
 if gradle_anchor not in text:
     raise RuntimeError("Romanian Gradle anchor missing")
 text = text.replace(gradle_anchor, gradle_anchor + '            "-Pinclude_romanian_121_translations=${{ matrix.include_romanian_121_translations }}" \\\n', 1)
 
-# Packaging checks.
 text = text.replace("      - name: Verify Danish, Finnish and Norwegian packaging\n", "      - name: Verify Danish, Finnish, Norwegian and Romanian packaging\n", 1)
 no_count = "          NO_COUNT=$(grep -cE '(^|/)lang/no_no\\.json$' \"build/jar-contents-${{ matrix.target }}.txt\" || true)\n"
 text = text.replace(no_count, no_count + "          RO_COUNT=$(grep -cE '(^|/)lang/ro_ro\\.json$' \"build/jar-contents-${{ matrix.target }}.txt\" || true)\n", 1)
@@ -107,18 +105,20 @@ text = text.replace(no_test, no_test + "          test \"$RO_COUNT\" -eq '${{ ma
 no_common = '            grep -Eq "(^|/)assets/neoorigins_no_common_${index}/lang/no_no\\.json$" "build/jar-contents-${{ matrix.target }}.txt"\n'
 text = text.replace(no_common, no_common + '            grep -Eq "(^|/)assets/neoorigins_ro_common_${index}/lang/ro_ro\\.json$" "build/jar-contents-${{ matrix.target }}.txt"\n', 1)
 
-# 1.21.1 expected paths.
-for old, add in [
-    ("            grep -Eq '(^|/)assets/neoorigins_no_121/lang/no_no\\.json$' \"build/jar-contents-${{ matrix.target }}.txt\"\n", "            grep -Eq '(^|/)assets/neoorigins_ro_121/lang/ro_ro\\.json$' \"build/jar-contents-${{ matrix.target }}.txt\"\n"),
-    ("            grep -Eq '(^|/)assets/medievalorigins/lang/no_no\\.json$' \"build/jar-contents-${{ matrix.target }}.txt\"\n", "            grep -Eq '(^|/)assets/medievalorigins/lang/ro_ro\\.json$' \"build/jar-contents-${{ matrix.target }}.txt\"\n"),
-    ('              grep -Eq "(^|/)assets/$ns/lang/no_no.json$" "build/jar-contents-${{ matrix.target }}.txt"\n', '              grep -Eq "(^|/)assets/$ns/lang/ro_ro.json$" "build/jar-contents-${{ matrix.target }}.txt"\n'),
-    ("            ! grep -Eq '(^|/)assets/neoorigins_26_(1|2)/lang/no_no\\.json$' \"build/jar-contents-${{ matrix.target }}.txt\"\n", "            ! grep -Eq '(^|/)assets/neoorigins_26_(1|2)/lang/ro_ro\\.json$' \"build/jar-contents-${{ matrix.target }}.txt\"\n"),
-    ("            ! grep -Eq '(^|/)assets/neoorigins_no_121/lang/no_no\\.json$' \"build/jar-contents-${{ matrix.target }}.txt\"\n", "            ! grep -Eq '(^|/)assets/neoorigins_ro_121/lang/ro_ro\\.json$' \"build/jar-contents-${{ matrix.target }}.txt\"\n"),
-]:
-    if old not in text:
-        raise RuntimeError(f"Romanian packaging anchor missing: {old!r}")
-    text = text.replace(old, old + add, 1)
+# 1.21.1: verify the NeoOrigins delta and the nine fallback add-ons; explicitly
+# ensure no Romanian Origin Architect fallback is bundled.
+anchor = "            grep -Eq '(^|/)assets/neoorigins_no_121/lang/no_no\\.json$' \"build/jar-contents-${{ matrix.target }}.txt\"\n"
+text = text.replace(anchor, anchor + "            grep -Eq '(^|/)assets/neoorigins_ro_121/lang/ro_ro\\.json$' \"build/jar-contents-${{ matrix.target }}.txt\"\n", 1)
+anchor = "            grep -Eq '(^|/)assets/medievalorigins/lang/no_no\\.json$' \"build/jar-contents-${{ matrix.target }}.txt\"\n"
+text = text.replace(anchor, anchor + "            grep -Eq '(^|/)assets/medievalorigins/lang/ro_ro\\.json$' \"build/jar-contents-${{ matrix.target }}.txt\"\n            ! grep -Eq '(^|/)assets/originsmodernui/lang/ro_ro\\.json$' \"build/jar-contents-${{ matrix.target }}.txt\"\n", 1)
+anchor = '              grep -Eq "(^|/)assets/$ns/lang/no_no.json$" "build/jar-contents-${{ matrix.target }}.txt"\n'
+text = text.replace(anchor, anchor + '              if [ "$ns" != "originsmodernui" ]; then grep -Eq "(^|/)assets/$ns/lang/ro_ro.json$" "build/jar-contents-${{ matrix.target }}.txt"; fi\n', 1)
+anchor = "            ! grep -Eq '(^|/)assets/neoorigins_26_(1|2)/lang/no_no\\.json$' \"build/jar-contents-${{ matrix.target }}.txt\"\n"
+text = text.replace(anchor, anchor + "            ! grep -Eq '(^|/)assets/neoorigins_26_(1|2)/lang/ro_ro\\.json$' \"build/jar-contents-${{ matrix.target }}.txt\"\n", 1)
 
+# 26.x: Romanian 1.21.1 delta is absent, while the correct version delta is present.
+anchor = "            ! grep -Eq '(^|/)assets/neoorigins_no_121/lang/no_no\\.json$' \"build/jar-contents-${{ matrix.target }}.txt\"\n"
+text = text.replace(anchor, anchor + "            ! grep -Eq '(^|/)assets/neoorigins_ro_121/lang/ro_ro\\.json$' \"build/jar-contents-${{ matrix.target }}.txt\"\n", 1)
 for version, other in (("26_1", "26_2"), ("26_2", "26_1")):
     req = f"              grep -Eq '(^|/)assets/neoorigins_{version}/lang/no_no\\.json$' \"build/jar-contents-${{{{ matrix.target }}}}.txt\"\n"
     add_req = f"              grep -Eq '(^|/)assets/neoorigins_{version}/lang/ro_ro\\.json$' \"build/jar-contents-${{{{ matrix.target }}}}.txt\"\n"

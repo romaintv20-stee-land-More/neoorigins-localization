@@ -47,7 +47,7 @@ addon_counts = {
     "Origins Furries for NeoOrigins": "117/117",
     "Origins: Classes Extended for NeoOrigins": "124/124",
     "Origins: Classes ISS for NeoOrigins": "99/99",
-    "Origin Architect": "22/22",
+    "Origin Architect": "22/22 (officiel)",
 }
 lines = text.splitlines()
 for i, line in enumerate(lines):
@@ -74,20 +74,25 @@ for required in [
     if not required.exists():
         raise RuntimeError(f"Missing Romanian target delta: {required}")
 
-addon_namespaces = [
+# Nine add-ons need our Romanian fallback. Origin Architect already ships 22/22
+# Romanian strings officially, so its ro_ro file must stay absent from our JAR.
+fallback_addon_namespaces = [
     "medievalorigins", "ibarnorigins", "origins_fantasy", "origins_backgrounds",
     "origins_backgrounds_two", "origins_backgrounds_iss", "origins_furries",
-    "origins_classes_ex", "origins_classes_iss", "originsmodernui",
+    "origins_classes_ex", "origins_classes_iss",
 ]
-for namespace in addon_namespaces:
+for namespace in fallback_addon_namespaces:
     path = ASSETS / namespace / "lang/ro_ro.json"
     if not path.exists():
         raise RuntimeError(f"Missing Romanian add-on localization: {path}")
+oa_path = ASSETS / "originsmodernui/lang/ro_ro.json"
+if oa_path.exists():
+    raise RuntimeError("Origin Architect Romanian fallback must be absent because upstream already provides 22/22")
 
-jar_121 = common_chunks + 1 + len(addon_namespaces)
+jar_121 = common_chunks + 1 + len(fallback_addon_namespaces)
 jar_26 = common_chunks + 1
 no_jar = "- **norvégien bokmål** : 27 fichiers `no_no` dans le JAR 1.21.1 et 17 dans chacun des JAR 26.x, avec les deltas de version corrects ;"
-ro_jar = no_jar + f"\n- **roumain** : {jar_121} fichiers `ro_ro` dans le JAR 1.21.1 et {jar_26} dans chacun des JAR 26.x, avec les deltas de version corrects ;"
+ro_jar = no_jar + f"\n- **roumain** : {jar_121} fichiers fallback `ro_ro` dans le JAR 1.21.1 et {jar_26} dans chacun des JAR 26.x ; Origin Architect fournit séparément ses 22/22 chaînes roumaines officielles ;"
 if "- **roumain** :" not in text:
     if no_jar not in text:
         raise RuntimeError("Norwegian JAR validation line not found")
@@ -97,4 +102,4 @@ if "Roumain (`ro_ro`)" not in text or "| 21 |" not in text or "Pour le roumain :
     raise RuntimeError("Romanian README update did not produce expected metadata")
 
 README.write_text(text, encoding="utf-8")
-print(f"README.md updated for ro_ro / 0.9.0-beta ({common_chunks} common chunks)")
+print(f"README.md updated for ro_ro / 0.9.0-beta ({common_chunks} common chunks; Origin Architect official upstream)")

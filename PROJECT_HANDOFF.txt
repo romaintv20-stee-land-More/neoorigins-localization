@@ -40,10 +40,10 @@ main is behind the cumulative release state and must not be used as the working 
 0.8.0 Beta shipped with 17 locales:
 fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se.
 
-0.9.0 development currently has 18 locales after adding Danish:
-fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se, da_dk.
+0.9.0 development currently has 19 locales after adding Danish and Finnish:
+fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se, da_dk, fi_fi.
 
-Danish (da_dk) is the 18th locale. Eighteen is NOT the final target; continue expanding toward essentially all useful Minecraft languages under the regional-deduplication rule below.
+Danish (da_dk) is the 18th locale and Finnish (fi_fi) is the 19th locale. Nineteen is NOT the final target; continue expanding toward essentially all useful Minecraft languages under the regional-deduplication rule below.
 
 Build targets:
 - Minecraft 1.21.1 / Java 21
@@ -66,21 +66,23 @@ Minecraft 1.21.1 includes NeoOrigins plus these 10 add-ons/projects:
 
 4. NEOORIGINS UPSTREAM REFERENCE
 --------------------------------
-The current 0.9.0 Danish pass is audited against the same NeoOrigins 2.2.26 references used by the 0.8.0 baseline:
+The current 0.9.0 Danish/Finnish passes are audited against the same NeoOrigins 2.2.26 references used by the 0.8.0 baseline:
 - 1.21.1: 860ecdb24e723983e93004ea8ceb5de90ccf0d70
 - 26.1.x: 3c1c7365507679c836d3c14af5d4dd0654652e87
 - 26.2: 65864716a5a796fa1c51ec3e8a6d9640abebb4ca
 
-Danish NeoOrigins fallback split generated for 0.9.0:
+Danish and Finnish each use the same target split:
 - 2290 common keys shared by all three targets
 - 1.21.1 delta: 6 keys
 - 26.1.x delta: 17 keys
 - 26.2 delta: 17 keys
 
-Effective Danish NeoOrigins coverage after fallback:
+Effective NeoOrigins coverage for both da_dk and fi_fi after fallback:
 - 1.21.1: 2296 / 2296
 - 26.1.x: 2307 / 2307
 - 26.2: 2307 / 2307
+
+At the audited NeoOrigins references, Finnish has ZERO official upstream strings, so the Finnish fallback supplies the full missing coverage. The same upstream-priority rule still applies if official Finnish translations are added later.
 
 Before publishing 0.9.0, re-check whether NeoOrigins upstream has moved beyond 2.2.26 and re-audit against the final intended reference if needed.
 
@@ -110,33 +112,79 @@ At the audited upstream references, all ten 1.21.1 add-ons had ZERO official Dan
 - Origins: Classes ISS: 99 / 99
 - Origin Architect: 22 / 22
 
-The final Danish bootstrap GitHub Actions run 34244997660 succeeded. Strict checks passed for:
-- NeoOrigins on all three targets
-- all ten 1.21.1 add-ons
-- no missing required keys
-- no fallback overlaps with official Danish translations
-- placeholder preservation
-- JSON/localization validation
+The final Danish bootstrap GitHub Actions run 34244997660 succeeded. The validated Danish files were committed by GitHub Actions in commit 90a11ef3e66b2352d97723ea06830e860101ead6 with message "Add Danish localization fallback".
 
-The validated Danish files were committed by GitHub Actions in commit 90a11ef3e66b2352d97723ea06830e860101ead6 with message "Add Danish localization fallback".
-
-A permanent 0.9.0 CI workflow is stored at .github/workflows/build-0.9.0.yml. It builds the three targets, strictly audits Danish, and verifies JAR packaging. Expected Danish JSON file counts in built JARs:
+Danish JAR packaging counts:
 - Minecraft 1.21.1: 27 files (16 common + 1 1.21.1 delta + 10 add-ons)
 - Minecraft 26.1.x: 17 files (16 common + 1 version delta)
 - Minecraft 26.2: 17 files (16 common + 1 version delta)
 
-Final verification for this Danish pass:
-- Build 0.9.0 Beta run 34248229627 completed successfully on all three matrix jobs: mc-1.21.1, mc-26.1.x and mc-26.2.
-- Each job passed strict Danish NeoOrigins audit, localization validation, Gradle build, Danish JAR packaging verification and JAR artifact upload.
-- The 1.21.1 job also passed strict Danish audits for all ten add-ons.
-- catalog.json now declares 18 supported locales and 0.9.0-beta build versions.
-- CATALOG.md was regenerated from catalog.json and includes Dansk (da_dk).
-- README.md now documents 0.9.0 Beta, 18 locales, Danish coverage and Danish JAR packaging counts.
-- Metadata synchronization succeeded and produced commit b2aeb5571941668707c0668a83a09b213bb41222 ("Document Danish localization in 0.9.0 beta").
+The earlier Danish-only final build run 34248229627 completed successfully on all three targets. Danish remains covered by the newer permanent CI together with Finnish.
 
-6. LANGUAGE EXPANSION RULE
+6. FINNISH 0.9.0 STATUS
+-----------------------
+Finnish locale: fi_fi (Suomi).
+Status: COMPLETE FOR THE CURRENT 0.9.0 DEVELOPMENT BASELINE: GENERATED, STRICTLY AUDITED, BUILT, PACKAGING-VERIFIED, DOCUMENTED, AND COMMITTED.
+
+Why selected:
+- Finnish is an official Minecraft locale.
+- It is a distinct language, not a near-identical regional variant of an already maintained locale.
+
+Finnish NeoOrigins architecture:
+- 16 common namespaces: neoorigins_fi_common_01 through neoorigins_fi_common_16
+- 2290 common keys total (15 chunks of 150 + final chunk of 40)
+- 1.21.1 namespace: neoorigins_fi_121 with 6 keys
+- 26.1.x: fi_fi inside neoorigins_26_1 with 17 keys
+- 26.2: fi_fi inside neoorigins_26_2 with 17 keys
+
+The Finnish bootstrap translated 2734 unique English source strings, then ran a second refinement pass over title-like strings left unchanged in English. 338/390 title-like candidates were refined in that pass. Placeholders/tokens were protected.
+
+At all pinned upstream references, NeoOrigins and all ten supported 1.21.1 add-ons had ZERO official Finnish strings. Effective Finnish coverage:
+- NeoOrigins 1.21.1: 2296 / 2296
+- NeoOrigins 26.1.x: 2307 / 2307
+- NeoOrigins 26.2: 2307 / 2307
+- Medieval Origins Revival: 401 / 401
+- ibarn's quartet origins addon: 69 / 69
+- Origins Fantasy: 240 / 240
+- Origins: Backgrounds: 65 / 65
+- Origins: More Backgrounds: 44 / 44 effective (39 own + 5 shared)
+- Origins: Backgrounds ISS: 79 / 79 effective (77 own + 2 shared)
+- Origins Furries: 117 / 117
+- Origins: Classes Extended: 124 / 124
+- Origins: Classes ISS: 99 / 99
+- Origin Architect: 22 / 22
+
+Finnish bootstrap history:
+- First run 34249359173 generated and strictly validated all Finnish translations, but its final push was rejected only because the branch advanced concurrently.
+- Push race handling was corrected by rebasing on the current release branch before push.
+- Final bootstrap run 34249851308 succeeded completely.
+- Validated Finnish localization files were committed by GitHub Actions as 952a647a7154fbd6f57048dc042c91044fe4a32a with message "Add Finnish localization fallback".
+
+Metadata:
+- Finnish metadata synchronization run 34250276546 succeeded.
+- catalog.json, CATALOG.md and README.md now declare 19 supported locales and include Finnish.
+- Metadata commit: ddd0410a2565a55a4386114c4e4152c5ce0a71e4 ("Document Finnish localization in 0.9.0 beta").
+
+Permanent CI:
+- .github/workflows/build-0.9.0.yml now strictly audits BOTH Danish and Finnish.
+- 1.21.1 also strictly audits all ten add-ons separately for both locales.
+- Finnish 1.21.1-specific resources are excluded from 26.x builds.
+- 26.x builds continue to exclude all 1.21.1 add-on namespaces.
+- Finnish JAR packaging counts are verified as 27 files on 1.21.1 and 17 files on each 26.x target.
+- Final Finnish/Danish CI commit: c45fab5b86526f414ae23acdd84042520a43828d ("Audit and package Finnish in 0.9.0 CI").
+- Final build run 34250435918 succeeded on all three matrix jobs: mc-1.21.1, mc-26.1.x and mc-26.2.
+- Every job passed NeoOrigins audits, localization validation, Gradle build, Danish/Finnish JAR packaging verification and artifact upload.
+- The 1.21.1 job also passed strict Danish and Finnish audits for all ten add-ons.
+- Three final JAR artifacts were produced by run 34250435918.
+
+Final Finnish JAR artifacts from run 34250435918:
+- mc-1.21.1 artifact ID 10065836409
+- mc-26.1.x artifact ID 10065801028
+- mc-26.2 artifact ID 10065796966
+
+7. LANGUAGE EXPANSION RULE
 --------------------------
-0.9.0 should expand well beyond 18 locales toward essentially all useful Minecraft languages.
+0.9.0 should expand well beyond 19 locales toward essentially all useful Minecraft languages.
 
 Regional-variant rule applies to EVERY language family, not only English:
 - If two regional variants differ by only a handful of words, maintain ONE representative locale.
@@ -145,7 +193,7 @@ Regional-variant rule applies to EVERY language family, not only English:
 
 For every selected new language, the intent is to cover NeoOrigins and all compatible/licensed add-ons relevant to that Minecraft target.
 
-7. LICENSE RULES
+8. LICENSE RULES
 ----------------
 Before adding any add-on, verify its license/redistribution terms.
 - MIT/compatible licenses: allowed with required attribution.
@@ -162,7 +210,7 @@ Extra Origins:
 - previously considered, currently All Rights Reserved.
 - Do not integrate without explicit permission.
 
-8. QA RULES
+9. QA RULES
 -----------
 Always validate:
 - JSON validity
@@ -176,10 +224,10 @@ Always validate:
 - built JAR contents
 - visual/in-game wording and UI width when possible
 
-For a new language, follow the Danish/Swedish architecture when a large NeoOrigins translation must be split across resource-pack namespaces. Do not assume one giant locale JSON is appropriate.
+For a new language, follow the Danish/Finnish/Swedish architecture when a large NeoOrigins translation must be split across resource-pack namespaces. Do not assume one giant locale JSON is appropriate.
 
-9. SOURCE OF TRUTH
-------------------
+10. SOURCE OF TRUTH
+-------------------
 - catalog.json: machine-readable project/target/language catalog
 - CATALOG.md: readable catalog
 - README.md: public release/build/language description
@@ -188,9 +236,9 @@ For a new language, follow the Danish/Swedish architecture when a large NeoOrigi
 
 Update PROJECT_HANDOFF.txt whenever a major project decision changes, especially release targets, newly completed languages, selected/rejected add-ons, licensing permissions, upstream reference changes, or publication state.
 
-10. NEXT WORK AFTER DANISH
---------------------------
-- Do NOT stop at 18 locales.
+11. NEXT WORK AFTER FINNISH
+---------------------------
+- Do NOT stop at 19 locales.
 - Determine the next distinct Minecraft language after applying the regional-variant deduplication rule.
 - Translate NeoOrigins for all three supported targets.
 - Propagate the selected locale to all compatible/licensed 1.21.1 add-ons, preserving official upstream priority.

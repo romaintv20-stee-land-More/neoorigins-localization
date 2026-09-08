@@ -1,0 +1,195 @@
+name: Build 0.9.0 Bulgarian
+
+on:
+  push:
+    branches: [ release/0.9.0-beta ]
+    paths:
+      - 'src/main/resources/resourcepacks/fallback_localizations/assets/**/bg_bg.json'
+      - 'build.gradle'
+      - 'scripts/audit_*_upstream.py'
+      - '.github/workflows/build-0.9.0-bulgarian.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Bulgarian ${{ matrix.target }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: mc-1.21.1
+            minecraft: '1.21.1'
+            minecraft_range: '[1.21.1]'
+            java: '21'
+            gradle: '8.14.3'
+            neoforge: '21.1.248'
+            loader_range: '[1,)'
+            parchment: 'true'
+            pack_format: '34'
+            source_variant: 'mc1_21_1'
+            upstream_ref: '860ecdb24e723983e93004ea8ceb5de90ccf0d70'
+            bg_extra_namespace: 'neoorigins_bg_121'
+            include_addons: true
+            include_121_batch: true
+            include_bg_121: true
+            include_26_1: false
+            include_26_2: false
+            expected_bg: '27'
+          - target: mc-26.1.x
+            minecraft: '26.1.2'
+            minecraft_range: '[26.1,26.2)'
+            java: '25'
+            gradle: '9.4.1'
+            neoforge: '26.1.2.29-beta'
+            loader_range: '[4,)'
+            parchment: 'false'
+            pack_format: '84'
+            source_variant: 'mc26_1'
+            upstream_ref: '3c1c7365507679c836d3c14af5d4dd0654652e87'
+            bg_extra_namespace: 'neoorigins_26_1'
+            include_addons: false
+            include_121_batch: true
+            include_bg_121: false
+            include_26_1: true
+            include_26_2: false
+            expected_bg: '17'
+          - target: mc-26.2
+            minecraft: '26.2'
+            minecraft_range: '[26.2,26.3)'
+            java: '25'
+            gradle: '9.4.1'
+            neoforge: '26.2.0.3-beta'
+            loader_range: '[4,)'
+            parchment: 'false'
+            pack_format: '84'
+            source_variant: 'mc26_1'
+            upstream_ref: '65864716a5a796fa1c51ec3e8a6d9640abebb4ca'
+            bg_extra_namespace: 'neoorigins_26_2'
+            include_addons: false
+            include_121_batch: false
+            include_bg_121: false
+            include_26_1: false
+            include_26_2: true
+            expected_bg: '17'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Java ${{ matrix.java }}
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+
+      - name: Set up Gradle ${{ matrix.gradle }}
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          gradle-version: ${{ matrix.gradle }}
+
+      - name: Strict audit Bulgarian NeoOrigins
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py \
+            --ref '${{ matrix.upstream_ref }}' \
+            --output 'build/bg-${{ matrix.target }}' \
+            --locale bg_bg \
+            --fallback-namespace-glob 'neoorigins_bg_common_*' \
+            --extra-namespace '${{ matrix.bg_extra_namespace }}' \
+            --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Strict audit Bulgarian add-ons
+        if: matrix.include_addons == true
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re, subprocess
+          scripts = [
+              ('scripts/audit_medievalorigins_upstream.py', ['--ref','1.21.1-fabric']),
+              ('scripts/audit_ibarnorigins_upstream.py', ['--ref','multiloader-1.21.1-new-pack-format']),
+              ('scripts/audit_origins_fantasy_upstream.py', []),
+              ('scripts/audit_origins_backgrounds_upstream.py', []),
+              ('scripts/audit_origins_more_backgrounds_upstream.py', []),
+              ('scripts/audit_origins_backgrounds_iss_upstream.py', []),
+              ('scripts/audit_origins_furries_upstream.py', []),
+              ('scripts/audit_origins_classes_extended_upstream.py', []),
+              ('scripts/audit_origins_classes_iss_upstream.py', []),
+              ('scripts/audit_origin_architect_upstream.py', []),
+          ]
+          originals = {name: Path(name).read_text(encoding='utf-8') for name, _ in scripts}
+          for name, extra in scripts:
+              path = Path(name)
+              source = originals[name]
+              updated, count = re.subn(r'^LOCALES\s*=.*$', 'LOCALES = ("bg_bg",)', source, count=1, flags=re.M)
+              if count == 0:
+                  updated, count = re.subn(r'^DEFAULT_LOCALES\s*=.*$', 'DEFAULT_LOCALES = ("bg_bg",)', source, count=1, flags=re.M)
+              if count != 1:
+                  raise SystemExit(f'Could not patch locale in {name}')
+              path.write_text(updated, encoding='utf-8')
+              subprocess.run(['python3', name, *extra, '--fail-on-overlap', '--fail-on-missing', '--fail-on-placeholders'], check=True)
+          for name, source in originals.items():
+              Path(name).write_text(source, encoding='utf-8')
+          PY
+
+      - name: Validate localization files
+        run: python3 scripts/validate.py
+
+      - name: Build mod
+        run: |
+          gradle build --stacktrace \
+            "-Pjava_version=${{ matrix.java }}" \
+            "-Puse_parchment=${{ matrix.parchment }}" \
+            "-Presource_pack_format=${{ matrix.pack_format }}" \
+            "-Psource_variant=${{ matrix.source_variant }}" \
+            "-Pinclude_addon_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_121_batch_translations=${{ matrix.include_121_batch }}" \
+            "-Pinclude_turkish_split_translations=true" \
+            "-Pinclude_indonesian_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_swedish_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_danish_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_finnish_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_norwegian_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_romanian_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_greek_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_bulgarian_121_translations=${{ matrix.include_bg_121 }}" \
+            "-Pinclude_26_1_translations=${{ matrix.include_26_1 }}" \
+            "-Pinclude_26_2_translations=${{ matrix.include_26_2 }}" \
+            "-Pminecraft_version=${{ matrix.minecraft }}" \
+            "-Pminecraft_version_range=${{ matrix.minecraft_range }}" \
+            "-Pneo_version=${{ matrix.neoforge }}" \
+            "-Ploader_version_range=${{ matrix.loader_range }}" \
+            "-Pmod_version=0.9.0-beta+bg-${{ matrix.target }}"
+
+      - name: Verify Bulgarian packaging
+        run: |
+          JAR=$(find build/libs -type f -name '*.jar' ! -name '*-sources.jar' | head -n 1)
+          test -n "$JAR"
+          jar tf "$JAR" > build/jar-bg.txt
+          BG=$(grep -cE '(^|/)lang/bg_bg\.json$' build/jar-bg.txt || true)
+          echo "Bulgarian: $BG / ${{ matrix.expected_bg }}"
+          test "$BG" -eq '${{ matrix.expected_bg }}'
+          for index in $(seq -w 1 16); do
+            grep -Eq "(^|/)assets/neoorigins_bg_common_${index}/lang/bg_bg\.json$" build/jar-bg.txt
+          done
+          ADDON_PATTERN='(^|/)assets/(medievalorigins|medievalorigins_[^/]*|ibarnorigins|origins_fantasy|origins_backgrounds|origins_backgrounds_two|origins_backgrounds_iss|origins_furries|origins_classes_ex|origins_classes_iss|originsmodernui)/'
+          if [ '${{ matrix.include_addons }}' = 'true' ]; then
+            grep -Eq 'assets/neoorigins_bg_121/lang/bg_bg\.json$' build/jar-bg.txt
+            for ns in medievalorigins ibarnorigins origins_fantasy origins_backgrounds origins_backgrounds_two origins_backgrounds_iss origins_furries origins_classes_ex origins_classes_iss originsmodernui; do
+              grep -Eq "assets/$ns/lang/bg_bg\.json$" build/jar-bg.txt
+            done
+            ! grep -Eq 'assets/neoorigins_26_(1|2)/lang/bg_bg\.json$' build/jar-bg.txt
+          else
+            ! grep -Eq "$ADDON_PATTERN" build/jar-bg.txt
+            ! grep -Eq 'assets/neoorigins_bg_121/lang/bg_bg\.json$' build/jar-bg.txt
+            grep -Eq "assets/${{ matrix.bg_extra_namespace }}/lang/bg_bg\.json$" build/jar-bg.txt
+          fi
+
+      - name: Upload JAR
+        uses: actions/upload-artifact@v7
+        with:
+          name: neoorigins-localization-bulgarian-${{ matrix.target }}-${{ github.sha }}
+          path: build/libs/*.jar
+          if-no-files-found: error

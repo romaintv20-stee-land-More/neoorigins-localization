@@ -13,6 +13,12 @@ source = source.replace("no_no", "bg_bg")
 source = source.replace("neoorigins_no_", "neoorigins_bg_")
 source = source.replace('[[text, "en", "no", True]', '[[text, "en", "bg", True]')
 source = source.replace('uses "no" for Bulgarian.', 'uses "bg" for Bulgarian.')
+# Numbered printf placeholders may legitimately move in Bulgarian word order.
+# Compare the same placeholder multiset, matching the strict audit behavior.
+source = source.replace(
+    "if PLACEHOLDER_RE.findall(source) != PLACEHOLDER_RE.findall(result):",
+    "if sorted(PLACEHOLDER_RE.findall(source)) != sorted(PLACEHOLDER_RE.findall(result)):",
+)
 
 namespace = {"__name__": "bulgarian_bootstrap", "__file__": str(ROOT / "scripts/bootstrap_bulgarian.py")}
 exec(compile(source, str(ROOT / "scripts/bootstrap_bulgarian.py"), "exec"), namespace)

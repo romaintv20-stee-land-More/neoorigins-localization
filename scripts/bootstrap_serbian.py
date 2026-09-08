@@ -12,6 +12,30 @@ source = source.replace("build/no-discovery", "build/sr-discovery")
 source = source.replace("no_no", "sr_sp")
 source = source.replace("neoorigins_no_", "neoorigins_sr_")
 source = source.replace('[[text, "en", "no", True]', '[[text, "en", "sr", True]')
+# Serbian translation may rewrite ASCII separator words, so use private-use
+# delimiters that survive Google Translate batching unchanged.
+source = source.replace(
+    'SEPARATOR_RE = re.compile(r"\\n?ZXQSEP\\d{4}ZXQ\\n?")',
+    'SEPARATOR_RE = re.compile(r"\\n?\\ue000\\d{4}\\ue001\\n?")',
+)
+source = source.replace(
+    'f"\\nZXQSEP{index:04d}ZXQ\\n{value}"',
+    'f"\\n\\ue000{index:04d}\\ue001\\n{value}"',
+)
+# If a provider response still drops a batch delimiter, retry that batch one
+# string at a time rather than failing the whole localization run.
+source = source.replace(
+    '''        if len(translated) != len(batch):
+            raise RuntimeError(
+                f"Batch {batch_number}: expected {len(batch)} translated strings, received {len(translated)}"
+            )''',
+    '''        if len(translated) != len(batch):
+            print(
+                f"Batch {batch_number}: delimiter loss ({len(translated)}/{len(batch)}); "
+                "retrying strings individually"
+            )
+            translated = [translate_rpc(masked) for masked in protected]''',
+)
 # Numbered printf placeholders may legitimately move in Serbian word order.
 source = source.replace(
     "if PLACEHOLDER_RE.findall(source) != PLACEHOLDER_RE.findall(result):",

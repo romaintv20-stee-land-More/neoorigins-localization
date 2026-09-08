@@ -1,0 +1,8 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "L'equip que creeu és superior: les eines s'exploten més ràpidament, les armes colpejaven més fort, l'armadura és més dura i tot dura més.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Els aliments cuinats en un fumador o forn reben nutrició addicional.",
+  "neoorigins.configuration.title": "Configuració comuna de NeoOrigins",
+  "reward.neoorigins.loot_pool": "NeoOrigins: Concedeix una reserva de botí",
+  "reward.neoorigins.loot_pool.loot_table": "Taula de botí",
+  "reward.neoorigins.loot_pool.rolls": "Rotllets"
+}

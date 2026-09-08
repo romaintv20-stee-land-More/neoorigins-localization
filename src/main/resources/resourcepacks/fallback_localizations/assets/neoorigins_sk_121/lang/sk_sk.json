@@ -1,0 +1,8 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Vybavenie, ktoré si vytvoríte, je vynikajúce – nástroje sa ťažia rýchlejšie, zbrane zasahujú tvrdšie, brnenie je tvrdšie a všetko vydrží dlhšie.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Jedlo uvarené v udiarni alebo peci dostane extra výživu.",
+  "neoorigins.configuration.title": "Spoločná konfigurácia NeoOrigins",
+  "reward.neoorigins.loot_pool": "NeoOrigins: Udeliť loot pool",
+  "reward.neoorigins.loot_pool.loot_table": "Loot tabuľka",
+  "reward.neoorigins.loot_pool.rolls": "Rolky"
+}

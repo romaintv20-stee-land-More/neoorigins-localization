@@ -1,0 +1,8 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Оборудването, което създавате, е по-добро — инструментите се копаят по-бързо, оръжията удрят по-силно, бронята е по-здрава и всичко трае по-дълго.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Храната, приготвена в пушилня или пещ, получава допълнително хранене.",
+  "neoorigins.configuration.title": "Обща конфигурация на NeoOrigins",
+  "reward.neoorigins.loot_pool": "NeoOrigins: Дай таблица за плячка",
+  "reward.neoorigins.loot_pool.loot_table": "Таблица за плячка",
+  "reward.neoorigins.loot_pool.rolls": "Ролки"
+}

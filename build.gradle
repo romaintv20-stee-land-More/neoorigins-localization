@@ -25,6 +25,7 @@ def includeFinnish121Translations = (project.findProperty('include_finnish_121_t
 def includeNorwegian121Translations = (project.findProperty('include_norwegian_121_translations') ?: 'true').toBoolean()
 def includeRomanian121Translations = (project.findProperty('include_romanian_121_translations') ?: 'true').toBoolean()
 def includeGreek121Translations = (project.findProperty('include_greek_121_translations') ?: 'true').toBoolean()
+def includeBulgarian121Translations = (project.findProperty('include_bulgarian_121_translations') ?: 'true').toBoolean()
 def include26_1Translations = (project.findProperty('include_26_1_translations') ?: 'false').toBoolean()
 def include26_2Translations = (project.findProperty('include_26_2_translations') ?: 'false').toBoolean()
 
@@ -88,6 +89,7 @@ tasks.named('processResources', ProcessResources) {
     inputs.property 'include_norwegian_121_translations', includeNorwegian121Translations
     inputs.property 'include_romanian_121_translations', includeRomanian121Translations
     inputs.property 'include_greek_121_translations', includeGreek121Translations
+    inputs.property 'include_bulgarian_121_translations', includeBulgarian121Translations
     inputs.property 'include_26_1_translations', include26_1Translations
     inputs.property 'include_26_2_translations', include26_2Translations
 
@@ -143,6 +145,10 @@ tasks.named('processResources', ProcessResources) {
 
     if (!includeGreek121Translations) {
         exclude 'resourcepacks/fallback_localizations/assets/neoorigins_el_121/**'
+    }
+
+    if (!includeBulgarian121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_bg_121/**'
     }
 
     if (!include26_1Translations) {

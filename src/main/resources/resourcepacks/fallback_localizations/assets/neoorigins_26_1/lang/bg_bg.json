@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Изработеното от вас оборудване получава бонус атрибути — издръжливост, щети или скорост на копаене.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Печели двойно XP от готвене на храна в пушалка.",
+  "neoorigins.configuration.title": "Конфигурация на NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Геймплей",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "Настройки на играта NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Администриране и разрешения",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "Администраторски настройки на NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Мощност отменя",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "Neoorigins мощност отменя",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Произход и класове",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "NeoOrigins Произход и Превключване на класове",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Клиентски дисплей",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "Настройки на клиента NeoOrigins",
+  "neoorigins.configuration.show_cooldown_countdown": "Показване на обратното броене за охлаждане",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Непрозрачност за обратно отброяване на изчакване (%)",
+  "neoorigins.configuration.hud_ability_display": "Способност HUD режим на показване",
+  "neoorigins.configuration.always_show_ability_icons": "Винаги показвайте иконите за способности"
+}

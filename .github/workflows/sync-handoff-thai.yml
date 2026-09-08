@@ -1,0 +1,45 @@
+name: Sync Thai handoff
+
+on:
+  push:
+    branches:
+      - release/0.9.0-beta
+    paths:
+      - scripts/update_handoff_thai.py
+      - .github/workflows/sync-handoff-thai.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-beta
+      - name: Update handoff
+        run: python3 scripts/update_handoff_thai.py
+      - name: Validate handoff
+        run: |
+          grep -F '0.9.0 development currently has 27 locales:' PROJECT_HANDOFF.txt
+          grep -F -- '- 27: Thai / th_th' PROJECT_HANDOFF.txt
+          grep -F 'NEXT LANGUAGE = language 28.' PROJECT_HANDOFF.txt
+          grep -F 'run ID 34265269152: SUCCESS on all three jobs' PROJECT_HANDOFF.txt
+          grep -F 'Thai-script sanity check passed: 105,485 Thai-range codepoints across 29 th_th source files' PROJECT_HANDOFF.txt
+          grep -F 'artifact ID 10071615284; size 1,807,249 bytes' PROJECT_HANDOFF.txt
+      - name: Commit handoff
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add PROJECT_HANDOFF.txt
+          if git diff --cached --quiet; then
+            echo 'No handoff changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Finalize Thai 0.9.0 handoff'
+          git fetch origin release/0.9.0-beta
+          git rebase origin/release/0.9.0-beta
+          git push origin HEAD:release/0.9.0-beta

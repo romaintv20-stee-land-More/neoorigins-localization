@@ -1,0 +1,62 @@
+name: Sync 0.9.0 Norwegian metadata
+
+on:
+  push:
+    branches:
+      - release/0.9.0-beta
+    paths:
+      - 'src/main/resources/resourcepacks/fallback_localizations/assets/**/no_no.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-beta
+
+      - name: Update catalog and README
+        run: |
+          python3 scripts/update_catalog_norwegian.py
+          python3 scripts/generate_catalog.py
+          python3 scripts/update_readme_norwegian.py
+
+      - name: Validate metadata
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          catalog = json.loads(Path('catalog.json').read_text(encoding='utf-8'))
+          if catalog['project']['supported_locale_count'] != 20:
+              raise SystemExit('catalog locale count is not 20')
+          neo = next(p for p in catalog['supported_projects'] if p['id'] == 'neoorigins')
+          if neo['languages'].get('no_no', {}).get('status') != 'supported':
+              raise SystemExit('no_no is not marked supported for NeoOrigins')
+          for project in catalog['supported_projects']:
+              if project['languages'].get('no_no', {}).get('status') != 'supported':
+                  raise SystemExit(f"no_no missing from catalog project {project['id']}")
+          readme = Path('README.md').read_text(encoding='utf-8')
+          if 'Norvégien bokmål (`no_no`)' not in readme or 'Les vingt langues' not in readme:
+              raise SystemExit('README Norwegian metadata missing')
+          print('Norwegian metadata validation passed')
+          PY
+
+      - name: Commit synchronized metadata
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add catalog.json CATALOG.md README.md
+          if git diff --cached --quiet; then
+            echo 'No metadata changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Document Norwegian Bokmal localization in 0.9.0 beta'
+          git fetch origin release/0.9.0-beta
+          git rebase origin/release/0.9.0-beta
+          git push origin HEAD:release/0.9.0-beta

@@ -36,6 +36,11 @@ namespace["MANUAL_OVERRIDES"] = {
     "Rage Counter.": "Comptador de fúria.",
     "Rage Counter": "Comptador de fúria",
     "Origin Architect": "Origin Architect",
+    "%1$s had their soul ripped apart by %2$s's %3$s": "%1$s va tenir l'ànima arrencada pel %3$s de %2$s",
 }
 
+# Pre-seed targeted wording so Google cannot delete/reorder semantic actors while
+# translating these fragile strings. The normal structural audit still validates
+# all placeholders after generation.
+namespace["write_json"](namespace["CACHE_PATH"], namespace["MANUAL_OVERRIDES"])
 namespace["main"]()

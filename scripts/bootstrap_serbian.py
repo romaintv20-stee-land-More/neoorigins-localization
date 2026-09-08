@@ -22,6 +22,16 @@ source = source.replace(
     'f"\\nZXQSEP{index:04d}ZXQ\\n{value}"',
     'f"\\n\\ue000{index:04d}\\ue001\\n{value}"',
 )
+# Protect placeholders with private-use sentinels too: Serbian transliterates
+# visible ASCII marker words such as ZXQPH and would otherwise corrupt them.
+source = source.replace(
+    'return f"ZXQPH{index:04d}ZXQ"',
+    'return f"\\ue100{index:04d}\\ue101"',
+)
+source = source.replace(
+    'text = text.replace(f"ZXQPH{index:04d}ZXQ", token)',
+    'text = text.replace(f"\\ue100{index:04d}\\ue101", token)',
+)
 # If a provider response still drops a batch delimiter, retry that batch one
 # string at a time rather than failing the whole localization run.
 source = source.replace(

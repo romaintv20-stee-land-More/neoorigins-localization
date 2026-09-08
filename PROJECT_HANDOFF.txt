@@ -87,7 +87,7 @@ Before publishing 0.9.0, re-check whether NeoOrigins upstream has moved beyond 2
 5. DANISH 0.9.0 STATUS
 ----------------------
 Danish locale: da_dk.
-Status: GENERATED, STRICTLY AUDITED, AND COMMITTED.
+Status: COMPLETE FOR THE CURRENT 0.9.0 DEVELOPMENT BASELINE: GENERATED, STRICTLY AUDITED, BUILT, PACKAGING-VERIFIED, DOCUMENTED, AND COMMITTED.
 
 Generation architecture mirrors the Swedish/Indonesian split:
 - 16 common NeoOrigins resource-pack namespaces: neoorigins_da_common_01 through neoorigins_da_common_16
@@ -124,6 +124,15 @@ A permanent 0.9.0 CI workflow is stored at .github/workflows/build-0.9.0.yml. It
 - Minecraft 1.21.1: 27 files (16 common + 1 1.21.1 delta + 10 add-ons)
 - Minecraft 26.1.x: 17 files (16 common + 1 version delta)
 - Minecraft 26.2: 17 files (16 common + 1 version delta)
+
+Final verification for this Danish pass:
+- Build 0.9.0 Beta run 34248229627 completed successfully on all three matrix jobs: mc-1.21.1, mc-26.1.x and mc-26.2.
+- Each job passed strict Danish NeoOrigins audit, localization validation, Gradle build, Danish JAR packaging verification and JAR artifact upload.
+- The 1.21.1 job also passed strict Danish audits for all ten add-ons.
+- catalog.json now declares 18 supported locales and 0.9.0-beta build versions.
+- CATALOG.md was regenerated from catalog.json and includes Dansk (da_dk).
+- README.md now documents 0.9.0 Beta, 18 locales, Danish coverage and Danish JAR packaging counts.
+- Metadata synchronization succeeded and produced commit b2aeb5571941668707c0668a83a09b213bb41222 ("Document Danish localization in 0.9.0 beta").
 
 6. LANGUAGE EXPANSION RULE
 --------------------------

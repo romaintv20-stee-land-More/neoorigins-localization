@@ -1,0 +1,46 @@
+name: Apply Norwegian CI integration
+
+on:
+  push:
+    branches:
+      - release/0.9.0-beta
+    paths:
+      - scripts/update_ci_norwegian.py
+      - .github/workflows/apply-ci-norwegian.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-beta
+
+      - name: Update permanent 0.9.0 CI
+        run: python3 scripts/update_ci_norwegian.py
+
+      - name: Sanity-check workflow markers
+        run: |
+          grep -q 'Strict audit Norwegian NeoOrigins coverage' .github/workflows/build-0.9.0.yml
+          grep -q 'Strict audit Norwegian 1.21.1 add-ons' .github/workflows/build-0.9.0.yml
+          grep -q 'include_norwegian_121_translations' .github/workflows/build-0.9.0.yml
+          grep -q 'expected_norwegian_files' .github/workflows/build-0.9.0.yml
+
+      - name: Commit CI update
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .github/workflows/build-0.9.0.yml
+          if git diff --cached --quiet; then
+            echo 'No CI changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Audit and package Norwegian Bokmal in 0.9.0 CI'
+          git fetch origin release/0.9.0-beta
+          git rebase origin/release/0.9.0-beta
+          git push origin HEAD:release/0.9.0-beta

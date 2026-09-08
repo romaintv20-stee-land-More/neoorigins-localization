@@ -6,7 +6,6 @@ on:
       - release/0.8.0-danish-mob-origins
     paths:
       - 'scripts/audit_mob_origins_upstream.py'
-      - 'src/main/resources/resourcepacks/fallback_localizations/assets/moborigins/**'
       - '.github/workflows/audit-mob-origins-bootstrap.yml'
   workflow_dispatch:
 

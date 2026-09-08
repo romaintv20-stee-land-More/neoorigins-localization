@@ -8,6 +8,7 @@ on:
       - 'src/main/resources/resourcepacks/fallback_localizations/assets/**/vi_vn.json'
       - 'scripts/update_catalog_vietnamese.py'
       - 'scripts/update_readme_vietnamese.py'
+      - '.github/workflows/sync-0.9.0-vietnamese-metadata.yml'
   workflow_dispatch:
 
 permissions:

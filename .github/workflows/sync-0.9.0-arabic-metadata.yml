@@ -8,6 +8,7 @@ on:
       - 'src/main/resources/resourcepacks/fallback_localizations/assets/**/ar_sa.json'
       - 'scripts/update_catalog_arabic.py'
       - 'scripts/update_readme_arabic.py'
+      - '.github/workflows/sync-0.9.0-arabic-metadata.yml'
   workflow_dispatch:
 
 permissions:

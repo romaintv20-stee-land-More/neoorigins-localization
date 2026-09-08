@@ -38,8 +38,8 @@ Mob Origins is NOT selected for 0.9.0. Earlier Mob Origins WIP inherited from a 
 0.8.0 Beta shipped with 17 locales:
 fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se.
 
-0.9.0 development currently has 25 locales:
-fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se, da_dk, fi_fi, no_no, ro_ro, el_gr, bg_bg, vi_vn, ar_sa.
+0.9.0 development currently has 26 locales:
+fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se, da_dk, fi_fi, no_no, ro_ro, el_gr, bg_bg, vi_vn, ar_sa, he_il.
 
 Expansion order so far:
 - 18: Danish / da_dk
@@ -50,8 +50,9 @@ Expansion order so far:
 - 23: Bulgarian / bg_bg
 - 24: Vietnamese / vi_vn
 - 25: Arabic / ar_sa
+- 26: Hebrew / he_il
 
-TWENTY-FIVE IS NOT THE FINAL TARGET. Continue expanding toward essentially all useful Minecraft languages unless Romain changes scope.
+TWENTY-SIX IS NOT THE FINAL TARGET. Continue expanding toward essentially all useful Minecraft languages unless Romain changes scope.
 
 Norwegian Nynorsk (nn_no) is intentionally NOT merged with Bokmal. It is a distinct written standard and remains a valid future locale.
 
@@ -440,7 +441,65 @@ Final Arabic JAR artifacts from run 34263122706:
 - mc-26.1.x: artifact ID 10070733439; size 755,144 bytes; SHA256 1870e661176cb5ed9f9ab7eb2c5d1545f5dd00e44ac363a5f2966ea9cdb29b2b
 - mc-26.2: artifact ID 10070728913; size 754,708 bytes; SHA256 c6905a0e0c08e6692fe3c06f5956405671b7bb6baab8cadc4d3558905facc0ca
 
-14. ORIGIN ARCHITECT AUDIT IMPROVEMENT
+14. HEBREW 0.9.0 STATUS
+-----------------------
+Hebrew locale: he_il / עברית.
+Status: COMPLETE FOR THE CURRENT 0.9.0 DEVELOPMENT BASELINE: GENERATED, STRICTLY AUDITED, BUILT, PACKAGING-VERIFIED, DOCUMENTED, AND COMMITTED.
+
+Why selected:
+- Hebrew is an official Minecraft Java locale.
+- It is a clearly distinct language and script with no regional-dedup conflict with the existing 25-locale set.
+- Hebrew is right-to-left, so the final CI includes an additional Hebrew-script sanity check on top of the normal placeholder and JSON audits.
+
+Hebrew architecture:
+- 16 common namespaces: neoorigins_he_common_01 through neoorigins_he_common_16
+- 1.21.1-specific namespace: neoorigins_he_121
+- 26.1.x uses he_il inside neoorigins_26_1
+- 26.2 uses he_il inside neoorigins_26_2
+- all 10 supported/licensed 1.21.1 add-ons receive he_il fallback files
+
+At the audited references, NeoOrigins and ALL TEN supported add-ons had zero official Hebrew strings. Therefore all 10 Hebrew add-on fallback files are required.
+
+Hebrew coverage:
+- NeoOrigins 1.21.1: 2296 / 2296
+- NeoOrigins 26.1.x: 2307 / 2307
+- NeoOrigins 26.2: 2307 / 2307
+- all 10 add-ons: complete against their established effective baselines
+- strict overlap audit: 0
+- strict missing audit: 0
+- placeholder errors: 0
+- scripts/validate.py passed
+- Hebrew-script sanity check passed: 71,247 Hebrew-range codepoints across 29 he_il source files
+
+Hebrew bootstrap:
+- workflow run 34263825623 succeeded completely
+- validated localization commit c77712988214f62d406d820505763538bf161fd0 ("Add Hebrew localization fallback")
+- Hebrew audit artifact ID 10071108855; size 291,521 bytes; SHA256 051b0e249c2ec3cfb517a8977213727174403ce686b7df5eb843ffdd58c510bf
+
+Hebrew metadata:
+- synchronization run 34264270520 succeeded
+- metadata commit fed47392320e2f3caea70ac1cded1469cbe87560 ("Document Hebrew localization in 0.9.0 beta")
+- catalog.json / CATALOG.md / README.md now declare 26 supported locales and include Hebrew he_il
+
+Final Hebrew three-target CI:
+- workflow: .github/workflows/build-0.9.0-hebrew.yml
+- final workflow commit 427b0d6c248508dea09120b52b893ed9e4fb483e
+- run ID 34264247950: SUCCESS on all three jobs
+- mc-1.21.1 passed strict NeoOrigins + all 10 add-on audits, JSON validation, Hebrew-script sanity check, Gradle build, exact packaging verification and JAR upload
+- mc-26.1.x and mc-26.2 passed strict NeoOrigins audit, JSON validation, Hebrew-script sanity check, Gradle build, exact packaging verification and JAR upload
+
+Hebrew packaging verified by CI:
+- 1.21.1: 27 he_il files = 16 common + 1 v121 delta + 10 add-ons
+- 26.1.x: 17 he_il files = 16 common + correct 26.1 delta
+- 26.2: 17 he_il files = 16 common + correct 26.2 delta
+- no add-on namespace or neoorigins_he_121 leaked into 26.x
+
+Final Hebrew JAR artifacts from run 34264247950:
+- mc-1.21.1: artifact ID 10071193066; size 1,705,893 bytes; SHA256 8d6380d760fa1cf24b82186c20fe8ee82c607027ce49df7dce4b2b6a081085f2
+- mc-26.1.x: artifact ID 10071171778; size 804,617 bytes; SHA256 533e4f5140e20bfbba1cfe1e408690b59ffd4739c7dabf564bfb3015714f3fe1
+- mc-26.2: artifact ID 10071182069; size 804,178 bytes; SHA256 6a2bda1ef0c60b9b611e38455f8b3cdd31ac582ab60d9ebcb47a076f478ebd29
+
+15. ORIGIN ARCHITECT AUDIT IMPROVEMENT
 --------------------------------------
 scripts/audit_origin_architect_upstream.py now supports --prune.
 Commit:
@@ -452,7 +511,7 @@ Behavior:
 
 Future language bootstraps should use this behavior so an already-official Origin Architect locale does not cause unnecessary fallback redistribution.
 
-15. CURRENT PERMANENT CI / BUILD VALIDATION
+16. CURRENT PERMANENT CI / BUILD VALIDATION
 -------------------------------------------
 Legacy/current main 0.9.0 workflow:
 - .github/workflows/build-0.9.0.yml
@@ -501,7 +560,7 @@ NOTE ABOUT FAILED GOVERNANCE WORKFLOW:
 - It is superseded by the directly committed supplemental workflow build-0.9.0-expanded-locales.yml.
 - Do not waste time treating that historical failure as a current defect.
 
-16. SOURCE OF TRUTH HIERARCHY
+17. SOURCE OF TRUTH HIERARCHY
 -----------------------------
 - catalog.json = machine-readable content/project truth
 - CATALOG.md = readable catalog generated from catalog.json
@@ -510,19 +569,19 @@ NOTE ABOUT FAILED GOVERNANCE WORKFLOW:
 - PROJECT_HANDOFF.txt = cross-chat decisions, current roadmap, latest operational status
 
 As of this update:
-- catalog.json says 25 supported locales
-- README.md says 25 languages and includes Arabic ar_sa
-- Romanian, Greek, Bulgarian, Vietnamese and Arabic have passed final three-target packaging validation
+- catalog.json says 26 supported locales
+- README.md says 26 languages and includes Hebrew he_il
+- Romanian, Greek, Bulgarian, Vietnamese, Arabic and Hebrew have passed final three-target packaging validation
 
-17. QUALITY / QA CAVEAT
+18. QUALITY / QA CAVEAT
 -----------------------
 Automated structural QA is strong: missing keys, overlaps, placeholders, JSON structure, builds, and packaging are audited.
 
 In-game visual wording/UI-width review and native-speaker linguistic review remain separate quality layers. Do not claim native-speaker perfection merely because CI is green.
 
-18. NEXT ACTION
+19. NEXT ACTION
 ---------------
-NEXT LANGUAGE = language 26.
+NEXT LANGUAGE = language 27.
 
 When Romain says continue / prochaine langue / vas-y:
 1. Read this PROJECT_HANDOFF.txt first.
@@ -534,4 +593,4 @@ When Romain says continue / prochaine langue / vas-y:
 7. Build all three targets and inspect packaging.
 8. Update catalog.json, CATALOG.md, README.md and this PROJECT_HANDOFF.txt.
 9. Do not re-add Mob Origins.
-10. Do not stop permanently at 26; language expansion should continue unless Romain changes scope.
+10. Do not stop permanently at 27; language expansion should continue unless Romain changes scope.

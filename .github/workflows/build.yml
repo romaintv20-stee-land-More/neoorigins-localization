@@ -2,7 +2,7 @@ name: Build NeoOrigins Localization
 
 on:
   push:
-    branches: [ main, release/0.8.0-japanese, release/0.8.0-korean, release/0.8.0-ukrainian, release/0.8.0-indonesian ]
+    branches: [ main, release/0.8.0-japanese, release/0.8.0-korean, release/0.8.0-ukrainian, release/0.8.0-indonesian, release/0.8.0-swedish ]
   pull_request:
     branches: [ main ]
   workflow_dispatch:
@@ -34,10 +34,12 @@ jobs:
             audit_czech_namespace_glob: 'neoorigins_cs_*'
             audit_hungarian_namespace_glob: 'neoorigins_hu_*'
             audit_indonesian_extra_namespace: 'neoorigins_id_121'
+            audit_swedish_extra_namespace: 'neoorigins_sv_121'
             include_addon_translations: true
             include_121_batch_translations: true
             include_turkish_split_translations: true
             include_indonesian_121_translations: true
+            include_swedish_121_translations: true
             include_26_1_translations: false
             include_26_2_translations: false
           - target: mc-26.1.x
@@ -61,10 +63,12 @@ jobs:
             audit_czech_namespace_glob: 'neoorigins_cs_*'
             audit_hungarian_namespace_glob: 'neoorigins_hu_*'
             audit_indonesian_extra_namespace: 'neoorigins_26_1'
+            audit_swedish_extra_namespace: 'neoorigins_26_1'
             include_addon_translations: false
             include_121_batch_translations: true
             include_turkish_split_translations: true
             include_indonesian_121_translations: false
+            include_swedish_121_translations: false
             include_26_1_translations: true
             include_26_2_translations: false
           - target: mc-26.2
@@ -88,10 +92,12 @@ jobs:
             audit_czech_namespace_glob: 'neoorigins_cs_*'
             audit_hungarian_namespace_glob: 'neoorigins_hu_*'
             audit_indonesian_extra_namespace: 'neoorigins_26_2'
+            audit_swedish_extra_namespace: 'neoorigins_26_2'
             include_addon_translations: false
             include_121_batch_translations: false
             include_turkish_split_translations: true
             include_indonesian_121_translations: false
+            include_swedish_121_translations: false
             include_26_1_translations: false
             include_26_2_translations: true
 
@@ -162,6 +168,18 @@ jobs:
             --fail-on-missing \
             --fail-on-placeholders
 
+      - name: Audit Swedish NeoOrigins fallback
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py \
+            --ref "${{ matrix.upstream_ref }}" \
+            --output "build/swedish-audit-${{ matrix.target }}" \
+            --locale sv_se \
+            --fallback-namespace-glob 'neoorigins_sv_common_*' \
+            --extra-namespace "${{ matrix.audit_swedish_extra_namespace }}" \
+            --fail-on-overlap \
+            --fail-on-missing \
+            --fail-on-placeholders
+
       - name: Audit ibarn origins upstream locales
         if: matrix.audit_addons
         run: python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --fail-on-overlap --fail-on-missing --fail-on-placeholders
@@ -206,6 +224,7 @@ jobs:
           path: |
             build/upstream-audit-${{ matrix.target }}
             build/indonesian-audit-${{ matrix.target }}
+            build/swedish-audit-${{ matrix.target }}
             build/medievalorigins-upstream-audit
             build/ibarnorigins-upstream-audit
             build/origins-fantasy-upstream-audit
@@ -232,6 +251,7 @@ jobs:
             "-Pinclude_121_batch_translations=${{ matrix.include_121_batch_translations }}" \
             "-Pinclude_turkish_split_translations=${{ matrix.include_turkish_split_translations }}" \
             "-Pinclude_indonesian_121_translations=${{ matrix.include_indonesian_121_translations }}" \
+            "-Pinclude_swedish_121_translations=${{ matrix.include_swedish_121_translations }}" \
             "-Pinclude_26_1_translations=${{ matrix.include_26_1_translations }}" \
             "-Pinclude_26_2_translations=${{ matrix.include_26_2_translations }}" \
             "-Pminecraft_version=${{ matrix.minecraft }}" \
@@ -359,6 +379,49 @@ jobs:
               ! grep -Eq '(^|/)assets/neoorigins_26_1/lang/id_id\.json$' build/jar-contents-id-${{ matrix.target }}.txt
             fi
             echo "Indonesian 26.x payload packaging verified for ${{ matrix.target }}."
+          fi
+
+      - name: Verify packaged Swedish localizations
+        run: |
+          JAR=$(find build/libs -type f -name '*.jar' ! -name '*-sources.jar' | head -n 1)
+          test -n "$JAR"
+          jar tf "$JAR" > build/jar-contents-sv-${{ matrix.target }}.txt
+          SV_COUNT=$(grep -cE '(^|/)lang/sv_se\.json$' build/jar-contents-sv-${{ matrix.target }}.txt || true)
+
+          if [ "${{ matrix.include_addon_translations }}" = "true" ]; then
+            EXPECTED_SV_COUNT=27
+          else
+            EXPECTED_SV_COUNT=17
+          fi
+          echo "Swedish localization files in ${{ matrix.target }}: $SV_COUNT (expected $EXPECTED_SV_COUNT)"
+          test "$SV_COUNT" -eq "$EXPECTED_SV_COUNT"
+
+          for index in $(seq -w 1 16); do
+            grep -Eq "(^|/)assets/neoorigins_sv_common_${index}/lang/sv_se\.json$" build/jar-contents-sv-${{ matrix.target }}.txt
+          done
+
+          ADDON_PATTERN='(^|/)assets/(medievalorigins|medievalorigins_[^/]*|ibarnorigins|origins_fantasy|origins_backgrounds|origins_backgrounds_two|origins_backgrounds_iss|origins_furries|origins_classes_ex|origins_classes_iss|originsmodernui)/'
+
+          if [ "${{ matrix.include_addon_translations }}" = "true" ]; then
+            grep -Eq '(^|/)assets/neoorigins_sv_121/lang/sv_se\.json$' build/jar-contents-sv-${{ matrix.target }}.txt
+            grep -Eq '(^|/)assets/medievalorigins/lang/sv_se\.json$' build/jar-contents-sv-${{ matrix.target }}.txt
+            for ns in ibarnorigins origins_fantasy origins_backgrounds origins_backgrounds_two origins_backgrounds_iss origins_furries origins_classes_ex origins_classes_iss originsmodernui; do
+              grep -Eq "(^|/)assets/$ns/lang/sv_se.json$" build/jar-contents-sv-${{ matrix.target }}.txt
+            done
+            ! grep -Eq '(^|/)assets/neoorigins_26_(1|2)/lang/sv_se\.json$' build/jar-contents-sv-${{ matrix.target }}.txt
+            echo "Swedish 1.21.1 payload packaging verified."
+          else
+            ! grep -Eq "$ADDON_PATTERN" build/jar-contents-sv-${{ matrix.target }}.txt
+            ! grep -Eq '(^|/)assets/neoorigins_sv_121/lang/sv_se\.json$' build/jar-contents-sv-${{ matrix.target }}.txt
+
+            if [ "${{ matrix.target }}" = "mc-26.1.x" ]; then
+              grep -Eq '(^|/)assets/neoorigins_26_1/lang/sv_se\.json$' build/jar-contents-sv-${{ matrix.target }}.txt
+              ! grep -Eq '(^|/)assets/neoorigins_26_2/lang/sv_se\.json$' build/jar-contents-sv-${{ matrix.target }}.txt
+            else
+              grep -Eq '(^|/)assets/neoorigins_26_2/lang/sv_se\.json$' build/jar-contents-sv-${{ matrix.target }}.txt
+              ! grep -Eq '(^|/)assets/neoorigins_26_1/lang/sv_se\.json$' build/jar-contents-sv-${{ matrix.target }}.txt
+            fi
+            echo "Swedish 26.x payload packaging verified for ${{ matrix.target }}."
           fi
 
       - name: Upload JAR

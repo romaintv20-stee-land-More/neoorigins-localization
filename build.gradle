@@ -19,6 +19,7 @@ def legacyExpanded = project.findProperty('include_121_expanded_translations')
 def include121BatchTranslations = (project.findProperty('include_121_batch_translations') ?: legacyExpanded ?: 'true').toBoolean()
 def includeTurkishSplitTranslations = (project.findProperty('include_turkish_split_translations') ?: legacyExpanded ?: 'true').toBoolean()
 def includeIndonesian121Translations = (project.findProperty('include_indonesian_121_translations') ?: 'true').toBoolean()
+def includeSwedish121Translations = (project.findProperty('include_swedish_121_translations') ?: 'true').toBoolean()
 def include26_1Translations = (project.findProperty('include_26_1_translations') ?: 'false').toBoolean()
 def include26_2Translations = (project.findProperty('include_26_2_translations') ?: 'false').toBoolean()
 
@@ -76,6 +77,7 @@ tasks.named('processResources', ProcessResources) {
     inputs.property 'include_121_batch_translations', include121BatchTranslations
     inputs.property 'include_turkish_split_translations', includeTurkishSplitTranslations
     inputs.property 'include_indonesian_121_translations', includeIndonesian121Translations
+    inputs.property 'include_swedish_121_translations', includeSwedish121Translations
     inputs.property 'include_26_1_translations', include26_1Translations
     inputs.property 'include_26_2_translations', include26_2Translations
 
@@ -107,6 +109,10 @@ tasks.named('processResources', ProcessResources) {
 
     if (!includeIndonesian121Translations) {
         exclude 'resourcepacks/fallback_localizations/assets/neoorigins_id_121/**'
+    }
+
+    if (!includeSwedish121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_sv_121/**'
     }
 
     if (!include26_1Translations) {

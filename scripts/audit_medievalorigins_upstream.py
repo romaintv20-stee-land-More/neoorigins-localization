@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PACK_ASSETS = ROOT / "src/main/resources/resourcepacks/fallback_localizations/assets"
 PACK_LANG = PACK_ASSETS / "medievalorigins/lang"
 DEFAULT_REF = "1.21.1-fabric"
-LOCALES = ("fr_fr", "de_de", "es_es", "pt_br", "nl_nl", "it_it", "pl_pl", "ru_ru", "tr_tr", "zh_cn", "cs_cz", "hu_hu", "ja_jp", "ko_kr", "uk_ua", "id_id")
+LOCALES = ("fr_fr", "de_de", "es_es", "pt_br", "nl_nl", "it_it", "pl_pl", "ru_ru", "tr_tr", "zh_cn", "cs_cz", "hu_hu", "ja_jp", "ko_kr", "uk_ua", "id_id", "sv_se")
 BASE = "https://raw.githubusercontent.com/muon-rw/Medieval-Origins-Revival/{ref}/src/main/resources/assets/medievalorigins/lang/{locale}.json"
 PLACEHOLDER_RE = re.compile(r"%(?:\d+\$)?[sd]")
 
@@ -92,6 +92,7 @@ def main():
     out_dir.mkdir(parents=True, exist_ok=True)
 
     en = fetch_json(BASE.format(ref=args.ref, locale="en_us"))
+    (out_dir / "upstream_en_us.json").write_text(json.dumps(en, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     report = {
         "upstream": "muon-rw/Medieval-Origins-Revival",
         "ref": args.ref,

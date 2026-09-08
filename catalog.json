@@ -11,7 +11,7 @@
     ],
     "loader": "NeoForge",
     "localization_mode": "low_priority_fallback",
-    "supported_locale_count": 16,
+    "supported_locale_count": 17,
     "builds": {
       "1.21.1": {
         "version": "0.8.0-beta+1.21.1",
@@ -102,7 +102,9 @@
           "mc_26_1": "neoorigins_26_1",
           "mc_26_2": "neoorigins_26_2",
           "indonesian_common_glob": "neoorigins_id_common_*",
-          "indonesian_mc_1_21_1": "neoorigins_id_121"
+          "indonesian_mc_1_21_1": "neoorigins_id_121",
+          "swedish_common_glob": "neoorigins_sv_common_*",
+          "swedish_mc_1_21_1": "neoorigins_sv_121"
         },
         "note": "NeoOrigins 2.2.26 est audité séparément sur les trois cibles. neoorigins_226 est commun aux trois builds ; neoorigins_26_1 est réservé à 26.1.x ; neoorigins_26_2 est réservé à 26.2. Les trois clés reward.neoorigins.loot_pool* restent dans les fallbacks complets pour 1.21.1 et sont inoffensives sur 26.x."
       },
@@ -250,6 +252,15 @@
             "26.1.x",
             "26.2"
           ]
+        },
+        "sv_se": {
+          "name": "Svenska",
+          "status": "supported",
+          "targets": [
+            "1.21.1",
+            "26.1.x",
+            "26.2"
+          ]
         }
       }
     },
@@ -271,7 +282,7 @@
           "1.21.1"
         ],
         "in_game_validation": "validated",
-        "note": "401/401 clés anglaises couvertes dans les seize langues ; absent des builds 26.x."
+        "note": "401/401 clés anglaises couvertes dans les dix-sept langues ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 401,
@@ -354,6 +365,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/id_id.json",
           "fallback_keys": 401
+        },
+        "sv_se": {
+          "name": "Svenska",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/sv_se.json",
+          "fallback_keys": 401
         }
       }
     },
@@ -373,7 +390,7 @@
         "version": "1.7.1 / Minecraft 1.21.1",
         "source_ref": "multiloader-1.21.1-new-pack-format",
         "in_game_validation": "validated",
-        "note": "69/69 clés anglaises couvertes dans les seize langues ; absent des builds 26.x."
+        "note": "69/69 clés anglaises couvertes dans les dix-sept langues ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 69,
@@ -461,6 +478,12 @@
           "name": "Bahasa Indonesia",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/id_id.json",
+          "fallback_keys": 69
+        },
+        "sv_se": {
+          "name": "Svenska",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/sv_se.json",
           "fallback_keys": 69
         }
       }
@@ -572,6 +595,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/id_id.json",
           "fallback_keys": 240
+        },
+        "sv_se": {
+          "name": "Svenska",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/sv_se.json",
+          "fallback_keys": 240
         }
       }
     },
@@ -593,7 +622,7 @@
           "1.21.1"
         ],
         "in_game_validation": "pending",
-        "note": "Audité contre le JAR CurseForge 8397335 ; aucune traduction officielle parmi les seize langues ciblées ; absent des builds 26.x."
+        "note": "Audité contre le JAR CurseForge 8397335 ; aucune traduction officielle parmi les dix-sept langues ciblées ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 65,
@@ -681,6 +710,12 @@
           "name": "Bahasa Indonesia",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/id_id.json",
+          "fallback_keys": 65
+        },
+        "sv_se": {
+          "name": "Svenska",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/sv_se.json",
           "fallback_keys": 65
         }
       }
@@ -793,6 +828,12 @@
           "name": "Bahasa Indonesia",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/id_id.json",
+          "fallback_keys": 39
+        },
+        "sv_se": {
+          "name": "Svenska",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/sv_se.json",
           "fallback_keys": 39
         }
       }
@@ -910,6 +951,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/id_id.json",
           "fallback_keys": 77
+        },
+        "sv_se": {
+          "name": "Svenska",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/sv_se.json",
+          "fallback_keys": 77
         }
       }
     },
@@ -934,7 +981,7 @@
           "NeoOrigins"
         ],
         "in_game_validation": "pending",
-        "note": "Audité contre le JAR CurseForge 8397352 ; aucune traduction officielle parmi les seize langues ciblées ; absent des builds 26.x."
+        "note": "Audité contre le JAR CurseForge 8397352 ; aucune traduction officielle parmi les dix-sept langues ciblées ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 117,
@@ -1023,6 +1070,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/id_id.json",
           "fallback_keys": 117
+        },
+        "sv_se": {
+          "name": "Svenska",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/sv_se.json",
+          "fallback_keys": 117
         }
       }
     },
@@ -1047,7 +1100,7 @@
           "NeoOrigins"
         ],
         "in_game_validation": "pending",
-        "note": "Audité contre le JAR CurseForge 8393343 ; 124/124 clés dans les seize langues ciblées ; absent des builds 26.x."
+        "note": "Audité contre le JAR CurseForge 8393343 ; 124/124 clés dans les dix-sept langues ciblées ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 124,
@@ -1136,6 +1189,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/id_id.json",
           "fallback_keys": 124
+        },
+        "sv_se": {
+          "name": "Svenska",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/sv_se.json",
+          "fallback_keys": 124
         }
       }
     },
@@ -1161,7 +1220,7 @@
           "Iron's Spells 'n Spellbooks"
         ],
         "in_game_validation": "pending",
-        "note": "Audité contre le JAR CurseForge 8592095 ; 99/99 clés dans les seize langues ciblées ; absent des builds 26.x."
+        "note": "Audité contre le JAR CurseForge 8592095 ; 99/99 clés dans les dix-sept langues ciblées ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 99,
@@ -1250,6 +1309,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/id_id.json",
           "fallback_keys": 99
+        },
+        "sv_se": {
+          "name": "Svenska",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/sv_se.json",
+          "fallback_keys": 99
         }
       }
     },
@@ -1273,7 +1338,7 @@
         "source_ref": "f58a6261292942d4123c46ff221fbdade138a329",
         "curseforge_file_id": 8568110,
         "in_game_validation": "pending",
-        "note": "22/22 clés anglaises couvertes dans les seize langues ; aucune traduction officielle détectée parmi les seize locales ciblées ; absent des builds 26.x."
+        "note": "22/22 clés anglaises couvertes dans les dix-sept langues ; aucune traduction officielle détectée parmi les dix-sept locales ciblées ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 22,
@@ -1361,6 +1426,12 @@
           "name": "Bahasa Indonesia",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/id_id.json",
+          "fallback_keys": 22
+        },
+        "sv_se": {
+          "name": "Svenska",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/sv_se.json",
           "fallback_keys": 22
         }
       }

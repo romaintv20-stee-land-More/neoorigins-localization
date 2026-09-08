@@ -28,6 +28,15 @@ Pour chaque langue contrôlée en jeu, vérifier au minimum :
 
 La validation automatisée garantit la structure, les clés, les placeholders et la compilation ; elle ne remplace pas la vérification visuelle de la qualité des formulations et de la largeur des textes.
 
+## Suédois — NeoOrigins et add-ons
+
+- sélectionner **Svenska (`sv_se`)** dans Minecraft 1.21.1 ;
+- vérifier l'écran de sélection des Origins, les descriptions longues, les noms de pouvoirs et les messages de HUD ;
+- contrôler au moins une Origin de NeoOrigins et une Origin de chacun des add-ons installés ;
+- signaler en priorité les intitulés trop longs, les termes restés en anglais qui ne sont pas des noms propres et les formulations peu naturelles.
+
+Couverture automatisée : **2 296/2 296** clés NeoOrigins en 1.21.1, **2 307/2 307** en 26.1.x et 26.2, plus **1 253** entrées physiques d'add-ons en 1.21.1. Le JAR 1.21.1 doit contenir exactement **27 fichiers `sv_se.json`** ; chaque JAR 26.x doit en contenir **17** et ne contenir aucun namespace d'add-on 1.21.1.
+
 ## Tchèque — NeoOrigins
 
 ### 1.21.1

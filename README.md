@@ -14,9 +14,9 @@ Les builds 26.x n'embarquent aucune traduction des add-ons 1.21.1. La CI constru
 
 ## Langues
 
-La **0.8.0 Beta** prend en charge : Français (`fr_fr`), Allemand (`de_de`), Espagnol (`es_es`), Portugais brésilien (`pt_br`), Néerlandais (`nl_nl`), Italien (`it_it`), Polonais (`pl_pl`), Russe (`ru_ru`), Turc (`tr_tr`), Chinois simplifié (`zh_cn`), **Tchèque (`cs_cz`)**, **Hongrois (`hu_hu`)**, **Japonais (`ja_jp`)**, **Coréen (`ko_kr`)**, **Ukrainien (`uk_ua`)** et **Indonésien (`id_id`)**.
+La **0.8.0 Beta** prend en charge : Français (`fr_fr`), Allemand (`de_de`), Espagnol (`es_es`), Portugais brésilien (`pt_br`), Néerlandais (`nl_nl`), Italien (`it_it`), Polonais (`pl_pl`), Russe (`ru_ru`), Turc (`tr_tr`), Chinois simplifié (`zh_cn`), **Tchèque (`cs_cz`)**, **Hongrois (`hu_hu`)**, **Japonais (`ja_jp`)**, **Coréen (`ko_kr`)**, **Ukrainien (`uk_ua`)**, **Indonésien (`id_id`)** et **Suédois (`sv_se`)**.
 
-Les seize langues sont disponibles sur les trois builds pour NeoOrigins. Les traductions d'add-ons sont empaquetées uniquement sur Minecraft 1.21.1 lorsqu'une version compatible de l'add-on est réellement disponible.
+Les dix-sept langues sont disponibles sur les trois builds pour NeoOrigins. Les traductions d'add-ons sont empaquetées uniquement sur Minecraft 1.21.1 lorsqu'une version compatible de l'add-on est réellement disponible.
 
 ## Référence NeoOrigins
 

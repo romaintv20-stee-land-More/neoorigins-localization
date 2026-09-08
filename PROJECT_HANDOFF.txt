@@ -10,69 +10,37 @@ Read this file BEFORE changing the project. This file exists because some projec
 
 If this file conflicts with an older chat, old handoff, or older release branch, THIS FILE + the current repository state take priority unless Romain explicitly says otherwise.
 
-
 1. PROJECT PURPOSE
 ------------------
-NeoOrigins Localization is a client-side NeoForge mod/resource-pack system that provides LOW-PRIORITY FALLBACK translations for Neo Origins / NeoOrigins and compatible add-ons.
+NeoOrigins Localization provides LOW-PRIORITY fallback translations for Neo Origins / NeoOrigins and compatible add-ons.
 
 Core rule:
-- Neo Origins / NeoOrigins is the MAIN mod being translated by this project.
+- Neo Origins / NeoOrigins is the MAIN mod translated by this project.
 - Official upstream translations ALWAYS have priority.
-- Our project only fills keys that are missing upstream.
-- Normal resource packs can still override translations.
-- No translation is generated at runtime in Minecraft.
-- When upstream later adds an official translation, our overlapping fallback key must be removed.
-
-The project uses heavy generative/automated translation assistance, with structural audits and human direction. It must not be presented as fully native-speaker-reviewed translation work.
-
-Origin names should only be translated when the result stays natural, identifiable and readable in the UI. Otherwise the English/canonical name may be kept.
-
+- This project fills only missing keys.
+- When upstream adds an official translation, overlapping fallback keys must be removed.
 
 2. RELEASE STATUS
 -----------------
 0.8.0 Beta is ALREADY PUBLISHED externally.
-Do NOT treat 0.8.0 as the current development target anymore.
+Current target: 0.9.0 Beta.
+Working branch: release/0.9.0-beta.
 
-GitHub currently has no GitHub Release object for 0.8.0. This does NOT mean 0.8.0 was never published: the published release is external to GitHub.
+The 0.9.0 branch was initially created from release/0.8.0-danish-mob-origins, itself based on release/0.8.0-swedish. The Mob Origins work inherited from that branch was a misunderstanding and is not part of the intended 0.9.0 scope.
 
-The new development target is:
-- 0.9.0 Beta
-- working branch: release/0.9.0-beta
+main is behind the cumulative 17-language 0.8.0 state and must not be used as the working base for current development.
 
-The current 0.9.0 branch was initially created from the previous WIP branch release/0.8.0-danish-mob-origins, which itself was based on release/0.8.0-swedish. That inherited Mob Origins WIP was based on a misunderstanding and has been removed from the 0.9.0 branch.
+3. 0.8.0 BASELINE
+-----------------
+17 locales:
+fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se.
 
-IMPORTANT: main is not the correct base for current development. At the time of this handoff, main is behind the cumulative release branches and does not contain the full 17-language 0.8.0 state.
-
-The version numbers inside Gradle/catalog/README may still contain 0.8.0 references until the explicit 0.9.0 version bump is performed. Do not mistake those old identifiers for the actual roadmap target.
-
-
-3. 0.8.0 BETA CONTENT / BASELINE
---------------------------------
-0.8.0 Beta baseline has 17 supported locales:
-- fr_fr - Francais
-- de_de - Deutsch
-- es_es - Espanol
-- pt_br - Portugues (Brasil)
-- nl_nl - Nederlands
-- it_it - Italiano
-- pl_pl - Polski
-- ru_ru - Russkiy
-- tr_tr - Turkce
-- zh_cn - Simplified Chinese
-- cs_cz - Cestina
-- hu_hu - Magyar
-- ja_jp - Japanese
-- ko_kr - Korean
-- uk_ua - Ukrainian
-- id_id - Bahasa Indonesia
-- sv_se - Svenska
-
-Minecraft build targets used by 0.8.0:
+Build targets:
 - Minecraft 1.21.1 / Java 21
-- Minecraft 26.1, 26.1.1, 26.1.2 / Java 25
+- Minecraft 26.1.x / Java 25
 - Minecraft 26.2 / Java 25
 
-For Minecraft 1.21.1, the 0.8.0 package contains NeoOrigins plus these 10 add-ons/projects:
+Minecraft 1.21.1 includes NeoOrigins plus these 10 add-ons/projects:
 1. Medieval Origins Revival
 2. ibarn's quartet origins addon
 3. Origins Fantasy for NeoOrigins
@@ -84,226 +52,97 @@ For Minecraft 1.21.1, the 0.8.0 package contains NeoOrigins plus these 10 add-on
 9. Origins: Classes ISS for NeoOrigins
 10. Origin Architect
 
-The 26.x builds intentionally contain NeoOrigins translations only. Do NOT package the Minecraft 1.21.1 add-on translations into 26.x unless compatible add-on versions for those targets are explicitly confirmed later.
+26.x builds intentionally contain NeoOrigins translations only unless future add-on compatibility is explicitly verified.
 
-
-4. NEOORIGINS UPSTREAM REFERENCE
---------------------------------
-0.8.0 complete coverage was audited against NeoOrigins 2.2.26.
-
-Pinned/audited refs:
-- Minecraft 1.21.1: 860ecdb24e723983e93004ea8ceb5de90ccf0d70
-- Minecraft 26.1.x: 3c1c7365507679c836d3c14af5d4dd0654652e87
-- Minecraft 26.2: 65864716a5a796fa1c51ec3e8a6d9640abebb4ca
+4. NEOORIGINS 0.8.0 UPSTREAM REFERENCE
+---------------------------------------
+0.8.0 coverage was audited against NeoOrigins 2.2.26.
+Refs:
+- 1.21.1: 860ecdb24e723983e93004ea8ceb5de90ccf0d70
+- 26.1.x: 3c1c7365507679c836d3c14af5d4dd0654652e87
+- 26.2: 65864716a5a796fa1c51ec3e8a6d9640abebb4ca
 
 Coverage baseline:
-- 1.21.1: 2296 / 2296 English keys covered
-- 26.1.x: 2307 / 2307 English keys covered
-- 26.2: 2307 / 2307 English keys covered
+- 1.21.1: 2296 / 2296
+- 26.1.x: 2307 / 2307
+- 26.2: 2307 / 2307
 
-NeoOrigins Localization does NOT hard-lock the installed NeoOrigins version to 2.2.26. Newer versions may load, but guaranteed complete audited coverage corresponds to the pinned 0.8.0 reference.
+For 0.9.0, re-check current NeoOrigins upstream before declaring final coverage.
 
-For 0.9.0 development, re-check the current NeoOrigins upstream version/ref before declaring final coverage.
+5. LANGUAGE EXPANSION RULE
+--------------------------
+0.9.0 should expand well beyond 17 locales toward essentially all useful Minecraft languages.
 
-On 26.x, three old reward.neoorigins.loot_pool* fallback keys remain stale compared with the 0.8.0 upstream reference. They are harmless but are reported by the audit.
+Regional-variant rule applies to EVERY language family, not only English:
+- If two regional variants differ by only a handful of words, maintain ONE representative locale.
+- Keep separate variants only when vocabulary, writing/script, grammar, terminology or Minecraft usage is materially different.
+- Do not assume the final locale count in advance. Compare the current Minecraft locale set first.
 
+For every selected new language, the intent is to cover NeoOrigins and all compatible/licensed add-ons relevant to that Minecraft target.
 
-5. LANGUAGE EXPANSION RULE FOR 0.9.0
-------------------------------------
-The goal is NOT to stop at 17 languages. The long-term target is to cover essentially all useful Minecraft languages, except explicitly excluded cases.
+6. LICENSE RULES
+----------------
+Before adding any add-on, verify its license/redistribution terms.
+- MIT/compatible licenses: allowed with required attribution.
+- All Rights Reserved: do not redistribute translated derivative strings without explicit permission.
 
-CRITICAL RULE ABOUT LANGUAGE VARIANTS:
-The English US/UK example was ONLY an example. The same rule applies to EVERY language family.
-
-If Minecraft contains several regional variants of the same language and those variants are nearly identical (for example only one, two or a few words differ), DO NOT translate and maintain each one separately. Keep ONE representative/canonical variant for that language family.
-
-Examples of the principle:
-- en_us / en_gb: do not maintain both if the content difference is trivial.
-- The same deduplication must be evaluated for Spanish, Portuguese, French, Chinese, or any other language family with regional variants.
-
-Keep multiple variants only if they are genuinely different enough to justify separate localization work: significantly different vocabulary, orthography/script, grammar, terminology, or Minecraft usage.
-
-Do NOT assume a final target locale count in advance. First obtain the current Minecraft locale list, group regional variants, compare real differences, then select the representative set.
-
-A few very marginal/unsuitable locales may be excluded, but this must be a deliberate project decision, not an arbitrary omission.
-
-For every newly added language, the intent is to support that language across NeoOrigins and all compatible/licensed add-ons in the relevant Minecraft target, not only a handful of projects.
-
-
-6. LICENSE / REDISTRIBUTION RULES
----------------------------------
-Before adding a new add-on, ALWAYS verify its license and redistribution conditions.
-
-Allowed without asking the author when the license permits derivative localization redistribution, for example MIT or appropriate Creative Commons terms, while respecting attribution requirements.
-
-DO NOT redistribute translations derived from an All Rights Reserved project unless explicit permission has been obtained.
-
-Do not confuse 'we can technically extract the en_us file' with 'we are legally allowed to redistribute a translated derivative'. License check comes first.
-
-NeoOrigins:
-- upstream license: MIT
-
-Medieval Origins Revival:
-- code: MIT
-- assets/documentation: CC BY 4.0
-- attribution required
-
-ibarn's quartet origins addon:
-- MIT
-- attribution required
-
-DraconicArcher add-ons:
-Romain has explicit permission from DraconicArcher, received by private CurseForge message on 2026-09-06, to integrate translated localization strings from his add-ons into NeoOrigins Localization under the requested conditions:
-- redistribute translated localization strings only
-- clear attribution
-- link to the original project
-- no code, textures, models, gameplay data, or other gameplay assets redistributed
-- original mods remain required
-- if official translations become available later, upstream translations take priority and our fallback overlap must be removed
-
-This authorization currently covers the DraconicArcher projects already integrated, including:
-- Origins Fantasy for NeoOrigins
-- Origins: Backgrounds for NeoOrigins
-- Origins: More Backgrounds for NeoOrigins
-- Origins: Backgrounds ISS for NeoOrigins
-- Origins Furries for NeoOrigins
-- Origins: Classes Extended for NeoOrigins
-- Origins: Classes ISS for NeoOrigins
-
-Origin Architect:
-- upstream license: MIT
-- source reference previously audited: f58a6261292942d4123c46ff221fbdade138a329
+DraconicArcher gave Romain explicit permission on 2026-09-06 to redistribute translated localization strings from his covered add-ons with attribution/link, without redistributing code/textures/models/gameplay assets, and with official upstream translations taking priority later.
 
 Mob Origins:
-- NOT selected as the 0.9.0 integration.
-- WIP translation/audit files accidentally added for it have been removed from release/0.9.0-beta.
-- Do not re-add it unless Romain explicitly chooses it later.
+- NOT selected for 0.9.0.
+- Do not resume or re-add it unless Romain explicitly chooses it later.
 
 Extra Origins:
-- considered previously but currently All Rights Reserved
-- DO NOT integrate/redistribute without explicit author permission
+- previously considered, currently All Rights Reserved.
+- Do not integrate without explicit permission.
 
-Always update docs/ATTRIBUTIONS.md when a new third-party project is integrated.
-
-
-7. ADD-ON BASELINE COVERAGE FROM 0.8.0
---------------------------------------
-Minecraft 1.21.1 audited English-key totals:
+7. 0.8.0 ADD-ON KEY BASELINES
+-----------------------------
 - Medieval Origins Revival: 401 / 401
 - ibarn's quartet origins addon: 69 / 69
-- Origins Fantasy for NeoOrigins: 240 / 240
-- Origins: Backgrounds for NeoOrigins: 65 / 65
-- Origins: More Backgrounds for NeoOrigins: 44 / 44 total, including 39 own keys + 5 shared keys
-- Origins: Backgrounds ISS for NeoOrigins: 79 / 79 total, including 77 own keys + 2 shared keys
-- Origins Furries for NeoOrigins: 117 / 117
-- Origins: Classes Extended for NeoOrigins: 124 / 124
-- Origins: Classes ISS for NeoOrigins: 99 / 99
+- Origins Fantasy: 240 / 240
+- Origins: Backgrounds: 65 / 65
+- Origins: More Backgrounds: 44 / 44
+- Origins: Backgrounds ISS: 79 / 79
+- Origins Furries: 117 / 117
+- Origins: Classes Extended: 124 / 124
+- Origins: Classes ISS: 99 / 99
 - Origin Architect: 22 / 22
 
-Dependencies to remember:
-- Origins: Backgrounds ISS requires Iron's Spells 'n Spellbooks in addition to NeoOrigins.
-- Origins: Classes ISS requires Iron's Spells 'n Spellbooks in addition to NeoOrigins.
+8. 0.9.0 FOCUS
+--------------
+Neo Origins / NeoOrigins is the core mod. Mob Origins is not the intended integration.
 
+0.9.0 priorities:
+- bump project metadata/versioning to 0.9.0-beta when appropriate
+- re-audit NeoOrigins against current upstream
+- expand NeoOrigins beyond the 17 existing locales
+- deduplicate near-identical regional variants across all language families
+- propagate each selected language to the compatible/licensed 1.21.1 add-ons
+- only add a new add-on after Romain explicitly identifies/approves it and licensing is verified
 
-8. CURRENT 0.9.0 FOCUS
-----------------------
-The mod being introduced/maintained as the core of this localization project is Neo Origins / NeoOrigins, NOT Mob Origins.
-
-0.9.0 work should therefore proceed from the complete 0.8.0 NeoOrigins baseline and focus on:
-- bringing the project metadata/versioning to 0.9.0-beta
-- re-auditing NeoOrigins against the current upstream release/ref before final publication
-- expanding NeoOrigins language coverage beyond the existing 17 locales
-- applying the regional-variant deduplication rule before choosing the final locale list
-- propagating each selected new language to the already compatible/licensed add-ons on Minecraft 1.21.1
-- selecting any NEW add-on only after Romain explicitly identifies/approves it and its license is verified
-
-Do NOT resume Mob Origins translation work automatically.
-Do NOT assume Mob Origins is the next add-on.
-
-
-9. AUDIT / QA RULES
--------------------
-Every project integration and language expansion must preserve these checks:
-- valid JSON
-- no duplicate keys
-- no missing English-source keys that should be covered
-- no stale keys unless explicitly documented
-- no fallback overlap with upstream official translations
-- placeholders preserved exactly, including forms such as %s, %1$s, %2$s, %d, etc.
+9. QA RULES
+-----------
+Always validate:
+- JSON validity
+- duplicate keys
+- missing keys
+- overlaps with official upstream translations
+- placeholders such as %s, %1$s, %d
 - correct target packaging
-- no 1.21.1-only add-on namespaces accidentally packaged in 26.x
-- Java/NeoForge build succeeds for each supported target
-- inspect built JAR contents after construction
+- no 1.21.1-only add-ons leaking into 26.x
+- successful builds
+- built JAR contents
+- visual/in-game wording and UI width when possible
 
-Existing validation/audit pattern includes:
-python scripts/validate.py
-python scripts/audit_neoorigins_upstream.py --fail-on-overlap --fail-on-missing
-python scripts/audit_medievalorigins_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
-python scripts/audit_ibarnorigins_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
-python scripts/audit_origins_fantasy_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
-python scripts/audit_origins_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
-python scripts/audit_origins_more_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
-python scripts/audit_origins_backgrounds_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
-python scripts/audit_origins_furries_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
-python scripts/audit_origins_classes_extended_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
-python scripts/audit_origins_classes_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
-python scripts/audit_origin_architect_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+10. SOURCE OF TRUTH
+-------------------
+- catalog.json: machine-readable project/target/language catalog
+- CATALOG.md: readable catalog
+- README.md: public release/build/language description
+- docs/ATTRIBUTIONS.md: third-party licensing/permissions
+- PROJECT_HANDOFF.txt: permanent cross-chat decisions and current roadmap
 
-Do not add Mob Origins audit requirements unless Mob Origins is explicitly selected later.
-
-Automated validation is not a replacement for visual/in-game checks for wording quality, clipping, width, formatting or UI readability.
-
-
-10. BUILD / PACKAGING ARCHITECTURE
----------------------------------
-Low-priority fallback resource pack is the intended architecture.
-
-Build separation must remain:
-- 1.21.1: NeoOrigins + compatible 1.21.1 add-ons
-- 26.1.x: NeoOrigins common + 26.1 delta only unless future compatible add-ons are explicitly audited
-- 26.2: NeoOrigins common + 26.2 delta only unless future compatible add-ons are explicitly audited
-
-Current Gradle build already has explicit switches/exclusions for add-on namespaces and language split resource packs. New add-on namespaces should only be added after that add-on is actually selected and legally cleared.
-
-
-11. SOURCE-OF-TRUTH FILES
--------------------------
-For normal repository metadata:
-- catalog.json is the machine-readable source of truth for followed projects, targets and languages.
-- CATALOG.md is the readable catalog view.
-- README.md describes release/build/language state.
-- docs/ATTRIBUTIONS.md stores third-party license/permission information.
-
-For cross-chat continuity and decisions that may not yet be encoded elsewhere:
-- PROJECT_HANDOFF.txt (THIS FILE) is the permanent handoff source.
-
-When a major decision changes, UPDATE THIS FILE in the same work session. Examples:
-- release target changes
-- language-selection rules change
-- new permission is received
-- new add-on chosen or rejected for licensing
-- upstream version/ref changes
-- language baseline changes
-- release gets published
-- testing status materially changes
-
-
-12. 0.9.0 BETA ROADMAP
-----------------------
-Primary objectives:
-1. Treat 0.8.0 Beta as released/frozen baseline.
-2. Continue development on release/0.9.0-beta.
-3. Keep Neo Origins / NeoOrigins as the core translated mod.
-4. Re-audit NeoOrigins against the current upstream state when preparing 0.9.0 coverage.
-5. Expand language coverage far beyond 17 toward essentially all useful Minecraft languages.
-6. Deduplicate near-identical regional variants across ALL language families, not only English.
-7. For each selected language, cover NeoOrigins and all compatible/licensed add-ons relevant to that Minecraft target.
-8. Do not assume any new add-on is selected until Romain explicitly identifies/approves it.
-9. Preserve official-upstream priority and remove fallback overlaps.
-10. Keep license/permission documentation current.
-11. Keep 1.21.1 add-on content isolated from 26.x unless future compatible versions are explicitly confirmed.
-12. Run full audits, build all targets, inspect JAR contents, then perform in-game/visual testing where possible before publishing 0.9.0 Beta.
-
-Do not reduce the goal back to 'ten languages' or 'a few extra languages'. The intended scope is broad Minecraft-language coverage, with sensible regional deduplication.
+Update PROJECT_HANDOFF.txt whenever a major project decision changes.
 
 END OF HANDOFF

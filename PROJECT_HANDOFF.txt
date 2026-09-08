@@ -38,8 +38,8 @@ Mob Origins is NOT selected for 0.9.0. Earlier Mob Origins WIP inherited from a 
 0.8.0 Beta shipped with 17 locales:
 fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se.
 
-0.9.0 development currently has 30 locales:
-fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se, da_dk, fi_fi, no_no, ro_ro, el_gr, bg_bg, vi_vn, ar_sa, he_il, th_th, sk_sk, sl_si, hr_hr.
+0.9.0 development currently has 31 locales:
+fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se, da_dk, fi_fi, no_no, ro_ro, el_gr, bg_bg, vi_vn, ar_sa, he_il, th_th, sk_sk, sl_si, hr_hr, sr_sp.
 
 Expansion order so far:
 - 18: Danish / da_dk
@@ -55,10 +55,13 @@ Expansion order so far:
 - 28: Slovak / sk_sk
 - 29: Slovenian / sl_si
 - 30: Croatian / hr_hr
+- 31: Serbian Cyrillic / sr_sp
 
-THIRTY IS NOT THE FINAL TARGET. Continue expanding toward essentially all useful Minecraft languages unless Romain changes scope.
+THIRTY-ONE IS NOT THE FINAL TARGET. Continue expanding toward essentially all useful Minecraft languages unless Romain changes scope.
 
 Norwegian Nynorsk (nn_no) is intentionally NOT merged with Bokmal. It is a distinct written standard and remains a valid future locale.
+
+Serbian Latin (sr_cs) is intentionally NOT merged with Serbian Cyrillic (sr_sp). Minecraft exposes them as separate script variants; sr_cs remains a valid future locale.
 
 Regional-variant dedup rule:
 - If two regional variants differ only by one/few words, maintain one representative locale.
@@ -739,7 +742,67 @@ Final Croatian JAR artifacts from run 34268887082:
 - mc-26.1.x: artifact ID 10073006742; size 1,014,799 bytes; SHA256 67738ba7d27a9ad71ab60cb260cb46feded7d2c4432ccd7bba0adcee3cc6ad1e
 - mc-26.2: artifact ID 10073016485; size 1,014,384 bytes; SHA256 cf4a68f919c626f6ba7edfdae6e2e49e7cc937ebdf3a883da4d388985191a3fa
 
-19. ORIGIN ARCHITECT AUDIT IMPROVEMENT
+19. SERBIAN CYRILLIC 0.9.0 STATUS
+----------------------------------
+Serbian Cyrillic locale: sr_sp / Српски.
+Status: COMPLETE FOR THE CURRENT 0.9.0 DEVELOPMENT BASELINE: GENERATED, STRICTLY AUDITED, BUILT, PACKAGING-VERIFIED, DOCUMENTED, AND COMMITTED.
+
+Why selected:
+- Serbian Cyrillic is an official Minecraft Java locale.
+- Minecraft also exposes Serbian Latin separately as sr_cs, so the two script variants are intentionally not deduplicated.
+- It is distinct from Croatian and Slovenian under the project's script/orthography rule.
+
+Serbian Cyrillic architecture:
+- 16 common namespaces: neoorigins_sr_common_01 through neoorigins_sr_common_16
+- 1.21.1-specific namespace: neoorigins_sr_121
+- 26.1.x uses sr_sp inside neoorigins_26_1
+- 26.2 uses sr_sp inside neoorigins_26_2
+- all 10 supported/licensed 1.21.1 add-ons receive sr_sp fallback files
+
+At the audited references, NeoOrigins and ALL TEN supported add-ons had zero official Serbian Cyrillic strings. Therefore all 10 Serbian Cyrillic add-on fallback files are required.
+
+Serbian Cyrillic coverage:
+- NeoOrigins 1.21.1: 2296 / 2296
+- NeoOrigins 26.1.x: 2307 / 2307
+- NeoOrigins 26.2: 2307 / 2307
+- all 10 add-ons: complete against their established effective baselines
+- strict overlap audit: 0
+- strict missing audit: 0
+- placeholder errors: 0
+- scripts/validate.py passed
+- Serbian Cyrillic text sanity check passed: 96,446 Cyrillic letters across 29 sr_sp source files
+
+Serbian Cyrillic bootstrap:
+- first two diagnostic runs exposed Serbian transliteration of internal ASCII separators/placeholders; no invalid localization commit was accepted
+- final workflow run 34270381580 succeeded completely after switching internal sentinels to Unicode private-use characters
+- validated localization commit 066126eb8d6824e7993702073d3433725691ea35 ("Add Serbian Cyrillic localization fallback")
+- Serbian Cyrillic audit artifact ID 10073662556; size 291,540 bytes; SHA256 cc3d510e3e25fa2fc6bb4a9070b108700888a6702f284875836dd4e0fa5b5de5
+- generated 2734 unique initial English strings in 79 batches; refinement pass processed 68 title-like candidates and improved 65/68; NeoOrigins split 2290 common + 6/17/17 deltas; add-ons 1253 physical strings
+
+Serbian Cyrillic metadata:
+- synchronization run 34270821374 succeeded
+- metadata commit ccb30a5ff65096b5b207a3c86bf2d0bdaa5fc9e6 ("Document Serbian Cyrillic localization in 0.9.0 beta")
+- catalog.json / CATALOG.md / README.md now declare 31 supported locales and include Serbian Cyrillic sr_sp
+
+Final Serbian Cyrillic three-target CI:
+- workflow: .github/workflows/build-0.9.0-serbian.yml
+- workflow commit a6ea54dfd1396f39eff44eb5325a85373916516e
+- run ID 34270887263: SUCCESS on all three jobs
+- mc-1.21.1 passed strict NeoOrigins + all 10 add-on audits, JSON validation, Serbian Cyrillic text sanity check, Gradle build, exact packaging verification and JAR upload
+- mc-26.1.x and mc-26.2 passed strict NeoOrigins audit, JSON validation, Serbian Cyrillic text sanity check, Gradle build, exact packaging verification and JAR upload
+
+Serbian Cyrillic packaging verified by CI:
+- 1.21.1: 27 sr_sp files = 16 common + 1 v121 delta + 10 add-ons
+- 26.1.x: 17 sr_sp files = 16 common + correct 26.1 delta
+- 26.2: 17 sr_sp files = 16 common + correct 26.2 delta
+- no add-on namespace or neoorigins_sr_121 leaked into 26.x
+
+Final Serbian Cyrillic JAR artifacts from run 34270887263:
+- mc-1.21.1: artifact ID 10073801783; size 2,159,870 bytes; SHA256 9c09e48ecd3c9844d4e24401629b86693f75e2c29487ca54f0b09df6db286002
+- mc-26.1.x: artifact ID 10073790232; size 1,072,155 bytes; SHA256 f6c052fc01cd4d2822defd9bed606d8499fd62a12fdf4861c9f4835c68abb3a7
+- mc-26.2: artifact ID 10073773611; size 1,071,694 bytes; SHA256 1da7ba2eb2ecbbdd59b561ee7bdf7e47d3772eabf91f547dcee02f3bcff1a2af
+
+20. ORIGIN ARCHITECT AUDIT IMPROVEMENT
 --------------------------------------
 scripts/audit_origin_architect_upstream.py now supports --prune.
 Commit:
@@ -751,7 +814,7 @@ Behavior:
 
 Future language bootstraps should use this behavior so an already-official Origin Architect locale does not cause unnecessary fallback redistribution.
 
-20. CURRENT PERMANENT CI / BUILD VALIDATION
+21. CURRENT PERMANENT CI / BUILD VALIDATION
 -------------------------------------------
 Legacy/current main 0.9.0 workflow:
 - .github/workflows/build-0.9.0.yml
@@ -800,7 +863,7 @@ NOTE ABOUT FAILED GOVERNANCE WORKFLOW:
 - It is superseded by the directly committed supplemental workflow build-0.9.0-expanded-locales.yml.
 - Do not waste time treating that historical failure as a current defect.
 
-21. SOURCE OF TRUTH HIERARCHY
+22. SOURCE OF TRUTH HIERARCHY
 -----------------------------
 - catalog.json = machine-readable content/project truth
 - CATALOG.md = readable catalog generated from catalog.json
@@ -809,19 +872,19 @@ NOTE ABOUT FAILED GOVERNANCE WORKFLOW:
 - PROJECT_HANDOFF.txt = cross-chat decisions, current roadmap, latest operational status
 
 As of this update:
-- catalog.json says 30 supported locales
-- README.md says 30 languages and includes Croatian hr_hr
-- Romanian, Greek, Bulgarian, Vietnamese, Arabic, Hebrew, Thai, Slovak, Slovenian and Croatian have passed final three-target packaging validation
+- catalog.json says 31 supported locales
+- README.md says 31 languages and includes Serbian Cyrillic sr_sp
+- Romanian, Greek, Bulgarian, Vietnamese, Arabic, Hebrew, Thai, Slovak, Slovenian, Croatian and Serbian Cyrillic have passed final three-target packaging validation
 
-22. QUALITY / QA CAVEAT
+23. QUALITY / QA CAVEAT
 -----------------------
 Automated structural QA is strong: missing keys, overlaps, placeholders, JSON structure, builds, and packaging are audited.
 
 In-game visual wording/UI-width review and native-speaker linguistic review remain separate quality layers. Do not claim native-speaker perfection merely because CI is green.
 
-23. NEXT ACTION
+24. NEXT ACTION
 ---------------
-NEXT LANGUAGE = language 31.
+NEXT LANGUAGE = language 32.
 
 When Romain says continue / prochaine langue / vas-y:
 1. Read this PROJECT_HANDOFF.txt first.
@@ -833,4 +896,4 @@ When Romain says continue / prochaine langue / vas-y:
 7. Build all three targets and inspect packaging.
 8. Update catalog.json, CATALOG.md, README.md and this PROJECT_HANDOFF.txt.
 9. Do not re-add Mob Origins.
-10. Do not stop permanently at 31; language expansion should continue unless Romain changes scope.
+10. Do not stop permanently at 32; language expansion should continue unless Romain changes scope.

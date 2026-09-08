@@ -42,6 +42,7 @@ jobs:
             include_indonesian_121_translations: true
             include_swedish_121_translations: true
             include_danish_121_translations: true
+            include_finnish_121_translations: true
             include_26_1_translations: false
             include_26_2_translations: false
             expected_danish_files: '27'
@@ -64,6 +65,7 @@ jobs:
             include_indonesian_121_translations: false
             include_swedish_121_translations: false
             include_danish_121_translations: false
+            include_finnish_121_translations: false
             include_26_1_translations: true
             include_26_2_translations: false
             expected_danish_files: '17'
@@ -86,6 +88,7 @@ jobs:
             include_indonesian_121_translations: false
             include_swedish_121_translations: false
             include_danish_121_translations: false
+            include_finnish_121_translations: false
             include_26_1_translations: false
             include_26_2_translations: true
             expected_danish_files: '17'
@@ -175,6 +178,7 @@ jobs:
             "-Pinclude_indonesian_121_translations=${{ matrix.include_indonesian_121_translations }}" \
             "-Pinclude_swedish_121_translations=${{ matrix.include_swedish_121_translations }}" \
             "-Pinclude_danish_121_translations=${{ matrix.include_danish_121_translations }}" \
+            "-Pinclude_finnish_121_translations=${{ matrix.include_finnish_121_translations }}" \
             "-Pinclude_26_1_translations=${{ matrix.include_26_1_translations }}" \
             "-Pinclude_26_2_translations=${{ matrix.include_26_2_translations }}" \
             "-Pminecraft_version=${{ matrix.minecraft }}" \

@@ -1,0 +1,60 @@
+name: Sync Estonian handoff
+
+on:
+  push:
+    branches:
+      - release/0.9.0-beta
+    paths:
+      - scripts/update_handoff_estonian.py
+      - .github/workflows/sync-handoff-estonian.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-beta
+
+      - name: Update handoff
+        run: python3 scripts/update_handoff_estonian.py
+
+      - name: Validate handoff
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          text = Path('PROJECT_HANDOFF.txt').read_text(encoding='utf-8')
+          required = [
+              '0.9.0 development currently has 34 locales:',
+              '- 34: Estonian / et_ee',
+              '22. ESTONIAN 0.9.0 STATUS',
+              'run ID 34274989745: SUCCESS on all three jobs',
+              'artifact ID 10075393938',
+              'artifact ID 10075374956',
+              'artifact ID 10075360262',
+              'NEXT LANGUAGE = language 35.',
+          ]
+          missing = [x for x in required if x not in text]
+          if missing:
+              raise SystemExit(f'Missing Estonian handoff markers: {missing}')
+          print('Estonian handoff validation passed')
+          PY
+
+      - name: Commit handoff
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add PROJECT_HANDOFF.txt
+          if git diff --cached --quiet; then
+            echo 'No handoff changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Finalize Estonian 0.9.0 handoff'
+          git fetch origin release/0.9.0-beta
+          git rebase origin/release/0.9.0-beta
+          git push origin HEAD:release/0.9.0-beta

@@ -104,7 +104,6 @@ jobs:
           python3 scripts/audit_origins_furries_upstream.py --prune
           python3 scripts/audit_origins_classes_extended_upstream.py --prune
           python3 scripts/audit_origins_classes_iss_upstream.py --prune
-          python3 scripts/audit_origin_architect_upstream.py --prune
 
       - name: Strict audit Danish NeoOrigins coverage
         run: |

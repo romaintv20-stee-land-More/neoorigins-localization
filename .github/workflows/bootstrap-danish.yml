@@ -43,14 +43,22 @@ jobs:
               path = Path(filename)
               text = path.read_text(encoding='utf-8')
               updated, count = re.subn(
-                  r'LOCALES\s*=\s*\(.*?\)\n(BASE\s*=)',
-                  'LOCALES = ("da_dk",)\n\\1',
+                  r'^LOCALES\s*=.*$',
+                  'LOCALES = ("da_dk",)',
                   text,
                   count=1,
-                  flags=re.S,
+                  flags=re.M,
               )
+              if count == 0:
+                  updated, count = re.subn(
+                      r'^DEFAULT_LOCALES\s*=.*$',
+                      'DEFAULT_LOCALES = ("da_dk",)',
+                      text,
+                      count=1,
+                      flags=re.M,
+                  )
               if count != 1:
-                  raise SystemExit(f'Could not patch LOCALES in {filename}')
+                  raise SystemExit(f'Could not patch locale list in {filename}')
               path.write_text(updated, encoding='utf-8')
           PY
 

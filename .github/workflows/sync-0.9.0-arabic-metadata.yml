@@ -1,0 +1,60 @@
+name: Sync 0.9.0 Arabic metadata
+
+on:
+  push:
+    branches:
+      - release/0.9.0-beta
+    paths:
+      - 'src/main/resources/resourcepacks/fallback_localizations/assets/**/ar_sa.json'
+      - 'scripts/update_catalog_arabic.py'
+      - 'scripts/update_readme_arabic.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-beta
+
+      - name: Update catalog and README
+        run: |
+          python3 scripts/update_catalog_arabic.py
+          python3 scripts/generate_catalog.py
+          python3 scripts/update_readme_arabic.py
+
+      - name: Validate metadata
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          catalog = json.loads(Path('catalog.json').read_text(encoding='utf-8'))
+          if catalog['project']['supported_locale_count'] != 25:
+              raise SystemExit('catalog locale count is not 25')
+          for project in catalog['supported_projects']:
+              if project['languages'].get('ar_sa', {}).get('status') != 'supported':
+                  raise SystemExit(f"ar_sa missing from {project['id']}")
+          readme = Path('README.md').read_text(encoding='utf-8')
+          if 'Arabe (`ar_sa`)' not in readme or 'Les vingt-cinq langues' not in readme:
+              raise SystemExit('README Arabic metadata missing')
+          print('Arabic metadata validation passed')
+          PY
+
+      - name: Commit synchronized metadata
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add catalog.json CATALOG.md README.md
+          if git diff --cached --quiet; then
+            echo 'No metadata changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Document Arabic localization in 0.9.0 beta'
+          git fetch origin release/0.9.0-beta
+          git rebase origin/release/0.9.0-beta
+          git push origin HEAD:release/0.9.0-beta

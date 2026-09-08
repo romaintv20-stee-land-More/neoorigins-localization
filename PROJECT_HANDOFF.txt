@@ -39,7 +39,7 @@ The new development target is:
 - 0.9.0 Beta
 - working branch: release/0.9.0-beta
 
-The current 0.9.0 branch was created from the previous WIP branch release/0.8.0-danish-mob-origins, which itself was based on release/0.8.0-swedish. Some Mob Origins files were therefore inherited temporarily, but that Mob Origins integration was based on a misunderstanding and is being removed from 0.9.0.
+The current 0.9.0 branch was initially created from the previous WIP branch release/0.8.0-danish-mob-origins, which itself was based on release/0.8.0-swedish. That inherited Mob Origins WIP was based on a misunderstanding and has been removed from the 0.9.0 branch.
 
 IMPORTANT: main is not the correct base for current development. At the time of this handoff, main is behind the cumulative release branches and does not contain the full 17-language 0.8.0 state.
 
@@ -176,7 +176,8 @@ Origin Architect:
 
 Mob Origins:
 - NOT selected as the 0.9.0 integration.
-- Any Mob Origins WIP added during the previous chat was caused by a misunderstanding and should not be treated as project scope unless Romain explicitly chooses it later.
+- WIP translation/audit files accidentally added for it have been removed from release/0.9.0-beta.
+- Do not re-add it unless Romain explicitly chooses it later.
 
 Extra Origins:
 - considered previously but currently All Rights Reserved

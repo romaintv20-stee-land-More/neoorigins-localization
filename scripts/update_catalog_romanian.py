@@ -39,6 +39,19 @@ for project in catalog["supported_projects"]:
             "status": "supported",
             "targets": ["1.21.1", "26.1.x", "26.2"],
         }
+    elif project_id == "originsmodernui":
+        # Origin Architect already provides ro_ro upstream: 22/22 official keys.
+        # Keep it listed as supported without creating any overlapping fallback file.
+        project["languages"]["ro_ro"] = {
+            "name": "Română",
+            "status": "supported",
+            "coverage_source": "official_upstream",
+            "official_keys": 22,
+            "fallback_keys": 0,
+        }
+        note = project.get("compatibility", {}).get("note", "")
+        if "roumain" not in note.casefold():
+            project["compatibility"]["note"] = note + " Le roumain est déjà fourni officiellement en amont (22/22), donc aucun fallback ro_ro n'est empaqueté pour Origin Architect."
     else:
         path = ROOT / f"src/main/resources/resourcepacks/fallback_localizations/assets/{project_id}/lang/ro_ro.json"
         if not path.exists():

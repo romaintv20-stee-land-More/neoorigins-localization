@@ -1,0 +1,224 @@
+name: Build 0.9.0 Beta
+
+on:
+  push:
+    branches: [ release/0.9.0-beta ]
+    paths:
+      - 'src/**'
+      - 'scripts/**'
+      - 'build.gradle'
+      - 'gradle.properties'
+      - 'settings.gradle'
+      - '.github/workflows/build-0.9.0.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build ${{ matrix.target }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: mc-1.21.1
+            minecraft: '1.21.1'
+            minecraft_range: '[1.21.1]'
+            java: '21'
+            gradle: '8.14.3'
+            neoforge: '21.1.248'
+            loader_range: '[1,)'
+            parchment: 'true'
+            pack_format: '34'
+            source_variant: 'mc1_21_1'
+            upstream_ref: '860ecdb24e723983e93004ea8ceb5de90ccf0d70'
+            mod_version: '0.9.0-beta+1.21.1'
+            danish_extra_namespace: 'neoorigins_da_121'
+            include_addon_translations: true
+            include_121_batch_translations: true
+            include_turkish_split_translations: true
+            include_indonesian_121_translations: true
+            include_swedish_121_translations: true
+            include_danish_121_translations: true
+            include_26_1_translations: false
+            include_26_2_translations: false
+            expected_danish_files: '27'
+          - target: mc-26.1.x
+            minecraft: '26.1.2'
+            minecraft_range: '[26.1,26.2)'
+            java: '25'
+            gradle: '9.4.1'
+            neoforge: '26.1.2.29-beta'
+            loader_range: '[4,)'
+            parchment: 'false'
+            pack_format: '84'
+            source_variant: 'mc26_1'
+            upstream_ref: '3c1c7365507679c836d3c14af5d4dd0654652e87'
+            mod_version: '0.9.0-beta+26.1'
+            danish_extra_namespace: 'neoorigins_26_1'
+            include_addon_translations: false
+            include_121_batch_translations: true
+            include_turkish_split_translations: true
+            include_indonesian_121_translations: false
+            include_swedish_121_translations: false
+            include_danish_121_translations: false
+            include_26_1_translations: true
+            include_26_2_translations: false
+            expected_danish_files: '17'
+          - target: mc-26.2
+            minecraft: '26.2'
+            minecraft_range: '[26.2,26.3)'
+            java: '25'
+            gradle: '9.4.1'
+            neoforge: '26.2.0.3-beta'
+            loader_range: '[4,)'
+            parchment: 'false'
+            pack_format: '84'
+            source_variant: 'mc26_1'
+            upstream_ref: '65864716a5a796fa1c51ec3e8a6d9640abebb4ca'
+            mod_version: '0.9.0-beta+26.2'
+            danish_extra_namespace: 'neoorigins_26_2'
+            include_addon_translations: false
+            include_121_batch_translations: false
+            include_turkish_split_translations: true
+            include_indonesian_121_translations: false
+            include_swedish_121_translations: false
+            include_danish_121_translations: false
+            include_26_1_translations: false
+            include_26_2_translations: true
+            expected_danish_files: '17'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Java ${{ matrix.java }}
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+
+      - name: Set up Gradle ${{ matrix.gradle }}
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          gradle-version: ${{ matrix.gradle }}
+
+      - name: Strict audit Danish NeoOrigins coverage
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py \
+            --ref '${{ matrix.upstream_ref }}' \
+            --output 'build/danish-audit-${{ matrix.target }}' \
+            --locale da_dk \
+            --fallback-namespace-glob 'neoorigins_da_common_*' \
+            --extra-namespace '${{ matrix.danish_extra_namespace }}' \
+            --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Restrict add-on audits to Danish
+        if: matrix.include_addon_translations == true
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          scripts = [
+              'scripts/audit_medievalorigins_upstream.py',
+              'scripts/audit_ibarnorigins_upstream.py',
+              'scripts/audit_origins_fantasy_upstream.py',
+              'scripts/audit_origins_backgrounds_upstream.py',
+              'scripts/audit_origins_more_backgrounds_upstream.py',
+              'scripts/audit_origins_backgrounds_iss_upstream.py',
+              'scripts/audit_origins_furries_upstream.py',
+              'scripts/audit_origins_classes_extended_upstream.py',
+              'scripts/audit_origins_classes_iss_upstream.py',
+              'scripts/audit_origin_architect_upstream.py',
+          ]
+          for filename in scripts:
+              path = Path(filename)
+              text = path.read_text(encoding='utf-8')
+              updated, count = re.subn(r'^LOCALES\s*=.*$', 'LOCALES = ("da_dk",)', text, count=1, flags=re.M)
+              if count == 0:
+                  updated, count = re.subn(r'^DEFAULT_LOCALES\s*=.*$', 'DEFAULT_LOCALES = ("da_dk",)', text, count=1, flags=re.M)
+              if count != 1:
+                  raise SystemExit(f'Could not patch locale list in {filename}')
+              path.write_text(updated, encoding='utf-8')
+          PY
+
+      - name: Strict audit Danish 1.21.1 add-ons
+        if: matrix.include_addon_translations == true
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_fantasy_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_furries_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_extended_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origin_architect_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Validate localization files
+        run: python3 scripts/validate.py
+
+      - name: Build mod
+        run: |
+          gradle build --stacktrace \
+            "-Pjava_version=${{ matrix.java }}" \
+            "-Puse_parchment=${{ matrix.parchment }}" \
+            "-Presource_pack_format=${{ matrix.pack_format }}" \
+            "-Psource_variant=${{ matrix.source_variant }}" \
+            "-Pinclude_addon_translations=${{ matrix.include_addon_translations }}" \
+            "-Pinclude_121_batch_translations=${{ matrix.include_121_batch_translations }}" \
+            "-Pinclude_turkish_split_translations=${{ matrix.include_turkish_split_translations }}" \
+            "-Pinclude_indonesian_121_translations=${{ matrix.include_indonesian_121_translations }}" \
+            "-Pinclude_swedish_121_translations=${{ matrix.include_swedish_121_translations }}" \
+            "-Pinclude_danish_121_translations=${{ matrix.include_danish_121_translations }}" \
+            "-Pinclude_26_1_translations=${{ matrix.include_26_1_translations }}" \
+            "-Pinclude_26_2_translations=${{ matrix.include_26_2_translations }}" \
+            "-Pminecraft_version=${{ matrix.minecraft }}" \
+            "-Pminecraft_version_range=${{ matrix.minecraft_range }}" \
+            "-Pneo_version=${{ matrix.neoforge }}" \
+            "-Ploader_version_range=${{ matrix.loader_range }}" \
+            "-Pmod_version=${{ matrix.mod_version }}"
+
+      - name: Verify Danish packaging
+        run: |
+          JAR=$(find build/libs -type f -name '*.jar' ! -name '*-sources.jar' | head -n 1)
+          test -n "$JAR"
+          jar tf "$JAR" > "build/jar-contents-${{ matrix.target }}.txt"
+          DA_COUNT=$(grep -cE '(^|/)lang/da_dk\.json$' "build/jar-contents-${{ matrix.target }}.txt" || true)
+          echo "Danish localization files in ${{ matrix.target }}: $DA_COUNT (expected ${{ matrix.expected_danish_files }})"
+          test "$DA_COUNT" -eq '${{ matrix.expected_danish_files }}'
+
+          for index in $(seq -w 1 16); do
+            grep -Eq "(^|/)assets/neoorigins_da_common_${index}/lang/da_dk\.json$" "build/jar-contents-${{ matrix.target }}.txt"
+          done
+
+          ADDON_PATTERN='(^|/)assets/(medievalorigins|medievalorigins_[^/]*|ibarnorigins|origins_fantasy|origins_backgrounds|origins_backgrounds_two|origins_backgrounds_iss|origins_furries|origins_classes_ex|origins_classes_iss|originsmodernui)/'
+          if [ '${{ matrix.include_addon_translations }}' = 'true' ]; then
+            grep -Eq '(^|/)assets/neoorigins_da_121/lang/da_dk\.json$' "build/jar-contents-${{ matrix.target }}.txt"
+            grep -Eq '(^|/)assets/medievalorigins/lang/da_dk\.json$' "build/jar-contents-${{ matrix.target }}.txt"
+            for ns in ibarnorigins origins_fantasy origins_backgrounds origins_backgrounds_two origins_backgrounds_iss origins_furries origins_classes_ex origins_classes_iss originsmodernui; do
+              grep -Eq "(^|/)assets/$ns/lang/da_dk.json$" "build/jar-contents-${{ matrix.target }}.txt"
+            done
+            ! grep -Eq '(^|/)assets/neoorigins_26_(1|2)/lang/da_dk\.json$' "build/jar-contents-${{ matrix.target }}.txt"
+          else
+            ! grep -Eq "$ADDON_PATTERN" "build/jar-contents-${{ matrix.target }}.txt"
+            ! grep -Eq '(^|/)assets/neoorigins_da_121/lang/da_dk\.json$' "build/jar-contents-${{ matrix.target }}.txt"
+            if [ '${{ matrix.target }}' = 'mc-26.1.x' ]; then
+              grep -Eq '(^|/)assets/neoorigins_26_1/lang/da_dk\.json$' "build/jar-contents-${{ matrix.target }}.txt"
+              ! grep -Eq '(^|/)assets/neoorigins_26_2/lang/da_dk\.json$' "build/jar-contents-${{ matrix.target }}.txt"
+            else
+              grep -Eq '(^|/)assets/neoorigins_26_2/lang/da_dk\.json$' "build/jar-contents-${{ matrix.target }}.txt"
+              ! grep -Eq '(^|/)assets/neoorigins_26_1/lang/da_dk\.json$' "build/jar-contents-${{ matrix.target }}.txt"
+            fi
+          fi
+
+      - name: Upload JAR
+        uses: actions/upload-artifact@v7
+        with:
+          name: neoorigins-localization-0.9.0-${{ matrix.target }}-${{ github.sha }}
+          path: build/libs/*.jar
+          if-no-files-found: error

@@ -1,0 +1,41 @@
+name: Audit Mob Origins bootstrap
+
+on:
+  push:
+    branches:
+      - release/0.8.0-danish-mob-origins
+    paths:
+      - 'scripts/audit_mob_origins_upstream.py'
+      - 'src/main/resources/resourcepacks/fallback_localizations/assets/moborigins/**'
+      - '.github/workflows/audit-mob-origins-bootstrap.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Audit pinned Mob Origins JAR
+        run: >-
+          python scripts/audit_mob_origins_upstream.py
+          --annotate-missing
+          --fail-on-overlap
+          --fail-on-placeholders
+
+      - name: Upload audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mob-origins-upstream-audit
+          path: build/mob-origins-upstream-audit
+          if-no-files-found: error

@@ -6,6 +6,7 @@ on:
       - release/0.9.0-beta
     paths:
       - 'src/main/resources/resourcepacks/fallback_localizations/assets/**/no_no.json'
+      - '.github/workflows/sync-0.9.0-norwegian-metadata.yml'
   workflow_dispatch:
 
 permissions:

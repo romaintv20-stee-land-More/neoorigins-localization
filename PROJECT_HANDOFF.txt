@@ -27,11 +27,11 @@ Core rule:
 0.8.0 Beta is ALREADY PUBLISHED externally.
 Current target: 0.9.0 Beta.
 Working branch: release/0.9.0-beta.
-Project metadata has been bumped to mod_version=0.9.0-beta.
+Project metadata uses mod_version=0.9.0-beta.
 
 The 0.9.0 branch was initially created from release/0.8.0-danish-mob-origins, itself based on release/0.8.0-swedish. The Mob Origins work inherited from that branch was a misunderstanding and is not part of the intended 0.9.0 scope.
 
-All Mob Origins fallback files/workflows/audit scripts created by that misunderstanding have now been removed from release/0.9.0-beta. Do not resume or re-add Mob Origins unless Romain explicitly chooses it later.
+All Mob Origins fallback files/workflows/audit scripts created by that misunderstanding have been removed from release/0.9.0-beta. Do not resume or re-add Mob Origins unless Romain explicitly chooses it later.
 
 main is behind the cumulative release state and must not be used as the working base for current development.
 
@@ -40,10 +40,12 @@ main is behind the cumulative release state and must not be used as the working 
 0.8.0 Beta shipped with 17 locales:
 fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se.
 
-0.9.0 development currently has 19 locales after adding Danish and Finnish:
-fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se, da_dk, fi_fi.
+0.9.0 development currently has 20 locales after adding Danish, Finnish and Norwegian Bokmal:
+fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se, da_dk, fi_fi, no_no.
 
-Danish (da_dk) is the 18th locale and Finnish (fi_fi) is the 19th locale. Nineteen is NOT the final target; continue expanding toward essentially all useful Minecraft languages under the regional-deduplication rule below.
+Danish (da_dk) is the 18th locale, Finnish (fi_fi) is the 19th locale, and Norwegian Bokmal (no_no / Norsk bokmal) is the 20th locale. Twenty is NOT the final target; continue expanding toward essentially all useful Minecraft languages under the regional-variant rule below.
+
+Norwegian Nynorsk (nn_no) is intentionally NOT merged with Bokmal. It is a distinct written standard and remains a valid separate future locale if/when selected.
 
 Build targets:
 - Minecraft 1.21.1 / Java 21
@@ -66,23 +68,23 @@ Minecraft 1.21.1 includes NeoOrigins plus these 10 add-ons/projects:
 
 4. NEOORIGINS UPSTREAM REFERENCE
 --------------------------------
-The current 0.9.0 Danish/Finnish passes are audited against the same NeoOrigins 2.2.26 references used by the 0.8.0 baseline:
+The current 0.9.0 Danish/Finnish/Norwegian passes are audited against the same NeoOrigins 2.2.26 references used by the 0.8.0 baseline:
 - 1.21.1: 860ecdb24e723983e93004ea8ceb5de90ccf0d70
 - 26.1.x: 3c1c7365507679c836d3c14af5d4dd0654652e87
 - 26.2: 65864716a5a796fa1c51ec3e8a6d9640abebb4ca
 
-Danish and Finnish each use the same target split:
+Danish, Finnish and Norwegian Bokmal each use the same target split:
 - 2290 common keys shared by all three targets
 - 1.21.1 delta: 6 keys
 - 26.1.x delta: 17 keys
 - 26.2 delta: 17 keys
 
-Effective NeoOrigins coverage for both da_dk and fi_fi after fallback:
+Effective NeoOrigins coverage for da_dk, fi_fi and no_no after fallback:
 - 1.21.1: 2296 / 2296
 - 26.1.x: 2307 / 2307
 - 26.2: 2307 / 2307
 
-At the audited NeoOrigins references, Finnish has ZERO official upstream strings, so the Finnish fallback supplies the full missing coverage. The same upstream-priority rule still applies if official Finnish translations are added later.
+At the audited NeoOrigins references, Finnish and Norwegian Bokmal each have ZERO official upstream strings, so their fallback supplies the full missing coverage. The same upstream-priority rule still applies if official translations are added later.
 
 Before publishing 0.9.0, re-check whether NeoOrigins upstream has moved beyond 2.2.26 and re-audit against the final intended reference if needed.
 
@@ -91,8 +93,8 @@ Before publishing 0.9.0, re-check whether NeoOrigins upstream has moved beyond 2
 Danish locale: da_dk.
 Status: COMPLETE FOR THE CURRENT 0.9.0 DEVELOPMENT BASELINE: GENERATED, STRICTLY AUDITED, BUILT, PACKAGING-VERIFIED, DOCUMENTED, AND COMMITTED.
 
-Generation architecture mirrors the Swedish/Indonesian split:
-- 16 common NeoOrigins resource-pack namespaces: neoorigins_da_common_01 through neoorigins_da_common_16
+Architecture:
+- 16 common namespaces: neoorigins_da_common_01 through neoorigins_da_common_16
 - 1.21.1-specific namespace: neoorigins_da_121
 - 26.1.x uses da_dk inside neoorigins_26_1
 - 26.2 uses da_dk inside neoorigins_26_2
@@ -100,7 +102,7 @@ Generation architecture mirrors the Swedish/Indonesian split:
 
 The Danish bootstrap translated 2734 unique English strings and performed a second refinement pass on title-like strings left unchanged in English. Placeholders/tokens were protected during automated translation.
 
-At the audited upstream references, all ten 1.21.1 add-ons had ZERO official Danish strings, so their Danish fallback contains the full missing coverage. Effective Danish coverage:
+At the audited upstream references, all ten 1.21.1 add-ons had ZERO official Danish strings. Effective Danish coverage:
 - Medieval Origins Revival: 401 / 401
 - ibarn's quartet origins addon: 69 / 69
 - Origins Fantasy: 240 / 240
@@ -112,14 +114,16 @@ At the audited upstream references, all ten 1.21.1 add-ons had ZERO official Dan
 - Origins: Classes ISS: 99 / 99
 - Origin Architect: 22 / 22
 
-The final Danish bootstrap GitHub Actions run 34244997660 succeeded. The validated Danish files were committed by GitHub Actions in commit 90a11ef3e66b2352d97723ea06830e860101ead6 with message "Add Danish localization fallback".
+Final Danish bootstrap run: 34244997660.
+Validated Danish translation commit: 90a11ef3e66b2352d97723ea06830e860101ead6 ("Add Danish localization fallback").
+Metadata commit: b2aeb5571941668707c0668a83a09b213bb41222 ("Document Danish localization in 0.9.0 beta").
 
 Danish JAR packaging counts:
 - Minecraft 1.21.1: 27 files (16 common + 1 1.21.1 delta + 10 add-ons)
 - Minecraft 26.1.x: 17 files (16 common + 1 version delta)
 - Minecraft 26.2: 17 files (16 common + 1 version delta)
 
-The earlier Danish-only final build run 34248229627 completed successfully on all three targets. Danish remains covered by the newer permanent CI together with Finnish.
+Earlier Danish-only final build run 34248229627 completed successfully on all three targets. Danish remains covered by the newer permanent CI together with Finnish and Norwegian Bokmal.
 
 6. FINNISH 0.9.0 STATUS
 -----------------------
@@ -158,42 +162,104 @@ Finnish bootstrap history:
 - First run 34249359173 generated and strictly validated all Finnish translations, but its final push was rejected only because the branch advanced concurrently.
 - Push race handling was corrected by rebasing on the current release branch before push.
 - Final bootstrap run 34249851308 succeeded completely.
-- Validated Finnish localization files were committed by GitHub Actions as 952a647a7154fbd6f57048dc042c91044fe4a32a with message "Add Finnish localization fallback".
+- Validated Finnish localization commit: 952a647a7154fbd6f57048dc042c91044fe4a32a ("Add Finnish localization fallback").
 
 Metadata:
-- Finnish metadata synchronization run 34250276546 succeeded.
-- catalog.json, CATALOG.md and README.md now declare 19 supported locales and include Finnish.
-- Metadata commit: ddd0410a2565a55a4386114c4e4152c5ce0a71e4 ("Document Finnish localization in 0.9.0 beta").
+- synchronization run 34250276546 succeeded
+- metadata commit: ddd0410a2565a55a4386114c4e4152c5ce0a71e4 ("Document Finnish localization in 0.9.0 beta")
 
-Permanent CI:
-- .github/workflows/build-0.9.0.yml now strictly audits BOTH Danish and Finnish.
-- 1.21.1 also strictly audits all ten add-ons separately for both locales.
-- Finnish 1.21.1-specific resources are excluded from 26.x builds.
-- 26.x builds continue to exclude all 1.21.1 add-on namespaces.
-- Finnish JAR packaging counts are verified as 27 files on 1.21.1 and 17 files on each 26.x target.
-- Final Finnish/Danish CI commit: c45fab5b86526f414ae23acdd84042520a43828d ("Audit and package Finnish in 0.9.0 CI").
-- Final build run 34250435918 succeeded on all three matrix jobs: mc-1.21.1, mc-26.1.x and mc-26.2.
-- Every job passed NeoOrigins audits, localization validation, Gradle build, Danish/Finnish JAR packaging verification and artifact upload.
-- The 1.21.1 job also passed strict Danish and Finnish audits for all ten add-ons.
-- Three final JAR artifacts were produced by run 34250435918.
+Permanent CI before Norwegian:
+- CI commit: c45fab5b86526f414ae23acdd84042520a43828d ("Audit and package Finnish in 0.9.0 CI")
+- final Danish/Finnish build run 34250435918 succeeded on all three targets
+- Finnish packaging verified as 27 files on 1.21.1 and 17 files on each 26.x target
+- final Finnish JAR artifact IDs from run 34250435918: 10065836409 (1.21.1), 10065801028 (26.1.x), 10065796966 (26.2)
 
-Final Finnish JAR artifacts from run 34250435918:
-- mc-1.21.1 artifact ID 10065836409
-- mc-26.1.x artifact ID 10065801028
-- mc-26.2 artifact ID 10065796966
+Finnish remains covered by the newer permanent CI together with Danish and Norwegian Bokmal.
 
-7. LANGUAGE EXPANSION RULE
+7. NORWEGIAN BOKMAL 0.9.0 STATUS
+--------------------------------
+Norwegian Bokmal locale: no_no (Norsk bokmal).
+Status: COMPLETE FOR THE CURRENT 0.9.0 DEVELOPMENT BASELINE: GENERATED, STRICTLY AUDITED, BUILT, PACKAGING-VERIFIED, DOCUMENTED, AND COMMITTED.
+
+Why selected:
+- Norwegian Bokmal is an official Minecraft locale.
+- It is a useful distinct locale not already represented by the current 19-language set.
+- Norwegian Nynorsk (nn_no) is intentionally kept separate rather than treated as a duplicate of Bokmal; it may be translated in a later pass.
+
+Norwegian NeoOrigins architecture:
+- 16 common namespaces: neoorigins_no_common_01 through neoorigins_no_common_16
+- 2290 common keys total
+- 1.21.1 namespace: neoorigins_no_121 with 6 keys
+- 26.1.x: no_no inside neoorigins_26_1 with 17 keys
+- 26.2: no_no inside neoorigins_26_2 with 17 keys
+- all 10 compatible/licensed 1.21.1 add-ons receive no_no fallback files
+
+Generation/audit details:
+- first translation pass: 2734 unique English source strings
+- second lowercase/refinement pass: 367 strings
+- 287 / 370 title-like strings left unchanged by the first pass were refined
+- placeholders/tokens were protected throughout translation
+- bootstrap workflow run 34252331613 succeeded completely
+- Norwegian audit artifact ID: 10066581538
+
+At all pinned upstream references, NeoOrigins and all ten supported 1.21.1 add-ons had ZERO official Norwegian Bokmal strings. Effective Norwegian Bokmal coverage:
+- NeoOrigins 1.21.1: 2296 / 2296
+- NeoOrigins 26.1.x: 2307 / 2307
+- NeoOrigins 26.2: 2307 / 2307
+- Medieval Origins Revival: 401 / 401
+- ibarn's quartet origins addon: 69 / 69
+- Origins Fantasy: 240 / 240
+- Origins: Backgrounds: 65 / 65
+- Origins: More Backgrounds: 44 / 44 effective (39 own + 5 shared)
+- Origins: Backgrounds ISS: 79 / 79 effective (77 own + 2 shared)
+- Origins Furries: 117 / 117
+- Origins: Classes Extended: 124 / 124
+- Origins: Classes ISS: 99 / 99
+- Origin Architect: 22 / 22
+
+Validated Norwegian localization commit:
+- 8a9ed8ff45c4678b8f0968c46f72330a7cea7cd5 ("Add Norwegian Bokmal localization fallback")
+
+Metadata:
+- metadata synchronization run 34252719998 succeeded
+- catalog.json / CATALOG.md / README.md now declare 20 supported locales and include Norwegian Bokmal
+- metadata commit: 7cbc87f861bbd6c949411480fb4e4635a329e112 ("Document Norwegian Bokmal localization in 0.9.0 beta")
+
+Packaging / permanent CI:
+- build.gradle has a target switch for include_norwegian_121_translations, preventing the 1.21.1 delta from leaking into 26.x
+- permanent CI commit: a597811e2f66a5523ef5e129ec746da702423949 ("Audit and package Norwegian Bokmal in 0.9.0 CI")
+- .github/workflows/build-0.9.0.yml now strictly audits Danish, Finnish and Norwegian Bokmal
+- 1.21.1 strictly audits all ten add-ons separately for each of these three locales
+- 26.x continues to exclude all 1.21.1 add-on namespaces
+
+Final Norwegian/Danish/Finnish build run:
+- run 34253106351 completed successfully on all three matrix jobs: mc-1.21.1, mc-26.1.x and mc-26.2
+- all jobs passed NeoOrigins audits, JSON/localization validation, Gradle build, JAR packaging verification and artifact upload
+- 1.21.1 also passed strict Norwegian audits for all ten add-ons
+
+Norwegian JAR packaging counts verified by CI:
+- Minecraft 1.21.1: 27 no_no files (16 common + 1 1.21.1 delta + 10 add-ons)
+- Minecraft 26.1.x: 17 no_no files (16 common + correct 26.1 delta)
+- Minecraft 26.2: 17 no_no files (16 common + correct 26.2 delta)
+
+Final JAR artifacts from run 34253106351:
+- mc-1.21.1 artifact ID 10066815271; SHA256 5ebd42caf75a328276e9a39ff0d64053734d34c3c25255eec260f727838652f3
+- mc-26.1.x artifact ID 10066798141; SHA256 18ef7e606194e78f36fdd34fc6315a6f3f42cf08cd519c087472588a3df15a54
+- mc-26.2 artifact ID 10066794305; SHA256 821bdddec240ed74efc873ae86a1ece3962d7207b7d29bc1f31ff6441d20a37d
+
+8. LANGUAGE EXPANSION RULE
 --------------------------
-0.9.0 should expand well beyond 19 locales toward essentially all useful Minecraft languages.
+0.9.0 should expand well beyond 20 locales toward essentially all useful Minecraft languages.
 
 Regional-variant rule applies to EVERY language family, not only English:
 - If two regional variants differ by only a handful of words, maintain ONE representative locale.
-- Keep separate variants only when vocabulary, writing/script, grammar, terminology or Minecraft usage is materially different.
+- Keep separate variants when vocabulary, writing/script, grammar, terminology, Minecraft usage, or written standard is materially different.
 - Do not assume the final locale count in advance. Compare the current Minecraft locale set first.
+- Bokmal (no_no) and Nynorsk (nn_no) are treated as separate written standards, not deduplicated into one locale.
 
 For every selected new language, the intent is to cover NeoOrigins and all compatible/licensed add-ons relevant to that Minecraft target.
 
-8. LICENSE RULES
+9. LICENSE RULES
 ----------------
 Before adding any add-on, verify its license/redistribution terms.
 - MIT/compatible licenses: allowed with required attribution.
@@ -210,8 +276,8 @@ Extra Origins:
 - previously considered, currently All Rights Reserved.
 - Do not integrate without explicit permission.
 
-9. QA RULES
------------
+10. QA RULES
+------------
 Always validate:
 - JSON validity
 - duplicate keys
@@ -224,9 +290,9 @@ Always validate:
 - built JAR contents
 - visual/in-game wording and UI width when possible
 
-For a new language, follow the Danish/Finnish/Swedish architecture when a large NeoOrigins translation must be split across resource-pack namespaces. Do not assume one giant locale JSON is appropriate.
+For a new language, follow the Danish/Finnish/Norwegian/Swedish architecture when a large NeoOrigins translation must be split across resource-pack namespaces. Do not assume one giant locale JSON is appropriate.
 
-10. SOURCE OF TRUTH
+11. SOURCE OF TRUTH
 -------------------
 - catalog.json: machine-readable project/target/language catalog
 - CATALOG.md: readable catalog
@@ -236,10 +302,11 @@ For a new language, follow the Danish/Finnish/Swedish architecture when a large 
 
 Update PROJECT_HANDOFF.txt whenever a major project decision changes, especially release targets, newly completed languages, selected/rejected add-ons, licensing permissions, upstream reference changes, or publication state.
 
-11. NEXT WORK AFTER FINNISH
----------------------------
-- Do NOT stop at 19 locales.
+12. NEXT WORK AFTER NORWEGIAN BOKMAL
+------------------------------------
+- Do NOT stop at 20 locales.
 - Determine the next distinct Minecraft language after applying the regional-variant deduplication rule.
+- nn_no (Norwegian Nynorsk) remains a valid future separate candidate, but do not assume it must be the immediate next language; choose according to the current locale prioritization.
 - Translate NeoOrigins for all three supported targets.
 - Propagate the selected locale to all compatible/licensed 1.21.1 add-ons, preserving official upstream priority.
 - Strictly audit missing keys, overlaps and placeholders.

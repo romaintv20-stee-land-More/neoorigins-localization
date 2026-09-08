@@ -38,8 +38,8 @@ Mob Origins is NOT selected for 0.9.0. Earlier Mob Origins WIP inherited from a 
 0.8.0 Beta shipped with 17 locales:
 fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se.
 
-0.9.0 development currently has 24 locales:
-fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se, da_dk, fi_fi, no_no, ro_ro, el_gr, bg_bg, vi_vn.
+0.9.0 development currently has 25 locales:
+fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se, da_dk, fi_fi, no_no, ro_ro, el_gr, bg_bg, vi_vn, ar_sa.
 
 Expansion order so far:
 - 18: Danish / da_dk
@@ -49,8 +49,9 @@ Expansion order so far:
 - 22: Greek / el_gr
 - 23: Bulgarian / bg_bg
 - 24: Vietnamese / vi_vn
+- 25: Arabic / ar_sa
 
-TWENTY-FOUR IS NOT THE FINAL TARGET. Continue expanding toward essentially all useful Minecraft languages unless Romain changes scope.
+TWENTY-FIVE IS NOT THE FINAL TARGET. Continue expanding toward essentially all useful Minecraft languages unless Romain changes scope.
 
 Norwegian Nynorsk (nn_no) is intentionally NOT merged with Bokmal. It is a distinct written standard and remains a valid future locale.
 
@@ -381,7 +382,65 @@ Final Vietnamese JAR artifacts from run 34261836142:
 - mc-26.1.x: artifact ID 10070224915; size 701,039 bytes; SHA256 86431a11f0e762149c3928c05258f7c9ad5a3948c328088e79913622b7cd02db
 - mc-26.2: artifact ID 10070218394; size 700,664 bytes; SHA256 6a1f594f3851faecfd6859623bccad12c5035482ad0b694cc2895ab696a988ff
 
-13. ORIGIN ARCHITECT AUDIT IMPROVEMENT
+13. ARABIC 0.9.0 STATUS
+-----------------------
+Arabic locale: ar_sa / العربية.
+Status: COMPLETE FOR THE CURRENT 0.9.0 DEVELOPMENT BASELINE: GENERATED, STRICTLY AUDITED, BUILT, PACKAGING-VERIFIED, DOCUMENTED, AND COMMITTED.
+
+Why selected:
+- Arabic is an official Minecraft Java locale.
+- It is a clearly distinct language and script with no regional-dedup conflict with the existing 24-locale set.
+- Arabic is right-to-left, so the final CI includes an additional Arabic-script sanity check on top of the normal placeholder and JSON audits.
+
+Arabic architecture:
+- 16 common namespaces: neoorigins_ar_common_01 through neoorigins_ar_common_16
+- 1.21.1-specific namespace: neoorigins_ar_121
+- 26.1.x uses ar_sa inside neoorigins_26_1
+- 26.2 uses ar_sa inside neoorigins_26_2
+- all 10 supported/licensed 1.21.1 add-ons receive ar_sa fallback files
+
+At the audited references, NeoOrigins and ALL TEN supported add-ons had zero official Arabic strings. Therefore all 10 Arabic add-on fallback files are required.
+
+Arabic coverage:
+- NeoOrigins 1.21.1: 2296 / 2296
+- NeoOrigins 26.1.x: 2307 / 2307
+- NeoOrigins 26.2: 2307 / 2307
+- all 10 add-ons: complete against their established effective baselines
+- strict overlap audit: 0
+- strict missing audit: 0
+- placeholder errors: 0
+- scripts/validate.py passed
+- Arabic-script sanity check passed: 88,611 Arabic-range codepoints across 29 ar_sa source files
+
+Arabic bootstrap:
+- workflow run 34262716603 succeeded completely
+- validated localization commit 630bb368d6024917e24b8eb4148c3592b87bfe66 ("Add Arabic localization fallback")
+- Arabic audit artifact ID 10070622529; size 291,540 bytes; SHA256 cf4062c580b41d2cceaf221fd0df53ecf291e3d96071cd316c980735b8558ea7
+
+Arabic metadata:
+- synchronization run 34263061455 succeeded
+- metadata commit 2b27f03e446d8eb2b1671cfc280289aa7c9ac9e0 ("Document Arabic localization in 0.9.0 beta")
+- catalog.json / CATALOG.md / README.md now declare 25 supported locales and include Arabic ar_sa
+
+Final Arabic three-target CI:
+- workflow: .github/workflows/build-0.9.0-arabic.yml
+- final workflow commit fa502c7329956eb44cf82cfa04a6169aa5aa1964
+- run ID 34263122706: SUCCESS on all three jobs
+- mc-1.21.1 passed strict NeoOrigins + all 10 add-on audits, JSON validation, Arabic-script sanity check, Gradle build, exact packaging verification and JAR upload
+- mc-26.1.x and mc-26.2 passed strict NeoOrigins audit, JSON validation, Arabic-script sanity check, Gradle build, exact packaging verification and JAR upload
+
+Arabic packaging verified by CI:
+- 1.21.1: 27 ar_sa files = 16 common + 1 v121 delta + 10 add-ons
+- 26.1.x: 17 ar_sa files = 16 common + correct 26.1 delta
+- 26.2: 17 ar_sa files = 16 common + correct 26.2 delta
+- no add-on namespace or neoorigins_ar_121 leaked into 26.x
+
+Final Arabic JAR artifacts from run 34263122706:
+- mc-1.21.1: artifact ID 10070742043; size 1,621,562 bytes; SHA256 954ae10f549ce605125f083176b892a973cf0bc5b9b835ec00f0563bfa44822c
+- mc-26.1.x: artifact ID 10070733439; size 755,144 bytes; SHA256 1870e661176cb5ed9f9ab7eb2c5d1545f5dd00e44ac363a5f2966ea9cdb29b2b
+- mc-26.2: artifact ID 10070728913; size 754,708 bytes; SHA256 c6905a0e0c08e6692fe3c06f5956405671b7bb6baab8cadc4d3558905facc0ca
+
+14. ORIGIN ARCHITECT AUDIT IMPROVEMENT
 --------------------------------------
 scripts/audit_origin_architect_upstream.py now supports --prune.
 Commit:
@@ -393,7 +452,7 @@ Behavior:
 
 Future language bootstraps should use this behavior so an already-official Origin Architect locale does not cause unnecessary fallback redistribution.
 
-14. CURRENT PERMANENT CI / BUILD VALIDATION
+15. CURRENT PERMANENT CI / BUILD VALIDATION
 -------------------------------------------
 Legacy/current main 0.9.0 workflow:
 - .github/workflows/build-0.9.0.yml
@@ -442,7 +501,7 @@ NOTE ABOUT FAILED GOVERNANCE WORKFLOW:
 - It is superseded by the directly committed supplemental workflow build-0.9.0-expanded-locales.yml.
 - Do not waste time treating that historical failure as a current defect.
 
-15. SOURCE OF TRUTH HIERARCHY
+16. SOURCE OF TRUTH HIERARCHY
 -----------------------------
 - catalog.json = machine-readable content/project truth
 - CATALOG.md = readable catalog generated from catalog.json
@@ -451,19 +510,19 @@ NOTE ABOUT FAILED GOVERNANCE WORKFLOW:
 - PROJECT_HANDOFF.txt = cross-chat decisions, current roadmap, latest operational status
 
 As of this update:
-- catalog.json says 24 supported locales
-- README.md says 24 languages and includes Vietnamese vi_vn
-- Romanian, Greek, Bulgarian and Vietnamese have passed final three-target packaging validation
+- catalog.json says 25 supported locales
+- README.md says 25 languages and includes Arabic ar_sa
+- Romanian, Greek, Bulgarian, Vietnamese and Arabic have passed final three-target packaging validation
 
-16. QUALITY / QA CAVEAT
+17. QUALITY / QA CAVEAT
 -----------------------
 Automated structural QA is strong: missing keys, overlaps, placeholders, JSON structure, builds, and packaging are audited.
 
 In-game visual wording/UI-width review and native-speaker linguistic review remain separate quality layers. Do not claim native-speaker perfection merely because CI is green.
 
-17. NEXT ACTION
+18. NEXT ACTION
 ---------------
-NEXT LANGUAGE = language 25.
+NEXT LANGUAGE = language 26.
 
 When Romain says continue / prochaine langue / vas-y:
 1. Read this PROJECT_HANDOFF.txt first.
@@ -475,4 +534,4 @@ When Romain says continue / prochaine langue / vas-y:
 7. Build all three targets and inspect packaging.
 8. Update catalog.json, CATALOG.md, README.md and this PROJECT_HANDOFF.txt.
 9. Do not re-add Mob Origins.
-10. Do not stop permanently at 25; language expansion should continue unless Romain changes scope.
+10. Do not stop permanently at 26; language expansion should continue unless Romain changes scope.

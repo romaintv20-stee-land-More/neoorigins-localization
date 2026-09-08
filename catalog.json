@@ -11,7 +11,7 @@
     ],
     "loader": "NeoForge",
     "localization_mode": "low_priority_fallback",
-    "supported_locale_count": 26,
+    "supported_locale_count": 27,
     "builds": {
       "1.21.1": {
         "version": "0.9.0-beta+1.21.1",
@@ -122,7 +122,9 @@
           "arabic_common_glob": "neoorigins_ar_common_*",
           "arabic_mc_1_21_1": "neoorigins_ar_121",
           "hebrew_common_glob": "neoorigins_he_common_*",
-          "hebrew_mc_1_21_1": "neoorigins_he_121"
+          "hebrew_mc_1_21_1": "neoorigins_he_121",
+          "thai_common_glob": "neoorigins_th_common_*",
+          "thai_mc_1_21_1": "neoorigins_th_121"
         },
         "note": "NeoOrigins 2.2.26 est audité séparément sur les trois cibles. neoorigins_226 est commun aux trois builds ; neoorigins_26_1 est réservé à 26.1.x ; neoorigins_26_2 est réservé à 26.2. Les trois clés reward.neoorigins.loot_pool* restent dans les fallbacks complets pour 1.21.1 et sont inoffensives sur 26.x."
       },
@@ -360,6 +362,15 @@
             "26.1.x",
             "26.2"
           ]
+        },
+        "th_th": {
+          "name": "ภาษาไทย",
+          "status": "supported",
+          "targets": [
+            "1.21.1",
+            "26.1.x",
+            "26.2"
+          ]
         }
       }
     },
@@ -381,7 +392,7 @@
           "1.21.1"
         ],
         "in_game_validation": "validated",
-        "note": "401/401 clés anglaises couvertes dans les vingt-six langues ; absent des builds 26.x."
+        "note": "401/401 clés anglaises couvertes dans les vingt-sept langues ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 401,
@@ -524,6 +535,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/he_il.json",
           "fallback_keys": 401
+        },
+        "th_th": {
+          "name": "ภาษาไทย",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/th_th.json",
+          "fallback_keys": 401
         }
       }
     },
@@ -543,7 +560,7 @@
         "version": "1.7.1 / Minecraft 1.21.1",
         "source_ref": "multiloader-1.21.1-new-pack-format",
         "in_game_validation": "validated",
-        "note": "69/69 clés anglaises couvertes dans les vingt-six langues ; absent des builds 26.x."
+        "note": "69/69 clés anglaises couvertes dans les vingt-sept langues ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 69,
@@ -691,6 +708,12 @@
           "name": "עברית",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/he_il.json",
+          "fallback_keys": 69
+        },
+        "th_th": {
+          "name": "ภาษาไทย",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/th_th.json",
           "fallback_keys": 69
         }
       }
@@ -862,6 +885,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/he_il.json",
           "fallback_keys": 240
+        },
+        "th_th": {
+          "name": "ภาษาไทย",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/th_th.json",
+          "fallback_keys": 240
         }
       }
     },
@@ -883,7 +912,7 @@
           "1.21.1"
         ],
         "in_game_validation": "pending",
-        "note": "Audité contre le JAR CurseForge 8397335 ; aucune traduction officielle parmi les vingt-six langues ciblées ; absent des builds 26.x."
+        "note": "Audité contre le JAR CurseForge 8397335 ; aucune traduction officielle parmi les vingt-sept langues ciblées ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 65,
@@ -1031,6 +1060,12 @@
           "name": "עברית",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/he_il.json",
+          "fallback_keys": 65
+        },
+        "th_th": {
+          "name": "ภาษาไทย",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/th_th.json",
           "fallback_keys": 65
         }
       }
@@ -1203,6 +1238,12 @@
           "name": "עברית",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/he_il.json",
+          "fallback_keys": 39
+        },
+        "th_th": {
+          "name": "ภาษาไทย",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/th_th.json",
           "fallback_keys": 39
         }
       }
@@ -1380,6 +1421,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/he_il.json",
           "fallback_keys": 77
+        },
+        "th_th": {
+          "name": "ภาษาไทย",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/th_th.json",
+          "fallback_keys": 77
         }
       }
     },
@@ -1404,7 +1451,7 @@
           "NeoOrigins"
         ],
         "in_game_validation": "pending",
-        "note": "Audité contre le JAR CurseForge 8397352 ; aucune traduction officielle parmi les vingt-six langues ciblées ; absent des builds 26.x."
+        "note": "Audité contre le JAR CurseForge 8397352 ; aucune traduction officielle parmi les vingt-sept langues ciblées ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 117,
@@ -1553,6 +1600,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/he_il.json",
           "fallback_keys": 117
+        },
+        "th_th": {
+          "name": "ภาษาไทย",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/th_th.json",
+          "fallback_keys": 117
         }
       }
     },
@@ -1577,7 +1630,7 @@
           "NeoOrigins"
         ],
         "in_game_validation": "pending",
-        "note": "Audité contre le JAR CurseForge 8393343 ; 124/124 clés dans les vingt-six langues ciblées ; absent des builds 26.x."
+        "note": "Audité contre le JAR CurseForge 8393343 ; 124/124 clés dans les vingt-sept langues ciblées ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 124,
@@ -1726,6 +1779,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/he_il.json",
           "fallback_keys": 124
+        },
+        "th_th": {
+          "name": "ภาษาไทย",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/th_th.json",
+          "fallback_keys": 124
         }
       }
     },
@@ -1751,7 +1810,7 @@
           "Iron's Spells 'n Spellbooks"
         ],
         "in_game_validation": "pending",
-        "note": "Audité contre le JAR CurseForge 8592095 ; 99/99 clés dans les vingt-six langues ciblées ; absent des builds 26.x."
+        "note": "Audité contre le JAR CurseForge 8592095 ; 99/99 clés dans les vingt-sept langues ciblées ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 99,
@@ -1900,6 +1959,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/he_il.json",
           "fallback_keys": 99
+        },
+        "th_th": {
+          "name": "ภาษาไทย",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/th_th.json",
+          "fallback_keys": 99
         }
       }
     },
@@ -1923,7 +1988,7 @@
         "source_ref": "f58a6261292942d4123c46ff221fbdade138a329",
         "curseforge_file_id": 8568110,
         "in_game_validation": "pending",
-        "note": "22/22 clés anglaises couvertes dans les vingt-six langues ; aucune traduction officielle détectée parmi les dix-sept locales ciblées ; absent des builds 26.x. Le roumain est déjà fourni officiellement en amont (22/22), donc aucun fallback ro_ro n'est empaqueté pour Origin Architect."
+        "note": "22/22 clés anglaises couvertes dans les vingt-sept langues ; aucune traduction officielle détectée parmi les dix-sept locales ciblées ; absent des builds 26.x. Le roumain est déjà fourni officiellement en amont (22/22), donc aucun fallback ro_ro n'est empaqueté pour Origin Architect."
       },
       "coverage": {
         "source_keys": 22,
@@ -2072,6 +2137,12 @@
           "name": "עברית",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/he_il.json",
+          "fallback_keys": 22
+        },
+        "th_th": {
+          "name": "ภาษาไทย",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/th_th.json",
           "fallback_keys": 22
         }
       }

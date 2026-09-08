@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Oprema koju izradite dobija bonus atribute — čvrstinu, oštećenje ili brzinu rudarenja.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Dobija duplo KSP od kuvanja hrane u pušačima.",
+  "neoorigins.configuration.title": "NeoOrigins Configuration",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Igranje",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "NeoOrigins podešavanja igre",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Administrator i dozvole",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "NeoOrigins administratorska podešavanja",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Pover Overrides",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "NeoOrigins Pover Overrides",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Poreklo i klase",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "NeoOrigins Origin & Class Toggles",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Prikaz klijenta",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "Podešavanja klijenta NeoOrigins",
+  "neoorigins.configuration.show_cooldown_countdown": "Prikaži odbrojavanje vremena za hlađenje",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Neprozirnost odbrojavanja (%)",
+  "neoorigins.configuration.hud_ability_display": "Sposobnost Hud režim prikaza",
+  "neoorigins.configuration.always_show_ability_icons": "Uvek prikaži ikone sposobnosti"
+}

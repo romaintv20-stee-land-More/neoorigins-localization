@@ -37,6 +37,7 @@ jobs:
             mod_version: '0.9.0-beta+1.21.1'
             danish_extra_namespace: 'neoorigins_da_121'
             finnish_extra_namespace: 'neoorigins_fi_121'
+            norwegian_extra_namespace: 'neoorigins_no_121'
             include_addon_translations: true
             include_121_batch_translations: true
             include_turkish_split_translations: true
@@ -44,10 +45,12 @@ jobs:
             include_swedish_121_translations: true
             include_danish_121_translations: true
             include_finnish_121_translations: true
+            include_norwegian_121_translations: true
             include_26_1_translations: false
             include_26_2_translations: false
             expected_danish_files: '27'
             expected_finnish_files: '27'
+            expected_norwegian_files: '27'
           - target: mc-26.1.x
             minecraft: '26.1.2'
             minecraft_range: '[26.1,26.2)'
@@ -62,6 +65,7 @@ jobs:
             mod_version: '0.9.0-beta+26.1'
             danish_extra_namespace: 'neoorigins_26_1'
             finnish_extra_namespace: 'neoorigins_26_1'
+            norwegian_extra_namespace: 'neoorigins_26_1'
             include_addon_translations: false
             include_121_batch_translations: true
             include_turkish_split_translations: true
@@ -69,10 +73,12 @@ jobs:
             include_swedish_121_translations: false
             include_danish_121_translations: false
             include_finnish_121_translations: false
+            include_norwegian_121_translations: false
             include_26_1_translations: true
             include_26_2_translations: false
             expected_danish_files: '17'
             expected_finnish_files: '17'
+            expected_norwegian_files: '17'
           - target: mc-26.2
             minecraft: '26.2'
             minecraft_range: '[26.2,26.3)'
@@ -87,6 +93,7 @@ jobs:
             mod_version: '0.9.0-beta+26.2'
             danish_extra_namespace: 'neoorigins_26_2'
             finnish_extra_namespace: 'neoorigins_26_2'
+            norwegian_extra_namespace: 'neoorigins_26_2'
             include_addon_translations: false
             include_121_batch_translations: false
             include_turkish_split_translations: true
@@ -94,10 +101,12 @@ jobs:
             include_swedish_121_translations: false
             include_danish_121_translations: false
             include_finnish_121_translations: false
+            include_norwegian_121_translations: false
             include_26_1_translations: false
             include_26_2_translations: true
             expected_danish_files: '17'
             expected_finnish_files: '17'
+            expected_norwegian_files: '17'
 
     steps:
       - name: Checkout
@@ -132,6 +141,17 @@ jobs:
             --locale fi_fi \
             --fallback-namespace-glob 'neoorigins_fi_common_*' \
             --extra-namespace '${{ matrix.finnish_extra_namespace }}' \
+            --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+
+      - name: Strict audit Norwegian NeoOrigins coverage
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py \
+            --ref '${{ matrix.upstream_ref }}' \
+            --output 'build/norwegian-audit-${{ matrix.target }}' \
+            --locale no_no \
+            --fallback-namespace-glob 'neoorigins_no_common_*' \
+            --extra-namespace '${{ matrix.norwegian_extra_namespace }}' \
             --fail-on-overlap --fail-on-missing --fail-on-placeholders
 
       - name: Restrict add-on audits to Danish
@@ -222,6 +242,51 @@ jobs:
           python3 scripts/audit_origins_classes_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
           python3 scripts/audit_origin_architect_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
 
+
+      - name: Restrict add-on audits to Norwegian
+        if: matrix.include_addon_translations == true
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          scripts = [
+              'scripts/audit_medievalorigins_upstream.py',
+              'scripts/audit_ibarnorigins_upstream.py',
+              'scripts/audit_origins_fantasy_upstream.py',
+              'scripts/audit_origins_backgrounds_upstream.py',
+              'scripts/audit_origins_more_backgrounds_upstream.py',
+              'scripts/audit_origins_backgrounds_iss_upstream.py',
+              'scripts/audit_origins_furries_upstream.py',
+              'scripts/audit_origins_classes_extended_upstream.py',
+              'scripts/audit_origins_classes_iss_upstream.py',
+              'scripts/audit_origin_architect_upstream.py',
+          ]
+          for filename in scripts:
+              path = Path(filename)
+              source = path.read_text(encoding='utf-8')
+              updated, count = re.subn(r'^LOCALES\s*=.*$', 'LOCALES = ("no_no",)', source, count=1, flags=re.M)
+              if count == 0:
+                  updated, count = re.subn(r'^DEFAULT_LOCALES\s*=.*$', 'DEFAULT_LOCALES = ("no_no",)', source, count=1, flags=re.M)
+              if count != 1:
+                  raise SystemExit(f'Could not patch locale list in {filename}')
+              path.write_text(updated, encoding='utf-8')
+          PY
+
+      - name: Strict audit Norwegian 1.21.1 add-ons
+        if: matrix.include_addon_translations == true
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_fantasy_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_furries_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_extended_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origin_architect_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
       - name: Validate localization files
         run: python3 scripts/validate.py
 
@@ -239,6 +304,7 @@ jobs:
             "-Pinclude_swedish_121_translations=${{ matrix.include_swedish_121_translations }}" \
             "-Pinclude_danish_121_translations=${{ matrix.include_danish_121_translations }}" \
             "-Pinclude_finnish_121_translations=${{ matrix.include_finnish_121_translations }}" \
+            "-Pinclude_norwegian_121_translations=${{ matrix.include_norwegian_121_translations }}" \
             "-Pinclude_26_1_translations=${{ matrix.include_26_1_translations }}" \
             "-Pinclude_26_2_translations=${{ matrix.include_26_2_translations }}" \
             "-Pminecraft_version=${{ matrix.minecraft }}" \
@@ -247,7 +313,7 @@ jobs:
             "-Ploader_version_range=${{ matrix.loader_range }}" \
             "-Pmod_version=${{ matrix.mod_version }}"
 
-      - name: Verify Danish and Finnish packaging
+      - name: Verify Danish, Finnish and Norwegian packaging
         run: |
           JAR=$(find build/libs -type f -name '*.jar' ! -name '*-sources.jar' | head -n 1)
           test -n "$JAR"
@@ -255,42 +321,55 @@ jobs:
 
           DA_COUNT=$(grep -cE '(^|/)lang/da_dk\.json$' "build/jar-contents-${{ matrix.target }}.txt" || true)
           FI_COUNT=$(grep -cE '(^|/)lang/fi_fi\.json$' "build/jar-contents-${{ matrix.target }}.txt" || true)
+          NO_COUNT=$(grep -cE '(^|/)lang/no_no\.json$' "build/jar-contents-${{ matrix.target }}.txt" || true)
           echo "Danish localization files in ${{ matrix.target }}: $DA_COUNT (expected ${{ matrix.expected_danish_files }})"
           echo "Finnish localization files in ${{ matrix.target }}: $FI_COUNT (expected ${{ matrix.expected_finnish_files }})"
+          echo "Norwegian localization files in ${{ matrix.target }}: $NO_COUNT (expected ${{ matrix.expected_norwegian_files }})"
           test "$DA_COUNT" -eq '${{ matrix.expected_danish_files }}'
           test "$FI_COUNT" -eq '${{ matrix.expected_finnish_files }}'
+          test "$NO_COUNT" -eq '${{ matrix.expected_norwegian_files }}'
 
           for index in $(seq -w 1 16); do
             grep -Eq "(^|/)assets/neoorigins_da_common_${index}/lang/da_dk\.json$" "build/jar-contents-${{ matrix.target }}.txt"
             grep -Eq "(^|/)assets/neoorigins_fi_common_${index}/lang/fi_fi\.json$" "build/jar-contents-${{ matrix.target }}.txt"
+            grep -Eq "(^|/)assets/neoorigins_no_common_${index}/lang/no_no\.json$" "build/jar-contents-${{ matrix.target }}.txt"
           done
 
           ADDON_PATTERN='(^|/)assets/(medievalorigins|medievalorigins_[^/]*|ibarnorigins|origins_fantasy|origins_backgrounds|origins_backgrounds_two|origins_backgrounds_iss|origins_furries|origins_classes_ex|origins_classes_iss|originsmodernui)/'
           if [ '${{ matrix.include_addon_translations }}' = 'true' ]; then
             grep -Eq '(^|/)assets/neoorigins_da_121/lang/da_dk\.json$' "build/jar-contents-${{ matrix.target }}.txt"
             grep -Eq '(^|/)assets/neoorigins_fi_121/lang/fi_fi\.json$' "build/jar-contents-${{ matrix.target }}.txt"
+            grep -Eq '(^|/)assets/neoorigins_no_121/lang/no_no\.json$' "build/jar-contents-${{ matrix.target }}.txt"
             grep -Eq '(^|/)assets/medievalorigins/lang/da_dk\.json$' "build/jar-contents-${{ matrix.target }}.txt"
             grep -Eq '(^|/)assets/medievalorigins/lang/fi_fi\.json$' "build/jar-contents-${{ matrix.target }}.txt"
+            grep -Eq '(^|/)assets/medievalorigins/lang/no_no\.json$' "build/jar-contents-${{ matrix.target }}.txt"
             for ns in ibarnorigins origins_fantasy origins_backgrounds origins_backgrounds_two origins_backgrounds_iss origins_furries origins_classes_ex origins_classes_iss originsmodernui; do
               grep -Eq "(^|/)assets/$ns/lang/da_dk.json$" "build/jar-contents-${{ matrix.target }}.txt"
               grep -Eq "(^|/)assets/$ns/lang/fi_fi.json$" "build/jar-contents-${{ matrix.target }}.txt"
+              grep -Eq "(^|/)assets/$ns/lang/no_no.json$" "build/jar-contents-${{ matrix.target }}.txt"
             done
             ! grep -Eq '(^|/)assets/neoorigins_26_(1|2)/lang/da_dk\.json$' "build/jar-contents-${{ matrix.target }}.txt"
             ! grep -Eq '(^|/)assets/neoorigins_26_(1|2)/lang/fi_fi\.json$' "build/jar-contents-${{ matrix.target }}.txt"
+            ! grep -Eq '(^|/)assets/neoorigins_26_(1|2)/lang/no_no\.json$' "build/jar-contents-${{ matrix.target }}.txt"
           else
             ! grep -Eq "$ADDON_PATTERN" "build/jar-contents-${{ matrix.target }}.txt"
             ! grep -Eq '(^|/)assets/neoorigins_da_121/lang/da_dk\.json$' "build/jar-contents-${{ matrix.target }}.txt"
             ! grep -Eq '(^|/)assets/neoorigins_fi_121/lang/fi_fi\.json$' "build/jar-contents-${{ matrix.target }}.txt"
+            ! grep -Eq '(^|/)assets/neoorigins_no_121/lang/no_no\.json$' "build/jar-contents-${{ matrix.target }}.txt"
             if [ '${{ matrix.target }}' = 'mc-26.1.x' ]; then
               grep -Eq '(^|/)assets/neoorigins_26_1/lang/da_dk\.json$' "build/jar-contents-${{ matrix.target }}.txt"
               grep -Eq '(^|/)assets/neoorigins_26_1/lang/fi_fi\.json$' "build/jar-contents-${{ matrix.target }}.txt"
+              grep -Eq '(^|/)assets/neoorigins_26_1/lang/no_no\.json$' "build/jar-contents-${{ matrix.target }}.txt"
               ! grep -Eq '(^|/)assets/neoorigins_26_2/lang/da_dk\.json$' "build/jar-contents-${{ matrix.target }}.txt"
               ! grep -Eq '(^|/)assets/neoorigins_26_2/lang/fi_fi\.json$' "build/jar-contents-${{ matrix.target }}.txt"
+              ! grep -Eq '(^|/)assets/neoorigins_26_2/lang/no_no\.json$' "build/jar-contents-${{ matrix.target }}.txt"
             else
               grep -Eq '(^|/)assets/neoorigins_26_2/lang/da_dk\.json$' "build/jar-contents-${{ matrix.target }}.txt"
               grep -Eq '(^|/)assets/neoorigins_26_2/lang/fi_fi\.json$' "build/jar-contents-${{ matrix.target }}.txt"
+              grep -Eq '(^|/)assets/neoorigins_26_2/lang/no_no\.json$' "build/jar-contents-${{ matrix.target }}.txt"
               ! grep -Eq '(^|/)assets/neoorigins_26_1/lang/da_dk\.json$' "build/jar-contents-${{ matrix.target }}.txt"
               ! grep -Eq '(^|/)assets/neoorigins_26_1/lang/fi_fi\.json$' "build/jar-contents-${{ matrix.target }}.txt"
+              ! grep -Eq '(^|/)assets/neoorigins_26_1/lang/no_no\.json$' "build/jar-contents-${{ matrix.target }}.txt"
             fi
           fi
 

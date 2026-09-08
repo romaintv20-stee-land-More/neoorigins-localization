@@ -6,6 +6,7 @@ on:
     paths:
       - 'src/main/resources/resourcepacks/fallback_localizations/assets/**/ar_sa.json'
       - 'build.gradle'
+      - '.github/workflows/build-0.9.0-arabic.yml'
   workflow_dispatch:
 
 permissions:

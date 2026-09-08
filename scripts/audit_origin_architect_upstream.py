@@ -36,6 +36,7 @@ def main():
     parser.add_argument("--ref", default=DEFAULT_REF)
     parser.add_argument("--namespace", default=DEFAULT_NAMESPACE)
     parser.add_argument("--output", default=str(ROOT / "build/origin-architect-upstream-audit"))
+    parser.add_argument("--prune", action="store_true")
     parser.add_argument("--fail-on-overlap", action="store_true")
     parser.add_argument("--fail-on-missing", action="store_true")
     parser.add_argument("--fail-on-placeholders", action="store_true")
@@ -64,6 +65,17 @@ def main():
         for key in sorted(set(fallback) & set(en)):
             if placeholders(en[key]) != placeholders(fallback[key]):
                 placeholder_errors.append(key)
+
+        if args.prune and path.exists() and overlap:
+            fallback = {k: v for k, v in fallback.items() if k not in official}
+            if fallback:
+                path.write_text(json.dumps(fallback, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+            else:
+                path.unlink()
+            overlap = []
+            stale = sorted(set(fallback) - set(en))
+            missing = sorted(set(missing_upstream) - set(fallback))
+
         any_overlap |= bool(overlap)
         any_missing |= bool(missing)
         any_placeholder_error |= bool(placeholder_errors)

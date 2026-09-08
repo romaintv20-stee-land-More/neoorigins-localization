@@ -19,21 +19,31 @@ Core rule:
 - Official upstream translations ALWAYS have priority.
 - This project fills only missing keys.
 - When upstream adds an official translation, overlapping fallback keys must be removed.
+- No localization is generated at runtime in Minecraft.
+- Automated/generative translation assistance is used heavily, with structural audits and human direction. Do not present the translations as fully native-speaker-reviewed.
 
 2. RELEASE STATUS
 -----------------
 0.8.0 Beta is ALREADY PUBLISHED externally.
 Current target: 0.9.0 Beta.
 Working branch: release/0.9.0-beta.
+Project metadata has been bumped to mod_version=0.9.0-beta.
 
 The 0.9.0 branch was initially created from release/0.8.0-danish-mob-origins, itself based on release/0.8.0-swedish. The Mob Origins work inherited from that branch was a misunderstanding and is not part of the intended 0.9.0 scope.
 
-main is behind the cumulative 17-language 0.8.0 state and must not be used as the working base for current development.
+All Mob Origins fallback files/workflows/audit scripts created by that misunderstanding have now been removed from release/0.9.0-beta. Do not resume or re-add Mob Origins unless Romain explicitly chooses it later.
 
-3. 0.8.0 BASELINE
------------------
-17 locales:
+main is behind the cumulative release state and must not be used as the working base for current development.
+
+3. LANGUAGE BASELINE
+--------------------
+0.8.0 Beta shipped with 17 locales:
 fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se.
+
+0.9.0 development currently has 18 locales after adding Danish:
+fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se, da_dk.
+
+Danish (da_dk) is the 18th locale. Eighteen is NOT the final target; continue expanding toward essentially all useful Minecraft languages under the regional-deduplication rule below.
 
 Build targets:
 - Minecraft 1.21.1 / Java 21
@@ -54,24 +64,70 @@ Minecraft 1.21.1 includes NeoOrigins plus these 10 add-ons/projects:
 
 26.x builds intentionally contain NeoOrigins translations only unless future add-on compatibility is explicitly verified.
 
-4. NEOORIGINS 0.8.0 UPSTREAM REFERENCE
----------------------------------------
-0.8.0 coverage was audited against NeoOrigins 2.2.26.
-Refs:
+4. NEOORIGINS UPSTREAM REFERENCE
+--------------------------------
+The current 0.9.0 Danish pass is audited against the same NeoOrigins 2.2.26 references used by the 0.8.0 baseline:
 - 1.21.1: 860ecdb24e723983e93004ea8ceb5de90ccf0d70
 - 26.1.x: 3c1c7365507679c836d3c14af5d4dd0654652e87
 - 26.2: 65864716a5a796fa1c51ec3e8a6d9640abebb4ca
 
-Coverage baseline:
+Danish NeoOrigins fallback split generated for 0.9.0:
+- 2290 common keys shared by all three targets
+- 1.21.1 delta: 6 keys
+- 26.1.x delta: 17 keys
+- 26.2 delta: 17 keys
+
+Effective Danish NeoOrigins coverage after fallback:
 - 1.21.1: 2296 / 2296
 - 26.1.x: 2307 / 2307
 - 26.2: 2307 / 2307
 
-For 0.9.0, re-check current NeoOrigins upstream before declaring final coverage.
+Before publishing 0.9.0, re-check whether NeoOrigins upstream has moved beyond 2.2.26 and re-audit against the final intended reference if needed.
 
-5. LANGUAGE EXPANSION RULE
+5. DANISH 0.9.0 STATUS
+----------------------
+Danish locale: da_dk.
+Status: GENERATED, STRICTLY AUDITED, AND COMMITTED.
+
+Generation architecture mirrors the Swedish/Indonesian split:
+- 16 common NeoOrigins resource-pack namespaces: neoorigins_da_common_01 through neoorigins_da_common_16
+- 1.21.1-specific namespace: neoorigins_da_121
+- 26.1.x uses da_dk inside neoorigins_26_1
+- 26.2 uses da_dk inside neoorigins_26_2
+- the 10 compatible/licensed 1.21.1 add-ons each receive a da_dk fallback file
+
+The Danish bootstrap translated 2734 unique English strings and performed a second refinement pass on title-like strings left unchanged in English. Placeholders/tokens were protected during automated translation.
+
+At the audited upstream references, all ten 1.21.1 add-ons had ZERO official Danish strings, so their Danish fallback contains the full missing coverage. Effective Danish coverage:
+- Medieval Origins Revival: 401 / 401
+- ibarn's quartet origins addon: 69 / 69
+- Origins Fantasy: 240 / 240
+- Origins: Backgrounds: 65 / 65
+- Origins: More Backgrounds: 44 / 44 effective (shared-key handling preserved)
+- Origins: Backgrounds ISS: 79 / 79 effective (shared-key handling preserved)
+- Origins Furries: 117 / 117
+- Origins: Classes Extended: 124 / 124
+- Origins: Classes ISS: 99 / 99
+- Origin Architect: 22 / 22
+
+The final Danish bootstrap GitHub Actions run 34244997660 succeeded. Strict checks passed for:
+- NeoOrigins on all three targets
+- all ten 1.21.1 add-ons
+- no missing required keys
+- no fallback overlaps with official Danish translations
+- placeholder preservation
+- JSON/localization validation
+
+The validated Danish files were committed by GitHub Actions in commit 90a11ef3e66b2352d97723ea06830e860101ead6 with message "Add Danish localization fallback".
+
+A permanent 0.9.0 CI workflow is stored at .github/workflows/build-0.9.0.yml. It builds the three targets, strictly audits Danish, and verifies JAR packaging. Expected Danish JSON file counts in built JARs:
+- Minecraft 1.21.1: 27 files (16 common + 1 1.21.1 delta + 10 add-ons)
+- Minecraft 26.1.x: 17 files (16 common + 1 version delta)
+- Minecraft 26.2: 17 files (16 common + 1 version delta)
+
+6. LANGUAGE EXPANSION RULE
 --------------------------
-0.9.0 should expand well beyond 17 locales toward essentially all useful Minecraft languages.
+0.9.0 should expand well beyond 18 locales toward essentially all useful Minecraft languages.
 
 Regional-variant rule applies to EVERY language family, not only English:
 - If two regional variants differ by only a handful of words, maintain ONE representative locale.
@@ -80,7 +136,7 @@ Regional-variant rule applies to EVERY language family, not only English:
 
 For every selected new language, the intent is to cover NeoOrigins and all compatible/licensed add-ons relevant to that Minecraft target.
 
-6. LICENSE RULES
+7. LICENSE RULES
 ----------------
 Before adding any add-on, verify its license/redistribution terms.
 - MIT/compatible licenses: allowed with required attribution.
@@ -90,38 +146,14 @@ DraconicArcher gave Romain explicit permission on 2026-09-06 to redistribute tra
 
 Mob Origins:
 - NOT selected for 0.9.0.
+- All mistaken Mob Origins WIP has been removed from the active 0.9.0 branch.
 - Do not resume or re-add it unless Romain explicitly chooses it later.
 
 Extra Origins:
 - previously considered, currently All Rights Reserved.
 - Do not integrate without explicit permission.
 
-7. 0.8.0 ADD-ON KEY BASELINES
------------------------------
-- Medieval Origins Revival: 401 / 401
-- ibarn's quartet origins addon: 69 / 69
-- Origins Fantasy: 240 / 240
-- Origins: Backgrounds: 65 / 65
-- Origins: More Backgrounds: 44 / 44
-- Origins: Backgrounds ISS: 79 / 79
-- Origins Furries: 117 / 117
-- Origins: Classes Extended: 124 / 124
-- Origins: Classes ISS: 99 / 99
-- Origin Architect: 22 / 22
-
-8. 0.9.0 FOCUS
---------------
-Neo Origins / NeoOrigins is the core mod. Mob Origins is not the intended integration.
-
-0.9.0 priorities:
-- bump project metadata/versioning to 0.9.0-beta when appropriate
-- re-audit NeoOrigins against current upstream
-- expand NeoOrigins beyond the 17 existing locales
-- deduplicate near-identical regional variants across all language families
-- propagate each selected language to the compatible/licensed 1.21.1 add-ons
-- only add a new add-on after Romain explicitly identifies/approves it and licensing is verified
-
-9. QA RULES
+8. QA RULES
 -----------
 Always validate:
 - JSON validity
@@ -135,14 +167,26 @@ Always validate:
 - built JAR contents
 - visual/in-game wording and UI width when possible
 
-10. SOURCE OF TRUTH
--------------------
+For a new language, follow the Danish/Swedish architecture when a large NeoOrigins translation must be split across resource-pack namespaces. Do not assume one giant locale JSON is appropriate.
+
+9. SOURCE OF TRUTH
+------------------
 - catalog.json: machine-readable project/target/language catalog
 - CATALOG.md: readable catalog
 - README.md: public release/build/language description
 - docs/ATTRIBUTIONS.md: third-party licensing/permissions
 - PROJECT_HANDOFF.txt: permanent cross-chat decisions and current roadmap
 
-Update PROJECT_HANDOFF.txt whenever a major project decision changes.
+Update PROJECT_HANDOFF.txt whenever a major project decision changes, especially release targets, newly completed languages, selected/rejected add-ons, licensing permissions, upstream reference changes, or publication state.
+
+10. NEXT WORK AFTER DANISH
+--------------------------
+- Do NOT stop at 18 locales.
+- Determine the next distinct Minecraft language after applying the regional-variant deduplication rule.
+- Translate NeoOrigins for all three supported targets.
+- Propagate the selected locale to all compatible/licensed 1.21.1 add-ons, preserving official upstream priority.
+- Strictly audit missing keys, overlaps and placeholders.
+- Build all three targets and inspect packaging.
+- Update this handoff again.
 
 END OF HANDOFF

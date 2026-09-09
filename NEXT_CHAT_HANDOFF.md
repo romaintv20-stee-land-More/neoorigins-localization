@@ -6,21 +6,26 @@
 - Current release branch: `release/0.9.0-beta`
 - **Do not use `main`**: it is behind.
 - Read `PROJECT_HANDOFF.txt` first.
-- Completed language count: **61**.
-- Last completed language: **#61 Luxembourgish / Luxembourgeois — `lb_lu / Lëtzebuergesch`**.
-- **Do not redo Luxembourgish.**
-- Next language: **#62**.
+- Completed language count: **62**.
+- Last completed language: **#62 Somali — `so_so / Soomaali`**.
+- **Do not redo Somali.**
+- Next language: **#63**.
 - The historical NeoOrigins 2.2.27 gaps in Italian, Polish, Russian, Simplified Chinese, Turkish, Czech and Hungarian were recovered **before #59**; do not treat that recovery as pending.
 
-## #61 Luxembourgish verification
+## #62 Somali verification
 
-Staging branch: `release/0.9.0-luxembourgish`
+Staging branch: `release/0.9.0-somali`
 
 Original beta base used for staging:
-`5f24096a3e6dece302dc2a31f254c7c79a5c8617`
+`6bd58c02c2b8e543d8497c3ddd852d04eb55ae92`
 
 Final build source:
-`24c15ad7a25dfc49b1ecb9ef412ba9c959f59603`
+`4ef3c76ee4eb90410a4290b762f878a904fbeba4`
+
+Minecraft Java 26.2 metadata verified before selection:
+- code `som_SO`
+- name `Soomaali`
+- region `Soomaaliya`
 
 NeoOrigins 2.2.27 refs:
 - 1.21.1 `af467a3bc118f6bbc0970d68f7e03fa631d7e6f2`
@@ -33,47 +38,57 @@ Coverage:
 - 26.2: **2307/2307**
 
 Strict QA:
+- official Somali strings upstream at audited refs: **0** for NeoOrigins and **0** for all 10 supported add-ons
 - missing: **0**
 - overlap: **0**
 - placeholder errors: **0**
 - all 10 supported 1.21.1 add-ons: strict success
 - JSON validator: success
 - contextual refinement: success
-- final contextual sanity: **3433 Luxembourgish lexical markers, 3980 accented letters, 29 files**
+- refinement changed **395 values across 20/29 files**, with **109 guarded keys**
+- final contextual sanity: **4524 lexical markers, 8086 orthographic markers, 121946 Latin characters, 29 files**
 
-Important contextual corrections include canonical `Origin` terminology, `Klass`, `Fäegkeeten`, `Spawn-Reegelen`, Minecraft `Nuechtsiicht` and `Netherit`, `Schuppen`, `Pavlov-Reaktioun`, and 64 normalized `Schnelltast` hotkeys. Do not revert these to raw machine translations such as `Urspronk`, `Hierkonft`, `Muechten`, `Nuecht Visioun`, `Skalen` or `Pavloved`.
+Important contextual corrections include canonical `Origin`, `Fasal`, `Awoodaha`, `Dhaqan geli`, `Xeerarka Dhalashada`, `Aragtida Habeenka`, `Qolofyada Blaze`, anatomical `Qolofyo`, `Falcelinta Pavlov`, and all 64 `Furaha Degdegga ah` hotkeys. Do not revert these to raw machine translations.
 
 ## Runs and artifacts
 
 Bootstrap:
-- run `34410661769`
-- job `102664059776`
-- artifact `10127180809`
-- artifact ZIP SHA256 `6f627287d08267ee33b83b513cececa0ec4cd5d5a87da07984890784f4ec7451`
+- first generation run `34413792449` failed only because the translation service altered a Unicode placeholder sentinel; no failed localization output was integrated
+- successful run `34413860883`
+- job `102674182234`
+- artifact `10128350400`
+- artifact ZIP SHA256 `da94f6b6f5f3a540e53f8edfcaf24a40da7fda8cef961b895a70c9cff74ad6d8`
 
 Contextual refinement:
-- run `34411346403`
-- job `102666222361`
-- artifact `10127342267`
-- artifact ZIP SHA256 `4ad9bcbf2b5bbcb30db51f187b931df93221591bb250f8b39397585c3494b241`
-- 419 values changed across 25/29 files; 86 guarded keys
+- run `34414360770`
+- job `102675774018`
+- artifact `10128462525`
+- artifact ZIP SHA256 `4ef12306f208c8154ca9afe5a4e54f0585e9abce8f378d4d1ec1befb145eaabc`
+- 395 values changed across 20/29 files; 109 guarded keys
 
 Metadata:
-- run `34411488196`
-- job `102666643265`
-- commit `d31a9a49972bf4549d5bf0b90fc3930c1c5d80f0`
-- catalog locale count **61**
+- run `34414607834`
+- job `102676559755`
+- commit `523e495f64a90f32cf166fd7f6d87ee2d60dda1a`
+- catalog locale count **62**
 
-Final builds — run `34411581514`, source `24c15ad7a25dfc49b1ecb9ef412ba9c959f59603`:
-- 1.21.1 job `102666974306`, artifact `10127486985`, package **27/27**, JAR SHA256 `13a4193011778e243d4003f8f7acfaf3979df5dbc44c64e779abb22da65974c3`, ZIP SHA256 `c5206533df99d25d10d1bc787d87d3efad9c353dbd21d1a917067be30e5ac0ee`
-- 26.1.x job `102666974486`, artifact `10127468957`, package **17/17**, JAR SHA256 `1f1f6e49f32c3127b27fe2a795f4a9c958b2173bf3a433058777c93eb7384f4a`, ZIP SHA256 `8172094b25b4fcde7aa2701ba4a863f00e6f2cb5b923d00b08a2905d1bae542a`
-- 26.2 job `102666974466`, artifact `10127470282`, package **17/17**, JAR SHA256 `554e1159fbfbc2dba1978976dbc6b9ab60825c86ae252ca26ea055bdb2ef82ec`, ZIP SHA256 `315e33c93a8b107b5c3c74286b3c8d3878df8cbafb66eca8974de0db3e3d1eda`
+Final builds — run `34414684602`, source `4ef3c76ee4eb90410a4290b762f878a904fbeba4`:
+- 1.21.1 job `102676812909`, artifact `10128628531`, package **27/27**, JAR SHA256 `1380b3b6ca0c2fad4f4ac399fd99858be81360895fdda9cf49b81d955e4ad682`, ZIP SHA256 `92b75187336e45187a12d1848285be8eddae970829dc6f43cd7916d6d79de092`
+- 26.1.x job `102676812737`, artifact `10128619805`, package **17/17**, JAR SHA256 `2c25043e0c71aed732445e649f32ba4a825da96bd5f86875083daa8d81673b7a`, ZIP SHA256 `b388eb7155a55945791efac7fd39b7b1ee552915fd19fada0916ed86a18b912e`
+- 26.2 job `102676812914`, artifact `10128622615`, package **17/17**, JAR SHA256 `f99577159cc34c22b21f15fec69e4d96569d030c2cca426495ddfa50f4b32c45`, ZIP SHA256 `337e753ed7477f526825468a547412bd2770b351bd034eeb77bc93fdbdecc888`
 
-## Start of language #62
+Packaging semantics:
+- 1.21.1: 16 common + `neoorigins_so_121` + 10 add-ons = **27** Somali files
+- 26.1.x: 16 common + `neoorigins_26_1` = **17** Somali files
+- 26.2: 16 common + `neoorigins_26_2` = **17** Somali files
+- no wrong-version overlays or add-ons leak between targets
+- packaged NeoOrigins keysets are exact and duplicate-free
+
+## Start of language #63
 
 1. Refetch `release/0.9.0-beta` and use its exact HEAD as the new staging base.
 2. Re-read this file and `PROJECT_HANDOFF.txt`; do not use `main`.
-3. Re-audit the current Minecraft Java locale inventory and apply the regional-variant dedup rule.
+3. Re-audit the current Minecraft Java locale inventory and apply the regional-variant dedup rule. Gallo and Võro can be reconsidered, but do not force a locale through a backend that cannot meet the quality bar.
 4. Verify NeoOrigins and all 10 add-ons for official translations before creating fallbacks.
 5. Prefer official upstream strings, translate only missing keys, preserve placeholders exactly, and run contextual QA after machine generation.
 6. Require strict NeoOrigins coverage **2296/2296, 2307/2307, 2307/2307**, plus all 10 add-ons, JSON validation and target-aware packaging.

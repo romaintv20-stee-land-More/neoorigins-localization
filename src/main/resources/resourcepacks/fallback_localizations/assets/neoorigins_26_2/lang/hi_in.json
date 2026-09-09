@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "आपके द्वारा तैयार किए गए उपकरण को बोनस विशेषताएँ प्राप्त होती हैं - क्रूरता, क्षति, या खनन गति।",
+  "power.neoorigins.class_cook_smoker_xp.description": "धूम्रपान करने वाले स्थान पर खाना पकाने से दोगुना एक्सपी प्राप्त होता है।",
+  "neoorigins.configuration.title": "नियोओरिजिन्स कॉन्फ़िगरेशन",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "गेमप्ले",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "NeoOrigins गेमप्ले सेटिंग्स",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "व्यवस्थापक एवं अनुमतियाँ",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "NeoOrigins व्यवस्थापक सेटिंग्स",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "पावर ओवरराइड",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "नियोऑरिजिन्स पावर ओवरराइड्स",
+  "neoorigins.configuration.section.neoorigins.content.toml": "उत्पत्ति एवं वर्ग",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "नियोऑरिजिंस ओरिजिन और क्लास टॉगल",
+  "neoorigins.configuration.section.neoorigins.client.toml": "ग्राहक प्रदर्शन",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "NeoOrigins क्लाइंट सेटिंग्स",
+  "neoorigins.configuration.show_cooldown_countdown": "कूलडाउन उलटी गिनती दिखाएं",
+  "neoorigins.configuration.cooldown_countdown_opacity": "कूलडाउन उलटी गिनती अस्पष्टता (%)",
+  "neoorigins.configuration.hud_ability_display": "क्षमता HUD डिस्प्ले मोड",
+  "neoorigins.configuration.always_show_ability_icons": "हमेशा क्षमता चिह्न दिखाएं"
+}

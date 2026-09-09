@@ -20,27 +20,29 @@ Les cinquante-huit langues sont disponibles sur les trois builds pour NeoOrigins
 
 ## Référence NeoOrigins
 
-La couverture de la 0.9.0 est auditée contre **NeoOrigins 2.2.26** :
+La référence d'audit actuelle est **NeoOrigins 2.2.27** :
 
-- 1.21.1 : commit `860ecdb24e723983e93004ea8ceb5de90ccf0d70` ;
-- 26.1.x : commit `3c1c7365507679c836d3c14af5d4dd0654652e87` ;
-- 26.2 : commit `65864716a5a796fa1c51ec3e8a6d9640abebb4ca`.
+- 1.21.1 : commit `af467a3bc118f6bbc0970d68f7e03fa631d7e6f2` ;
+- 26.1.x : commit `aa207ef14cf3b938e28b4081162701953957c1d5` ;
+- 26.2 : commit `511cadcafe3027d2a56b4448652ec9b74e2f3b07`.
 
-NeoOrigins Localization n'impose pas de dépendance dure sur la version 2.2.26 : le mod peut charger avec une version NeoOrigins plus récente, mais la **couverture complète garantie ici correspond à 2.2.26**.
+Le fichier anglais `en_us.json` de NeoOrigins 2.2.27 est **strictement identique à celui de 2.2.26** sur les trois cibles : cette mise à jour n'ajoute donc aucune chaîne à traduire. La 2.2.27 est essentiellement un hotfix NeoForge.
 
-La mise à jour 2.2.26 ajoute un delta commun `neoorigins_226` pour les nouvelles chaînes du sélecteur, Step Assist et Caveborn. La ligne 26.1.x possède en plus `neoorigins_26_1` pour ses raccourcis, compétences et réglages propres, tandis que 26.2 conserve `neoorigins_26_2`.
+Un audit intégral des 58 locales a toutefois révélé des lacunes historiques, déjà présentes avant la 2.2.27 : `it_it`, `pl_pl`, `ru_ru` et `zh_cn` ont chacun 52 clés manquantes sur 1.21.1 et 26.1.x ; `tr_tr`, `cs_cz` et `hu_hu` restent très partiels sur les trois cibles. Les 51 autres locales sont complètes contre les jeux de clés 2.2.27. L'audit de référence est le run `34400432957`.
 
-Pour le tchèque :
+Le namespace physique `neoorigins_226` conserve son nom historique car il contient le delta introduit avec la 2.2.26 ; il n'est pas renommé lors du passage de la baseline d'audit à 2.2.27.
 
-- **1.21.1 : 2 296/2 296 clés** couvertes ;
-- **26.1.x : 2 307/2 307 clés** couvertes ;
-- **26.2 : 2 307/2 307 clés** couvertes.
+Pour le tchèque (couverture historique partielle à compléter) :
 
-Pour le hongrois :
+- **1.21.1 : 15/2 296 clés** couvertes ;
+- **26.1.x : 29/2 307 clés** couvertes ;
+- **26.2 : 29/2 307 clés** couvertes.
 
-- **1.21.1 : 2 296/2 296 clés** couvertes ;
-- **26.1.x : 2 307/2 307 clés** couvertes ;
-- **26.2 : 2 307/2 307 clés** couvertes.
+Pour le hongrois (couverture historique partielle à compléter) :
+
+- **1.21.1 : 0/2 296 clés** couvertes ;
+- **26.1.x : 14/2 307 clés** couvertes ;
+- **26.2 : 14/2 307 clés** couvertes.
 
 Pour le coréen :
 

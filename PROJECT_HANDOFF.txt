@@ -118,23 +118,35 @@ Minecraft 1.21.1 includes NeoOrigins plus these 10 supported projects:
 
 5. NEOORIGINS UPSTREAM BASELINE
 -------------------------------
-Current 0.9.0 language expansion is audited against NeoOrigins 2.2.26:
-- 1.21.1: 860ecdb24e723983e93004ea8ceb5de90ccf0d70
-- 26.1.x: 3c1c7365507679c836d3c14af5d4dd0654652e87
-- 26.2: 65864716a5a796fa1c51ec3e8a6d9640abebb4ca
+Current 0.9.0 baseline is audited against NeoOrigins 2.2.27:
+- 1.21.1: af467a3bc118f6bbc0970d68f7e03fa631d7e6f2
+- 26.1.x: aa207ef14cf3b938e28b4081162701953957c1d5
+- 26.2: 511cadcafe3027d2a56b4448652ec9b74e2f3b07
 
-Per newly generated full-fallback locale, target split is normally:
-- 2290 common keys
-- 1.21.1 delta: 6 keys
-- 26.1.x delta: 17 keys
-- 26.2 delta: 17 keys
+NeoOrigins 2.2.27 is a NeoForge hotfix and its en_us localization payload is byte-for-byte unchanged from the audited 2.2.26 payload on all three targets:
+- 1.21.1: 2296 English keys
+- 26.1.x: 2307 English keys
+- 26.2: 2307 English keys
+Therefore 2.2.27 itself requires ZERO new translations.
 
-Effective NeoOrigins coverage:
-- 1.21.1: 2296 / 2296
-- 26.1.x: 2307 / 2307
-- 26.2: 2307 / 2307
+Full 58-locale baseline audit (2026-09-09):
+- run: 34400432957
+- job: 102630695715
+- artifact: 10123223361
+- artifact SHA256: 78be2fc126a1f7356e871f692bc716e8c3973b7b246b9b450d41aac8ab767155
+- overlap errors: 0
+- placeholder errors: 0
 
-Before PUBLISHING 0.9.0, re-check whether NeoOrigins upstream has moved beyond 2.2.26 and re-audit against the final intended reference if needed.
+IMPORTANT LEGACY COVERAGE FINDING:
+The full audit exposed seven historical locales that were already incomplete before 2.2.27. This is NOT a 2.2.27 regression and must not be described as new translation work from that update.
+- 1.21.1 missing: it_it 52, pl_pl 52, ru_ru 52, tr_tr 2281, zh_cn 52, cs_cz 2281, hu_hu 2296
+- 26.1.x missing: it_it 52, pl_pl 52, ru_ru 52, tr_tr 2278, zh_cn 52, cs_cz 2278, hu_hu 2293
+- 26.2 missing: tr_tr 2278, cs_cz 2278, hu_hu 2293
+- The other 51 locales are complete against the 2.2.27 English keysets on all three targets.
+
+The physical namespace neoorigins_226 remains intentionally named after the update that introduced those fallback strings; do NOT rename it merely because the audit baseline moved to 2.2.27.
+
+Before PUBLISHING 0.9.0, re-check whether NeoOrigins upstream has moved beyond 2.2.27 and re-audit against the final intended reference. Also decide whether to complete the seven legacy partial locales before publication.
 
 6. ADD-ON COVERAGE BASELINES
 ----------------------------

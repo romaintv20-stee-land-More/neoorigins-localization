@@ -63,7 +63,7 @@
       "curseforge": "https://www.curseforge.com/minecraft/mc-mods/neoorigins",
       "source": "https://github.com/CyberDay1/NeoOrigins",
       "compatibility": {
-        "version": "2.2.26",
+        "version": "2.2.27",
         "minecraft": [
           "1.21.1",
           "26.1",
@@ -77,9 +77,9 @@
           "26.2": "pending"
         },
         "audit_refs": {
-          "1.21.1": "860ecdb24e723983e93004ea8ceb5de90ccf0d70",
-          "26.1.x": "3c1c7365507679c836d3c14af5d4dd0654652e87",
-          "26.2": "65864716a5a796fa1c51ec3e8a6d9640abebb4ca"
+          "1.21.1": "af467a3bc118f6bbc0970d68f7e03fa631d7e6f2",
+          "26.1.x": "aa207ef14cf3b938e28b4081162701953957c1d5",
+          "26.2": "511cadcafe3027d2a56b4448652ec9b74e2f3b07"
         },
         "coverage": {
           "1.21.1": {
@@ -188,7 +188,40 @@
           "chuvash_common_glob": "neoorigins_cv_common_*",
           "chuvash_mc_1_21_1": "neoorigins_cv_121"
         },
-        "note": "NeoOrigins 2.2.26 est audité séparément sur les trois cibles. neoorigins_226 est commun aux trois builds ; neoorigins_26_1 est réservé à 26.1.x ; neoorigins_26_2 est réservé à 26.2. Les trois clés reward.neoorigins.loot_pool* restent dans les fallbacks complets pour 1.21.1 et sont inoffensives sur 26.x."
+        "note": "NeoOrigins 2.2.26 est audité séparément sur les trois cibles. neoorigins_226 est commun aux trois builds ; neoorigins_26_1 est réservé à 26.1.x ; neoorigins_26_2 est réservé à 26.2. Les trois clés reward.neoorigins.loot_pool* restent dans les fallbacks complets pour 1.21.1 et sont inoffensives sur 26.x.",
+        "baseline_audit_2_2_27": {
+          "run_id": 34400432957,
+          "job_id": 102630695715,
+          "artifact_id": 10123223361,
+          "artifact_sha256": "78be2fc126a1f7356e871f692bc716e8c3973b7b246b9b450d41aac8ab767155",
+          "english_unchanged_from_2_2_26": true,
+          "known_legacy_gaps": {
+            "1.21.1": {
+              "it_it": 52,
+              "pl_pl": 52,
+              "ru_ru": 52,
+              "tr_tr": 2281,
+              "zh_cn": 52,
+              "cs_cz": 2281,
+              "hu_hu": 2296
+            },
+            "26.1.x": {
+              "it_it": 52,
+              "pl_pl": 52,
+              "ru_ru": 52,
+              "tr_tr": 2278,
+              "zh_cn": 52,
+              "cs_cz": 2278,
+              "hu_hu": 2293
+            },
+            "26.2": {
+              "tr_tr": 2278,
+              "cs_cz": 2278,
+              "hu_hu": 2293
+            }
+          }
+        },
+        "coverage_note": "NeoOrigins 2.2.27 has the same en_us localization payload as 2.2.26 on all three targets. A full 58-locale audit found pre-existing incomplete legacy coverage in it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz and hu_hu; all other 51 locales are complete against 2.2.27."
       },
       "languages": {
         "fr_fr": {

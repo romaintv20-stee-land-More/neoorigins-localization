@@ -8,6 +8,10 @@
 | 26.1.x | `0.9.0-beta+26.1` | 25 | neoorigins | Non |
 | 26.2 | `0.9.0-beta+26.2` | 25 | neoorigins | Non |
 
+## Référence NeoOrigins
+
+Baseline auditée : **NeoOrigins 2.2.27** (`af467a3` pour 1.21.1, `aa207ef` pour 26.1.x, `511cadc` pour 26.2). Les chaînes anglaises sont identiques à 2.2.26, donc la 2.2.27 ne demande aucune nouvelle traduction. L'audit complet des 58 locales (run `34400432957`) a néanmoins identifié sept couvertures historiques partielles : `it_it`, `pl_pl`, `ru_ru`, `tr_tr`, `zh_cn`, `cs_cz` et `hu_hu`. Les 51 autres locales sont complètes contre la baseline 2.2.27.
+
 ## Projets et langues
 
 | Mod / add-on | Auteur | Versions Minecraft | Langues disponibles |

@@ -11,6 +11,24 @@
 - **Do not redo Chuvash.**
 - Next language: **#59**.
 
+## NeoOrigins 2.2.27 baseline audit
+
+- Current upstream baseline: **NeoOrigins 2.2.27**.
+- 1.21.1 ref: `af467a3bc118f6bbc0970d68f7e03fa631d7e6f2`
+- 26.1.x ref: `aa207ef14cf3b938e28b4081162701953957c1d5`
+- 26.2 ref: `511cadcafe3027d2a56b4448652ec9b74e2f3b07`
+- `en_us.json` is unchanged from 2.2.26 on all three targets, so **2.2.27 requires zero new translation strings**.
+- Full audit: run `34400432957`, job `102630695715`, artifact `10123223361`, SHA256 `78be2fc126a1f7356e871f692bc716e8c3973b7b246b9b450d41aac8ab767155`.
+- Audit found **0 overlap errors** and **0 placeholder errors**.
+
+Legacy gaps discovered by that full audit (pre-existing before 2.2.27):
+- 1.21.1: `it_it` 52, `pl_pl` 52, `ru_ru` 52, `tr_tr` 2281, `zh_cn` 52, `cs_cz` 2281, `hu_hu` 2296 missing.
+- 26.1.x: `it_it` 52, `pl_pl` 52, `ru_ru` 52, `tr_tr` 2278, `zh_cn` 52, `cs_cz` 2278, `hu_hu` 2293 missing.
+- 26.2: `tr_tr` 2278, `cs_cz` 2278, `hu_hu` 2293 missing.
+- The other **51 locales** are complete against 2.2.27 on all three targets.
+
+Do not attribute those seven legacy gaps to NeoOrigins 2.2.27. Before release, either complete them or keep the partial-coverage status explicit.
+
 ## #58 Chuvash verification
 
 Staging branch: `release/0.9.0-chuvash`

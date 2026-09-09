@@ -33,7 +33,7 @@
   "power.neoorigins.abyssal_land_speed_penalty.name": "Landvandrer",
   "power.neoorigins.abyssal_land_speed_penalty.description": "Beveger seg 10 % saktare på land.",
   "power.neoorigins.abyssal_dries_out.name": "Tørkar ut",
-  "power.neoorigins.abyssal_dries_out.description": "Luften tikkar ned medan du er tom for vatn: overflata er for lang og du blir kvelt.Regn, ei vassgryte, vasspust eller ein nærliggjande aktiv kanal held det av.",
+  "power.neoorigins.abyssal_dries_out.description": "Luftmålaren minkar når du er ute av vatnet; blir du verande for lenge på land, byrjar du å kvelast. Regn, ei vassfylt gryte, vasspusting eller ein aktiv conduit i nærleiken hindrar dette.",
   "origins.neoorigins.voidwalker.name": "Voidwalker",
   "origins.neoorigins.voidwalker.description": "Eit vesen som blir ramma av Enden – går gjennom blokker, blinkar korte avstandar og går usett av dei fleste truslane.Sprintar utan å bli sliten, men vatn er smerte.",
   "power.neoorigins.voidwalker_active_teleport.name": "Ugyldig trinn",

@@ -1,0 +1,62 @@
+name: Sync Mongolian 51-locale handoff
+
+on:
+  push:
+    branches:
+      - release/0.9.0-mongolian
+    paths:
+      - .github/workflows/sync-handoff-mongolian.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-mongolian
+
+      - name: Update handoff
+        run: python3 scripts/update_handoff_mongolian.py
+
+      - name: Validate handoff state
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          text=Path('PROJECT_HANDOFF.txt').read_text(encoding='utf-8')
+          required=[
+              '0.9.0 development currently has 51 locales:',
+              '- 51: Mongolian / mn_mn',
+              'FIFTY-ONE IS NOT THE FINAL TARGET.',
+              'Mongolian locale: mn_mn / Монгол хэл.',
+              'successful workflow run 34356704027: SUCCESS',
+              'workflow run 34357367860: SUCCESS',
+              'run ID 34357718929: SUCCESS on all three jobs',
+              'artifact ID 10106502777',
+              'artifact ID 10106505927',
+              'artifact ID 10106516552',
+              'NEXT LANGUAGE = language 52.',
+              'Do not stop permanently at 52;',
+          ]
+          missing=[x for x in required if x not in text]
+          if missing: raise SystemExit(f'Handoff markers missing: {missing}')
+          print('Mongolian handoff validation passed: 51 locales, next 52')
+          PY
+
+      - name: Commit handoff
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add PROJECT_HANDOFF.txt
+          if git diff --cached --quiet; then
+            echo 'No handoff changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Finalize Mongolian 0.9.0 handoff'
+          git fetch origin release/0.9.0-mongolian
+          git rebase origin/release/0.9.0-mongolian
+          git push origin HEAD:release/0.9.0-mongolian

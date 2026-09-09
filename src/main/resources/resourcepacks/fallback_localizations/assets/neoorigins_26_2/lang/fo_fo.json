@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Útgerð, tú gert, fær bonus-eginleikar — seigleika, skaða ella námsferð.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Fær dupult XP av at elda mat í roykjara.",
+  "neoorigins.configuration.title": "NeoOrigins uppseting",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Spæl",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "Spæliinnstillingar hjá NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Umsitari og loyvi",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "Umsitarinnstillingar hjá NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Vald yvirhálar",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "NeoOrigins vald yvirhálar",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Uppruni og flokkar",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "NeoOrigins Uppruni og floksskifti",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Kundasýning",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "NeoOrigins kundainnstillingar",
+  "neoorigins.configuration.show_cooldown_countdown": "Vís niðurteljing av køling",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Niðurteljing av køling ógjøgnumskygni (%)",
+  "neoorigins.configuration.hud_ability_display": "Møguleiki HUD sýnisháttur",
+  "neoorigins.configuration.always_show_ability_icons": "Vís altíð førleikamerki"
+}

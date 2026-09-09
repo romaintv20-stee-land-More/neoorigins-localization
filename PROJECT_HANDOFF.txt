@@ -38,8 +38,8 @@ Mob Origins is NOT selected for 0.9.0. Earlier Mob Origins WIP inherited from a 
 0.8.0 Beta shipped with 17 locales:
 fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se.
 
-0.9.0 development currently has 52 locales:
-fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se, da_dk, fi_fi, no_no, ro_ro, el_gr, bg_bg, vi_vn, ar_sa, he_il, th_th, sk_sk, sl_si, hr_hr, sr_sp, sr_cs, ca_es, et_ee, lt_lt, lv_lv, eu_es, gl_es, hi_in, nn_no, fa_ir, is_is, ms_my, fil_ph, cy_gb, ga_ie, gd_gb, hy_am, ka_ge, kk_kz, mn_mn, mk_mk.
+0.9.0 development currently has 53 locales:
+fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se, da_dk, fi_fi, no_no, ro_ro, el_gr, bg_bg, vi_vn, ar_sa, he_il, th_th, sk_sk, sl_si, hr_hr, sr_sp, sr_cs, ca_es, et_ee, lt_lt, lv_lv, eu_es, gl_es, hi_in, nn_no, fa_ir, is_is, ms_my, fil_ph, cy_gb, ga_ie, gd_gb, hy_am, ka_ge, kk_kz, mn_mn, mk_mk, be_by.
 
 Expansion order so far:
 - 18: Danish / da_dk
@@ -77,8 +77,9 @@ Expansion order so far:
 - 50: Kazakh / kk_kz
 - 51: Mongolian / mn_mn
 - 52: Macedonian / mk_mk
+- 53: Belarusian / be_by
 
-FIFTY-TWO IS NOT THE FINAL TARGET. Continue expanding toward essentially all useful Minecraft languages unless Romain changes scope.
+FIFTY-THREE IS NOT THE FINAL TARGET. Continue expanding toward essentially all useful Minecraft languages unless Romain changes scope.
 
 Norwegian Nynorsk (nn_no) is intentionally NOT merged with Bokmal. It is a distinct written standard and remains a valid future locale.
 
@@ -2533,7 +2534,95 @@ Final Macedonian JAR artifacts from run 34361874941:
 - mc-26.1.x: artifact ID 10108207419; size 2,164,246 bytes; SHA256 29ee6c1842cbdcbefaff80b4a5edaa659c6af630e4333f9a8bd617a60a3851cf
 - mc-26.2: artifact ID 10108200854; size 2,163,836 bytes; SHA256 abedd58f28f3904ea486eae556c9b53bfaf3a81826479dfc9ba6c8669d211ad6
 
-41. ORIGIN ARCHITECT AUDIT IMPROVEMENT
+41. BELARUSIAN 0.9.0 STATUS
+------------------------------
+Belarusian locale: be_by / Беларуская.
+Status: COMPLETE FOR THE CURRENT 0.9.0 DEVELOPMENT BASELINE: GENERATED, CONTEXTUALLY REFINED, STRICTLY AUDITED, BUILT, PACKAGING-VERIFIED, DOCUMENTED, AND COMMITTED.
+
+Why selected:
+- Belarusian is a current Minecraft Java locale (be_by).
+- It is a distinct East Slavic language and is not a regional duplicate of Russian, Ukrainian or any other already-supported locale.
+- It therefore satisfies the regional-dedup rule.
+
+Belarusian architecture:
+- 16 common namespaces: neoorigins_be_common_01 through neoorigins_be_common_16
+- 1.21.1-specific namespace: neoorigins_be_121
+- 26.1.x uses be_by inside neoorigins_26_1
+- 26.2 uses be_by inside neoorigins_26_2
+- all 10 supported/licensed 1.21.1 add-ons receive be_by fallback files
+- Gradle target switch: include_belarusian_121_translations / includeBelarusian121Translations
+
+At the audited references, NeoOrigins and ALL TEN supported add-ons had zero official Belarusian strings. Therefore all 10 Belarusian add-on fallback files are required.
+
+Belarusian coverage:
+- NeoOrigins 1.21.1: 2296 / 2296
+- NeoOrigins 26.1.x: 2307 / 2307
+- NeoOrigins 26.2: 2307 / 2307
+- Medieval Origins Revival: 401 / 401
+- ibarn's quartet origins addon: 69 / 69
+- Origins Fantasy for NeoOrigins: 240 / 240
+- Origins: Backgrounds for NeoOrigins: 65 / 65
+- Origins: More Backgrounds for NeoOrigins: 44 / 44 effective (39 primary + 5 shared)
+- Origins: Backgrounds ISS for NeoOrigins: 79 / 79 effective (77 primary + 2 shared)
+- Origins Furries: 117 / 117
+- Origins: Classes Extended: 124 / 124
+- Origins: Classes ISS: 99 / 99
+- Origin Architect: 22 / 22
+- strict overlap audit: 0
+- strict missing audit: 0
+- placeholder errors: 0
+- scripts/validate.py passed
+
+Belarusian bootstrap:
+- working branch: release/0.9.0-belarusian
+- workflow: .github/workflows/bootstrap-belarusian.yml
+- workflow run 34363769995: SUCCESS
+- validated localization commit 877212f939fd57de79bac0725281062c99874efa ("Add Belarusian localization fallback")
+- audit artifact ID 10109063091; size 291,551 bytes; SHA256 cb241bfc00b00dd5e1a6f98063192e0dc14530adea4b6e206a57b668e2608496
+- translation generation produced 2,734 unique strings total: 18 manual/pre-seeded entries plus 2,716 newly translated strings in 79 batches
+- title-like refinement generated 97 additional requests in 3 batches and improved 93 / 100 title-like English remnants
+- final bootstrap cache contained 2,831 entries
+- NeoOrigins split: 2290 common + 6/17/17 target deltas
+- add-ons: 10 fallback files / 1253 physical strings
+- fragile printf and numbered-placeholder strings were pre-seeded/protected; punctuation/digit-only sentinels use whitespace-tolerant restoration and all placeholder sets were structurally audited
+- bootstrap sanity passed with 6,673 Belarusian-specific Ў/ў/І/і letters across 29 be_by files
+
+Belarusian contextual refinement:
+- workflow: .github/workflows/refine-belarusian.yml
+- workflow run 34364460234: SUCCESS
+- refinement commit 06b275d844b40f3e31a84670afa3a7dd4d11ef36 ("Refine Belarusian Minecraft terminology")
+- 339 values corrected across 19 files, including 245 safe sentence-spacing fixes
+- corrected contextual false friends and Minecraft terminology including Power/ability wording, Origin/Class labels, Apply, Drops, Spawn Rules, canonical Origin names, Night Vision, Ultimine, Nether/Netherite, Pavlov, Scales, health, experience and Origin Architect HUD labels
+- current Minecraft Belarusian terminology was used where available, including Начны зрок for Night Vision, Нэдар for the Nether, нэдарыт for Netherite, Здабыча for drops and з'яўленне for spawning
+- final sanity: 6,669 Belarusian-specific Ў/ў/І/і letters across 29 be_by source files
+- post-refinement NeoOrigins audits remained 0 overlap / 0 missing / 0 placeholder errors on all three targets
+- all 10 supported add-on audits passed with 0 overlap / 0 missing / 0 placeholder errors
+- post-refinement JSON validation passed
+
+Belarusian metadata:
+- synchronization run 34364755913: SUCCESS
+- metadata commit 54c305f079fa1daffa87e960484c499d2dc35c20 ("Document Belarusian localization in 0.9.0 beta")
+- catalog.json / CATALOG.md / README.md declare 53 supported locales and include be_by / Беларуская
+
+Final Belarusian three-target CI:
+- workflow: .github/workflows/build-0.9.0-belarusian.yml
+- workflow commit cae70b848e26d44f0e6265b63e03c84e03027d97
+- run ID 34364892271: SUCCESS on all three jobs
+- mc-1.21.1 passed strict NeoOrigins + all 10 add-on audits, JSON validation, Belarusian terminology/specific-letter sanity, Gradle build, exact packaging verification and JAR upload
+- mc-26.1.x and mc-26.2 passed strict NeoOrigins audit, JSON validation, Belarusian terminology/specific-letter sanity, Gradle build, exact packaging verification and JAR upload
+
+Belarusian packaging verified by CI:
+- 1.21.1: 27 be_by files = 16 common + 1 v121 delta + 10 add-ons
+- 26.1.x: 17 be_by files = 16 common + correct 26.1 delta
+- 26.2: 17 be_by files = 16 common + correct 26.2 delta
+- no add-on namespace or neoorigins_be_121 leaked into 26.x
+
+Final Belarusian JAR artifacts from run 34364892271:
+- mc-1.21.1: artifact ID 10109490233; size 4,119,783 bytes; SHA256 7f8716762429e4c4da0845312341ef589bcd42e5b1d081625c9d044bf77a0127
+- mc-26.1.x: artifact ID 10109467263; size 2,224,781 bytes; SHA256 e3f6483b9e1cfd7cbcc1c1faac75b6c8a488001aa9f97ad88ae1dd08decab7ee
+- mc-26.2: artifact ID 10109453937; size 2,224,371 bytes; SHA256 f6f7e4c811e83871ff82468eb087c0522ebb5fdf3c7ba11d7a72f7524538c778
+
+42. ORIGIN ARCHITECT AUDIT IMPROVEMENT
 --------------------------------------
 scripts/audit_origin_architect_upstream.py now supports --prune.
 Commit:
@@ -2545,7 +2634,7 @@ Behavior:
 
 Future language bootstraps should use this behavior so an already-official Origin Architect locale does not cause unnecessary fallback redistribution.
 
-42. CURRENT PERMANENT CI / BUILD VALIDATION
+43. CURRENT PERMANENT CI / BUILD VALIDATION
 -------------------------------------------
 Legacy/current main 0.9.0 workflow:
 - .github/workflows/build-0.9.0.yml
@@ -2594,7 +2683,7 @@ NOTE ABOUT FAILED GOVERNANCE WORKFLOW:
 - It is superseded by the directly committed supplemental workflow build-0.9.0-expanded-locales.yml.
 - Do not waste time treating that historical failure as a current defect.
 
-43. SOURCE OF TRUTH HIERARCHY
+44. SOURCE OF TRUTH HIERARCHY
 -----------------------------
 - catalog.json = machine-readable content/project truth
 - CATALOG.md = readable catalog generated from catalog.json
@@ -2603,19 +2692,19 @@ NOTE ABOUT FAILED GOVERNANCE WORKFLOW:
 - PROJECT_HANDOFF.txt = cross-chat decisions, current roadmap, latest operational status
 
 As of this update:
-- catalog.json says 52 supported locales
-- README.md says 52 languages and includes Malay ms_my, Filipino fil_ph, Welsh cy_gb, Irish ga_ie, Scottish Gaelic gd_gb, Armenian hy_am, Georgian ka_ge, Kazakh kk_kz, Mongolian mn_mn and Macedonian mk_mk
-- Romanian, Greek, Bulgarian, Vietnamese, Arabic, Hebrew, Thai, Slovak, Slovenian, Croatian, Serbian Cyrillic, Serbian Latin, Catalan, Estonian, Lithuanian, Latvian, Basque, Galician, Hindi, Norwegian Nynorsk, Persian, Icelandic, Malay, Filipino, Welsh, Irish, Scottish Gaelic, Armenian, Georgian, Kazakh, Mongolian and Macedonian have passed final three-target packaging validation
+- catalog.json says 53 supported locales
+- README.md says 53 languages and includes Malay ms_my, Filipino fil_ph, Welsh cy_gb, Irish ga_ie, Scottish Gaelic gd_gb, Armenian hy_am, Georgian ka_ge, Kazakh kk_kz, Mongolian mn_mn, Macedonian mk_mk and Belarusian be_by
+- Romanian, Greek, Bulgarian, Vietnamese, Arabic, Hebrew, Thai, Slovak, Slovenian, Croatian, Serbian Cyrillic, Serbian Latin, Catalan, Estonian, Lithuanian, Latvian, Basque, Galician, Hindi, Norwegian Nynorsk, Persian, Icelandic, Malay, Filipino, Welsh, Irish, Scottish Gaelic, Armenian, Georgian, Kazakh, Mongolian, Macedonian and Belarusian have passed final three-target packaging validation
 
-44. QUALITY / QA CAVEAT
+45. QUALITY / QA CAVEAT
 -----------------------
 Automated structural QA is strong: missing keys, overlaps, placeholders, JSON structure, builds, and packaging are audited.
 
 In-game visual wording/UI-width review and native-speaker linguistic review remain separate quality layers. Do not claim native-speaker perfection merely because CI is green.
 
-45. NEXT ACTION
+46. NEXT ACTION
 ---------------
-NEXT LANGUAGE = language 53.
+NEXT LANGUAGE = language 54.
 
 When Romain says continue / prochaine langue / vas-y:
 1. Read this PROJECT_HANDOFF.txt first.
@@ -2627,4 +2716,4 @@ When Romain says continue / prochaine langue / vas-y:
 7. Build all three targets and inspect packaging.
 8. Update catalog.json, CATALOG.md, README.md and this PROJECT_HANDOFF.txt.
 9. Do not re-add Mob Origins.
-10. Do not stop permanently at 53; language expansion should continue unless Romain changes scope.
+10. Do not stop permanently at 54; language expansion should continue unless Romain changes scope.

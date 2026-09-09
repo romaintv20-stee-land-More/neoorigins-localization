@@ -6,8 +6,8 @@
   "neoorigins.night_vision.on": "Naka-on ang night vision",
   "neoorigins.night_vision.off": "Naka-off ang night vision",
   "neoorigins.night_vision.disabled_by_server": "Naka-disable ang night vision sa server na ito.",
-  "neoorigins.night_vision.no_power": "Walang night vision ang pinanggalingan mo.",
-  "neoorigins.ultimine.no_power": "Ang iyong pinanggalingan ay hindi maaaring maging ugat sa akin.",
+  "neoorigins.night_vision.no_power": "Walang kakayahang Night Vision ang Origin mo.",
+  "neoorigins.ultimine.no_power": "Walang kakayahang Ultimine ang Origin mo.",
   "neoorigins.sleep.remember_spawn": "Hindi mo kailangan ng tulog — ngunit naaalala mo ang lugar na ito.",
   "message.neoorigins.food_restriction.cannot_eat": "Ipinagbabawal ng iyong diyeta ang pagkaing ito.",
   "origins.layer.origin": "Pinagmulan",
@@ -135,7 +135,7 @@
   "gui.neoorigins.info.evolution_tier_progress": "Nakapatay ang %s / %s",
   "screen.neoorigins.origin_editor": "Editor ng Pinagmulan",
   "gui.neoorigins.editor.layers_header": "Mga Layer ng Pinagmulan",
-  "gui.neoorigins.editor.powers_header": "I-toggle ang Powers",
+  "gui.neoorigins.editor.powers_header": "Mga Naitotoggle na Kapangyarihan",
   "gui.neoorigins.editor.change": "Baguhin",
   "gui.neoorigins.editor.pick": "Pumili",
   "gui.neoorigins.editor.on": "Naka-on",
@@ -148,5 +148,5 @@
   "gui.neoorigins.creator.tab.layer": "Layer",
   "gui.neoorigins.creator.tab.json": "JSON",
   "gui.neoorigins.creator.save": "I-save",
-  "gui.neoorigins.creator.apply": "Mag-apply"
+  "gui.neoorigins.creator.apply": "Ilapat"
 }

@@ -92,6 +92,7 @@ VALUE_REPLACEMENTS = {
 
 # Targeted terminology replacements. Keep Minecraft proper names recognizable.
 TEXT_REPLACEMENTS = [
+    (re.compile(r"\bGeplavei\b"), "Pavlov se refleks"),
     (re.compile(r"\bOnderland\b"), "Nether"),
     (re.compile(r"\bOnder-gebore\b"), "Nether-gebore"),
     (re.compile(r"\bnetheriet\b", re.I), lambda m: "Netherite" if m.group(0)[0].isupper() else "netherite"),

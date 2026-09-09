@@ -1,0 +1,65 @@
+name: Sync Hindi 0.9.0 metadata
+
+on:
+  push:
+    branches:
+      - release/0.9.0-hindi
+    paths:
+      - .github/workflows/sync-metadata-hindi.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-hindi
+
+      - name: Update catalog metadata
+        run: |
+          python3 scripts/update_catalog_hindi.py
+          python3 scripts/generate_catalog.py
+
+      - name: Update README metadata
+        run: python3 scripts/update_readme_hindi.py
+
+      - name: Validate Hindi metadata
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          catalog = json.loads(Path('catalog.json').read_text(encoding='utf-8'))
+          if catalog['project']['supported_locale_count'] != 39:
+              raise SystemExit('catalog locale count is not 39')
+          for project in catalog['supported_projects']:
+              if 'hi_in' not in project['languages']:
+                  raise SystemExit(f"hi_in missing from {project['id']}")
+          readme = Path('README.md').read_text(encoding='utf-8')
+          required = ['39 langues', 'Hindi (`hi_in`)', 'Pour le hindi :', '2 296/2 296', '2 307/2 307']
+          missing = [item for item in required if item not in readme]
+          if missing:
+              raise SystemExit(f'README Hindi markers missing: {missing}')
+          catalog_md = Path('CATALOG.md').read_text(encoding='utf-8')
+          if 'hi_in' not in catalog_md or 'हिन्दी' not in catalog_md:
+              raise SystemExit('CATALOG.md Hindi markers missing')
+          print('Hindi metadata validation passed: 39 locales')
+          PY
+
+      - name: Commit Hindi metadata
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add catalog.json CATALOG.md README.md
+          if git diff --cached --quiet; then
+            echo 'No Hindi metadata changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Document Hindi localization in 0.9.0 beta'
+          git fetch origin release/0.9.0-hindi
+          git rebase origin/release/0.9.0-hindi
+          git push origin HEAD:release/0.9.0-hindi

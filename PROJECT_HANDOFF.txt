@@ -38,8 +38,8 @@ Mob Origins is NOT selected for 0.9.0. Earlier Mob Origins WIP inherited from a 
 0.8.0 Beta shipped with 17 locales:
 fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se.
 
-0.9.0 development currently has 59 locales:
-fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se, da_dk, fi_fi, no_no, ro_ro, el_gr, bg_bg, vi_vn, ar_sa, he_il, th_th, sk_sk, sl_si, hr_hr, sr_sp, sr_cs, ca_es, et_ee, lt_lt, lv_lv, eu_es, gl_es, hi_in, nn_no, fa_ir, is_is, ms_my, fil_ph, cy_gb, ga_ie, gd_gb, hy_am, ka_ge, kk_kz, mn_mn, mk_mk, be_by, fo_fo, af_za, az_az, kn_in, cv_cu, uz_uz.
+0.9.0 development currently has 60 locales:
+fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se, da_dk, fi_fi, no_no, ro_ro, el_gr, bg_bg, vi_vn, ar_sa, he_il, th_th, sk_sk, sl_si, hr_hr, sr_sp, sr_cs, ca_es, et_ee, lt_lt, lv_lv, eu_es, gl_es, hi_in, nn_no, fa_ir, is_is, ms_my, fil_ph, cy_gb, ga_ie, gd_gb, hy_am, ka_ge, kk_kz, mn_mn, mk_mk, be_by, fo_fo, af_za, az_az, kn_in, cv_cu, uz_uz, mt_mt.
 
 Expansion order so far:
 - 18: Danish / da_dk
@@ -84,8 +84,9 @@ Expansion order so far:
 - 57: Kannada / kn_in
 - 58: Chuvash / cv_cu
 - 59: Uzbek / uz_uz
+- 60: Maltese / mt_mt
 
-FIFTY-NINE IS NOT THE FINAL TARGET. Continue expanding toward essentially all useful Minecraft languages unless Romain changes scope.
+SIXTY IS NOT THE FINAL TARGET. Continue expanding toward essentially all useful Minecraft languages unless Romain changes scope.
 
 Norwegian Nynorsk (nn_no) is intentionally NOT merged with Bokmal. It is a distinct written standard and remains a valid future locale.
 
@@ -3087,8 +3088,8 @@ NOTE ABOUT FAILED GOVERNANCE WORKFLOW:
 - PROJECT_HANDOFF.txt = cross-chat decisions, current roadmap, latest operational status
 
 As of this update:
-- catalog.json says 59 supported locales
-- README.md says 59 languages and includes the full expansion through Chuvash cv_cu and Uzbek uz_uz
+- catalog.json says 60 supported locales
+- README.md says 60 languages and includes Maltese mt_mt alongside the previously completed locales
 - Romanian, Greek, Bulgarian, Vietnamese, Arabic, Hebrew, Thai, Slovak, Slovenian, Croatian, Serbian Cyrillic, Serbian Latin, Catalan, Estonian, Lithuanian, Latvian, Basque, Galician, Hindi, Norwegian Nynorsk, Persian, Icelandic, Malay, Filipino, Welsh, Irish, Scottish Gaelic, Armenian, Georgian, Kazakh, Mongolian, Macedonian, Belarusian, Faroese, Afrikaans, Azerbaijani and Kannada have passed final three-target packaging validation
 
 49. QUALITY / QA CAVEAT
@@ -3294,9 +3295,118 @@ Integration discipline:
 NEXT LANGUAGE after Uzbek = language 60.
 Re-evaluate the current Minecraft Java locale inventory, choose a useful distinct locale not already in the 59-locale set, verify official upstream assets first, and apply the regional-variant dedup rule before generating fallbacks.
 
-52. NEXT ACTION
+52. MALTESE 0.9.0 STATUS
+--------------------------
+Maltese locale: mt_mt / Malti.
+Minecraft Java 26.2 language metadata verified before selection:
+- language.code: mlt_MT
+- language.name: Malti
+- language.region: Malta
+
+Status: COMPLETE FOR THE CURRENT 0.9.0 DEVELOPMENT BASELINE: GENERATED, CONTEXTUALLY REFINED, STRICTLY AUDITED, BUILT, PACKAGING-VERIFIED, AND DOCUMENTED.
+
+Selection rationale:
+- Maltese is a current Minecraft Java locale and a distinct Semitic language with substantial Romance influence.
+- It is not a regional near-duplicate of any of the first 59 locales.
+- NeoOrigins 2.2.27 has no official mt_mt file on any of the three supported targets, so a complete low-priority fallback is required.
+- Gallo was evaluated first for language 60, but the current generation backend did not support it cleanly enough for this project's quality bar; Maltese was therefore selected instead. Re-evaluate Gallo and other remaining Minecraft locales later rather than assuming they are permanently excluded.
+
+Staging:
+- branch: release/0.9.0-maltese
+- exact beta base used to create staging: 0f6703ced765303ad088077322ec55fd5e02fc00
+- final build source SHA: 39a3582a22c42295e234c5e15755432025c451b1
+
+NeoOrigins pinned refs (2.2.27):
+- 1.21.1: af467a3bc118f6bbc0970d68f7e03fa631d7e6f2
+- 26.1.x: aa207ef14cf3b938e28b4081162701953957c1d5
+- 26.2: 511cadcafe3027d2a56b4448652ec9b74e2f3b07
+
+Architecture:
+- 16 common namespaces: neoorigins_mt_common_01 through neoorigins_mt_common_16
+- 1.21.1 delta namespace: neoorigins_mt_121
+- 26.1.x overlay: mt_mt inside neoorigins_26_1
+- 26.2 overlay: mt_mt inside neoorigins_26_2
+- all 10 supported/licensed add-ons receive mt_mt fallback files on 1.21.1
+- Gradle target switch: include_maltese_121_translations / includeMaltese121Translations
+
+Coverage / strict audits:
+- NeoOrigins 1.21.1: 2296 / 2296
+- NeoOrigins 26.1.x: 2307 / 2307
+- NeoOrigins 26.2: 2307 / 2307
+- missing: 0
+- overlap: 0
+- placeholder errors: 0
+- all 10 add-on audits: 0 missing / 0 overlap / 0 placeholder errors
+- scripts/validate.py: passed
+
+Generation / bootstrap evidence:
+- successful bootstrap run: 34406636751
+- successful bootstrap job: 102651062952
+- validated localization commit: c7300873568abb27055fd9bd6f98d41be1fba59b
+- bootstrap/audit artifact ID: 10125673999
+- bootstrap artifact ZIP SHA256: 5bd0359ed2f58ccddd72e6bf2404b88c1d6a4641c11560f1023f58ec41cae9c6
+- generated NeoOrigins split: 2290 common + 6 / 17 / 17 target-specific keys
+- generated Maltese files: 29 total
+- generation: 19 manual/pre-seeded entries + 2715 newly translated strings in 79 batches
+- title-like refinement: 393 requests in 12 batches; 186 / 396 title-like English remnants improved
+- bootstrap sanity: 1764 Maltese lexical markers, 8309 Maltese-specific letters, 107040 Latin characters across 29 files
+
+Contextual terminology QA:
+- deterministic refinement run: 34407239933
+- refinement job: 102653050567
+- refinement commit: f8027a0a568436306b8dfe49c80de053bebd3087
+- refined QA artifact ID: 10125799887
+- refined QA artifact ZIP SHA256: 9632df91f29ed37ccc3b25fb7cf78a29e86e01e8f5785d381413ddda53d64cfa
+- 189 values corrected across 20 / 29 files; 86 guarded gameplay/UI keys verified
+- current Minecraft Maltese terminology was preferred where applicable, including Viżjoni bil-Lejl, Nether, Netherit and Tfaċċar terminology
+- branded/project terms Origin, Origin Creator, Mob Origin Creator and Origin Architect remain canonical
+- corrected gameplay terms include Klassi, Setgħat, Applika, Regoli tat-Tfaċċar, Oġġetti Mwaqqgħin, anatomical Skaldi, Reazzjoni ta' Pavlov and multiple Origins Furries false friends
+- all 64 NeoOrigins hotkeys normalized as Tast Rapidu 01 through Tast Rapidu 64
+- post-refinement sanity: 1688 lexical markers and 8320 Maltese-specific letters
+- all strict NeoOrigins and 10 add-on audits passed again after refinement
+
+Metadata evidence:
+- metadata run: 34407430131
+- metadata job: 102653676489
+- metadata commit: 27e214a33031cac3e5c9ed46cbfc7ed68d61b985
+- catalog.json supported_locale_count = 60
+- catalog.json, CATALOG.md and README.md include mt_mt / Malti / Maltais and exact three-version coverage
+- README historical seven-locale recovery wording was corrected so those 2.2.27 gaps are no longer presented as pending
+
+Final build evidence:
+- build run: 34407512286
+- source SHA: 39a3582a22c42295e234c5e15755432025c451b1
+- 1.21.1 job 102653926878: success; packaging 27 / 27 mt_mt files; NeoOrigins 2296 expected / 2296 packaged / 0 duplicates
+  - artifact ID 10125950371
+  - JAR SHA256 3d2b68ab100b8b5e165c6a3d2b98f57832892a782cdf5f9c2dd36c9a8cd7acb8
+  - artifact ZIP SHA256 5d4660b592ad03808dafcf35fe549976ac350f7f7a7afd267df991223ab7b177
+- 26.1.x job 102653926601: success; packaging 17 / 17 mt_mt files; NeoOrigins 2307 expected / 2307 packaged / 0 duplicates
+  - artifact ID 10125943701
+  - JAR SHA256 5844a019c1880a952d87931c59f5199cc8de15307d8871b9cbc634d9ea156ef5
+  - artifact ZIP SHA256 a00972479da98c3942ee4258aa5a7e2710f40632ef1f31699d67f06e99001dc8
+- 26.2 job 102653926923: success; packaging 17 / 17 mt_mt files; NeoOrigins 2307 expected / 2307 packaged / 0 duplicates
+  - artifact ID 10125933334
+  - JAR SHA256 8bb11b21929a97e35fda0c8922d3369592b47931767620a349052f8b705685b8
+  - artifact ZIP SHA256 5f1fb924f42a6677d986427570d978ca140ee6bd3d9b6b8c43a56b0348a965ad
+
+Packaging semantics verified by CI:
+- 1.21.1 = 16 common + neoorigins_mt_121 + 10 add-ons = 27; no 26.x Maltese overlays
+- 26.1.x = 16 common + neoorigins_26_1 = 17; no add-ons and no neoorigins_mt_121
+- 26.2 = 16 common + neoorigins_26_2 = 17; no add-ons and no neoorigins_mt_121
+- packaged NeoOrigins keys are unique and exactly equal to each target's English-minus-official required keyset
+
+Integration discipline:
+- release/0.9.0-beta must be refetched immediately before integration.
+- Only fast-forward release/0.9.0-beta to the exact release/0.9.0-maltese HEAD when compare shows staging is ahead-only and behind_by=0.
+- Never force-push.
+- After integration, release/0.9.0-beta and release/0.9.0-maltese must resolve to the exact same SHA.
+
+NEXT LANGUAGE after Maltese = language 61.
+Re-evaluate the current Minecraft Java locale inventory, choose a useful distinct locale not already in the 60-locale set, verify official upstream assets first, and apply the regional-variant dedup rule before generating fallbacks.
+
+53. NEXT ACTION
 ---------------
-NEXT LANGUAGE = language 60.
+NEXT LANGUAGE = language 61.
 
 When Romain says continue / prochaine langue / vas-y:
 1. Read this PROJECT_HANDOFF.txt first.

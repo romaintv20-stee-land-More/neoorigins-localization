@@ -6,26 +6,26 @@
 - Current release branch: `release/0.9.0-beta`
 - **Do not use `main`**: it is behind.
 - Read `PROJECT_HANDOFF.txt` first.
-- Completed language count: **59**.
-- Last completed language: **#59 Uzbek / Ouzbek — `uz_uz / O'zbekcha`**.
-- **Do not redo Uzbek.**
-- Next language: **#60**.
+- Completed language count: **60**.
+- Last completed language: **#60 Maltese / Maltais — `mt_mt / Malti`**.
+- **Do not redo Maltese.**
+- Next language: **#61**.
 - The historical NeoOrigins 2.2.27 gaps in Italian, Polish, Russian, Simplified Chinese, Turkish, Czech and Hungarian were recovered **before #59**; do not treat that recovery as pending.
 
-## #59 Uzbek verification
+## #60 Maltese verification
 
-Staging branch: `release/0.9.0-uzbek`
+Staging branch: `release/0.9.0-maltese`
 
 Original beta base used for staging:
-`55fd96c10847e5775844fd8c60cd31869367bc37`
+`0f6703ced765303ad088077322ec55fd5e02fc00`
 
 Final build source:
-`165ade375054bb3413c1104d43ab1a9705cf10b4`
+`39a3582a22c42295e234c5e15755432025c451b1`
 
-Minecraft metadata verified for the current Java 26.2 locale:
-- code `uzb_UZ`
-- name `O'zbekcha`
-- region `O'zbekiston`
+Minecraft Java 26.2 metadata verified before selection:
+- code `mlt_MT`
+- name `Malti`
+- region `Malta`
 
 NeoOrigins 2.2.27 refs:
 - 1.21.1 `af467a3bc118f6bbc0970d68f7e03fa631d7e6f2`
@@ -44,47 +44,50 @@ Strict QA:
 - all 10 supported 1.21.1 add-ons: strict success
 - JSON validator: success
 - contextual refinement: success
-- bootstrap sanity: **2,736 Uzbek lexical markers, 118,063 Latin chars, 29 files**
+- final contextual sanity: **1688 Maltese lexical markers, 8320 Maltese-specific letters, 29 files**
 
-Important contextual corrections after machine-translation review include `Origin`, `Klass`, `Qobiliyatlar`, `Tunda ko'rish`, Nether/Netherit, Spawn Rules, Drops, XP/tajriba, Origin Architect, Scales→`Tangachalar`, Pavlov, Boing, damage-direction semantics and 64 hotkeys. Do not revert these to raw machine translations.
+Important contextual corrections include branded `Origin` terminology, `Klassi`, `Setgħat`, `Applika`, `Regoli tat-Tfaċċar`, `Oġġetti Mwaqqgħin`, official-style `Viżjoni bil-Lejl`, Nether/Netherit, anatomical `Skaldi`, `Reazzjoni ta' Pavlov`, multiple Origins Furries false friends and 64 normalized `Tast Rapidu` hotkeys. Do not revert these to raw machine translations.
+
+Gallo `go_fr` was considered first for #60 because it is a current Minecraft locale, but the current generation backend did not support it cleanly enough for the project's quality bar. This is not a permanent exclusion: re-evaluate Gallo, Võro and the full remaining current Java locale inventory for future languages.
 
 ## Runs, commits and artifacts
 
 Bootstrap:
-- successful run `34404408970`
-- job `102643820338`
-- artifact `10124847581`
-- artifact ZIP SHA256 `e72fd17629a914e0a678eb4b854ba94c67fce8db2f95384ae1e85704af3f32f2`
-- first generation attempt had correctly failed on a duplicated `%s`; the fragile Void Warp string was then protected before the successful run
+- successful run `34406636751`
+- job `102651062952`
+- localization commit `c7300873568abb27055fd9bd6f98d41be1fba59b`
+- artifact `10125673999`
+- artifact ZIP SHA256 `5bd0359ed2f58ccddd72e6bf2404b88c1d6a4641c11560f1023f58ec41cae9c6`
 
 Contextual refinement:
-- run `34405017821`
-- job `102645798233`
-- commit `861b9ebb6ed5398392ffc417a970700775939f31`
-- artifact `10124960454`
-- artifact ZIP SHA256 `de4f3000168e932a72784cc11b02be02ff9c8d353949655e95877ef4767e3de9`
+- run `34407239933`
+- job `102653050567`
+- commit `f8027a0a568436306b8dfe49c80de053bebd3087`
+- artifact `10125799887`
+- artifact ZIP SHA256 `9632df91f29ed37ccc3b25fb7cf78a29e86e01e8f5785d381413ddda53d64cfa`
+- 189 values changed across 20/29 files; 86 guarded keys
 
 Metadata:
-- run `34405172443`
-- job `102646304663`
-- commit `c3bb6f59dc033752f5c888facdcbf4b094148f7d`
-- catalog locale count **59**
+- run `34407430131`
+- job `102653676489`
+- commit `27e214a33031cac3e5c9ed46cbfc7ed68d61b985`
+- catalog locale count **60**
 
-Final builds — run `34405347643`, source `165ade375054bb3413c1104d43ab1a9705cf10b4`:
-- 1.21.1 job `102646879573`, artifact `10125122605`, package **27/27**, JAR SHA256 `4aa2302d09113b0848ba68061e2e960d7bad2929a2e841df056e18a6afa6af73`, ZIP SHA256 `54bf6d875e58dbfc69854ae07dfd85051b0327a75a3a4d767a8f9437f6c7dbd2`
-- 26.1.x job `102646879547`, artifact `10125125703`, package **17/17**, JAR SHA256 `99c1ffdc550cfe8cb9cc7a1c397b8a73000f58770c79bf1c0ce441e87b41182f`, ZIP SHA256 `d2439f1d23f06f2b9225003badbd6510401ef83ff24723f2b185d7b2cbf87069`
-- 26.2 job `102646879215`, artifact `10125120396`, package **17/17**, JAR SHA256 `d623a82bafb9291ae3e2fa37a3fd9d17d0c6b87a86440e58684f8ed0c6924e68`, ZIP SHA256 `6fb6ad0e87aed483d319f539b07f69bfb64d9451fdb462526704474fda45807f`
+Final builds — run `34407512286`, source `39a3582a22c42295e234c5e15755432025c451b1`:
+- 1.21.1 job `102653926878`, artifact `10125950371`, package **27/27**, JAR SHA256 `3d2b68ab100b8b5e165c6a3d2b98f57832892a782cdf5f9c2dd36c9a8cd7acb8`, ZIP SHA256 `5d4660b592ad03808dafcf35fe549976ac350f7f7a7afd267df991223ab7b177`
+- 26.1.x job `102653926601`, artifact `10125943701`, package **17/17**, JAR SHA256 `5844a019c1880a952d87931c59f5199cc8de15307d8871b9cbc634d9ea156ef5`, ZIP SHA256 `a00972479da98c3942ee4258aa5a7e2710f40632ef1f31699d67f06e99001dc8`
+- 26.2 job `102653926923`, artifact `10125933334`, package **17/17**, JAR SHA256 `8bb11b21929a97e35fda0c8922d3369592b47931767620a349052f8b705685b8`, ZIP SHA256 `5f1fb924f42a6677d986427570d978ca140ee6bd3d9b6b8c43a56b0348a965ad`
 
-The build verifier opened each JAR, merged all Uzbek NeoOrigins files, rejected duplicate keys and required the packaged keyset to equal the exact target English-minus-official set.
+The build verifier opened each JAR, merged all Maltese NeoOrigins files, rejected duplicate keys and required the packaged keyset to equal the exact target English-minus-official set.
 
-## Starting #60
+## Starting #61
 
 Before doing anything:
 1. Refetch the exact current HEAD of `release/0.9.0-beta`.
 2. Verify this handoff and `PROJECT_HANDOFF.txt` agree with the repository state.
-3. Re-evaluate the current Minecraft Java locale inventory and choose a useful distinct language not already in the 59-locale set; do not assume a locale code.
+3. Re-evaluate the full current Minecraft Java locale inventory and choose a useful distinct language not already in the 60-locale set; do not assume a locale code or that the next candidate must be Gallo.
 4. Verify current Minecraft language assets and official NeoOrigins/add-on translations before fallbacks.
-5. Create the #60 staging branch from the exact beta HEAD.
+5. Create the #61 staging branch from the exact beta HEAD.
 6. Repeat generation → official-priority pruning → strict structural audits → contextual QA → three real builds → packaging verification → metadata/handoffs → safe fast-forward.
 
 Never force-push. Immediately before integration, refetch beta, require an ahead-only compare with `behind_by=0`, update beta with `force=false`, then refetch both branches and verify exact identical SHA/state.

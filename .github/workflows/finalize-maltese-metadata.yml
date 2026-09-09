@@ -1,0 +1,71 @@
+name: Finalize Maltese metadata
+
+on:
+  push:
+    branches: [ release/0.9.0-maltese ]
+    paths:
+      - scripts/finalize_maltese_metadata.py
+      - .github/workflows/finalize-maltese-metadata.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  metadata:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-maltese
+          fetch-depth: 0
+
+      - name: Finalize Maltese catalogue metadata
+        run: python3 scripts/finalize_maltese_metadata.py
+
+      - name: Validate catalog JSON
+        run: python3 -m json.tool catalog.json >/dev/null
+
+      - name: Verify locale count and Maltese entries
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          c=json.loads(Path('catalog.json').read_text(encoding='utf-8'))
+          assert c['project']['supported_locale_count'] == 60
+          hits=0
+          def walk(o):
+              global hits
+              if isinstance(o,dict):
+                  if 'mt_mt' in o and isinstance(o['mt_mt'],dict) and o['mt_mt'].get('name') == 'Malti':
+                      hits += 1
+                  for v in o.values(): walk(v)
+              elif isinstance(o,list):
+                  for v in o: walk(v)
+          walk(c)
+          assert hits >= 11, hits
+          readme=Path('README.md').read_text(encoding='utf-8')
+          assert readme.count('| 60 |') == 3
+          assert 'Maltais (`mt_mt`)' in readme
+          assert 'Pour le maltais :' in readme
+          assert '**1.21.1 : 2 296/2 296 clés** couvertes' in readme
+          assert readme.count('**26.1.x : 2 307/2 307 clés** couvertes') >= 2
+          assert readme.count('**26.2 : 2 307/2 307 clés** couvertes') >= 2
+          assert 'Les soixante langues' in readme
+          assert 'restent très partiels sur les trois cibles' not in readme
+          assert 'sept lacunes historiques' in readme and 'ont depuis été récupérées' in readme
+          catalog_md=Path('CATALOG.md').read_text(encoding='utf-8')
+          assert catalog_md.count('Malti (`mt_mt`)') >= 11
+          print('Metadata assertions passed:', hits, 'Maltese catalog entries')
+          PY
+
+      - name: Commit metadata
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add catalog.json CATALOG.md README.md
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Document Maltese localization support'
+          git fetch origin release/0.9.0-maltese
+          git rebase origin/release/0.9.0-maltese
+          git push origin HEAD:release/0.9.0-maltese

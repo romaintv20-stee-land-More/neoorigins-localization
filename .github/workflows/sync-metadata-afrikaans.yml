@@ -1,0 +1,66 @@
+name: Sync Afrikaans 55-locale metadata
+
+on:
+  push:
+    branches:
+      - release/0.9.0-afrikaans
+    paths:
+      - .github/workflows/sync-metadata-afrikaans.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-afrikaans
+
+      - name: Update catalog metadata
+        run: |
+          python3 scripts/update_catalog_afrikaans.py
+          python3 scripts/generate_catalog.py
+
+      - name: Update README metadata
+        run: python3 scripts/update_readme_afrikaans.py
+
+      - name: Validate 55-locale metadata
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          catalog=json.loads(Path('catalog.json').read_text(encoding='utf-8'))
+          if catalog['project']['supported_locale_count'] != 55:
+              raise SystemExit('catalog locale count is not 55')
+          for project in catalog['supported_projects']:
+              for locale in ('fo_fo','af_za'):
+                  if locale not in project['languages']:
+                      raise SystemExit(f"{locale} missing from {project['id']}")
+          readme=Path('README.md').read_text(encoding='utf-8')
+          required=['Les cinquante-cinq langues','Féroïen (`fo_fo`)','Afrikaans (`af_za`)','Pour le féroïen :',"Pour l'afrikaans :",'/ FO / AF']
+          missing=[item for item in required if item not in readme]
+          if missing: raise SystemExit(f'README Afrikaans markers missing: {missing}')
+          catalog_md=Path('CATALOG.md').read_text(encoding='utf-8')
+          for marker in ('fo_fo','af_za','Føroyskt','Afrikaans'):
+              if marker not in catalog_md:
+                  raise SystemExit(f'CATALOG.md marker missing: {marker}')
+          print('Afrikaans 55-locale metadata validation passed')
+          PY
+
+      - name: Commit Afrikaans metadata
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add catalog.json CATALOG.md README.md
+          if git diff --cached --quiet; then
+            echo 'No Afrikaans metadata changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Document Afrikaans localization in 0.9.0 beta'
+          git fetch origin release/0.9.0-afrikaans
+          git rebase origin/release/0.9.0-afrikaans
+          git push origin HEAD:release/0.9.0-afrikaans

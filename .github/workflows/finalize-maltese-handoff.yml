@@ -1,0 +1,58 @@
+name: Finalize Maltese handoff
+
+on:
+  push:
+    branches: [ release/0.9.0-maltese ]
+    paths:
+      - scripts/finalize_maltese_handoff.py
+      - .github/workflows/finalize-maltese-handoff.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  handoff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-maltese
+          fetch-depth: 0
+
+      - name: Finalize Maltese handoffs
+        run: python3 scripts/finalize_maltese_handoff.py
+
+      - name: Assert final handoff state
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          project=Path('PROJECT_HANDOFF.txt').read_text(encoding='utf-8')
+          nxt=Path('NEXT_CHAT_HANDOFF.md').read_text(encoding='utf-8')
+          checks={
+            'project 60 locales':'0.9.0 development currently has 60 locales:' in project,
+            'locale mt_mt in baseline':'cv_cu, uz_uz, mt_mt.' in project,
+            'expansion 60':'- 60: Maltese / mt_mt' in project,
+            'not final':'SIXTY IS NOT THE FINAL TARGET.' in project,
+            'Maltese status':'52. MALTESE 0.9.0 STATUS' in project,
+            'build run':'34407512286' in project,
+            'next 61 project':'NEXT LANGUAGE = language 61.' in project,
+            'next handoff count':'Completed language count: **60**.' in nxt,
+            'next handoff Maltese':'#60 Maltese / Maltais' in nxt,
+            'next handoff 61':'Next language: **#61**.' in nxt,
+          }
+          failed=[k for k,v in checks.items() if not v]
+          if failed: raise SystemExit('Handoff assertions failed: '+', '.join(failed))
+          print('Maltese handoff assertions passed.')
+          PY
+
+      - name: Commit final handoffs
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add PROJECT_HANDOFF.txt NEXT_CHAT_HANDOFF.md
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Finalize Maltese handoff and prepare language 61'
+          git fetch origin release/0.9.0-maltese
+          git rebase origin/release/0.9.0-maltese
+          git push origin HEAD:release/0.9.0-maltese

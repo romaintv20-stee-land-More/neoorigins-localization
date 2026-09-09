@@ -1,0 +1,199 @@
+name: Recover historical NeoOrigins locale gaps
+
+on:
+  push:
+    branches: [ release/0.9.0-legacy-gap-recovery ]
+    paths:
+      - '.github/workflows/recover-legacy-neoorigins-gaps.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout recovery branch
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-legacy-gap-recovery
+          fetch-depth: 0
+
+      - name: Fetch historical translation branches
+        run: |
+          git fetch origin release/0.8.0-czech:refs/remotes/origin/release/0.8.0-czech
+          git fetch origin release/0.8.0-hungarian:refs/remotes/origin/release/0.8.0-hungarian
+
+      - name: Restore Czech Turkish and Hungarian split translations
+        run: |
+          python3 - <<'PY'
+          import subprocess
+          from pathlib import Path
+
+          root = Path('src/main/resources/resourcepacks/fallback_localizations/assets')
+          sources = {
+              'origin/release/0.8.0-czech': ('neoorigins_cs_', 'neoorigins_tr_'),
+              'origin/release/0.8.0-hungarian': ('neoorigins_hu_',),
+          }
+          restored = []
+          for ref, prefixes in sources.items():
+              names = subprocess.check_output(['git','ls-tree','-r','--name-only',ref], text=True).splitlines()
+              for path in names:
+                  p = Path(path)
+                  if not path.startswith(str(root) + '/') or p.name not in {'cs_cz.json','tr_tr.json','hu_hu.json'}:
+                      continue
+                  namespace = p.parts[-3]
+                  if not any(namespace.startswith(prefix) for prefix in prefixes):
+                      continue
+                  data = subprocess.check_output(['git','show',f'{ref}:{path}'])
+                  p.parent.mkdir(parents=True, exist_ok=True)
+                  p.write_bytes(data)
+                  restored.append(path)
+          print(f'Restored {len(restored)} historical split files')
+          for path in restored:
+              print(path)
+          if len([p for p in restored if '/neoorigins_cs_' in p]) < 19:
+              raise SystemExit('Expected at least 19 Czech split files')
+          if len([p for p in restored if '/neoorigins_tr_' in p]) < 20:
+              raise SystemExit('Expected at least 20 Turkish split files')
+          if len([p for p in restored if '/neoorigins_hu_' in p]) < 19:
+              raise SystemExit('Expected at least 19 Hungarian split files')
+          PY
+
+      - name: Reuse existing 26.2 translations for four 52-key gaps
+        run: |
+          python3 - <<'PY'
+          import json, urllib.request
+          from pathlib import Path
+
+          assets = Path('src/main/resources/resourcepacks/fallback_localizations/assets')
+          refs = {
+              '121':'af467a3bc118f6bbc0970d68f7e03fa631d7e6f2',
+              '261':'aa207ef14cf3b938e28b4081162701953957c1d5',
+              '262':'511cadcafe3027d2a56b4448652ec9b74e2f3b07',
+          }
+          base='https://raw.githubusercontent.com/CyberDay1/NeoOrigins/{ref}/src/main/resources/assets/neoorigins/lang/{locale}.json'
+          def fetch(ref, locale):
+              try:
+                  with urllib.request.urlopen(base.format(ref=ref,locale=locale), timeout=30) as r:
+                      return json.load(r)
+              except urllib.error.HTTPError as e:
+                  if e.code == 404: return {}
+                  raise
+          import urllib.error
+          english={k:fetch(v,'en_us') for k,v in refs.items()}
+          locales=['it_it','pl_pl','ru_ru','zh_cn']
+          for locale in locales:
+              official={k:fetch(v,locale) for k,v in refs.items()}
+              source_path=assets/'neoorigins_26_2/lang'/f'{locale}.json'
+              source=json.loads(source_path.read_text(encoding='utf-8'))
+              for target, namespace in [('121','neoorigins_121_batch1'),('261','neoorigins_26_1')]:
+                  path=assets/namespace/'lang'/f'{locale}.json'
+                  current=json.loads(path.read_text(encoding='utf-8')) if path.exists() else {}
+                  missing=[k for k in english[target] if k not in official[target] and k not in current]
+                  copied=0
+                  for key in missing:
+                      if key not in source:
+                          continue
+                      if key not in english['262'] or english[target][key] != english['262'][key]:
+                          raise SystemExit(f'{locale} {target}: English mismatch for reusable key {key}')
+                      current[key]=source[key]
+                      copied += 1
+                  path.parent.mkdir(parents=True,exist_ok=True)
+                  path.write_text(json.dumps(current,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+                  print(f'{locale} {target}: copied {copied} existing translations into {namespace}')
+                  if copied != 52:
+                      raise SystemExit(f'{locale} {target}: expected exactly 52 recovered values, copied {copied}')
+          PY
+
+      - name: Prune official overlaps from restored historical splits
+        run: |
+          python3 - <<'PY'
+          import json, urllib.request, urllib.error
+          from pathlib import Path
+          assets=Path('src/main/resources/resourcepacks/fallback_localizations/assets')
+          refs=['af467a3bc118f6bbc0970d68f7e03fa631d7e6f2','aa207ef14cf3b938e28b4081162701953957c1d5','511cadcafe3027d2a56b4448652ec9b74e2f3b07']
+          base='https://raw.githubusercontent.com/CyberDay1/NeoOrigins/{ref}/src/main/resources/assets/neoorigins/lang/{locale}.json'
+          for locale,prefix in [('tr_tr','neoorigins_tr_*'),('cs_cz','neoorigins_cs_*'),('hu_hu','neoorigins_hu_*')]:
+              official=set()
+              english=set()
+              for ref in refs:
+                  with urllib.request.urlopen(base.format(ref=ref,locale='en_us'),timeout=30) as r: english |= set(json.load(r))
+                  try:
+                      with urllib.request.urlopen(base.format(ref=ref,locale=locale),timeout=30) as r: official |= set(json.load(r))
+                  except urllib.error.HTTPError as e:
+                      if e.code != 404: raise
+              removed_official=removed_stale=0
+              for path in sorted(assets.glob(f'{prefix}/lang/{locale}.json')):
+                  data=json.loads(path.read_text(encoding='utf-8'))
+                  clean={k:v for k,v in data.items() if k in english and k not in official}
+                  removed_official += sum(k in official for k in data)
+                  removed_stale += sum(k not in english for k in data)
+                  path.write_text(json.dumps(clean,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+              print(locale, 'removed official', removed_official, 'removed stale', removed_stale)
+          PY
+
+      - name: Strict audit all seven recovered locales
+        run: |
+          set -euo pipefail
+          audit() {
+            target="$1"; ref="$2"; locale="$3"; shift 3
+            python3 scripts/audit_neoorigins_upstream.py --ref "$ref" --locale "$locale" --output "build/legacy-recovery/$target/$locale" "$@" --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          }
+          for locale in it_it pl_pl ru_ru zh_cn; do
+            audit 1.21.1 af467a3bc118f6bbc0970d68f7e03fa631d7e6f2 "$locale" --extra-namespace neoorigins_226 --extra-namespace neoorigins_121_batch1
+            audit 26.1.x aa207ef14cf3b938e28b4081162701953957c1d5 "$locale" --extra-namespace neoorigins_226 --extra-namespace neoorigins_26_1
+            audit 26.2 511cadcafe3027d2a56b4448652ec9b74e2f3b07 "$locale" --extra-namespace neoorigins_226 --extra-namespace neoorigins_26_2
+          done
+          audit 1.21.1 af467a3bc118f6bbc0970d68f7e03fa631d7e6f2 tr_tr --extra-namespace neoorigins_226 --fallback-namespace-glob 'neoorigins_tr_*'
+          audit 26.1.x aa207ef14cf3b938e28b4081162701953957c1d5 tr_tr --extra-namespace neoorigins_226 --extra-namespace neoorigins_26_1 --fallback-namespace-glob 'neoorigins_tr_*'
+          audit 26.2 511cadcafe3027d2a56b4448652ec9b74e2f3b07 tr_tr --extra-namespace neoorigins_226 --extra-namespace neoorigins_26_2 --fallback-namespace-glob 'neoorigins_tr_*'
+          audit 1.21.1 af467a3bc118f6bbc0970d68f7e03fa631d7e6f2 cs_cz --extra-namespace neoorigins_226 --fallback-namespace-glob 'neoorigins_cs_*'
+          audit 26.1.x aa207ef14cf3b938e28b4081162701953957c1d5 cs_cz --extra-namespace neoorigins_226 --extra-namespace neoorigins_26_1 --fallback-namespace-glob 'neoorigins_cs_*'
+          audit 26.2 511cadcafe3027d2a56b4448652ec9b74e2f3b07 cs_cz --extra-namespace neoorigins_226 --extra-namespace neoorigins_26_2 --fallback-namespace-glob 'neoorigins_cs_*'
+          audit 1.21.1 af467a3bc118f6bbc0970d68f7e03fa631d7e6f2 hu_hu --extra-namespace neoorigins_226 --fallback-namespace-glob 'neoorigins_hu_*'
+          audit 26.1.x aa207ef14cf3b938e28b4081162701953957c1d5 hu_hu --extra-namespace neoorigins_226 --extra-namespace neoorigins_26_1 --fallback-namespace-glob 'neoorigins_hu_*'
+          audit 26.2 511cadcafe3027d2a56b4448652ec9b74e2f3b07 hu_hu --extra-namespace neoorigins_226 --extra-namespace neoorigins_26_2 --fallback-namespace-glob 'neoorigins_hu_*'
+
+      - name: Validate JSON and contextual report
+        run: |
+          python3 scripts/validate.py
+          python3 - <<'PY'
+          import json,re
+          from pathlib import Path
+          assets=Path('src/main/resources/resourcepacks/fallback_localizations/assets')
+          sensitive=re.compile(r'(power|origin|ability|class|apply|night|vision|nether|netherite|spawn|loot|drop|experience|health|scale|pavlov|architect|mana|elytra|speed|mining|creator)',re.I)
+          report={}
+          for locale,prefix in [('tr_tr','neoorigins_tr_*'),('cs_cz','neoorigins_cs_*'),('hu_hu','neoorigins_hu_*')]:
+              entries=[]
+              for path in sorted(assets.glob(f'{prefix}/lang/{locale}.json')):
+                  data=json.loads(path.read_text(encoding='utf-8'))
+                  for k,v in data.items():
+                      if sensitive.search(k): entries.append({'key':k,'value':v,'file':str(path)})
+              report[locale]=entries
+              print(locale, 'context-sensitive entries', len(entries))
+          out=Path('build/legacy-recovery/contextual-report.json'); out.parent.mkdir(parents=True,exist_ok=True)
+          out.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          PY
+          git diff --check
+
+      - name: Commit recovered translations
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/main/resources/resourcepacks/fallback_localizations/assets
+          if git diff --cached --quiet; then
+            echo 'No recovery changes to commit'
+          else
+            git commit -m 'Recover seven historical NeoOrigins locales'
+            git push origin HEAD:release/0.9.0-legacy-gap-recovery
+          fi
+
+      - name: Upload recovery audit
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: legacy-neoorigins-gap-recovery-${{ github.sha }}
+          path: build/legacy-recovery
+          if-no-files-found: warn

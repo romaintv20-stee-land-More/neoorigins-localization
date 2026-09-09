@@ -1,0 +1,232 @@
+name: Build 0.9.0 Malay plus Filipino
+
+on:
+  push:
+    branches: [ release/0.9.0-filipino-rebased ]
+    paths:
+      - '.github/workflows/build-0.9.0-filipino-rebased.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Combined ${{ matrix.target }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: mc-1.21.1
+            minecraft: '1.21.1'
+            minecraft_range: '[1.21.1]'
+            java: '21'
+            gradle: '8.14.3'
+            neoforge: '21.1.248'
+            loader_range: '[1,)'
+            parchment: 'true'
+            pack_format: '34'
+            source_variant: 'mc1_21_1'
+            upstream_ref: '860ecdb24e723983e93004ea8ceb5de90ccf0d70'
+            fil_extra_namespace: 'neoorigins_fil_121'
+            ms_extra_namespace: 'neoorigins_ms_121'
+            include_addons: true
+            include_121_batch: true
+            include_121_locales: true
+            include_26_1: false
+            include_26_2: false
+          - target: mc-26.1.x
+            minecraft: '26.1.2'
+            minecraft_range: '[26.1,26.2)'
+            java: '25'
+            gradle: '9.4.1'
+            neoforge: '26.1.2.29-beta'
+            loader_range: '[4,)'
+            parchment: 'false'
+            pack_format: '84'
+            source_variant: 'mc26_1'
+            upstream_ref: '3c1c7365507679c836d3c14af5d4dd0654652e87'
+            fil_extra_namespace: 'neoorigins_26_1'
+            ms_extra_namespace: 'neoorigins_26_1'
+            include_addons: false
+            include_121_batch: true
+            include_121_locales: false
+            include_26_1: true
+            include_26_2: false
+          - target: mc-26.2
+            minecraft: '26.2'
+            minecraft_range: '[26.2,26.3)'
+            java: '25'
+            gradle: '9.4.1'
+            neoforge: '26.2.0.3-beta'
+            loader_range: '[4,)'
+            parchment: 'false'
+            pack_format: '84'
+            source_variant: 'mc26_1'
+            upstream_ref: '65864716a5a796fa1c51ec3e8a6d9640abebb4ca'
+            fil_extra_namespace: 'neoorigins_26_2'
+            ms_extra_namespace: 'neoorigins_26_2'
+            include_addons: false
+            include_121_batch: false
+            include_121_locales: false
+            include_26_1: false
+            include_26_2: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Java ${{ matrix.java }}
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+
+      - name: Set up Gradle ${{ matrix.gradle }}
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          gradle-version: ${{ matrix.gradle }}
+
+      - name: Strict audit Malay and Filipino NeoOrigins
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref '${{ matrix.upstream_ref }}' --output 'build/ms-${{ matrix.target }}' --locale ms_my --fallback-namespace-glob 'neoorigins_ms_common_*' --extra-namespace '${{ matrix.ms_extra_namespace }}' --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref '${{ matrix.upstream_ref }}' --output 'build/fil-${{ matrix.target }}' --locale fil_ph --fallback-namespace-glob 'neoorigins_fil_common_*' --extra-namespace '${{ matrix.fil_extra_namespace }}' --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Strict audit Malay and Filipino add-ons
+        if: matrix.include_addons == true
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re, subprocess
+          scripts = [
+              ('scripts/audit_medievalorigins_upstream.py', ['--ref','1.21.1-fabric']),
+              ('scripts/audit_ibarnorigins_upstream.py', ['--ref','multiloader-1.21.1-new-pack-format']),
+              ('scripts/audit_origins_fantasy_upstream.py', []),
+              ('scripts/audit_origins_backgrounds_upstream.py', []),
+              ('scripts/audit_origins_more_backgrounds_upstream.py', []),
+              ('scripts/audit_origins_backgrounds_iss_upstream.py', []),
+              ('scripts/audit_origins_furries_upstream.py', []),
+              ('scripts/audit_origins_classes_extended_upstream.py', []),
+              ('scripts/audit_origins_classes_iss_upstream.py', []),
+              ('scripts/audit_origin_architect_upstream.py', []),
+          ]
+          originals = {name: Path(name).read_text(encoding='utf-8') for name, _ in scripts}
+          try:
+              for locale in ('ms_my', 'fil_ph'):
+                  for name, extra in scripts:
+                      path = Path(name)
+                      source = originals[name]
+                      updated, count = re.subn(r'^LOCALES\s*=.*$', f'LOCALES = ("{locale}",)', source, count=1, flags=re.M)
+                      if count == 0:
+                          updated, count = re.subn(r'^DEFAULT_LOCALES\s*=.*$', f'DEFAULT_LOCALES = ("{locale}",)', source, count=1, flags=re.M)
+                      if count != 1:
+                          raise SystemExit(f'Could not patch locale in {name}')
+                      path.write_text(updated, encoding='utf-8')
+                      subprocess.run(['python3', name, *extra, '--fail-on-overlap', '--fail-on-missing', '--fail-on-placeholders'], check=True)
+                      path.write_text(source, encoding='utf-8')
+          finally:
+              for name, source in originals.items():
+                  Path(name).write_text(source, encoding='utf-8')
+          PY
+
+      - name: Validate all localization files
+        run: python3 scripts/validate.py
+
+      - name: Sanity-check Malay and Filipino text
+        run: |
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+          root = Path('src/main/resources/resourcepacks/fallback_localizations/assets')
+          fil_files = list(root.glob('**/lang/fil_ph.json'))
+          ms_files = list(root.glob('**/lang/ms_my.json'))
+          fil = '\n'.join(str(v) for p in fil_files for v in json.loads(p.read_text(encoding='utf-8')).values())
+          ms = '\n'.join(str(v) for p in ms_files for v in json.loads(p.read_text(encoding='utf-8')).values())
+          fil_markers = len(re.findall(r'(?i)\b(?:ang|ng|mga|sa|na|at|para|kapag|iyong|mo|ay|hindi|maaari|mula|gamit)\b', fil))
+          ms_markers = len(re.findall(r'(?i)\b(?:yang|untuk|anda|tidak|dengan|boleh|akan|pemain|kuasa|kerosakan|kelajuan|kesihatan|tetapan|pelayan|pek|entiti|asal)\b', ms))
+          fil_bad = ['hindi maaaring maging ugat sa akin', '"Patak"', 'Kababaang-loob', '"singilin"', 'Pavloved', 'I-toggle ang Arkitekto ng HUD']
+          ms_bad = ['Asal kau tak boleh urat aku.', 'Jimat', 'Mohon', 'Peraturan Telur', '"Penimbang"', 'Berturap', 'Asal awak tak ada night vision.']
+          if [x for x in fil_bad if x in fil]:
+              raise SystemExit('Known Filipino false friend remains')
+          if [x for x in ms_bad if x in ms]:
+              raise SystemExit('Known Malay false friend remains')
+          if fil_markers < 500 or ms_markers < 200:
+              raise SystemExit(f'Lexical sanity too low: Filipino={fil_markers}, Malay={ms_markers}')
+          print(f'Combined sanity passed: Filipino={fil_markers} markers/{len(fil_files)} files, Malay={ms_markers} markers/{len(ms_files)} files')
+          PY
+
+      - name: Build mod
+        run: |
+          gradle build --stacktrace \
+            "-Pjava_version=${{ matrix.java }}" \
+            "-Puse_parchment=${{ matrix.parchment }}" \
+            "-Presource_pack_format=${{ matrix.pack_format }}" \
+            "-Psource_variant=${{ matrix.source_variant }}" \
+            "-Pinclude_addon_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_121_batch_translations=${{ matrix.include_121_batch }}" \
+            "-Pinclude_turkish_split_translations=true" \
+            "-Pinclude_indonesian_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_swedish_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_danish_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_finnish_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_norwegian_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_romanian_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_greek_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_bulgarian_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_vietnamese_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_arabic_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_hebrew_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_thai_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_slovak_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_slovenian_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_croatian_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_serbian_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_catalan_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_estonian_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_lithuanian_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_latvian_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_basque_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_galician_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_hindi_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_nynorsk_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_persian_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_icelandic_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_malay_121_translations=${{ matrix.include_121_locales }}" \
+            "-Pinclude_filipino_121_translations=${{ matrix.include_121_locales }}" \
+            "-Pinclude_26_1_translations=${{ matrix.include_26_1 }}" \
+            "-Pinclude_26_2_translations=${{ matrix.include_26_2 }}" \
+            "-Pminecraft_version=${{ matrix.minecraft }}" \
+            "-Pminecraft_version_range=${{ matrix.minecraft_range }}" \
+            "-Pneo_version=${{ matrix.neoforge }}" \
+            "-Ploader_version_range=${{ matrix.loader_range }}" \
+            "-Pmod_version=0.9.0-beta+ms-fil-${{ matrix.target }}"
+
+      - name: Verify Malay and Filipino packaging
+        run: |
+          JAR=$(find build/libs -type f -name '*.jar' ! -name '*-sources.jar' | head -n 1)
+          test -n "$JAR"
+          jar tf "$JAR" > build/jar-combined.txt
+          for locale in ms_my fil_ph; do
+            COUNT=$(grep -cE "(^|/)lang/${locale}\.json$" build/jar-combined.txt || true)
+            if [ '${{ matrix.include_addons }}' = 'true' ]; then EXPECTED=27; else EXPECTED=17; fi
+            echo "$locale: $COUNT / $EXPECTED"
+            test "$COUNT" -eq "$EXPECTED"
+          done
+          if [ '${{ matrix.include_addons }}' = 'true' ]; then
+            grep -Eq 'assets/neoorigins_ms_121/lang/ms_my\.json$' build/jar-combined.txt
+            grep -Eq 'assets/neoorigins_fil_121/lang/fil_ph\.json$' build/jar-combined.txt
+            ! grep -Eq 'assets/neoorigins_26_(1|2)/lang/(ms_my|fil_ph)\.json$' build/jar-combined.txt
+          else
+            ! grep -Eq 'assets/neoorigins_ms_121/lang/ms_my\.json$' build/jar-combined.txt
+            ! grep -Eq 'assets/neoorigins_fil_121/lang/fil_ph\.json$' build/jar-combined.txt
+            grep -Eq "assets/${{ matrix.ms_extra_namespace }}/lang/ms_my\.json$" build/jar-combined.txt
+            grep -Eq "assets/${{ matrix.fil_extra_namespace }}/lang/fil_ph\.json$" build/jar-combined.txt
+          fi
+
+      - name: Upload combined JAR
+        uses: actions/upload-artifact@v7
+        with:
+          name: neoorigins-localization-ms-fil-${{ matrix.target }}-${{ github.sha }}
+          path: build/libs/*.jar
+          if-no-files-found: error

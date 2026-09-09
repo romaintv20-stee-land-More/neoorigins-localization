@@ -11,7 +11,7 @@
     ],
     "loader": "NeoForge",
     "localization_mode": "low_priority_fallback",
-    "supported_locale_count": 58,
+    "supported_locale_count": 59,
     "builds": {
       "1.21.1": {
         "version": "0.9.0-beta+1.21.1",
@@ -186,7 +186,9 @@
           "kannada_common_glob": "neoorigins_kn_common_*",
           "kannada_mc_1_21_1": "neoorigins_kn_121",
           "chuvash_common_glob": "neoorigins_cv_common_*",
-          "chuvash_mc_1_21_1": "neoorigins_cv_121"
+          "chuvash_mc_1_21_1": "neoorigins_cv_121",
+          "uzbek_common_glob": "neoorigins_uz_common_*",
+          "uzbek_mc_1_21_1": "neoorigins_uz_121"
         },
         "note": "NeoOrigins 2.2.26 est audité séparément sur les trois cibles. neoorigins_226 est commun aux trois builds ; neoorigins_26_1 est réservé à 26.1.x ; neoorigins_26_2 est réservé à 26.2. Les trois clés reward.neoorigins.loot_pool* restent dans les fallbacks complets pour 1.21.1 et sont inoffensives sur 26.x.",
         "baseline_audit_2_2_27": {
@@ -221,7 +223,8 @@
             }
           }
         },
-        "coverage_note": "NeoOrigins 2.2.27 has the same en_us localization payload as 2.2.26 on all three targets. A full 58-locale audit found pre-existing incomplete legacy coverage in it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz and hu_hu; all other 51 locales are complete against 2.2.27."
+        "coverage_note": "NeoOrigins 2.2.27 has the same en_us localization payload as 2.2.26 on all three targets. Historical gaps in it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz and hu_hu were recovered before language 59. All 59 currently supported locales are complete against 2.2.27 on their target builds.",
+        "legacy_gap_recovery_completed": true
       },
       "languages": {
         "fr_fr": {
@@ -739,6 +742,15 @@
         },
         "cv_cu": {
           "name": "Чӑвашла",
+          "status": "supported",
+          "targets": [
+            "1.21.1",
+            "26.1.x",
+            "26.2"
+          ]
+        },
+        "uz_uz": {
+          "name": "O'zbekcha",
           "status": "supported",
           "targets": [
             "1.21.1",
@@ -1101,6 +1113,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/cv_cu.json",
           "fallback_keys": 401
+        },
+        "uz_uz": {
+          "name": "O'zbekcha",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/uz_uz.json",
+          "fallback_keys": 401
         }
       }
     },
@@ -1460,6 +1478,12 @@
           "name": "Чӑвашла",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/cv_cu.json",
+          "fallback_keys": 69
+        },
+        "uz_uz": {
+          "name": "O'zbekcha",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/uz_uz.json",
           "fallback_keys": 69
         }
       }
@@ -1823,6 +1847,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/cv_cu.json",
           "fallback_keys": 240
+        },
+        "uz_uz": {
+          "name": "O'zbekcha",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/uz_uz.json",
+          "fallback_keys": 240
         }
       }
     },
@@ -2184,6 +2214,12 @@
           "name": "Чӑвашла",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/cv_cu.json",
+          "fallback_keys": 65
+        },
+        "uz_uz": {
+          "name": "O'zbekcha",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/uz_uz.json",
           "fallback_keys": 65
         }
       }
@@ -2548,6 +2584,12 @@
           "name": "Чӑвашла",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/cv_cu.json",
+          "fallback_keys": 39
+        },
+        "uz_uz": {
+          "name": "O'zbekcha",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/uz_uz.json",
           "fallback_keys": 39
         }
       }
@@ -2917,6 +2959,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/cv_cu.json",
           "fallback_keys": 77
+        },
+        "uz_uz": {
+          "name": "O'zbekcha",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/uz_uz.json",
+          "fallback_keys": 77
         }
       }
     },
@@ -3282,6 +3330,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/cv_cu.json",
           "fallback_keys": 117
+        },
+        "uz_uz": {
+          "name": "O'zbekcha",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/uz_uz.json",
+          "fallback_keys": 117
         }
       }
     },
@@ -3646,6 +3700,12 @@
           "name": "Чӑвашла",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/cv_cu.json",
+          "fallback_keys": 124
+        },
+        "uz_uz": {
+          "name": "O'zbekcha",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/uz_uz.json",
           "fallback_keys": 124
         }
       }
@@ -4013,6 +4073,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/cv_cu.json",
           "fallback_keys": 99
+        },
+        "uz_uz": {
+          "name": "O'zbekcha",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/uz_uz.json",
+          "fallback_keys": 99
         }
       }
     },
@@ -4377,6 +4443,12 @@
           "name": "Чӑвашла",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/cv_cu.json",
+          "fallback_keys": 22
+        },
+        "uz_uz": {
+          "name": "O'zbekcha",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/uz_uz.json",
           "fallback_keys": 22
         }
       }

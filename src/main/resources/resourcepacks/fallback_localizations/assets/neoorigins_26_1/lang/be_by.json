@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Абсталяванне, якое вы ствараеце, атрымлівае бонусныя атрыбуты — устойлівасць, страты або хуткасць здабычы.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Атрымоўвае падвойны вопыт ад падрыхтоўкі ежы ў вяндлярні.",
+  "neoorigins.configuration.title": "Канфігурацыя NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Геймплэй",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "Налады геймплэя NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Адміністратар і дазволы",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "Налады адміністратара NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Перавызначэнні магутнасці",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "Перавызначэнні магутнасці NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Паходжанне і класы",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "Пераключальнікі паходжання і класа NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Дысплей кліента",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "Налады кліента NeoOrigins",
+  "neoorigins.configuration.show_cooldown_countdown": "Паказаць зваротны адлік часу перазарадкі",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Непразрыстасць зваротнага адліку часу перазарадкі (%)",
+  "neoorigins.configuration.hud_ability_display": "Магчымасць рэжым адлюстравання HUD",
+  "neoorigins.configuration.always_show_ability_icons": "Заўсёды паказваць значкі здольнасцяў"
+}

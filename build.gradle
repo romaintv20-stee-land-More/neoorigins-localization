@@ -55,6 +55,7 @@ def includeGeorgian121Translations = (project.findProperty('include_georgian_121
 def includeKazakh121Translations = (project.findProperty('include_kazakh_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
 def includeMongolian121Translations = (project.findProperty('include_mongolian_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
 def includeMacedonian121Translations = (project.findProperty('include_macedonian_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeBelarusian121Translations = (project.findProperty('include_belarusian_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
 def include26_1Translations = (project.findProperty('include_26_1_translations') ?: 'false').toBoolean()
 def include26_2Translations = (project.findProperty('include_26_2_translations') ?: 'false').toBoolean()
 
@@ -147,6 +148,7 @@ tasks.named('processResources', ProcessResources) {
     inputs.property 'include_kazakh_121_translations', includeKazakh121Translations
     inputs.property 'include_mongolian_121_translations', includeMongolian121Translations
     inputs.property 'include_macedonian_121_translations', includeMacedonian121Translations
+    inputs.property 'include_belarusian_121_translations', includeBelarusian121Translations
     inputs.property 'include_26_1_translations', include26_1Translations
     inputs.property 'include_26_2_translations', include26_2Translations
 
@@ -318,6 +320,10 @@ tasks.named('processResources', ProcessResources) {
 
     if (!includeMacedonian121Translations) {
         exclude 'resourcepacks/fallback_localizations/assets/neoorigins_mk_121/**'
+    }
+
+    if (!includeBelarusian121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_be_121/**'
     }
 
     if (!include26_1Translations) {

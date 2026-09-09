@@ -1,0 +1,66 @@
+name: Sync Kannada 57-locale metadata
+
+on:
+  push:
+    branches:
+      - release/0.9.0-kannada
+    paths:
+      - .github/workflows/sync-metadata-kannada.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-kannada
+
+      - name: Update catalog metadata
+        run: |
+          python3 scripts/update_catalog_kannada.py
+          python3 scripts/generate_catalog.py
+
+      - name: Update README metadata
+        run: python3 scripts/update_readme_kannada.py
+
+      - name: Validate 57-locale metadata
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          catalog=json.loads(Path('catalog.json').read_text(encoding='utf-8'))
+          if catalog['project']['supported_locale_count'] != 57:
+              raise SystemExit('catalog locale count is not 57')
+          for project in catalog['supported_projects']:
+              for locale in ('az_az','kn_in'):
+                  if locale not in project['languages']:
+                      raise SystemExit(f"{locale} missing from {project['id']}")
+          readme=Path('README.md').read_text(encoding='utf-8')
+          required=['Les cinquante-sept langues','Azéri (`az_az`)','Kannada (`kn_in`)','Pour l\'azéri :','Pour le kannada :','/ AZ / KN']
+          missing=[item for item in required if item not in readme]
+          if missing: raise SystemExit(f'README Kannada markers missing: {missing}')
+          catalog_md=Path('CATALOG.md').read_text(encoding='utf-8')
+          for marker in ('az_az','kn_in','Azərbaycanca','ಕನ್ನಡ'):
+              if marker not in catalog_md:
+                  raise SystemExit(f'CATALOG.md marker missing: {marker}')
+          print('Kannada 57-locale metadata validation passed')
+          PY
+
+      - name: Commit Kannada metadata
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add catalog.json CATALOG.md README.md
+          if git diff --cached --quiet; then
+            echo 'No Kannada metadata changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Document Kannada localization in 0.9.0 beta'
+          git fetch origin release/0.9.0-kannada
+          git rebase origin/release/0.9.0-kannada
+          git push origin HEAD:release/0.9.0-kannada

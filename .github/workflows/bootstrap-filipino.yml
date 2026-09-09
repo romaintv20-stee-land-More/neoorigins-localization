@@ -1,0 +1,179 @@
+name: Bootstrap Filipino localization
+
+on:
+  push:
+    branches:
+      - release/0.9.0-filipino
+    paths:
+      - scripts/bootstrap_filipino.py
+      - .github/workflows/bootstrap-filipino.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-filipino
+
+      - name: Restrict add-on audits to Filipino
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          scripts = [
+              'scripts/audit_medievalorigins_upstream.py',
+              'scripts/audit_ibarnorigins_upstream.py',
+              'scripts/audit_origins_fantasy_upstream.py',
+              'scripts/audit_origins_backgrounds_upstream.py',
+              'scripts/audit_origins_more_backgrounds_upstream.py',
+              'scripts/audit_origins_backgrounds_iss_upstream.py',
+              'scripts/audit_origins_furries_upstream.py',
+              'scripts/audit_origins_classes_extended_upstream.py',
+              'scripts/audit_origins_classes_iss_upstream.py',
+              'scripts/audit_origin_architect_upstream.py',
+          ]
+          for filename in scripts:
+              path = Path(filename)
+              text = path.read_text(encoding='utf-8')
+              updated, count = re.subn(r'^LOCALES\s*=.*$', 'LOCALES = ("fil_ph",)', text, count=1, flags=re.M)
+              if count == 0:
+                  updated, count = re.subn(r'^DEFAULT_LOCALES\s*=.*$', 'DEFAULT_LOCALES = ("fil_ph",)', text, count=1, flags=re.M)
+              if count != 1:
+                  raise SystemExit(f'Could not patch locale list in {filename}')
+              path.write_text(updated, encoding='utf-8')
+          PY
+
+      - name: Discover Filipino NeoOrigins coverage
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref 860ecdb24e723983e93004ea8ceb5de90ccf0d70 --output build/fil-discovery-mc-1.21.1 --locale fil_ph
+          python3 scripts/audit_neoorigins_upstream.py --ref 3c1c7365507679c836d3c14af5d4dd0654652e87 --output build/fil-discovery-mc-26.1 --locale fil_ph
+          python3 scripts/audit_neoorigins_upstream.py --ref 65864716a5a796fa1c51ec3e8a6d9640abebb4ca --output build/fil-discovery-mc-26.2 --locale fil_ph
+
+      - name: Discover Filipino add-on coverage and English sources
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format
+          python3 scripts/audit_origins_fantasy_upstream.py
+          python3 scripts/audit_origins_backgrounds_upstream.py
+          python3 scripts/audit_origins_more_backgrounds_upstream.py
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py
+          python3 scripts/audit_origins_furries_upstream.py
+          python3 scripts/audit_origins_classes_extended_upstream.py
+          python3 scripts/audit_origins_classes_iss_upstream.py
+          python3 scripts/audit_origin_architect_upstream.py
+
+      - name: Generate Filipino fallback files
+        run: python3 scripts/bootstrap_filipino.py
+
+      - name: Prune add-on keys already translated upstream
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --prune
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --prune
+          python3 scripts/audit_origins_fantasy_upstream.py --prune
+          python3 scripts/audit_origins_backgrounds_upstream.py --prune
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --prune
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --prune
+          python3 scripts/audit_origins_furries_upstream.py --prune
+          python3 scripts/audit_origins_classes_extended_upstream.py --prune
+          python3 scripts/audit_origins_classes_iss_upstream.py --prune
+          python3 scripts/audit_origin_architect_upstream.py --prune
+
+      - name: Strict audit Filipino NeoOrigins coverage
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref 860ecdb24e723983e93004ea8ceb5de90ccf0d70 --output build/fil-audit-mc-1.21.1 --locale fil_ph --fallback-namespace-glob 'neoorigins_fil_common_*' --extra-namespace neoorigins_fil_121 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 3c1c7365507679c836d3c14af5d4dd0654652e87 --output build/fil-audit-mc-26.1 --locale fil_ph --fallback-namespace-glob 'neoorigins_fil_common_*' --extra-namespace neoorigins_26_1 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 65864716a5a796fa1c51ec3e8a6d9640abebb4ca --output build/fil-audit-mc-26.2 --locale fil_ph --fallback-namespace-glob 'neoorigins_fil_common_*' --extra-namespace neoorigins_26_2 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Strict audit Filipino add-on coverage
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_fantasy_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_furries_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_extended_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origin_architect_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Validate JSON localization structure
+        run: python3 scripts/validate.py
+
+      - name: Sanity-check Filipino text
+        run: |
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+          files = list(Path('src/main/resources/resourcepacks/fallback_localizations/assets').glob('**/lang/fil_ph.json'))
+          if not files:
+              raise SystemExit('No fil_ph localization files found')
+          text = '\n'.join(str(v) for path in files for v in json.loads(path.read_text(encoding='utf-8')).values())
+          latin = len(re.findall(r'[A-Za-z]', text))
+          markers = len(re.findall(r'(?i)\b(?:ang|ng|mga|sa|na|at|para|kapag|iyong|mo|ay|hindi|maaari|mula|gamit)\b', text))
+          if latin < 5000:
+              raise SystemExit(f'Filipino Latin-script sanity check too low: {latin}')
+          if markers < 500:
+              raise SystemExit(f'Filipino lexical sanity check too low: {markers}')
+          print(f'Filipino text sanity check passed: {latin} Latin chars, {markers} Filipino markers across {len(files)} files')
+          PY
+
+      - name: Add Filipino target packaging switch
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('build.gradle')
+          text = path.read_text(encoding='utf-8')
+          if 'includeFilipino121Translations' not in text:
+              anchor = "def includeIcelandic121Translations = (project.findProperty('include_icelandic_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()\n"
+              if anchor not in text:
+                  raise SystemExit('Icelandic Gradle definition anchor not found')
+              text = text.replace(anchor, anchor + "def includeFilipino121Translations = (project.findProperty('include_filipino_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()\n", 1)
+              anchor = "    inputs.property 'include_icelandic_121_translations', includeIcelandic121Translations\n"
+              if anchor not in text:
+                  raise SystemExit('Icelandic Gradle input anchor not found')
+              text = text.replace(anchor, anchor + "    inputs.property 'include_filipino_121_translations', includeFilipino121Translations\n", 1)
+              anchor = "    if (!includeIcelandic121Translations) {\n        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_is_121/**'\n    }\n"
+              if anchor not in text:
+                  raise SystemExit('Icelandic Gradle exclusion anchor not found')
+              block = anchor + "\n    if (!includeFilipino121Translations) {\n        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_fil_121/**'\n    }\n"
+              text = text.replace(anchor, block, 1)
+              path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Restore temporary audit-script changes
+        if: always()
+        run: git checkout HEAD -- scripts/audit_*_upstream.py
+
+      - name: Upload Filipino audit reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: filipino-localization-audits-${{ github.sha }}
+          path: |
+            build/fil-discovery-*
+            build/fil-audit-*
+            build/*-upstream-audit
+          if-no-files-found: warn
+
+      - name: Commit validated Filipino translations
+        if: success()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name 'fil_ph.json' -print0 | xargs -0 -r git add
+          git add build.gradle
+          if git diff --cached --quiet; then
+            echo 'No Filipino translation changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Add Filipino localization fallback'
+          git fetch origin release/0.9.0-filipino
+          git rebase origin/release/0.9.0-filipino
+          git push origin HEAD:release/0.9.0-filipino

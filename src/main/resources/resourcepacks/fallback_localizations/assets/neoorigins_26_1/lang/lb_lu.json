@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Ausrüstung, déi Dir maacht, kritt Bonusattributer - Zähegkeet, Schued oder Mininggeschwindegkeet.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Gitt duebel XP beim Kachen Iessen an engem Fëmmert.",
+  "neoorigins.configuration.title": "NeoOrigins Configuratioun",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Spillspill",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "NeoOrigins Gameplay Astellungen",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Admin & Permissiounen",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "NeoOrigins Admin Astellungen",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Muecht iwwerdribblen",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "Neoorigins Muecht iwwerdribblen",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Originen & Klassen",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "Neoorigins Urspronk & Klass wiesselt",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Client Display",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "NeoOrigins Client Astellunge",
+  "neoorigins.configuration.show_cooldown_countdown": "Weisen cooldown Countdown",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Cooldown Countdown Opazitéit (%)",
+  "neoorigins.configuration.hud_ability_display": "Fäegkeet HUD Displaymodus",
+  "neoorigins.configuration.always_show_ability_icons": "Ëmmer weisen Fäegkeet Symboler"
+}

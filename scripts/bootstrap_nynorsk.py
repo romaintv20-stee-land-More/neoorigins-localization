@@ -22,7 +22,7 @@ PLACEHOLDER_RE = re.compile(r"%(?:\d+\$)?[sdif]")
 
 # Keep product names / technical tokens untouched while Apertium handles Norwegian prose.
 PROTECTED_LITERALS = (
-    "NeoOrigins", "Origin Architect", "Minecraft", "Origin", "Origins", "HUD", "JSON",
+    "Origin Architect", "NeoOrigins", "Minecraft", "Origins", "Origin", "HUD", "JSON",
     "Elytra", "Ultimine", "NeoForge", "Fabric", "Java", "GitHub", "XP",
 )
 
@@ -73,8 +73,7 @@ def protect(text: str):
         tokens.append(value)
         return f"ZXQPH{index:04d}ZXQ"
 
-    # Protect canonical literals first so the generic regex cannot split them later.
-    for literal in sorted(PROTECTED_LITERALS, key=len, reverse=True):
+    for literal in PROTECTED_LITERALS:
         text = text.replace(literal, stash(literal))
 
     def replace(match):
@@ -89,53 +88,59 @@ def restore(text: str, tokens: list[str]):
     return text
 
 
-class ApertiumNynorsk:
-    def __init__(self):
-        env = os.environ.copy()
-        # Prefer the widely used "vi" pronoun variant while keeping standard Nynorsk.
-        env.setdefault("AP_SETVAR", "me_vi")
-        self.proc = subprocess.Popen(
-            ["apertium", "-u", "nob-nno"],
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
-            bufsize=1,
-            env=env,
+def convert_batch(values: list[str]):
+    """Convert a batch with one protected value per physical line."""
+    if not values:
+        return []
+    masked_values = []
+    token_sets = []
+    for value in values:
+        masked, tokens = protect(value)
+        if "\n" in masked:
+            raise RuntimeError(f"Unprotected newline in Apertium input: {value!r}")
+        masked_values.append(masked)
+        token_sets.append(tokens)
+
+    env = os.environ.copy()
+    # Prefer the common "vi" pronoun choice while keeping otherwise standard Nynorsk.
+    env.setdefault("AP_SETVAR", "me_vi")
+    proc = subprocess.run(
+        ["apertium", "-u", "nob-nno"],
+        input="\n".join(masked_values) + "\n",
+        text=True,
+        capture_output=True,
+        check=False,
+        env=env,
+    )
+    if proc.returncode != 0:
+        raise RuntimeError(f"Apertium failed with {proc.returncode}: {proc.stderr}")
+    lines = proc.stdout.splitlines()
+    if len(lines) != len(values):
+        raise RuntimeError(
+            f"Apertium batch line mismatch: expected {len(values)}, got {len(lines)}"
         )
 
-    def translate(self, text: str):
-        masked, tokens = protect(text)
-        # All real newlines are protected, so one request maps to exactly one output line.
-        assert "\n" not in masked
-        self.proc.stdin.write(masked + "\n")
-        self.proc.stdin.flush()
-        result = self.proc.stdout.readline()
-        if result == "":
-            error = self.proc.stderr.read()
-            raise RuntimeError(f"Apertium terminated unexpectedly: {error}")
-        result = restore(result.rstrip("\n"), tokens).strip()
-        if sorted(PLACEHOLDER_RE.findall(text)) != sorted(PLACEHOLDER_RE.findall(result)):
-            raise RuntimeError(f"Placeholder mismatch after Nynorsk conversion: {text!r} -> {result!r}")
-        return result
-
-    def close(self):
-        if self.proc.stdin:
-            self.proc.stdin.close()
-        code = self.proc.wait(timeout=30)
-        if code != 0:
-            error = self.proc.stderr.read()
-            raise RuntimeError(f"Apertium exited with {code}: {error}")
+    results = []
+    for source, result, tokens in zip(values, lines, token_sets):
+        result = restore(result, tokens).strip()
+        if sorted(PLACEHOLDER_RE.findall(source)) != sorted(PLACEHOLDER_RE.findall(result)):
+            raise RuntimeError(f"Placeholder mismatch after Nynorsk conversion: {source!r} -> {result!r}")
+        results.append(result)
+    return results
 
 
 def english_to_bokmal(values: list[str]):
     if not values:
         return {}
-    # Reuse the project's established Google-Translate Bokmål helper only for rare
-    # keys missing from our already-audited no_no fallback files.
     import bootstrap_norwegian
     cache = bootstrap_norwegian.translate_values(values)
     return {value: cache[value] for value in values}
+
+
+def choose_bokmal(payload_no: dict, key: str, english: str, fallback_bokmal: dict):
+    if key in payload_no:
+        return payload_no[key]
+    return fallback_bokmal[english]
 
 
 def main():
@@ -210,31 +215,31 @@ def main():
     fallback_bokmal = english_to_bokmal(missing_bokmal_english)
 
     source_to_nynorsk = read_json(CACHE_PATH) if CACHE_PATH.exists() else {}
-    converter = ApertiumNynorsk()
-    try:
-        all_bokmal = []
-        for _name, payload_en, payload_no in payload_specs:
-            for key, english in payload_en.items():
-                all_bokmal.append(payload_no.get(key, fallback_bokmal[english]))
-        unique_bokmal = list(dict.fromkeys(all_bokmal))
-        pending = [value for value in unique_bokmal if value not in source_to_nynorsk]
-        print(f"Nynorsk cache: {len(source_to_nynorsk)} entries; converting {len(pending)} Bokmål strings")
-        for index, value in enumerate(pending, 1):
-            source_to_nynorsk[value] = converter.translate(value)
-            if index % 100 == 0 or index == len(pending):
-                write_json(CACHE_PATH, source_to_nynorsk)
-                print(f"Converted {index}/{len(pending)} Bokmål strings")
-    finally:
-        converter.close()
+    all_bokmal = []
+    for _name, payload_en, payload_no in payload_specs:
+        for key, english in payload_en.items():
+            all_bokmal.append(choose_bokmal(payload_no, key, english, fallback_bokmal))
+    unique_bokmal = list(dict.fromkeys(all_bokmal))
+    pending = [value for value in unique_bokmal if value not in source_to_nynorsk]
+    print(f"Nynorsk cache: {len(source_to_nynorsk)} entries; converting {len(pending)} Bokmål strings")
 
-    # Apply canonical overrides by matching the corresponding validated Bokmål wording.
-    # These values are intentionally small and stable; the bulk stays Apertium-derived.
+    batch_size = 400
+    for start in range(0, len(pending), batch_size):
+        batch = pending[start:start + batch_size]
+        results = convert_batch(batch)
+        source_to_nynorsk.update(zip(batch, results))
+        write_json(CACHE_PATH, source_to_nynorsk)
+        print(f"Converted {min(start + len(batch), len(pending))}/{len(pending)} Bokmål strings")
+
     for english, nynorsk in MANUAL_OVERRIDES.items():
         candidates = []
         for _name, payload_en, payload_no in payload_specs:
             for key, source_en in payload_en.items():
                 if source_en == english:
-                    candidates.append(payload_no.get(key, fallback_bokmal.get(english, english)))
+                    if key in payload_no:
+                        candidates.append(payload_no[key])
+                    elif english in fallback_bokmal:
+                        candidates.append(fallback_bokmal[english])
         for bokmal in candidates:
             source_to_nynorsk[bokmal] = nynorsk
     write_json(CACHE_PATH, source_to_nynorsk)
@@ -242,7 +247,7 @@ def main():
     def translated(payload_en: dict, payload_no: dict):
         out = {}
         for key, english in payload_en.items():
-            bokmal = payload_no.get(key, fallback_bokmal[english])
+            bokmal = choose_bokmal(payload_no, key, english, fallback_bokmal)
             out[key] = source_to_nynorsk[bokmal]
         return out
 

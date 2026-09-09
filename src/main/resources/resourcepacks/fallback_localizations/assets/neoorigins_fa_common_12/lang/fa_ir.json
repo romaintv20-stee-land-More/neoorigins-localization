@@ -39,7 +39,7 @@
   "power.neoorigins.slime_death_save.name": "تقسیم",
   "power.neoorigins.slime_death_save.description": "وقتی با رطوبت بیش از 75 درصد بمیرید، به جای آن تقسیم می‌شوید - 50 بلوک را با دو قلب از راه دور منتقل می‌کنید.حداکثر HP شما طی 2 دقیقه به حالت عادی باز می گردد.",
   "power.neoorigins.slime_level_hp.name": "رشد ژلاتینی",
-  "power.neoorigins.slime_level_hp.description": "+1 حداکثر اسب بخار در هر 10 سطح تجربه.در هنگام مرگ بازنشانی می شود.",
+  "power.neoorigins.slime_level_hp.description": "+1 حداکثر سلامتی در هر 10 سطح تجربه.در هنگام مرگ بازنشانی می شود.",
   "power.neoorigins.slime_no_fall_damage.name": "فنری",
   "power.neoorigins.slime_no_fall_damage.description": "شما هیچ آسیبی از سقوط نمی بینید - شما می پرید.",
   "power.neoorigins.abyssal_evolved_hp.name": "سرزندگی تکامل یافته",

@@ -100,7 +100,7 @@
   "power.neoorigins.necromancer_daylight_damage.name": "پوسیدگی نور خورشید",
   "power.neoorigins.necromancer_daylight_damage.description": "در صورت قرار گرفتن در معرض نور مستقیم خورشید 1.5 آسیب در ثانیه می گیرد.",
   "power.neoorigins.necromancer_reduced_health.name": "بدن پژمرده",
-  "power.neoorigins.necromancer_reduced_health.description": "-3 قلب (-6 حداکثر اسب بخار).بدنی که توسط جادوی مرگ شکسته شده است.",
+  "power.neoorigins.necromancer_reduced_health.description": "-3 قلب (-6 حداکثر سلامتی).بدنی که توسط جادوی مرگ شکسته شده است.",
   "power.neoorigins.necromancer_slow_regen.name": "آغوش مرگ",
   "power.neoorigins.necromancer_slow_regen.description": "بازسازی سلامت طبیعی به 40 درصد از حد طبیعی کاهش می یابد.",
   "origins.neoorigins.gorgon.name": "گورگون",

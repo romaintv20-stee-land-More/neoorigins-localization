@@ -6,40 +6,33 @@
 - Current release branch: `release/0.9.0-beta`
 - **Do not use `main`**: it is behind.
 - Read `PROJECT_HANDOFF.txt` first.
-- Completed language count: **58**.
-- Last completed language: **#58 Chuvash / Tchouvache — `cv_cu / Чӑвашла`**.
-- **Do not redo Chuvash.**
-- Next language: **#59**.
+- Completed language count: **59**.
+- Last completed language: **#59 Uzbek / Ouzbek — `uz_uz / O'zbekcha`**.
+- **Do not redo Uzbek.**
+- Next language: **#60**.
+- The historical NeoOrigins 2.2.27 gaps in Italian, Polish, Russian, Simplified Chinese, Turkish, Czech and Hungarian were recovered **before #59**; do not treat that recovery as pending.
 
-## NeoOrigins 2.2.27 baseline audit
+## #59 Uzbek verification
 
-- Current upstream baseline: **NeoOrigins 2.2.27**.
-- 1.21.1 ref: `af467a3bc118f6bbc0970d68f7e03fa631d7e6f2`
-- 26.1.x ref: `aa207ef14cf3b938e28b4081162701953957c1d5`
-- 26.2 ref: `511cadcafe3027d2a56b4448652ec9b74e2f3b07`
-- `en_us.json` is unchanged from 2.2.26 on all three targets, so **2.2.27 requires zero new translation strings**.
-- Full audit: run `34400432957`, job `102630695715`, artifact `10123223361`, SHA256 `78be2fc126a1f7356e871f692bc716e8c3973b7b246b9b450d41aac8ab767155`.
-- Audit found **0 overlap errors** and **0 placeholder errors**.
-
-Legacy gaps discovered by that full audit (pre-existing before 2.2.27):
-- 1.21.1: `it_it` 52, `pl_pl` 52, `ru_ru` 52, `tr_tr` 2281, `zh_cn` 52, `cs_cz` 2281, `hu_hu` 2296 missing.
-- 26.1.x: `it_it` 52, `pl_pl` 52, `ru_ru` 52, `tr_tr` 2278, `zh_cn` 52, `cs_cz` 2278, `hu_hu` 2293 missing.
-- 26.2: `tr_tr` 2278, `cs_cz` 2278, `hu_hu` 2293 missing.
-- The other **51 locales** are complete against 2.2.27 on all three targets.
-
-Do not attribute those seven legacy gaps to NeoOrigins 2.2.27. Before release, either complete them or keep the partial-coverage status explicit.
-
-## #58 Chuvash verification
-
-Staging branch: `release/0.9.0-chuvash`
+Staging branch: `release/0.9.0-uzbek`
 
 Original beta base used for staging:
-`aab61dca5f901f26be0cd1c59886c812c1709d07`
+`55fd96c10847e5775844fd8c60cd31869367bc37`
 
 Final build source:
-`74308d879cfe67b8821653ae622fe2917d2e2051`
+`165ade375054bb3413c1104d43ab1a9705cf10b4`
 
-NeoOrigins coverage:
+Minecraft metadata verified for the current Java 26.2 locale:
+- code `uzb_UZ`
+- name `O'zbekcha`
+- region `O'zbekiston`
+
+NeoOrigins 2.2.27 refs:
+- 1.21.1 `af467a3bc118f6bbc0970d68f7e03fa631d7e6f2`
+- 26.1.x `aa207ef14cf3b938e28b4081162701953957c1d5`
+- 26.2 `511cadcafe3027d2a56b4448652ec9b74e2f3b07`
+
+Coverage:
 - 1.21.1: **2296/2296**
 - 26.1.x: **2307/2307**
 - 26.2: **2307/2307**
@@ -48,51 +41,50 @@ Strict QA:
 - missing: **0**
 - overlap: **0**
 - placeholder errors: **0**
-- 10 supported 1.21.1 add-ons: strict success
+- all 10 supported 1.21.1 add-ons: strict success
 - JSON validator: success
 - contextual refinement: success
-- final script sanity: **16,744 Chuvash-specific letters across 29 files**
+- bootstrap sanity: **2,736 Uzbek lexical markers, 118,063 Latin chars, 29 files**
 
-Important contextual fixes were made after the initial report exposed false friends: `Origin`, `Power`, On/Off, Minecraft Night Vision (`Ҫӗрлехи куҫ`), Nether (`Незер`), Netherite (`Незерит`), Scales, Pavlov, Apply, Spawn Rules, Loot/Drops, XP, Architect and related UI terms. Do not revert these to raw machine translations.
+Important contextual corrections after machine-translation review include `Origin`, `Klass`, `Qobiliyatlar`, `Tunda ko'rish`, Nether/Netherit, Spawn Rules, Drops, XP/tajriba, Origin Architect, Scales→`Tangachalar`, Pavlov, Boing, damage-direction semantics and 64 hotkeys. Do not revert these to raw machine translations.
 
-## Runs and artifacts
+## Runs, commits and artifacts
 
 Bootstrap:
-- run `34379807657`
-- job `102561580556`
-- artifact `10115475171`
-- artifact SHA256 `c3699e4ad25b4ef6cef8128cf2a3bd033b9d05a6390961edb83faebe55303c93`
+- successful run `34404408970`
+- job `102643820338`
+- artifact `10124847581`
+- artifact ZIP SHA256 `e72fd17629a914e0a678eb4b854ba94c67fce8db2f95384ae1e85704af3f32f2`
+- first generation attempt had correctly failed on a duplicated `%s`; the fragile Void Warp string was then protected before the successful run
 
-Contextual QA report:
-- run `34380576719`
-- job `102564138958`
-
-Refinement:
-- run `34398767552`
-- job `102625101585`
+Contextual refinement:
+- run `34405017821`
+- job `102645798233`
+- commit `861b9ebb6ed5398392ffc417a970700775939f31`
+- artifact `10124960454`
+- artifact ZIP SHA256 `de4f3000168e932a72784cc11b02be02ff9c8d353949655e95877ef4767e3de9`
 
 Metadata:
-- run `34398994850`
-- job `102625846393`
+- run `34405172443`
+- job `102646304663`
+- commit `c3bb6f59dc033752f5c888facdcbf4b094148f7d`
+- catalog locale count **59**
 
-Final builds — run `34398870533`:
-- 1.21.1 job `102625439066`, artifact `10122670078`, package **27/27**, JAR SHA256 `feb1b1a528ad3735cf3146f9a797f5e2fe3a6cd7bf818892a9ce5958062ff91b`
-- 26.1.x job `102625438886`, artifact `10122652529`, package **17/17**, JAR SHA256 `a95b6a5938ea8c0ea221059f8cf94c467bd18e430b962576035006e6005186b4`
-- 26.2 job `102625438481`, artifact `10122650555`, package **17/17**, JAR SHA256 `6886fd8ab2371c953bcad00135aed29dc586cbd48d86880afd064f840cd1b549`
+Final builds — run `34405347643`, source `165ade375054bb3413c1104d43ab1a9705cf10b4`:
+- 1.21.1 job `102646879573`, artifact `10125122605`, package **27/27**, JAR SHA256 `4aa2302d09113b0848ba68061e2e960d7bad2929a2e841df056e18a6afa6af73`, ZIP SHA256 `54bf6d875e58dbfc69854ae07dfd85051b0327a75a3a4d767a8f9437f6c7dbd2`
+- 26.1.x job `102646879547`, artifact `10125125703`, package **17/17**, JAR SHA256 `99c1ffdc550cfe8cb9cc7a1c397b8a73000f58770c79bf1c0ce441e87b41182f`, ZIP SHA256 `d2439f1d23f06f2b9225003badbd6510401ef83ff24723f2b185d7b2cbf87069`
+- 26.2 job `102646879215`, artifact `10125120396`, package **17/17**, JAR SHA256 `d623a82bafb9291ae3e2fa37a3fd9d17d0c6b87a86440e58684f8ed0c6924e68`, ZIP SHA256 `6fb6ad0e87aed483d319f539b07f69bfb64d9451fdb462526704474fda45807f`
 
-Artifact ZIP SHA256:
-- 1.21.1 `7481f9e487a82ebac091497e76d7f943496c20e66770c27f7b8a188b3a41049b`
-- 26.1.x `c39180ca5c221f9906f71c33ff830de7be69acc7397486c1ab25ea118f99da42`
-- 26.2 `563d21fcb6c299bef1d6daf677f8609252c2ed8c8782cfc343c057b721de77d5`
+The build verifier opened each JAR, merged all Uzbek NeoOrigins files, rejected duplicate keys and required the packaged keyset to equal the exact target English-minus-official set.
 
-## Starting #59
+## Starting #60
 
 Before doing anything:
-1. Fetch the exact current HEAD of `release/0.9.0-beta`.
-2. Verify this handoff and `PROJECT_HANDOFF.txt` agree with the current repository state.
-3. Choose a current Minecraft Java locale that is useful, genuinely distinct from the existing 58, and not a near-duplicate regional variant.
-4. Verify official Minecraft/upstream translations before creating fallbacks.
-5. Create the new language staging branch from that exact beta HEAD.
-6. Repeat the full strict generation → contextual QA → build → packaging → documentation → fast-forward cycle.
+1. Refetch the exact current HEAD of `release/0.9.0-beta`.
+2. Verify this handoff and `PROJECT_HANDOFF.txt` agree with the repository state.
+3. Re-evaluate the current Minecraft Java locale inventory and choose a useful distinct language not already in the 59-locale set; do not assume a locale code.
+4. Verify current Minecraft language assets and official NeoOrigins/add-on translations before fallbacks.
+5. Create the #60 staging branch from the exact beta HEAD.
+6. Repeat generation → official-priority pruning → strict structural audits → contextual QA → three real builds → packaging verification → metadata/handoffs → safe fast-forward.
 
-Never force-push. For integration, refetch beta immediately before moving it, require an ahead-only compare with `behind_by=0`, update the beta ref with `force=false`, then verify beta and staging have exactly the same SHA.
+Never force-push. Immediately before integration, refetch beta, require an ahead-only compare with `behind_by=0`, update beta with `force=false`, then refetch both branches and verify exact identical SHA/state.

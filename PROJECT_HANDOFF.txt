@@ -38,8 +38,8 @@ Mob Origins is NOT selected for 0.9.0. Earlier Mob Origins WIP inherited from a 
 0.8.0 Beta shipped with 17 locales:
 fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se.
 
-0.9.0 development currently has 58 locales:
-fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se, da_dk, fi_fi, no_no, ro_ro, el_gr, bg_bg, vi_vn, ar_sa, he_il, th_th, sk_sk, sl_si, hr_hr, sr_sp, sr_cs, ca_es, et_ee, lt_lt, lv_lv, eu_es, gl_es, hi_in, nn_no, fa_ir, is_is, ms_my, fil_ph, cy_gb, ga_ie, gd_gb, hy_am, ka_ge, kk_kz, mn_mn, mk_mk, be_by, fo_fo, af_za, az_az, kn_in, cv_cu.
+0.9.0 development currently has 59 locales:
+fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se, da_dk, fi_fi, no_no, ro_ro, el_gr, bg_bg, vi_vn, ar_sa, he_il, th_th, sk_sk, sl_si, hr_hr, sr_sp, sr_cs, ca_es, et_ee, lt_lt, lv_lv, eu_es, gl_es, hi_in, nn_no, fa_ir, is_is, ms_my, fil_ph, cy_gb, ga_ie, gd_gb, hy_am, ka_ge, kk_kz, mn_mn, mk_mk, be_by, fo_fo, af_za, az_az, kn_in, cv_cu, uz_uz.
 
 Expansion order so far:
 - 18: Danish / da_dk
@@ -83,8 +83,9 @@ Expansion order so far:
 - 56: Azerbaijani / az_az
 - 57: Kannada / kn_in
 - 58: Chuvash / cv_cu
+- 59: Uzbek / uz_uz
 
-FIFTY-EIGHT IS NOT THE FINAL TARGET. Continue expanding toward essentially all useful Minecraft languages unless Romain changes scope.
+FIFTY-NINE IS NOT THE FINAL TARGET. Continue expanding toward essentially all useful Minecraft languages unless Romain changes scope.
 
 Norwegian Nynorsk (nn_no) is intentionally NOT merged with Bokmal. It is a distinct written standard and remains a valid future locale.
 
@@ -137,16 +138,18 @@ Full 58-locale baseline audit (2026-09-09):
 - overlap errors: 0
 - placeholder errors: 0
 
-IMPORTANT LEGACY COVERAGE FINDING:
-The full audit exposed seven historical locales that were already incomplete before 2.2.27. This is NOT a 2.2.27 regression and must not be described as new translation work from that update.
-- 1.21.1 missing: it_it 52, pl_pl 52, ru_ru 52, tr_tr 2281, zh_cn 52, cs_cz 2281, hu_hu 2296
-- 26.1.x missing: it_it 52, pl_pl 52, ru_ru 52, tr_tr 2278, zh_cn 52, cs_cz 2278, hu_hu 2293
-- 26.2 missing: tr_tr 2278, cs_cz 2278, hu_hu 2293
-- The other 51 locales are complete against the 2.2.27 English keysets on all three targets.
+IMPORTANT LEGACY COVERAGE FINDING — RESOLVED BEFORE LANGUAGE 59:
+The full 58-locale audit exposed seven historical locales that were already incomplete before NeoOrigins 2.2.27. This was NOT a 2.2.27 regression. The recovery was completed and integrated before Uzbek (#59): Italian, Polish, Russian, Simplified Chinese, Turkish, Czech and Hungarian are now complete against the adopted 2.2.27 baselines.
+- 1.21.1: all seven recovered locales now cover the exact required NeoOrigins keyset.
+- 26.1.x: all seven recovered locales now cover the exact required NeoOrigins keyset; the three intentional historical keys retained by Turkish/Czech/Hungarian are compatibility extras inherited from 1.21.1 and were packaging-verified.
+- 26.2: all seven recovered locales now cover the exact required NeoOrigins keyset; the same three intentional Turkish/Czech/Hungarian compatibility extras were packaging-verified.
+- Strict missing / overlap / placeholder audits passed.
+- Real 1.21.1, 26.1.x and 26.2 JAR builds passed, including duplicate-key and packaged-keyset checks.
+- Recovery was fast-forwarded into release/0.9.0-beta with force=false before release/0.9.0-uzbek was created.
 
 The physical namespace neoorigins_226 remains intentionally named after the update that introduced those fallback strings; do NOT rename it merely because the audit baseline moved to 2.2.27.
 
-Before PUBLISHING 0.9.0, re-check whether NeoOrigins upstream has moved beyond 2.2.27 and re-audit against the final intended reference. Also decide whether to complete the seven legacy partial locales before publication.
+Before PUBLISHING 0.9.0, re-check whether NeoOrigins upstream has moved beyond 2.2.27 and re-audit against the final intended reference. The seven historical partial locales have already been recovered; do not treat that work as pending.
 
 6. ADD-ON COVERAGE BASELINES
 ----------------------------
@@ -3084,8 +3087,8 @@ NOTE ABOUT FAILED GOVERNANCE WORKFLOW:
 - PROJECT_HANDOFF.txt = cross-chat decisions, current roadmap, latest operational status
 
 As of this update:
-- catalog.json says 57 supported locales
-- README.md says 57 languages and includes Malay ms_my, Filipino fil_ph, Welsh cy_gb, Irish ga_ie, Scottish Gaelic gd_gb, Armenian hy_am, Georgian ka_ge, Kazakh kk_kz, Mongolian mn_mn, Macedonian mk_mk, Belarusian be_by, Faroese fo_fo, Afrikaans af_za, Azerbaijani az_az and Kannada kn_in
+- catalog.json says 59 supported locales
+- README.md says 59 languages and includes the full expansion through Chuvash cv_cu and Uzbek uz_uz
 - Romanian, Greek, Bulgarian, Vietnamese, Arabic, Hebrew, Thai, Slovak, Slovenian, Croatian, Serbian Cyrillic, Serbian Latin, Catalan, Estonian, Lithuanian, Latvian, Basque, Galician, Hindi, Norwegian Nynorsk, Persian, Icelandic, Malay, Filipino, Welsh, Irish, Scottish Gaelic, Armenian, Georgian, Kazakh, Mongolian, Macedonian, Belarusian, Faroese, Afrikaans, Azerbaijani and Kannada have passed final three-target packaging validation
 
 49. QUALITY / QA CAVEAT
@@ -3187,9 +3190,113 @@ Integration discipline:
 NEXT LANGUAGE after Chuvash = language 59.
 Re-evaluate the current Minecraft Java locale inventory at that time, prefer a useful distinct language not already in the 58-locale set, verify official upstream strings first, and apply the regional-variant dedup rule before generating fallbacks.
 
-51. NEXT ACTION
+51. UZBEK 0.9.0 STATUS
+------------------------
+Uzbek locale: uz_uz / O'zbekcha.
+Minecraft Java 26.2 language metadata verified before selection:
+- language.code: uzb_UZ
+- language.name: O'zbekcha
+- language.region: O'zbekiston
+
+Status: COMPLETE FOR THE CURRENT 0.9.0 DEVELOPMENT BASELINE: GENERATED, CONTEXTUALLY REFINED, STRICTLY AUDITED, BUILT, PACKAGING-VERIFIED, AND DOCUMENTED.
+
+Selection rationale:
+- Uzbek is a current Minecraft Java locale introduced with the 26.2 language expansion.
+- It is a distinct Turkic language, not a regional near-duplicate of the existing 58 locales.
+- NeoOrigins 2.2.27 has no official uz_uz file on any of the three supported targets, so a complete low-priority fallback is required.
+
+Staging:
+- branch: release/0.9.0-uzbek
+- exact beta base used to create staging: 55fd96c10847e5775844fd8c60cd31869367bc37
+- final build source SHA: 165ade375054bb3413c1104d43ab1a9705cf10b4
+
+NeoOrigins pinned refs (2.2.27):
+- 1.21.1: af467a3bc118f6bbc0970d68f7e03fa631d7e6f2
+- 26.1.x: aa207ef14cf3b938e28b4081162701953957c1d5
+- 26.2: 511cadcafe3027d2a56b4448652ec9b74e2f3b07
+
+Architecture:
+- 16 common namespaces: neoorigins_uz_common_01 through neoorigins_uz_common_16
+- 1.21.1 delta namespace: neoorigins_uz_121
+- 26.1.x overlay: uz_uz inside neoorigins_26_1
+- 26.2 overlay: uz_uz inside neoorigins_26_2
+- all 10 supported/licensed add-ons receive uz_uz fallback files on 1.21.1
+- Gradle target switch: include_uzbek_121_translations / includeUzbek121Translations
+
+Coverage / strict audits:
+- NeoOrigins 1.21.1: 2296 / 2296
+- NeoOrigins 26.1.x: 2307 / 2307
+- NeoOrigins 26.2: 2307 / 2307
+- missing: 0
+- overlap: 0
+- placeholder errors: 0
+- all 10 add-on audits: 0 missing / 0 overlap / 0 placeholder errors
+- scripts/validate.py: passed
+- bootstrap sanity: 2,736 Uzbek lexical markers and 118,063 Latin characters across 29 uz_uz files
+
+Generation / bootstrap:
+- first attempt correctly failed because the translation service duplicated a protected %s in Void Warp; no partial localization commit was accepted
+- fragile Void Warp and numbered printf strings were then explicitly protected / manually seeded
+- successful bootstrap run: 34404408970
+- successful bootstrap job: 102643820338
+- bootstrap/audit artifact ID: 10124847581
+- bootstrap artifact ZIP SHA256: e72fd17629a914e0a678eb4b854ba94c67fce8db2f95384ae1e85704af3f32f2
+- generated NeoOrigins split: 2290 common + 6 / 17 / 17 target-specific keys
+- generated Uzbek files: 29 total
+
+Contextual terminology QA:
+- deterministic refinement run: 34405017821
+- refinement job: 102645798233
+- refinement commit: 861b9ebb6ed5398392ffc417a970700775939f31
+- refined QA artifact ID: 10124960454
+- refined QA artifact ZIP SHA256: de4f3000168e932a72784cc11b02be02ff9c8d353949655e95877ef4767e3de9
+- 78 guarded gameplay/UI keys found; 18 / 29 files changed by the refinement pass
+- corrected machine false friends included Origin as source/provenance, Boing as boring, Scales as weighing scales, Pavlov wording, and an inverted damage description
+- canonical/project terms and Minecraft terminology were guarded, including Origin, Klass, Qobiliyatlar, Tunda ko'rish, Nether, Netherit, Spawn Rules, Drops, XP/tajriba, Origin Architect and 64 normalized hotkeys
+- all strict audits and contextual assertions passed again after refinement
+
+Metadata evidence:
+- metadata run: 34405172443
+- metadata job: 102646304663
+- metadata commit: c3bb6f59dc033752f5c888facdcbf4b094148f7d
+- catalog.json supported_locale_count = 59
+- catalog.json, CATALOG.md and README.md include uz_uz / O'zbekcha / Ouzbek and exact three-version coverage
+- catalog metadata records the seven-locale historical recovery as completed before #59
+
+Final build evidence:
+- build run: 34405347643
+- source SHA: 165ade375054bb3413c1104d43ab1a9705cf10b4
+- 1.21.1 job 102646879573: success; packaging 27 / 27 uz_uz files; NeoOrigins 2296 expected / 2296 packaged / 0 duplicates
+  - artifact ID 10125122605
+  - JAR SHA256 4aa2302d09113b0848ba68061e2e960d7bad2929a2e841df056e18a6afa6af73
+  - artifact ZIP SHA256 54bf6d875e58dbfc69854ae07dfd85051b0327a75a3a4d767a8f9437f6c7dbd2
+- 26.1.x job 102646879547: success; packaging 17 / 17 uz_uz files; NeoOrigins 2307 expected / 2307 packaged / 0 duplicates
+  - artifact ID 10125125703
+  - JAR SHA256 99c1ffdc550cfe8cb9cc7a1c397b8a73000f58770c79bf1c0ce441e87b41182f
+  - artifact ZIP SHA256 d2439f1d23f06f2b9225003badbd6510401ef83ff24723f2b185d7b2cbf87069
+- 26.2 job 102646879215: success; packaging 17 / 17 uz_uz files; NeoOrigins 2307 expected / 2307 packaged / 0 duplicates
+  - artifact ID 10125120396
+  - JAR SHA256 d623a82bafb9291ae3e2fa37a3fd9d17d0c6b87a86440e58684f8ed0c6924e68
+  - artifact ZIP SHA256 6fb6ad0e87aed483d319f539b07f69bfb64d9451fdb462526704474fda45807f
+
+Packaging semantics verified by CI:
+- 1.21.1 = 16 common + neoorigins_uz_121 + 10 add-ons = 27; no 26.x Uzbek overlays
+- 26.1.x = 16 common + neoorigins_26_1 = 17; no add-ons and no neoorigins_uz_121
+- 26.2 = 16 common + neoorigins_26_2 = 17; no add-ons and no neoorigins_uz_121
+- packaged NeoOrigins keys are unique and equal the exact required target keyset on all three builds
+
+Integration discipline:
+- release/0.9.0-beta must be refetched immediately before integration.
+- Only fast-forward release/0.9.0-beta to the exact release/0.9.0-uzbek HEAD when compare shows staging is ahead-only and behind_by=0.
+- Never force-push.
+- After integration, release/0.9.0-beta and release/0.9.0-uzbek must resolve to the exact same SHA.
+
+NEXT LANGUAGE after Uzbek = language 60.
+Re-evaluate the current Minecraft Java locale inventory, choose a useful distinct locale not already in the 59-locale set, verify official upstream assets first, and apply the regional-variant dedup rule before generating fallbacks.
+
+52. NEXT ACTION
 ---------------
-NEXT LANGUAGE = language 59.
+NEXT LANGUAGE = language 60.
 
 When Romain says continue / prochaine langue / vas-y:
 1. Read this PROJECT_HANDOFF.txt first.
@@ -3201,4 +3308,4 @@ When Romain says continue / prochaine langue / vas-y:
 7. Build all three targets and inspect packaging.
 8. Update catalog.json, CATALOG.md, README.md and this PROJECT_HANDOFF.txt.
 9. Do not re-add Mob Origins.
-10. Do not stop permanently at 58; language expansion should continue unless Romain changes scope.
+10. Do not stop permanently at 59; language expansion should continue unless Romain changes scope.

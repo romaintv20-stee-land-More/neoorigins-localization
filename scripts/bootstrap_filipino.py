@@ -33,10 +33,13 @@ namespace["MANUAL_OVERRIDES"] = {
     "Rage Counter.": "Sukatan ng Galit.",
     "Rage Counter": "Sukatan ng Galit",
     "Origin Architect": "Origin Architect",
+    "%1$s was burnt to a crisp by %2$s using %3$s": "Sinunog nang husto ni %2$s si %1$s gamit ang %3$s",
+    "%1$s was purified by %2$s's dragonfire using %3$s": "Nilinis si %1$s ng apoy ng dragon ni %2$s gamit ang %3$s",
     "%1$s had their soul ripped apart by %2$s's %3$s": "Ang kaluluwa ni %1$s ay winasak ng %3$s ni %2$s",
+    "%1$s faced the divine judgment of %2$s's %3$s": "Hinarap ni %1$s ang banal na paghatol ng %3$s ni %2$s",
 }
 
-# Pre-seed fragile wording so the translation service cannot drop semantic actors
-# or numbered placeholders. Structural audits still validate all placeholders.
+# Pre-seed fragile wording so the translation service cannot duplicate, drop,
+# or reorder numbered placeholders incorrectly. Structural audits still validate all placeholders.
 namespace["write_json"](namespace["CACHE_PATH"], namespace["MANUAL_OVERRIDES"])
 namespace["main"]()

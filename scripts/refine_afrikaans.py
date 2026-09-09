@@ -92,7 +92,9 @@ VALUE_REPLACEMENTS = {
 
 # Targeted terminology replacements. Keep Minecraft proper names recognizable.
 TEXT_REPLACEMENTS = [
-    (re.compile(r"\bGeplavei\b"), "Pavlov se refleks"),
+    # Google can render "Pavlov" as Afrikaans forms derived from "pave"; catch
+    # the whole malformed token regardless of case or inflection.
+    (re.compile(r"\bgeplavei[A-Za-zÀ-ÖØ-öø-ÿ]*\b", re.I), "Pavlov"),
     (re.compile(r"\bOnderland\b"), "Nether"),
     (re.compile(r"\bOnder-gebore\b"), "Nether-gebore"),
     (re.compile(r"\bnetheriet\b", re.I), lambda m: "Netherite" if m.group(0)[0].isupper() else "netherite"),

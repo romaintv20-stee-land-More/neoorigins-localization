@@ -40,7 +40,7 @@ jobs:
               if 'hi_in' not in project['languages']:
                   raise SystemExit(f"hi_in missing from {project['id']}")
           readme = Path('README.md').read_text(encoding='utf-8')
-          required = ['39 langues', 'Hindi (`hi_in`)', 'Pour le hindi :', '2 296/2 296', '2 307/2 307']
+          required = ['trente-neuf langues', 'Hindi (`hi_in`)', 'Pour le hindi :', '2 296/2 296', '2 307/2 307']
           missing = [item for item in required if item not in readme]
           if missing:
               raise SystemExit(f'README Hindi markers missing: {missing}')

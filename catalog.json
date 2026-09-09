@@ -11,7 +11,7 @@
     ],
     "loader": "NeoForge",
     "localization_mode": "low_priority_fallback",
-    "supported_locale_count": 36,
+    "supported_locale_count": 37,
     "builds": {
       "1.21.1": {
         "version": "0.9.0-beta+1.21.1",
@@ -142,7 +142,9 @@
           "lithuanian_common_glob": "neoorigins_lt_common_*",
           "lithuanian_mc_1_21_1": "neoorigins_lt_121",
           "latvian_common_glob": "neoorigins_lv_common_*",
-          "latvian_mc_1_21_1": "neoorigins_lv_121"
+          "latvian_mc_1_21_1": "neoorigins_lv_121",
+          "basque_common_glob": "neoorigins_eu_common_*",
+          "basque_mc_1_21_1": "neoorigins_eu_121"
         },
         "note": "NeoOrigins 2.2.26 est audité séparément sur les trois cibles. neoorigins_226 est commun aux trois builds ; neoorigins_26_1 est réservé à 26.1.x ; neoorigins_26_2 est réservé à 26.2. Les trois clés reward.neoorigins.loot_pool* restent dans les fallbacks complets pour 1.21.1 et sont inoffensives sur 26.x."
       },
@@ -470,6 +472,15 @@
             "26.1.x",
             "26.2"
           ]
+        },
+        "eu_es": {
+          "name": "Euskara",
+          "status": "supported",
+          "targets": [
+            "1.21.1",
+            "26.1.x",
+            "26.2"
+          ]
         }
       }
     },
@@ -491,7 +502,7 @@
           "1.21.1"
         ],
         "in_game_validation": "validated",
-        "note": "401/401 clés anglaises couvertes dans les trente-six langues ; absent des builds 26.x."
+        "note": "401/401 clés anglaises couvertes dans les trente-sept langues ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 401,
@@ -694,6 +705,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/lv_lv.json",
           "fallback_keys": 401
+        },
+        "eu_es": {
+          "name": "Euskara",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/eu_es.json",
+          "fallback_keys": 401
         }
       }
     },
@@ -713,7 +730,7 @@
         "version": "1.7.1 / Minecraft 1.21.1",
         "source_ref": "multiloader-1.21.1-new-pack-format",
         "in_game_validation": "validated",
-        "note": "69/69 clés anglaises couvertes dans les trente-six langues ; absent des builds 26.x."
+        "note": "69/69 clés anglaises couvertes dans les trente-sept langues ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 69,
@@ -921,6 +938,12 @@
           "name": "Latviešu",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/lv_lv.json",
+          "fallback_keys": 69
+        },
+        "eu_es": {
+          "name": "Euskara",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/eu_es.json",
           "fallback_keys": 69
         }
       }
@@ -1152,6 +1175,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/lv_lv.json",
           "fallback_keys": 240
+        },
+        "eu_es": {
+          "name": "Euskara",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/eu_es.json",
+          "fallback_keys": 240
         }
       }
     },
@@ -1173,7 +1202,7 @@
           "1.21.1"
         ],
         "in_game_validation": "pending",
-        "note": "Audité contre le JAR CurseForge 8397335 ; aucune traduction officielle parmi les trente-six langues ciblées ; absent des builds 26.x."
+        "note": "Audité contre le JAR CurseForge 8397335 ; aucune traduction officielle parmi les trente-sept langues ciblées ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 65,
@@ -1381,6 +1410,12 @@
           "name": "Latviešu",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/lv_lv.json",
+          "fallback_keys": 65
+        },
+        "eu_es": {
+          "name": "Euskara",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/eu_es.json",
           "fallback_keys": 65
         }
       }
@@ -1613,6 +1648,12 @@
           "name": "Latviešu",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/lv_lv.json",
+          "fallback_keys": 39
+        },
+        "eu_es": {
+          "name": "Euskara",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/eu_es.json",
           "fallback_keys": 39
         }
       }
@@ -1850,6 +1891,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/lv_lv.json",
           "fallback_keys": 77
+        },
+        "eu_es": {
+          "name": "Euskara",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/eu_es.json",
+          "fallback_keys": 77
         }
       }
     },
@@ -1874,7 +1921,7 @@
           "NeoOrigins"
         ],
         "in_game_validation": "pending",
-        "note": "Audité contre le JAR CurseForge 8397352 ; aucune traduction officielle parmi les trente-six langues ciblées ; absent des builds 26.x."
+        "note": "Audité contre le JAR CurseForge 8397352 ; aucune traduction officielle parmi les trente-sept langues ciblées ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 117,
@@ -2083,6 +2130,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/lv_lv.json",
           "fallback_keys": 117
+        },
+        "eu_es": {
+          "name": "Euskara",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/eu_es.json",
+          "fallback_keys": 117
         }
       }
     },
@@ -2107,7 +2160,7 @@
           "NeoOrigins"
         ],
         "in_game_validation": "pending",
-        "note": "Audité contre le JAR CurseForge 8393343 ; 124/124 clés dans les trente-six langues ciblées ; absent des builds 26.x."
+        "note": "Audité contre le JAR CurseForge 8393343 ; 124/124 clés dans les trente-sept langues ciblées ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 124,
@@ -2316,6 +2369,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/lv_lv.json",
           "fallback_keys": 124
+        },
+        "eu_es": {
+          "name": "Euskara",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/eu_es.json",
+          "fallback_keys": 124
         }
       }
     },
@@ -2341,7 +2400,7 @@
           "Iron's Spells 'n Spellbooks"
         ],
         "in_game_validation": "pending",
-        "note": "Audité contre le JAR CurseForge 8592095 ; 99/99 clés dans les trente-six langues ciblées ; absent des builds 26.x."
+        "note": "Audité contre le JAR CurseForge 8592095 ; 99/99 clés dans les trente-sept langues ciblées ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 99,
@@ -2550,6 +2609,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/lv_lv.json",
           "fallback_keys": 99
+        },
+        "eu_es": {
+          "name": "Euskara",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/eu_es.json",
+          "fallback_keys": 99
         }
       }
     },
@@ -2573,7 +2638,7 @@
         "source_ref": "f58a6261292942d4123c46ff221fbdade138a329",
         "curseforge_file_id": 8568110,
         "in_game_validation": "pending",
-        "note": "22/22 clés anglaises couvertes dans les trente-six langues ; aucune traduction officielle détectée parmi les dix-sept locales ciblées ; absent des builds 26.x. Le roumain est déjà fourni officiellement en amont (22/22), donc aucun fallback ro_ro n'est empaqueté pour Origin Architect."
+        "note": "22/22 clés anglaises couvertes dans les trente-sept langues ; aucune traduction officielle détectée parmi les dix-sept locales ciblées ; absent des builds 26.x. Le roumain est déjà fourni officiellement en amont (22/22), donc aucun fallback ro_ro n'est empaqueté pour Origin Architect."
       },
       "coverage": {
         "source_keys": 22,
@@ -2782,6 +2847,12 @@
           "name": "Latviešu",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/lv_lv.json",
+          "fallback_keys": 22
+        },
+        "eu_es": {
+          "name": "Euskara",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/eu_es.json",
           "fallback_keys": 22
         }
       }

@@ -1,0 +1,62 @@
+name: Sync Kazakh 50-locale handoff
+
+on:
+  push:
+    branches:
+      - release/0.9.0-kazakh
+    paths:
+      - .github/workflows/sync-handoff-kazakh.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-kazakh
+
+      - name: Update handoff
+        run: python3 scripts/update_handoff_kazakh.py
+
+      - name: Validate handoff state
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          text=Path('PROJECT_HANDOFF.txt').read_text(encoding='utf-8')
+          required=[
+              '0.9.0 development currently has 50 locales:',
+              '- 50: Kazakh / kk_kz',
+              'FIFTY IS NOT THE FINAL TARGET.',
+              'Kazakh locale: kk_kz / Қазақша.',
+              'workflow run 34353924273: SUCCESS',
+              'workflow run 34354666913: SUCCESS',
+              'run ID 34355144940: SUCCESS on all three jobs',
+              'artifact ID 10105445166',
+              'artifact ID 10105431487',
+              'artifact ID 10105426939',
+              'NEXT LANGUAGE = language 51.',
+              'Do not stop permanently at 51;',
+          ]
+          missing=[x for x in required if x not in text]
+          if missing: raise SystemExit(f'Handoff markers missing: {missing}')
+          print('Kazakh handoff validation passed: 50 locales, next 51')
+          PY
+
+      - name: Commit handoff
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add PROJECT_HANDOFF.txt
+          if git diff --cached --quiet; then
+            echo 'No handoff changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Finalize Kazakh 0.9.0 handoff'
+          git fetch origin release/0.9.0-kazakh
+          git rebase origin/release/0.9.0-kazakh
+          git push origin HEAD:release/0.9.0-kazakh

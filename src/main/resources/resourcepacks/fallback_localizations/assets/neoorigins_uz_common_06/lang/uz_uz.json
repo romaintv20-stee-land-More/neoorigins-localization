@@ -94,7 +94,7 @@
   "origins.neoorigins.class_scout.name": "Skaut",
   "origins.neoorigins.class_scout.description": "Kechasi ko'rish qobiliyatiga ega, tezkor harakat va ishonchli qadam bilan o'tkir ko'zli yo'l izlovchi.",
   "power.neoorigins.class_scout_night_vision.name": "Qattiq ko'zlar",
-  "power.neoorigins.class_scout_night_vision.description": "Qorong'ida aniq ko'rish mumkin.Tungi ko'rish tugmasi bilan almashtiring (standart K).",
+  "power.neoorigins.class_scout_night_vision.description": "Qorong'ida aniq ko'rish mumkin.Tunda ko'rish tugmasi bilan almashtiring (standart K).",
   "power.neoorigins.class_scout_speed.name": "Tez qadam",
   "power.neoorigins.class_scout_speed.description": "Odatdagidan 20% tezroq harakat qiladi.",
   "power.neoorigins.class_scout_no_fall_damage.name": "Ishonchli",

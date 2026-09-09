@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Generate Macedonian fallback localization by reusing the proven Norwegian bootstrap engine."""
 from pathlib import Path
+import re
 
 ROOT = Path(__file__).resolve().parents[1]
 source = (ROOT / "scripts/bootstrap_norwegian.py").read_text(encoding="utf-8")
@@ -34,7 +35,11 @@ def macedonian_protect(text: str):
 
 def macedonian_restore(text: str, tokens: list[str]):
     for index, token in enumerate(tokens):
-        text = text.replace(f"⟦{index:04d}⟧", token)
+        digits = f"{index:04d}"
+        pattern = r"⟦\s*" + r"\s*".join(re.escape(ch) for ch in digits) + r"\s*⟧"
+        text, count = re.subn(pattern, lambda _m, t=token: t, text)
+        if count == 0:
+            text = text.replace(f"⟦{digits}⟧", token)
     return text
 
 namespace["protect"] = macedonian_protect

@@ -19,7 +19,7 @@
   "power.neoorigins.abyssal_aquatic_speed.name": "Тарӑн юхӑм",
   "power.neoorigins.abyssal_aquatic_speed.description": "Шыв витӗр вӑйлӑ та тухӑҫлӑ ҫапӑҫусемпе куҫать — шыв ҫийӗнчи ҫынран чылай хӑвӑртрах.",
   "power.neoorigins.abyssal_night_vision.name": "Тарӑн курӑну",
-  "power.neoorigins.abyssal_night_vision.description": "Куҫӗсем тӗттӗмлӗхе хӑнӑхнӑ.Ҫӗрлехи курӑну клавишипе куҫарӑр (стандартлӑ K).",
+  "power.neoorigins.abyssal_night_vision.description": "Куҫӗсем тӗттӗмлӗхе хӑнӑхнӑ.Ҫӗрлехи куҫ клавишипе куҫарӑр (стандартлӑ K).",
   "power.neoorigins.abyssal_thorns_aura.name": "Пусӑм шӑммисем",
   "power.neoorigins.abyssal_thorns_aura.description": "Илнӗ сиенӗн 30% тапӑнакансене тавӑрса парать.",
   "power.neoorigins.abyssal_natural_armor.name": "Пусӑмпа хытса ларнӑ ӳт",
@@ -39,7 +39,7 @@
   "power.neoorigins.voidwalker_active_teleport.name": "Пушӑ утӑм",
   "power.neoorigins.voidwalker_active_teleport.description": "Эсир пӑхнӑ ҫӗре куҫ мӑчлаттарать (24 блок таран).энерги тӑкакланать.80-тик кулдаун.",
   "power.neoorigins.voidwalker_night_vision.name": "Пушӑ куҫ",
-  "power.neoorigins.voidwalker_night_vision.description": "Пӗтӗмпех тӗттӗмре курма пултарать.Ҫӗрлехи курӑну клавишипе куҫарӑр (стандартлӑ K).",
+  "power.neoorigins.voidwalker_night_vision.description": "Пӗтӗмпех тӗттӗмре курма пултарать.Ҫӗрлехи куҫ клавишипе куҫарӑр (стандартлӑ K).",
   "power.neoorigins.voidwalker_mobs_ignore.name": "Курӑнман",
   "power.neoorigins.voidwalker_mobs_ignore.description": "Эсир вӗсем ҫине тапӑнмасан, ушкӑнсем сирӗн пуррине асӑрхамаҫҫӗ.",
   "power.neoorigins.voidwalker_water_damage.name": "Пушӑ ҫуннӑ",
@@ -75,7 +75,7 @@
   "origins.neoorigins.umbral.name": "Умбрал",
   "origins.neoorigins.umbral.description": "Мӗлке ачи — тӗттӗм энерги ҫаврашкисене ывӑтать, позицисем хушшинче чупать, ухӑсене пӑрса ярать.Тӗттӗмре хӑвӑрт, хӗвел ҫутипе ҫуннӑ.",
   "power.neoorigins.umbral_night_vision.name": "Мӗлке курӑмӗ",
-  "power.neoorigins.umbral_night_vision.description": "Тӗттӗмре питӗ лайӑх курать.Ҫӗрлехи курӑну клавишипе куҫарӑр (стандартлӑ K).",
+  "power.neoorigins.umbral_night_vision.description": "Тӗттӗмре питӗ лайӑх курать.Ҫӗрлехи куҫ клавишипе куҫарӑр (стандартлӑ K).",
   "power.neoorigins.umbral_active_dash.name": "Мӗлке тирӗ",
   "power.neoorigins.umbral_active_dash.description": "Эсир куҫакан еннелле пысӑк хӑвӑртлӑхпа малалла сирпӗнет.энерги тӑкакланать.60-тик кулдаун.",
   "power.neoorigins.umbral_daylight_damage.name": "Ҫутӑ ҫивӗчлӗхӗ",
@@ -148,5 +148,5 @@
   "power.neoorigins.sporeling_poison_immunity.name": "Наркӑмӑшлӑ ҫирӗплӗх",
   "power.neoorigins.sporeling_poison_immunity.description": "Пур наркӑмӑш витӗмӗнчен те иммунлӑ.",
   "power.neoorigins.sporeling_night_vision.name": "Мицелий курӑмӗ",
-  "power.neoorigins.sporeling_night_vision.description": "Тӗттӗмре лайӑх курать.Ҫӗрлехи курӑну клавишипе куҫарӑр (стандартлӑ K)."
+  "power.neoorigins.sporeling_night_vision.description": "Тӗттӗмре лайӑх курать.Ҫӗрлехи куҫ клавишипе куҫарӑр (стандартлӑ K)."
 }

@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Mae offer rydych chi'n ei wneud yn derbyn rhinweddau bonws - caledwch, difrod neu gyflymder mwyngloddio.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Ennill XP dwbl o goginio bwyd mewn ysmygwr.",
+  "neoorigins.configuration.title": "Ffurfweddiad NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Chwarae gêm",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "Gosodiadau Gameplay NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Gweinyddol a Chaniatadau",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "Gosodiadau Gweinyddol NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Pŵer yn Diystyru",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "Mae NeoOrigins Power yn Diystyru",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Gwreiddiau a Dosbarthiadau",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "NeoOrigins Tarddiad a Dosbarth Toglo",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Arddangosfa Cleient",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "Gosodiadau Cleient NeoOrigins",
+  "neoorigins.configuration.show_cooldown_countdown": "Dangos y broses ailgyfrif",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Didreiddedd cyfrif i lawr oeri (%)",
+  "neoorigins.configuration.hud_ability_display": "Modd arddangos HUD gallu",
+  "neoorigins.configuration.always_show_ability_icons": "Dangoswch eiconau gallu bob amser"
+}

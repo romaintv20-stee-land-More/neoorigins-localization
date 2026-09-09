@@ -1,0 +1,180 @@
+name: Bootstrap Kannada localization
+
+on:
+  push:
+    branches:
+      - release/0.9.0-kannada
+    paths:
+      - scripts/bootstrap_kannada.py
+      - .github/workflows/bootstrap-kannada.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-kannada
+
+      - name: Restrict add-on audits to Kannada
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          scripts = [
+              'scripts/audit_medievalorigins_upstream.py',
+              'scripts/audit_ibarnorigins_upstream.py',
+              'scripts/audit_origins_fantasy_upstream.py',
+              'scripts/audit_origins_backgrounds_upstream.py',
+              'scripts/audit_origins_more_backgrounds_upstream.py',
+              'scripts/audit_origins_backgrounds_iss_upstream.py',
+              'scripts/audit_origins_furries_upstream.py',
+              'scripts/audit_origins_classes_extended_upstream.py',
+              'scripts/audit_origins_classes_iss_upstream.py',
+              'scripts/audit_origin_architect_upstream.py',
+          ]
+          for filename in scripts:
+              path = Path(filename)
+              text = path.read_text(encoding='utf-8')
+              updated, count = re.subn(r'^LOCALES\s*=.*$', 'LOCALES = ("kn_in",)', text, count=1, flags=re.M)
+              if count == 0:
+                  updated, count = re.subn(r'^DEFAULT_LOCALES\s*=.*$', 'DEFAULT_LOCALES = ("kn_in",)', text, count=1, flags=re.M)
+              if count != 1:
+                  raise SystemExit(f'Could not patch locale list in {filename}')
+              path.write_text(updated, encoding='utf-8')
+          PY
+
+      - name: Discover Kannada NeoOrigins coverage
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref 860ecdb24e723983e93004ea8ceb5de90ccf0d70 --output build/kn-discovery-mc-1.21.1 --locale kn_in
+          python3 scripts/audit_neoorigins_upstream.py --ref 3c1c7365507679c836d3c14af5d4dd0654652e87 --output build/kn-discovery-mc-26.1 --locale kn_in
+          python3 scripts/audit_neoorigins_upstream.py --ref 65864716a5a796fa1c51ec3e8a6d9640abebb4ca --output build/kn-discovery-mc-26.2 --locale kn_in
+
+      - name: Discover Kannada add-on coverage and English sources
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format
+          python3 scripts/audit_origins_fantasy_upstream.py
+          python3 scripts/audit_origins_backgrounds_upstream.py
+          python3 scripts/audit_origins_more_backgrounds_upstream.py
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py
+          python3 scripts/audit_origins_furries_upstream.py
+          python3 scripts/audit_origins_classes_extended_upstream.py
+          python3 scripts/audit_origins_classes_iss_upstream.py
+          python3 scripts/audit_origin_architect_upstream.py
+
+      - name: Generate Kannada fallback files
+        run: python3 scripts/bootstrap_kannada.py
+
+      - name: Prune add-on keys already translated upstream
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --prune
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --prune
+          python3 scripts/audit_origins_fantasy_upstream.py --prune
+          python3 scripts/audit_origins_backgrounds_upstream.py --prune
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --prune
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --prune
+          python3 scripts/audit_origins_furries_upstream.py --prune
+          python3 scripts/audit_origins_classes_extended_upstream.py --prune
+          python3 scripts/audit_origins_classes_iss_upstream.py --prune
+          python3 scripts/audit_origin_architect_upstream.py --prune
+
+      - name: Strict audit Kannada NeoOrigins coverage
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref 860ecdb24e723983e93004ea8ceb5de90ccf0d70 --output build/kn-audit-mc-1.21.1 --locale kn_in --fallback-namespace-glob 'neoorigins_kn_common_*' --extra-namespace neoorigins_kn_121 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 3c1c7365507679c836d3c14af5d4dd0654652e87 --output build/kn-audit-mc-26.1 --locale kn_in --fallback-namespace-glob 'neoorigins_kn_common_*' --extra-namespace neoorigins_26_1 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 65864716a5a796fa1c51ec3e8a6d9640abebb4ca --output build/kn-audit-mc-26.2 --locale kn_in --fallback-namespace-glob 'neoorigins_kn_common_*' --extra-namespace neoorigins_26_2 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Strict audit Kannada add-on coverage
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_fantasy_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_furries_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_extended_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origin_architect_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Validate JSON localization structure
+        run: python3 scripts/validate.py
+
+      - name: Sanity-check Kannada text
+        run: |
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+          files = list(Path('src/main/resources/resourcepacks/fallback_localizations/assets').glob('**/lang/kn_in.json'))
+          if not files:
+              raise SystemExit('No kn_in localization files found')
+          text = '\n'.join(str(v) for path in files for v in json.loads(path.read_text(encoding='utf-8')).values())
+          low = text.lower()
+          markers = len(re.findall(r'(?:ಮತ್ತು|ನೀವು|ನಿಮ್ಮ|ಈ|ಒಂದು|ಅನ್ನು|ಇದು|ಆಗ|ಮಾಡಿ|ಮಾಡಲು|ಹೆಚ್ಚು|ಇಲ್ಲ|ಮೂಲಕ|ಜೊತೆ|ಮಾತ್ರ|ಯಾವಾಗ|ಆದರೆ)', low))
+          specific = len(re.findall(r'[\u0C80-\u0CFF]', text))
+          if markers < 800:
+              raise SystemExit(f'Kannada lexical sanity check too low: {markers}')
+          if specific < 7000:
+              raise SystemExit(f'Kannada script sanity too low: {specific}')
+          print(f'Kannada text sanity passed: {markers} lexical markers, {specific} Kannada-script chars across {len(files)} files')
+          PY
+
+      - name: Add Kannada target packaging switch
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('build.gradle')
+          text = path.read_text(encoding='utf-8')
+          if 'includeKannada121Translations' not in text:
+              anchor = "def includeAzerbaijani121Translations = (project.findProperty('include_azerbaijani_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()\n"
+              if anchor not in text:
+                  raise SystemExit('Azerbaijani Gradle definition anchor not found')
+              text = text.replace(anchor, anchor + "def includeKannada121Translations = (project.findProperty('include_kannada_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()\n", 1)
+              anchor = "    inputs.property 'include_azerbaijani_121_translations', includeAzerbaijani121Translations\n"
+              if anchor not in text:
+                  raise SystemExit('Azerbaijani Gradle input anchor not found')
+              text = text.replace(anchor, anchor + "    inputs.property 'include_kannada_121_translations', includeKannada121Translations\n", 1)
+              anchor = "    if (!includeAzerbaijani121Translations) {\n        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_az_121/**'\n    }\n"
+              if anchor not in text:
+                  raise SystemExit('Azerbaijani Gradle exclusion anchor not found')
+              block = anchor + "\n    if (!includeKannada121Translations) {\n        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_kn_121/**'\n    }\n"
+              text = text.replace(anchor, block, 1)
+              path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Restore temporary audit-script changes
+        if: always()
+        run: git checkout HEAD -- scripts/audit_*_upstream.py
+
+      - name: Upload Kannada audit reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: kannada-localization-audits-${{ github.sha }}
+          path: |
+            build/kn-discovery-*
+            build/kn-audit-*
+            build/*-upstream-audit
+          if-no-files-found: warn
+
+      - name: Commit validated Kannada translations
+        if: success()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name 'kn_in.json' -print0 | xargs -0 -r git add
+          git add build.gradle
+          if git diff --cached --quiet; then
+            echo 'No Kannada translation changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Add Kannada localization fallback'
+          git fetch origin release/0.9.0-kannada
+          git rebase origin/release/0.9.0-kannada
+          git push origin HEAD:release/0.9.0-kannada

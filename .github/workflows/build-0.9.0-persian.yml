@@ -1,0 +1,239 @@
+name: Build 0.9.0 Persian
+
+on:
+  push:
+    branches: [ release/0.9.0-persian ]
+    paths:
+      - 'src/main/resources/resourcepacks/fallback_localizations/assets/**/fa_ir.json'
+      - 'build.gradle'
+      - '.github/workflows/build-0.9.0-persian.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Persian ${{ matrix.target }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: mc-1.21.1
+            minecraft: '1.21.1'
+            minecraft_range: '[1.21.1]'
+            java: '21'
+            gradle: '8.14.3'
+            neoforge: '21.1.248'
+            loader_range: '[1,)'
+            parchment: 'true'
+            pack_format: '34'
+            source_variant: 'mc1_21_1'
+            upstream_ref: '860ecdb24e723983e93004ea8ceb5de90ccf0d70'
+            fa_extra_namespace: 'neoorigins_fa_121'
+            include_addons: true
+            include_121_batch: true
+            include_fa_121: true
+            include_26_1: false
+            include_26_2: false
+          - target: mc-26.1.x
+            minecraft: '26.1.2'
+            minecraft_range: '[26.1,26.2)'
+            java: '25'
+            gradle: '9.4.1'
+            neoforge: '26.1.2.29-beta'
+            loader_range: '[4,)'
+            parchment: 'false'
+            pack_format: '84'
+            source_variant: 'mc26_1'
+            upstream_ref: '3c1c7365507679c836d3c14af5d4dd0654652e87'
+            fa_extra_namespace: 'neoorigins_26_1'
+            include_addons: false
+            include_121_batch: true
+            include_fa_121: false
+            include_26_1: true
+            include_26_2: false
+          - target: mc-26.2
+            minecraft: '26.2'
+            minecraft_range: '[26.2,26.3)'
+            java: '25'
+            gradle: '9.4.1'
+            neoforge: '26.2.0.3-beta'
+            loader_range: '[4,)'
+            parchment: 'false'
+            pack_format: '84'
+            source_variant: 'mc26_1'
+            upstream_ref: '65864716a5a796fa1c51ec3e8a6d9640abebb4ca'
+            fa_extra_namespace: 'neoorigins_26_2'
+            include_addons: false
+            include_121_batch: false
+            include_fa_121: false
+            include_26_1: false
+            include_26_2: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Java ${{ matrix.java }}
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+
+      - name: Set up Gradle ${{ matrix.gradle }}
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          gradle-version: ${{ matrix.gradle }}
+
+      - name: Strict audit Persian NeoOrigins
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py \
+            --ref '${{ matrix.upstream_ref }}' \
+            --output 'build/fa-${{ matrix.target }}' \
+            --locale fa_ir \
+            --fallback-namespace-glob 'neoorigins_fa_common_*' \
+            --extra-namespace '${{ matrix.fa_extra_namespace }}' \
+            --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Strict audit Persian add-ons
+        if: matrix.include_addons == true
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re, subprocess
+          scripts = [
+              ('scripts/audit_medievalorigins_upstream.py', ['--ref','1.21.1-fabric']),
+              ('scripts/audit_ibarnorigins_upstream.py', ['--ref','multiloader-1.21.1-new-pack-format']),
+              ('scripts/audit_origins_fantasy_upstream.py', []),
+              ('scripts/audit_origins_backgrounds_upstream.py', []),
+              ('scripts/audit_origins_more_backgrounds_upstream.py', []),
+              ('scripts/audit_origins_backgrounds_iss_upstream.py', []),
+              ('scripts/audit_origins_furries_upstream.py', []),
+              ('scripts/audit_origins_classes_extended_upstream.py', []),
+              ('scripts/audit_origins_classes_iss_upstream.py', []),
+              ('scripts/audit_origin_architect_upstream.py', []),
+          ]
+          originals = {name: Path(name).read_text(encoding='utf-8') for name, _ in scripts}
+          try:
+              for name, extra in scripts:
+                  path = Path(name)
+                  source = originals[name]
+                  updated, count = re.subn(r'^LOCALES\s*=.*$', 'LOCALES = ("fa_ir",)', source, count=1, flags=re.M)
+                  if count == 0:
+                      updated, count = re.subn(r'^DEFAULT_LOCALES\s*=.*$', 'DEFAULT_LOCALES = ("fa_ir",)', source, count=1, flags=re.M)
+                  if count != 1:
+                      raise SystemExit(f'Could not patch locale in {name}')
+                  path.write_text(updated, encoding='utf-8')
+                  subprocess.run(['python3', name, *extra, '--fail-on-overlap', '--fail-on-missing', '--fail-on-placeholders'], check=True)
+          finally:
+              for name, source in originals.items():
+                  Path(name).write_text(source, encoding='utf-8')
+          PY
+
+      - name: Validate localization files
+        run: python3 scripts/validate.py
+
+      - name: Sanity-check Persian text
+        run: |
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+          files = list(Path('src/main/resources/resourcepacks/fallback_localizations/assets').glob('**/lang/fa_ir.json'))
+          if not files:
+              raise SystemExit('No fa_ir localization files found')
+          text = '\n'.join(str(v) for p in files for v in json.loads(p.read_text(encoding='utf-8')).values())
+          markers = len(re.findall(r'[\u0600-\u06FF]', text))
+          persian_specific = len(re.findall(r'[پچژگکی]', text))
+          forbidden = ['برق فعال شد', 'برق غیرفعال است', 'نمی تواند به من مربوط شود', 'حداکثر اسب بخار']
+          present = [item for item in forbidden if item in text]
+          if present:
+              raise SystemExit(f'Known Persian false friends remain: {present}')
+          if markers < 3000 or persian_specific < 100:
+              raise SystemExit(f'Persian lexical sanity check too low: script={markers}, specific={persian_specific}')
+          print(f'Persian text sanity passed: {markers} Arabic-script chars, {persian_specific} Persian-specific chars across {len(files)} files')
+          PY
+
+      - name: Build mod
+        run: |
+          gradle build --stacktrace \
+            "-Pjava_version=${{ matrix.java }}" \
+            "-Puse_parchment=${{ matrix.parchment }}" \
+            "-Presource_pack_format=${{ matrix.pack_format }}" \
+            "-Psource_variant=${{ matrix.source_variant }}" \
+            "-Pinclude_addon_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_121_batch_translations=${{ matrix.include_121_batch }}" \
+            "-Pinclude_turkish_split_translations=true" \
+            "-Pinclude_indonesian_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_swedish_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_danish_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_finnish_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_norwegian_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_romanian_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_greek_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_bulgarian_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_vietnamese_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_arabic_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_hebrew_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_thai_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_slovak_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_slovenian_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_croatian_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_serbian_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_catalan_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_estonian_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_lithuanian_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_latvian_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_basque_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_galician_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_hindi_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_nynorsk_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_persian_121_translations=${{ matrix.include_fa_121 }}" \
+            "-Pinclude_26_1_translations=${{ matrix.include_26_1 }}" \
+            "-Pinclude_26_2_translations=${{ matrix.include_26_2 }}" \
+            "-Pminecraft_version=${{ matrix.minecraft }}" \
+            "-Pminecraft_version_range=${{ matrix.minecraft_range }}" \
+            "-Pneo_version=${{ matrix.neoforge }}" \
+            "-Ploader_version_range=${{ matrix.loader_range }}" \
+            "-Pmod_version=0.9.0-beta+fa-${{ matrix.target }}"
+
+      - name: Verify Persian packaging
+        run: |
+          JAR=$(find build/libs -type f -name '*.jar' ! -name '*-sources.jar' | head -n 1)
+          test -n "$JAR"
+          jar tf "$JAR" > build/jar-fa.txt
+          FA=$(grep -cE '(^|/)lang/fa_ir\.json$' build/jar-fa.txt || true)
+          for index in $(seq -w 1 16); do
+            grep -Eq "(^|/)assets/neoorigins_fa_common_${index}/lang/fa_ir\.json$" build/jar-fa.txt
+          done
+          ADDONS='medievalorigins ibarnorigins origins_fantasy origins_backgrounds origins_backgrounds_two origins_backgrounds_iss origins_furries origins_classes_ex origins_classes_iss originsmodernui'
+          ADDON_PATTERN='(^|/)assets/(medievalorigins|medievalorigins_[^/]*|ibarnorigins|origins_fantasy|origins_backgrounds|origins_backgrounds_two|origins_backgrounds_iss|origins_furries|origins_classes_ex|origins_classes_iss|originsmodernui)/'
+          if [ '${{ matrix.include_addons }}' = 'true' ]; then
+            EXPECTED=17
+            grep -Eq 'assets/neoorigins_fa_121/lang/fa_ir\.json$' build/jar-fa.txt
+            for ns in $ADDONS; do
+              source="src/main/resources/resourcepacks/fallback_localizations/assets/$ns/lang/fa_ir.json"
+              if [ -f "$source" ]; then
+                EXPECTED=$((EXPECTED + 1))
+                grep -Eq "assets/$ns/lang/fa_ir\.json$" build/jar-fa.txt
+              else
+                ! grep -Eq "assets/$ns/lang/fa_ir\.json$" build/jar-fa.txt
+              fi
+            done
+            ! grep -Eq 'assets/neoorigins_26_(1|2)/lang/fa_ir\.json$' build/jar-fa.txt
+          else
+            EXPECTED=17
+            ! grep -Eq "$ADDON_PATTERN" build/jar-fa.txt
+            ! grep -Eq 'assets/neoorigins_fa_121/lang/fa_ir\.json$' build/jar-fa.txt
+            grep -Eq "assets/${{ matrix.fa_extra_namespace }}/lang/fa_ir\.json$" build/jar-fa.txt
+          fi
+          echo "Persian: $FA / $EXPECTED"
+          test "$FA" -eq "$EXPECTED"
+
+      - name: Upload JAR
+        uses: actions/upload-artifact@v7
+        with:
+          name: neoorigins-localization-persian-${{ matrix.target }}-${{ github.sha }}
+          path: build/libs/*.jar
+          if-no-files-found: error

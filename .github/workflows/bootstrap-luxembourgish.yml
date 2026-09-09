@@ -49,22 +49,6 @@ jobs:
               path.write_text(updated, encoding='utf-8')
           PY
 
-      - name: Verify Luxembourgish translation backend
-        run: |
-          python3 - <<'PY'
-          from urllib.parse import quote
-          from urllib.request import urlopen
-          import json
-          text='Open Origin Creator'
-          url='https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=lb&dt=t&q='+quote(text)
-          with urlopen(url,timeout=30) as r:
-              payload=json.load(r)
-          result=''.join(x[0] for x in payload[0] if x and x[0])
-          if not result or result.lower()==text.lower():
-              raise SystemExit(f'Luxembourgish backend probe failed: {result!r}')
-          print('Luxembourgish backend probe:',result)
-          PY
-
       - name: Discover Luxembourgish NeoOrigins coverage
         run: |
           python3 scripts/audit_neoorigins_upstream.py --ref af467a3bc118f6bbc0970d68f7e03fa631d7e6f2 --output build/lb-discovery-mc-1.21.1 --locale lb_lu

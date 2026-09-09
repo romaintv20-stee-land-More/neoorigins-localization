@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Эсир тунӑ хатӗрсем бонус атрибутсем илеҫҫӗ — ҫирӗплӗх, сиенлӗх е ҫӗр айӗнчи хӑвӑртлӑх.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Курильщикра апат пӗҫернӗ чухне икӗ хут ытларах XP илет.",
+  "neoorigins.configuration.title": "NeoOrigins конфигурацийӗ",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Геймплей",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "NeoOrigins геймплей настройкисем",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Админ тата ирӗксем",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "NeoOrigins админ настройкисем",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Хӑват ҫине ҫаврӑнса пӑхни",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "Neoorigins вӑйне ҫӗнтерет",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Пуҫламӑшӗ тата класӗсем",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "Neoorigins пуҫламӑшӗ тата класс куҫӑмӗсем",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Клиент кӑтартӑвӗ",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "NeoOrigins клиент настройкисем",
+  "neoorigins.configuration.show_cooldown_countdown": "Кулдаун шутне кӑтарт",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Кулдаун шутлавӗн тӗксӗмлӗхӗ (%)",
+  "neoorigins.configuration.hud_ability_display": "Пултарулӑх HUD дисплей режимӗ",
+  "neoorigins.configuration.always_show_ability_icons": "Яланах пултарулӑх значокӗсене кӑтартӑр"
+}

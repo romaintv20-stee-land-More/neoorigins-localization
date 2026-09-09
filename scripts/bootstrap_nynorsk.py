@@ -19,14 +19,13 @@ ASSETS = ROOT / "src/main/resources/resourcepacks/fallback_localizations/assets"
 CACHE_PATH = ROOT / "build/nynorsk_translation_cache.json"
 TOKEN_RE = re.compile(r"%(?:\d+\$)?[sdif]|§.|\n|\{[^{}]+\}|<[^<>]+>|\\n")
 PLACEHOLDER_RE = re.compile(r"%(?:\d+\$)?[sdif]")
+SEPARATOR_RE = re.compile(r"\s*ZXQSEP\d{4}ZXQ\s*")
 
-# Keep product names / technical tokens untouched while Apertium handles Norwegian prose.
 PROTECTED_LITERALS = (
     "Origin Architect", "NeoOrigins", "Minecraft", "Origins", "Origin", "HUD", "JSON",
     "Elytra", "Ultimine", "NeoForge", "Fabric", "Java", "GitHub", "XP",
 )
 
-# Canonical short UI/domain wording where a direct, stable Nynorsk form is preferable.
 MANUAL_OVERRIDES = {
     "Open Origin Creator": "Opna Origin-opprettaren",
     "Mob Origin Creator": "Mob Origin-opprettar",
@@ -89,24 +88,25 @@ def restore(text: str, tokens: list[str]):
 
 
 def convert_batch(values: list[str]):
-    """Convert a batch with one protected value per physical line."""
+    """Convert a batch separated by opaque tokens instead of relying on line counts."""
     if not values:
         return []
     masked_values = []
     token_sets = []
     for value in values:
         masked, tokens = protect(value)
-        if "\n" in masked:
-            raise RuntimeError(f"Unprotected newline in Apertium input: {value!r}")
         masked_values.append(masked)
         token_sets.append(tokens)
 
+    joined = masked_values[0]
+    for index, value in enumerate(masked_values[1:], 1):
+        joined += f"\nZXQSEP{index:04d}ZXQ\n{value}"
+
     env = os.environ.copy()
-    # Prefer the common "vi" pronoun choice while keeping otherwise standard Nynorsk.
     env.setdefault("AP_SETVAR", "me_vi")
     proc = subprocess.run(
         ["apertium", "-u", "nob-nno"],
-        input="\n".join(masked_values) + "\n",
+        input=joined,
         text=True,
         capture_output=True,
         check=False,
@@ -114,14 +114,17 @@ def convert_batch(values: list[str]):
     )
     if proc.returncode != 0:
         raise RuntimeError(f"Apertium failed with {proc.returncode}: {proc.stderr}")
-    lines = proc.stdout.splitlines()
-    if len(lines) != len(values):
+
+    parts = SEPARATOR_RE.split(proc.stdout.strip())
+    if len(parts) != len(values):
+        marker_count = len(re.findall(r"ZXQSEP\d{4}ZXQ", proc.stdout))
         raise RuntimeError(
-            f"Apertium batch line mismatch: expected {len(values)}, got {len(lines)}"
+            f"Apertium separator mismatch: expected {len(values)} parts, got {len(parts)}; "
+            f"markers preserved={marker_count}/{max(0, len(values)-1)}"
         )
 
     results = []
-    for source, result, tokens in zip(values, lines, token_sets):
+    for source, result, tokens in zip(values, parts, token_sets):
         result = restore(result, tokens).strip()
         if sorted(PLACEHOLDER_RE.findall(source)) != sorted(PLACEHOLDER_RE.findall(result)):
             raise RuntimeError(f"Placeholder mismatch after Nynorsk conversion: {source!r} -> {result!r}")
@@ -223,7 +226,7 @@ def main():
     pending = [value for value in unique_bokmal if value not in source_to_nynorsk]
     print(f"Nynorsk cache: {len(source_to_nynorsk)} entries; converting {len(pending)} Bokmål strings")
 
-    batch_size = 400
+    batch_size = 300
     for start in range(0, len(pending), batch_size):
         batch = pending[start:start + batch_size]
         results = convert_batch(batch)

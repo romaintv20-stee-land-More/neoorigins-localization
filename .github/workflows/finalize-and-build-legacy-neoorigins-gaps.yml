@@ -21,12 +21,10 @@ jobs:
           ref: release/0.9.0-legacy-gap-recovery
           fetch-depth: 0
 
-      - name: Normalize version-specific packaging and prune stale 26.x keys
+      - name: Normalize version-specific packaging
         run: |
           python3 - <<'PY'
-          import json, urllib.request
           from pathlib import Path
-
           gradle = Path('build.gradle')
           text = gradle.read_text(encoding='utf-8')
           old_batch = "def include121BatchTranslations = (project.findProperty('include_121_batch_translations') ?: legacyExpanded ?: 'true').toBoolean()"
@@ -35,27 +33,7 @@ jobs:
           new_tr = "def includeTurkishSplitTranslations = (project.findProperty('include_turkish_split_translations') ?: 'true').toBoolean()"
           if old_batch not in text: raise SystemExit('Could not find 1.21 batch packaging guard')
           if old_tr not in text: raise SystemExit('Could not find Turkish packaging guard')
-          text = text.replace(old_batch, new_batch, 1).replace(old_tr, new_tr, 1)
-          gradle.write_text(text, encoding='utf-8')
-
-          assets = Path('src/main/resources/resourcepacks/fallback_localizations/assets')
-          refs = {
-              'neoorigins_26_1': 'aa207ef14cf3b938e28b4081162701953957c1d5',
-              'neoorigins_26_2': '511cadcafe3027d2a56b4448652ec9b74e2f3b07',
-          }
-          base = 'https://raw.githubusercontent.com/CyberDay1/NeoOrigins/{ref}/src/main/resources/assets/neoorigins/lang/en_us.json'
-          for namespace, ref in refs.items():
-              with urllib.request.urlopen(base.format(ref=ref), timeout=30) as r:
-                  english = json.load(r)
-              for locale in ('tr_tr','cs_cz','hu_hu'):
-                  path = assets / namespace / 'lang' / f'{locale}.json'
-                  data = json.loads(path.read_text(encoding='utf-8'))
-                  stale = sorted(set(data) - set(english))
-                  if len(stale) != 3:
-                      raise SystemExit(f'{namespace}/{locale}: expected 3 stale keys, got {len(stale)}: {stale}')
-                  clean = {k:v for k,v in data.items() if k in english}
-                  path.write_text(json.dumps(clean, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-                  print(namespace, locale, 'removed stale:', stale, 'remaining overlay keys:', len(clean))
+          gradle.write_text(text.replace(old_batch, new_batch, 1).replace(old_tr, new_tr, 1), encoding='utf-8')
           PY
 
       - name: Strict source audit for all seven locales
@@ -80,7 +58,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add build.gradle src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_26_1/lang/{tr_tr,cs_cz,hu_hu}.json src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_26_2/lang/{tr_tr,cs_cz,hu_hu}.json
+          git add build.gradle
           if ! git diff --cached --quiet; then
             git commit -m 'Finalize historical NeoOrigins locale packaging'
             git push origin HEAD:release/0.9.0-legacy-gap-recovery
@@ -158,8 +136,7 @@ jobs:
           fetch-depth: 0
 
       - name: Require finalized HEAD
-        run: |
-          test "$(git rev-parse HEAD)" = '${{ needs.finalize.outputs.commit_sha }}'
+        run: test "$(git rev-parse HEAD)" = '${{ needs.finalize.outputs.commit_sha }}'
 
       - uses: actions/setup-java@v6
         with:
@@ -197,42 +174,41 @@ jobs:
           test -n "$JAR"
           export JAR
           python3 - <<'PY'
-          import json, os, re, urllib.request, urllib.error, zipfile
-
+          import json, os, urllib.request, urllib.error, zipfile
           jar=os.environ['JAR']; ref=os.environ['UPSTREAM_REF']; target=os.environ['TARGET']
           locales=['it_it','pl_pl','ru_ru','zh_cn','tr_tr','cs_cz','hu_hu']
           base='https://raw.githubusercontent.com/CyberDay1/NeoOrigins/{ref}/src/main/resources/assets/neoorigins/lang/{locale}.json'
-          def fetch(locale):
+          ref121='af467a3bc118f6bbc0970d68f7e03fa631d7e6f2'
+          def fetch(r,locale):
               try:
-                  with urllib.request.urlopen(base.format(ref=ref,locale=locale),timeout=30) as r:return json.load(r)
+                  with urllib.request.urlopen(base.format(ref=r,locale=locale),timeout=30) as f:return json.load(f)
               except urllib.error.HTTPError as e:
                   if e.code==404:return {}
                   raise
-          english=fetch('en_us')
+          english=fetch(ref,'en_us'); en121=fetch(ref121,'en_us')
           with zipfile.ZipFile(jar) as z:
               names=z.namelist()
               for locale in locales:
-                  official=fetch(locale)
-                  expected=set(english)-set(official)
-                  suffix=f'/lang/{locale}.json'
+                  official=fetch(ref,locale); expected=set(english)-set(official)
                   files=[]
                   for n in names:
-                      if not n.endswith(suffix) or '/assets/' not in n: continue
+                      if not n.endswith(f'/lang/{locale}.json') or '/assets/' not in n: continue
                       ns=n.split('/assets/',1)[1].split('/',1)[0]
-                      if ns == 'neoorigins' or ns.startswith('neoorigins_'):
-                          files.append(n)
+                      if ns == 'neoorigins' or ns.startswith('neoorigins_'): files.append(n)
                   merged={}; duplicates=[]
                   for n in sorted(files):
                       data=json.loads(z.read(n).decode('utf-8'))
                       for k,v in data.items():
                           if k in merged: duplicates.append((k,n))
                           merged[k]=v
-                  if duplicates:
-                      raise SystemExit(f'{target} {locale}: duplicate packaged fallback keys: {duplicates[:10]}')
+                  if duplicates: raise SystemExit(f'{target} {locale}: duplicate packaged keys: {duplicates[:10]}')
                   missing=sorted(expected-set(merged)); extra=sorted(set(merged)-expected)
-                  print(target, locale, 'files', len(files), 'fallback keys', len(merged), 'expected', len(expected), 'missing', len(missing), 'extra', len(extra))
-                  if missing or extra:
-                      raise SystemExit(f'{target} {locale}: packaged fallback mismatch; missing={missing[:10]} extra={extra[:10]}')
+                  allowed_extra=[]
+                  if target != 'mc-1.21.1' and locale in {'tr_tr','cs_cz','hu_hu'}:
+                      allowed_extra=sorted((set(en121)-set(english)) & set(merged))
+                  print(target, locale, 'files', len(files), 'fallback', len(merged), 'expected', len(expected), 'missing', len(missing), 'extra', len(extra), 'allowed_extra', len(allowed_extra))
+                  if missing or extra != allowed_extra:
+                      raise SystemExit(f'{target} {locale}: packaged mismatch; missing={missing[:10]} extra={extra[:10]} allowed={allowed_extra[:10]}')
                   if target != 'mc-1.21.1' and any('/assets/neoorigins_121_batch1/' in n for n in files):
                       raise SystemExit(f'{target} {locale}: 1.21.1 batch leaked into modern package')
           PY

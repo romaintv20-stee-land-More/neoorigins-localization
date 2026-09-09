@@ -1,0 +1,62 @@
+name: Sync Belarusian 53-locale handoff
+
+on:
+  push:
+    branches:
+      - release/0.9.0-belarusian
+    paths:
+      - .github/workflows/sync-handoff-belarusian.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-belarusian
+
+      - name: Update handoff
+        run: python3 scripts/update_handoff_belarusian.py
+
+      - name: Validate handoff state
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          text=Path('PROJECT_HANDOFF.txt').read_text(encoding='utf-8')
+          required=[
+              '0.9.0 development currently has 53 locales:',
+              '- 53: Belarusian / be_by',
+              'FIFTY-THREE IS NOT THE FINAL TARGET.',
+              'Belarusian locale: be_by / Беларуская.',
+              'workflow run 34363769995: SUCCESS',
+              'workflow run 34364460234: SUCCESS',
+              'run ID 34364892271: SUCCESS on all three jobs',
+              'artifact ID 10109490233',
+              'artifact ID 10109467263',
+              'artifact ID 10109453937',
+              'NEXT LANGUAGE = language 54.',
+              'Do not stop permanently at 54;',
+          ]
+          missing=[x for x in required if x not in text]
+          if missing: raise SystemExit(f'Handoff markers missing: {missing}')
+          print('Belarusian handoff validation passed: 53 locales, next 54')
+          PY
+
+      - name: Commit handoff
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add PROJECT_HANDOFF.txt
+          if git diff --cached --quiet; then
+            echo 'No handoff changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Finalize Belarusian 0.9.0 handoff'
+          git fetch origin release/0.9.0-belarusian
+          git rebase origin/release/0.9.0-belarusian
+          git push origin HEAD:release/0.9.0-belarusian

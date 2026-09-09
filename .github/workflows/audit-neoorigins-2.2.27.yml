@@ -77,7 +77,6 @@ jobs:
                   'python3', 'scripts/audit_neoorigins_upstream.py',
                   '--ref', ref,
                   '--output', f'build/audit-2.2.27-{target.replace(".", "_")}',
-                  '--fail-on-overlap', '--fail-on-missing', '--fail-on-placeholders',
               ]
               for locale in locales:
                   cmd += ['--locale', locale]
@@ -96,8 +95,13 @@ jobs:
           reports = sorted(Path('build').glob('audit-2.2.27-*/report.json'))
           if len(reports) != 3:
               raise SystemExit(f'Expected 3 reports, found {len(reports)}')
+          has_errors = False
           for path in reports:
               report = json.loads(path.read_text(encoding='utf-8'))
+              problems = {
+                  locale: stats for locale, stats in report['locales'].items()
+                  if stats['missing_not_yet_in_fallback'] or stats['fallback_overlap_with_official'] or stats['placeholder_errors']
+              }
               totals = {
                   'locales': len(report['locales']),
                   'missing': sum(v['missing_not_yet_in_fallback'] for v in report['locales'].values()),
@@ -105,8 +109,15 @@ jobs:
                   'placeholders': sum(v['placeholder_errors'] for v in report['locales'].values()),
               }
               print(path.parent.name, report['ref'], report['english_keys'], totals)
-              if totals['locales'] != 58 or totals['missing'] or totals['overlap'] or totals['placeholders']:
-                  raise SystemExit(f'Unexpected audit totals for {path}: {totals}')
+              for locale, stats in problems.items():
+                  print(
+                      f"  {locale}: missing={stats['missing_not_yet_in_fallback']} "
+                      f"overlap={stats['fallback_overlap_with_official']} "
+                      f"placeholders={stats['placeholder_errors']}"
+                  )
+              has_errors |= bool(problems) or totals['locales'] != 58
+          if has_errors:
+              raise SystemExit('2.2.27 audit found pre-existing locale coverage gaps; see report above and artifact.')
           PY
 
       - name: Upload 2.2.27 audit reports

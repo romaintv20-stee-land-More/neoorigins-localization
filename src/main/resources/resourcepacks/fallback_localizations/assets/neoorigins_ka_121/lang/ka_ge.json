@@ -1,0 +1,8 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "აღჭურვილობა, რომელსაც თქვენ ქმნით, უფრო მაღალია - იარაღები უფრო სწრაფად იშლება, იარაღი უფრო ძლიერად ურტყამს, ჯავშანი უფრო მკაცრია და ყველაფერი უფრო დიდხანს ძლებს.",
+  "power.neoorigins.class_cook_smoker_xp.description": "მწეველში ან ღუმელში მოხარშული საკვები დამატებით კვებას იღებს.",
+  "neoorigins.configuration.title": "NeoOrigins საერთო კონფიგურაცია",
+  "reward.neoorigins.loot_pool": "Neoorigins: საგრანტო ლოტ აუზი",
+  "reward.neoorigins.loot_pool.loot_table": "ნაძარცვის მაგიდა",
+  "reward.neoorigins.loot_pool.rolls": "რულონები"
+}

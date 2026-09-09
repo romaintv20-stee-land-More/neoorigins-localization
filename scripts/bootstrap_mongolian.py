@@ -21,6 +21,26 @@ source = source.replace(
 namespace = {"__name__": "mongolian_bootstrap", "__file__": str(ROOT / "scripts/bootstrap_mongolian.py")}
 exec(compile(source, str(ROOT / "scripts/bootstrap_mongolian.py"), "exec"), namespace)
 
+# Google Transliteration for Mongolian can turn the Latin ZXQ placeholder sentinels
+# into Cyrillic lookalikes. Use punctuation/digit-only sentinels instead so printf,
+# formatting and tag tokens survive the translation round-trip unchanged.
+def mongolian_protect(text: str):
+    tokens = []
+    def replace(match):
+        index = len(tokens)
+        tokens.append(match.group(0))
+        return f"⟦{index:04d}⟧"
+    return namespace["TOKEN_RE"].sub(replace, text), tokens
+
+
+def mongolian_restore(text: str, tokens: list[str]):
+    for index, token in enumerate(tokens):
+        text = text.replace(f"⟦{index:04d}⟧", token)
+    return text
+
+namespace["protect"] = mongolian_protect
+namespace["restore"] = mongolian_restore
+
 namespace["MANUAL_OVERRIDES"] = {
     "Open Origin Creator": "Origin бүтээгчийг нээх",
     "Mob Origin Creator": "Mob Origin бүтээгч",
@@ -33,6 +53,7 @@ namespace["MANUAL_OVERRIDES"] = {
     "Rage Counter.": "Уур хилэнгийн тоолуур.",
     "Rage Counter": "Уур хилэнгийн тоолуур",
     "Origin Architect": "Origin Architect",
+    "Press %s to cycle between commanding your summons to sit, follow, or teleport to you.": "%s дарж дуудсан амьтдаа суух, дагах эсвэл өөр дээрээ телепортлох тушаалуудын хооронд солино.",
     "%1$s was burnt to a crisp by %2$s using %3$s": "%1$s-ийг %2$s %3$s ашиглан үнс болгож шатаав",
     "%1$s was purified by %2$s's dragonfire using %3$s": "%1$s-ийг %2$s-ын лууны гал %3$s ашиглан ариусгав",
     "%1$s had their soul ripped apart by %2$s's %3$s": "%1$s-ын сүнсийг %2$s-ын %3$s урж таслав",

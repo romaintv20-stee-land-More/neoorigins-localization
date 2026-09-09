@@ -1,0 +1,64 @@
+name: Finalize Luxembourgish metadata
+
+on:
+  push:
+    branches: [ release/0.9.0-luxembourgish ]
+    paths:
+      - scripts/finalize_luxembourgish_metadata.py
+      - .github/workflows/finalize-luxembourgish-metadata.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  metadata:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-luxembourgish
+          fetch-depth: 0
+      - name: Update metadata to 61 languages
+        run: python3 scripts/finalize_luxembourgish_metadata.py
+      - name: Validate metadata
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          c=json.loads(Path('catalog.json').read_text(encoding='utf-8'))
+          assert c['project']['supported_locale_count']==61
+          neo=next(x for x in c['supported_projects'] if x.get('id')=='neoorigins')
+          assert neo['compatibility']['fallback_namespaces']['luxembourgish_common_glob']=='neoorigins_lb_common_*'
+          assert neo['compatibility']['fallback_namespaces']['luxembourgish_mc_1_21_1']=='neoorigins_lb_121'
+          count=0
+          def walk(o):
+              global count
+              if isinstance(o,dict):
+                  if 'lb_lu' in o and isinstance(o['lb_lu'],dict) and o['lb_lu'].get('name')=='Lëtzebuergesch': count+=1
+                  for v in o.values(): walk(v)
+              elif isinstance(o,list):
+                  for v in o: walk(v)
+          walk(c)
+          assert count>=11, count
+          readme=Path('README.md').read_text(encoding='utf-8')
+          assert readme.count('| 61 |')==3
+          assert 'Luxembourgeois (`lb_lu`)' in readme
+          assert 'Les soixante et une langues' in readme
+          assert 'Pour le luxembourgeois :' in readme
+          assert 'couverture historique partielle à compléter' not in readme
+          catalog=Path('CATALOG.md').read_text(encoding='utf-8')
+          assert catalog.count('Lëtzebuergesch (`lb_lu`)')>=11
+          print('Metadata assertions passed:',count,'Luxembourgish entries')
+          PY
+          git diff --check
+      - name: Commit metadata
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add catalog.json CATALOG.md README.md
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Register Luxembourgish as language 61'
+          git fetch origin release/0.9.0-luxembourgish
+          git rebase origin/release/0.9.0-luxembourgish
+          git push origin HEAD:release/0.9.0-luxembourgish

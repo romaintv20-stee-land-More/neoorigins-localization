@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Lantzen dituzun ekipamenduek ezaugarri gehigarriak jasotzen dituzte: gogortasuna, kaltea edo meatze-abiadura.",
+  "power.neoorigins.class_cook_smoker_xp.description": "XP bikoitza lortzen du erretzaile batean janaria prestatzeagatik.",
+  "neoorigins.configuration.title": "NeoOrigins konfigurazioa",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Jokatzeko",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "NeoOrigins jokoaren ezarpenak",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Administratzailea eta Baimenak",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "NeoOrigins Administratzailearen ezarpenak",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Potentzia gainidaztea",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "NeoOrigins boterea gainidaztea",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Jatorria eta Klaseak",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "NeoOrigins Jatorria eta Klase-aldaketak",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Bezeroaren bistaratzea",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "NeoOrigins bezeroaren ezarpenak",
+  "neoorigins.configuration.show_cooldown_countdown": "Erakutsi hozte-kontua",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Cooldown atzerako kontaketa opakutasuna (%)",
+  "neoorigins.configuration.hud_ability_display": "Gaitasuna HUD bistaratzeko modua",
+  "neoorigins.configuration.always_show_ability_icons": "Erakutsi beti gaitasun ikonoak"
+}

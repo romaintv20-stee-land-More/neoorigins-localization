@@ -1,0 +1,118 @@
+name: Audit NeoOrigins 2.2.27 localization baseline
+
+on:
+  push:
+    branches:
+      - release/0.9.0-beta
+    paths:
+      - .github/workflows/audit-neoorigins-2.2.27.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-beta
+
+      - name: Verify 2.2.27 English localization is unchanged
+        run: |
+          python3 - <<'PY'
+          import json
+          import urllib.request
+
+          refs = {
+              '1.21.1': ('860ecdb24e723983e93004ea8ceb5de90ccf0d70', 'af467a3bc118f6bbc0970d68f7e03fa631d7e6f2'),
+              '26.1.x': ('3c1c7365507679c836d3c14af5d4dd0654652e87', 'aa207ef14cf3b938e28b4081162701953957c1d5'),
+              '26.2': ('65864716a5a796fa1c51ec3e8a6d9640abebb4ca', '511cadcafe3027d2a56b4448652ec9b74e2f3b07'),
+          }
+          base = 'https://raw.githubusercontent.com/CyberDay1/NeoOrigins/{ref}/src/main/resources/assets/neoorigins/lang/en_us.json'
+          for target, (old, new) in refs.items():
+              with urllib.request.urlopen(base.format(ref=old), timeout=30) as r:
+                  old_data = json.load(r)
+              with urllib.request.urlopen(base.format(ref=new), timeout=30) as r:
+                  new_data = json.load(r)
+              if old_data != new_data:
+                  added = sorted(set(new_data) - set(old_data))
+                  removed = sorted(set(old_data) - set(new_data))
+                  changed = sorted(k for k in set(old_data) & set(new_data) if old_data[k] != new_data[k])
+                  raise SystemExit(f'{target}: localization changed: added={added}, removed={removed}, changed={changed}')
+              print(f'{target}: unchanged ({len(new_data)} English keys)')
+          PY
+
+      - name: Audit all 58 locales against 2.2.27
+        run: |
+          python3 - <<'PY'
+          import json
+          import subprocess
+          from pathlib import Path
+
+          root = Path('.')
+          assets = root / 'src/main/resources/resourcepacks/fallback_localizations/assets'
+          catalog = json.loads((root / 'catalog.json').read_text(encoding='utf-8'))
+          neo = next(p for p in catalog['supported_projects'] if p['id'] == 'neoorigins')
+          locales = list(neo['languages'])
+          if len(locales) != 58:
+              raise SystemExit(f'Expected 58 locales, found {len(locales)}')
+
+          namespaces = sorted(
+              p.name for p in assets.iterdir()
+              if p.is_dir() and p.name.startswith('neoorigins') and p.name != 'neoorigins'
+          )
+
+          targets = {
+              '1.21.1': ('af467a3bc118f6bbc0970d68f7e03fa631d7e6f2', lambda n: n == 'neoorigins_226' or '_common_' in n or n.endswith('_121')),
+              '26.1.x': ('aa207ef14cf3b938e28b4081162701953957c1d5', lambda n: n == 'neoorigins_226' or n == 'neoorigins_26_1' or '_common_' in n),
+              '26.2': ('511cadcafe3027d2a56b4448652ec9b74e2f3b07', lambda n: n == 'neoorigins_226' or n == 'neoorigins_26_2' or '_common_' in n),
+          }
+
+          for target, (ref, keep) in targets.items():
+              selected = [n for n in namespaces if keep(n)]
+              cmd = [
+                  'python3', 'scripts/audit_neoorigins_upstream.py',
+                  '--ref', ref,
+                  '--output', f'build/audit-2.2.27-{target.replace(".", "_")}',
+                  '--fail-on-overlap', '--fail-on-missing', '--fail-on-placeholders',
+              ]
+              for locale in locales:
+                  cmd += ['--locale', locale]
+              for namespace in selected:
+                  cmd += ['--extra-namespace', namespace]
+              print(f'Running {target}: {len(locales)} locales, {len(selected)} extra namespaces')
+              subprocess.run(cmd, check=True)
+          PY
+
+      - name: Summarize audit reports
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          reports = sorted(Path('build').glob('audit-2.2.27-*/report.json'))
+          if len(reports) != 3:
+              raise SystemExit(f'Expected 3 reports, found {len(reports)}')
+          for path in reports:
+              report = json.loads(path.read_text(encoding='utf-8'))
+              totals = {
+                  'locales': len(report['locales']),
+                  'missing': sum(v['missing_not_yet_in_fallback'] for v in report['locales'].values()),
+                  'overlap': sum(v['fallback_overlap_with_official'] for v in report['locales'].values()),
+                  'placeholders': sum(v['placeholder_errors'] for v in report['locales'].values()),
+              }
+              print(path.parent.name, report['ref'], report['english_keys'], totals)
+              if totals['locales'] != 58 or totals['missing'] or totals['overlap'] or totals['placeholders']:
+                  raise SystemExit(f'Unexpected audit totals for {path}: {totals}')
+          PY
+
+      - name: Upload 2.2.27 audit reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: neoorigins-2.2.27-localization-audit-${{ github.sha }}
+          path: build/audit-2.2.27-*
+          if-no-files-found: error

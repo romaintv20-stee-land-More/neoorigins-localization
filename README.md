@@ -6,17 +6,17 @@ Mod client NeoForge fournissant des **traductions complémentaires en priorité 
 
 | Cible | Version | Java | Langues | Contenu empaqueté |
 |---|---|---:|---:|---|
-| Minecraft 1.21.1 | `0.9.0-beta+1.21.1` | 21 | 59 | NeoOrigins + Medieval Origins Revival + ibarn's quartet origins addon + Origins Fantasy + Origins: Backgrounds + Origins: More Backgrounds + Origins: Backgrounds ISS + Origins Furries + Origins: Classes Extended + Origins: Classes ISS + Origin Architect |
-| Minecraft 26.1 / 26.1.1 / 26.1.2 | `0.9.0-beta+26.1` | 25 | 59 | NeoOrigins uniquement + delta 26.1 |
-| Minecraft 26.2 | `0.9.0-beta+26.2` | 25 | 59 | NeoOrigins uniquement + delta 26.2 |
+| Minecraft 1.21.1 | `0.9.0-beta+1.21.1` | 21 | 60 | NeoOrigins + Medieval Origins Revival + ibarn's quartet origins addon + Origins Fantasy + Origins: Backgrounds + Origins: More Backgrounds + Origins: Backgrounds ISS + Origins Furries + Origins: Classes Extended + Origins: Classes ISS + Origin Architect |
+| Minecraft 26.1 / 26.1.1 / 26.1.2 | `0.9.0-beta+26.1` | 25 | 60 | NeoOrigins uniquement + delta 26.1 |
+| Minecraft 26.2 | `0.9.0-beta+26.2` | 25 | 60 | NeoOrigins uniquement + delta 26.2 |
 
 Les builds 26.x n'embarquent aucune traduction des add-ons 1.21.1. La CI construit et audite séparément les trois cibles.
 
 ## Langues
 
-La **0.9.0 Beta** prend en charge : Français (`fr_fr`), Allemand (`de_de`), Espagnol (`es_es`), Portugais brésilien (`pt_br`), Néerlandais (`nl_nl`), Italien (`it_it`), Polonais (`pl_pl`), Russe (`ru_ru`), Turc (`tr_tr`), Chinois simplifié (`zh_cn`), **Tchèque (`cs_cz`)**, **Hongrois (`hu_hu`)**, **Japonais (`ja_jp`)**, **Coréen (`ko_kr`)**, **Ukrainien (`uk_ua`)**, **Indonésien (`id_id`)**, **Suédois (`sv_se`)**, **Danois (`da_dk`)**, **Finnois (`fi_fi`)**, **Norvégien bokmål (`no_no`)**, **Roumain (`ro_ro`)**, **Grec (`el_gr`)**, **Bulgare (`bg_bg`)**, **Vietnamien (`vi_vn`)**, **Arabe (`ar_sa`)**, **Hébreu (`he_il`)**, **Thaï (`th_th`)**, **Slovaque (`sk_sk`)**, **Slovène (`sl_si`)**, **Croate (`hr_hr`)**, **Serbe cyrillique (`sr_sp`)**, **Serbe latin (`sr_cs`)**, **Catalan (`ca_es`)**, **Estonien (`et_ee`)**, **Lituanien (`lt_lt`)**, **Letton (`lv_lv`)**, **Basque (`eu_es`)**, **Galicien (`gl_es`)**, **Hindi (`hi_in`)**, **Norvégien nynorsk (`nn_no`)**, **Persan (`fa_ir`)**, **Islandais (`is_is`)**, **Malais (`ms_my`)**, **Filipino (`fil_ph`)**, **Gallois (`cy_gb`)**, **Irlandais (`ga_ie`)**, **Gaélique écossais (`gd_gb`)**, **Arménien (`hy_am`)**, **Géorgien (`ka_ge`)**, **Kazakh (`kk_kz`)**, **Mongol (`mn_mn`)**, **Macédonien (`mk_mk`)**, **Biélorusse (`be_by`)**, **Féroïen (`fo_fo`)**, **Afrikaans (`af_za`)**, **Azéri (`az_az`)**, **Kannada (`kn_in`)**, **Tchouvache (`cv_cu`)** et **Ouzbek (`uz_uz`)**.
+La **0.9.0 Beta** prend en charge : Français (`fr_fr`), Allemand (`de_de`), Espagnol (`es_es`), Portugais brésilien (`pt_br`), Néerlandais (`nl_nl`), Italien (`it_it`), Polonais (`pl_pl`), Russe (`ru_ru`), Turc (`tr_tr`), Chinois simplifié (`zh_cn`), **Tchèque (`cs_cz`)**, **Hongrois (`hu_hu`)**, **Japonais (`ja_jp`)**, **Coréen (`ko_kr`)**, **Ukrainien (`uk_ua`)**, **Indonésien (`id_id`)**, **Suédois (`sv_se`)**, **Danois (`da_dk`)**, **Finnois (`fi_fi`)**, **Norvégien bokmål (`no_no`)**, **Roumain (`ro_ro`)**, **Grec (`el_gr`)**, **Bulgare (`bg_bg`)**, **Vietnamien (`vi_vn`)**, **Arabe (`ar_sa`)**, **Hébreu (`he_il`)**, **Thaï (`th_th`)**, **Slovaque (`sk_sk`)**, **Slovène (`sl_si`)**, **Croate (`hr_hr`)**, **Serbe cyrillique (`sr_sp`)**, **Serbe latin (`sr_cs`)**, **Catalan (`ca_es`)**, **Estonien (`et_ee`)**, **Lituanien (`lt_lt`)**, **Letton (`lv_lv`)**, **Basque (`eu_es`)**, **Galicien (`gl_es`)**, **Hindi (`hi_in`)**, **Norvégien nynorsk (`nn_no`)**, **Persan (`fa_ir`)**, **Islandais (`is_is`)**, **Malais (`ms_my`)**, **Filipino (`fil_ph`)**, **Gallois (`cy_gb`)**, **Irlandais (`ga_ie`)**, **Gaélique écossais (`gd_gb`)**, **Arménien (`hy_am`)**, **Géorgien (`ka_ge`)**, **Kazakh (`kk_kz`)**, **Mongol (`mn_mn`)**, **Macédonien (`mk_mk`)**, **Biélorusse (`be_by`)**, **Féroïen (`fo_fo`)**, **Afrikaans (`af_za`)**, **Azéri (`az_az`)**, **Kannada (`kn_in`)**, **Tchouvache (`cv_cu`)**, **Ouzbek (`uz_uz`)** et **Maltais (`mt_mt`)**.
 
-Les cinquante-neuf langues sont disponibles sur les trois builds pour NeoOrigins. Les traductions d'add-ons sont empaquetées uniquement sur Minecraft 1.21.1 lorsqu'une version compatible de l'add-on est réellement disponible.
+Les soixante langues sont disponibles sur les trois builds pour NeoOrigins. Les traductions d'add-ons sont empaquetées uniquement sur Minecraft 1.21.1 lorsqu'une version compatible de l'add-on est réellement disponible.
 
 ## Référence NeoOrigins
 
@@ -28,7 +28,7 @@ La référence d'audit actuelle est **NeoOrigins 2.2.27** :
 
 Le fichier anglais `en_us.json` de NeoOrigins 2.2.27 est **strictement identique à celui de 2.2.26** sur les trois cibles : cette mise à jour n'ajoute donc aucune chaîne à traduire. La 2.2.27 est essentiellement un hotfix NeoForge.
 
-Un audit intégral des 58 locales a toutefois révélé des lacunes historiques, déjà présentes avant la 2.2.27 : `it_it`, `pl_pl`, `ru_ru` et `zh_cn` ont chacun 52 clés manquantes sur 1.21.1 et 26.1.x ; `tr_tr`, `cs_cz` et `hu_hu` restent très partiels sur les trois cibles. Les 51 autres locales sont complètes contre les jeux de clés 2.2.27. L'audit de référence est le run `34400432957`.
+L’audit intégral initial des 58 locales avait révélé sept lacunes historiques, antérieures à la 2.2.27. Elles ont depuis été récupérées avant la langue #59 : italien, polonais, russe, chinois simplifié, turc, tchèque et hongrois sont désormais complets contre la baseline 2.2.27. L’audit qui avait exposé ces lacunes est le run `34400432957`.
 
 Le namespace physique `neoorigins_226` conserve son nom historique car il contient le delta introduit avec la 2.2.26 ; il n'est pas renommé lors du passage de la baseline d'audit à 2.2.27.
 
@@ -315,6 +315,12 @@ Pour le tchouvache :
 - **26.2 : 2 307/2 307 clés** couvertes.
 
 Pour l’ouzbek :
+
+- **1.21.1 : 2 296/2 296 clés** couvertes ;
+- **26.1.x : 2 307/2 307 clés** couvertes ;
+- **26.2 : 2 307/2 307 clés** couvertes.
+
+Pour le maltais :
 
 - **1.21.1 : 2 296/2 296 clés** couvertes ;
 - **26.1.x : 2 307/2 307 clés** couvertes ;

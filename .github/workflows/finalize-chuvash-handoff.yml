@@ -1,0 +1,41 @@
+name: Finalize Chuvash handoff
+
+on:
+  push:
+    branches: [ release/0.9.0-chuvash ]
+    paths:
+      - scripts/finalize_chuvash_handoff.py
+      - .github/workflows/finalize-chuvash-handoff.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  handoff:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-chuvash
+      - name: Finalize handoff files
+        run: python3 scripts/finalize_chuvash_handoff.py
+      - name: Verify handoff state
+        run: |
+          grep -q '0.9.0 development currently has 58 locales:' PROJECT_HANDOFF.txt
+          grep -q -- '- 58: Chuvash / cv_cu' PROJECT_HANDOFF.txt
+          grep -q 'NEXT LANGUAGE = language 59.' PROJECT_HANDOFF.txt
+          grep -q 'Completed language count: \*\*58\*\*' NEXT_CHAT_HANDOFF.md
+          grep -q 'Do not redo Chuvash' NEXT_CHAT_HANDOFF.md
+          grep -q 'Next language: \*\*#59\*\*' NEXT_CHAT_HANDOFF.md
+      - name: Commit handoffs
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add PROJECT_HANDOFF.txt NEXT_CHAT_HANDOFF.md
+          if git diff --cached --quiet; then echo 'No handoff changes.'; exit 0; fi
+          git commit -m 'Finalize Chuvash handoff and prepare language 59'
+          git fetch origin release/0.9.0-chuvash
+          git rebase origin/release/0.9.0-chuvash
+          git push origin HEAD:release/0.9.0-chuvash

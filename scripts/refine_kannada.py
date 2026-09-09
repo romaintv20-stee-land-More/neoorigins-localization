@@ -90,6 +90,7 @@ KEY_OVERRIDES = {
 REPLACEMENTS = [
     (re.compile(r'\bNight Vision\b', re.I), 'ರಾತ್ರಿ ದೃಷ್ಟಿ'),
     (re.compile(r'\bNetherite\b', re.I), 'Netherite'),
+    (re.compile('ಮಾಪಕಗಳು'), 'ಶಲ್ಕಗಳು'),
 ]
 
 changes = 0

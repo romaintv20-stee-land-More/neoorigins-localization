@@ -61,6 +61,7 @@ namespace["MANUAL_OVERRIDES"] = {
     "Rage Counter": "G'azab hisoblagichi",
     "Origin Architect": "Origin Architect",
     "Press %s to cycle between commanding your summons to sit, follow, or teleport to you.": "Chaqirilgan mavjudotlaringizga o'tirish, ergashish yoki yoningizga teleport bo'lish buyrug'ini almashtirish uchun %s ni bosing.",
+    "§5Void Warp:§r Press %s while holding an ender pearl to rip through the fabric of reality and teleport yourself directly where you're looking, up to 50 blocks away": "§5Void Warp:§r Ender marvaridini ushlab turganda %s ni bosib, reallik to'qimasini yorib o'ting va qarayotgan joyingizga 50 blokkacha masofada teleport bo'ling.",
     "%1$s was burnt to a crisp by %2$s using %3$s": "%1$s %2$s tomonidan %3$s yordamida kul qilib kuydirildi",
     "%1$s was purified by %2$s's dragonfire using %3$s": "%1$s %2$s ning ajdarho olovi bilan %3$s yordamida poklandi",
     "%1$s had their soul ripped apart by %2$s's %3$s": "%1$s ning ruhi %2$s ning %3$s si tomonidan parchalandi",

@@ -1,3 +1,4 @@
+# Registered workflow; this update intentionally triggers the first QA run.
 name: Refine Somali localization
 
 on:

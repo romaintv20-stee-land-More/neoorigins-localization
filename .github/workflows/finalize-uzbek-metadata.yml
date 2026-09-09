@@ -1,0 +1,57 @@
+name: Finalize Uzbek metadata
+
+on:
+  push:
+    branches: [ release/0.9.0-uzbek ]
+    paths:
+      - scripts/finalize_uzbek_metadata.py
+      - .github/workflows/finalize-uzbek-metadata.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  metadata:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-uzbek
+          fetch-depth: 0
+      - name: Finalize Uzbek catalogue metadata
+        run: python3 scripts/finalize_uzbek_metadata.py
+      - name: Validate catalog JSON
+        run: python3 -m json.tool catalog.json >/dev/null
+      - name: Verify locale count and Uzbek entries
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          c=json.loads(Path('catalog.json').read_text(encoding='utf-8'))
+          assert c['project']['supported_locale_count'] == 59
+          hits=0
+          def walk(o):
+              global hits
+              if isinstance(o,dict):
+                  if 'uz_uz' in o and isinstance(o['uz_uz'],dict) and o['uz_uz'].get('name') == "O'zbekcha": hits += 1
+                  for v in o.values(): walk(v)
+              elif isinstance(o,list):
+                  for v in o: walk(v)
+          walk(c)
+          assert hits >= 11, hits
+          readme=Path('README.md').read_text(encoding='utf-8')
+          assert readme.count('| 59 |') == 3
+          assert 'Ouzbek (`uz_uz`)' in readme
+          print('Metadata assertions passed:', hits, 'Uzbek catalog entries')
+          PY
+      - name: Commit metadata
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add catalog.json CATALOG.md README.md
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Document Uzbek localization support'
+          git fetch origin release/0.9.0-uzbek
+          git rebase origin/release/0.9.0-uzbek
+          git push origin HEAD:release/0.9.0-uzbek

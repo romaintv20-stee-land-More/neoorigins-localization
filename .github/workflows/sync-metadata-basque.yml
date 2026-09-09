@@ -1,0 +1,62 @@
+name: Sync Basque metadata
+
+on:
+  push:
+    branches:
+      - release/0.9.0-beta
+    paths:
+      - .github/workflows/sync-metadata-basque.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-beta
+
+      - name: Update catalog
+        run: python3 scripts/update_catalog_basque.py
+
+      - name: Generate readable catalog
+        run: python3 scripts/generate_catalog.py
+
+      - name: Update README
+        run: python3 scripts/update_readme_basque.py
+
+      - name: Validate metadata
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          catalog = json.loads(Path('catalog.json').read_text(encoding='utf-8'))
+          assert catalog['project']['supported_locale_count'] == 37
+          for project in catalog['supported_projects']:
+              assert 'eu_es' in project['languages'], project['id']
+          readme = Path('README.md').read_text(encoding='utf-8')
+          assert '37 langues' in readme or 'trente-sept langues' in readme
+          assert 'Basque (`eu_es`)' in readme
+          assert 'Pour le basque :' in readme
+          generated = Path('CATALOG.md').read_text(encoding='utf-8')
+          assert '`eu_es`' in generated
+          print('Basque metadata validation passed: 37 locales')
+          PY
+
+      - name: Commit metadata
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add catalog.json CATALOG.md README.md
+          if git diff --cached --quiet; then
+            echo 'No Basque metadata changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Document Basque localization in 0.9.0 beta'
+          git fetch origin release/0.9.0-beta
+          git rebase origin/release/0.9.0-beta
+          git push origin HEAD:release/0.9.0-beta

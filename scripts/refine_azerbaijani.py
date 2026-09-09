@@ -87,11 +87,10 @@ KEY_OVERRIDES = {
     'originsmodernui.config.hud.show_level_popup': 'Səviyyə artımını göstər',
 }
 
-# Contextual replacements are deliberately conservative: preserve product names and
-# repair well-observed machine-translation false friends without rewriting arbitrary prose.
 REPLACEMENTS = [
-    (re.compile(r'\bHollandiyada\b', re.I), 'Nether-də'),
-    (re.compile(r'\bHollandiya\b', re.I), 'Nether'),
+    # Google may inflect the Netherlands false friend (Hollandiyada/Hollandiyadasınız/etc.).
+    (re.compile(r'\bHollandiyada\w*\b', re.I), 'Nether-də'),
+    (re.compile(r'\bHollandiya\w*\b', re.I), 'Nether'),
     (re.compile(r'\bNight Vision\b', re.I), 'Gecə Görüşü'),
     (re.compile(r'\bNetherite\b', re.I), 'Nezerit'),
     (re.compile(r'\bnetherit\b', re.I), 'Nezerit'),
@@ -114,8 +113,6 @@ for path in FILES:
         if isinstance(new, str):
             for pattern, replacement in REPLACEMENTS:
                 new = pattern.sub(replacement, new)
-            # Repair joined sentence boundaries such as "...gəzirlər.Su..." while
-            # leaving decimals and version numbers untouched.
             new = re.sub(r'(?<=[.!?])(?=[^\W\d_])', ' ', new, flags=re.UNICODE)
         if new != value:
             data[key] = new

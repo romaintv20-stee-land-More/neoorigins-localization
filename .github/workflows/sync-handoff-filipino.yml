@@ -1,0 +1,59 @@
+name: Sync Filipino handoff
+
+on:
+  push:
+    branches:
+      - release/0.9.0-filipino
+    paths:
+      - .github/workflows/sync-handoff-filipino.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-filipino
+
+      - name: Update project handoff
+        run: python3 scripts/update_handoff_filipino.py
+
+      - name: Validate Filipino handoff
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          text = Path('PROJECT_HANDOFF.txt').read_text(encoding='utf-8')
+          required = [
+              '0.9.0 development currently has 43 locales:',
+              '- 43: Filipino / fil_ph',
+              'FORTY-THREE IS NOT THE FINAL TARGET.',
+              '31. FILIPINO 0.9.0 STATUS',
+              'run ID 34336195625: SUCCESS on all three jobs',
+              'artifact ID 10097843788',
+              'catalog.json says 43 supported locales',
+              'NEXT LANGUAGE = language 44.',
+          ]
+          missing = [item for item in required if item not in text]
+          if missing:
+              raise SystemExit(f'Filipino handoff markers missing: {missing}')
+          print('Filipino handoff validation passed; next language 44')
+          PY
+
+      - name: Commit Filipino handoff
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add PROJECT_HANDOFF.txt
+          if git diff --cached --quiet; then
+            echo 'No Filipino handoff changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Finalize Filipino 0.9.0 handoff'
+          git fetch origin release/0.9.0-filipino
+          git rebase origin/release/0.9.0-filipino
+          git push origin HEAD:release/0.9.0-filipino

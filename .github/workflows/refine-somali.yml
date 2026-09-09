@@ -1,0 +1,162 @@
+name: Refine Somali localization
+
+on:
+  push:
+    branches: [ release/0.9.0-somali ]
+    paths:
+      - scripts/refine_somali.py
+      - .github/workflows/refine-somali.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-somali
+          fetch-depth: 0
+
+      - name: Apply contextual Somali refinements
+        run: python3 scripts/refine_somali.py
+
+      - name: Restrict add-on audits to Somali
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          scripts = [
+              'scripts/audit_medievalorigins_upstream.py',
+              'scripts/audit_ibarnorigins_upstream.py',
+              'scripts/audit_origins_fantasy_upstream.py',
+              'scripts/audit_origins_backgrounds_upstream.py',
+              'scripts/audit_origins_more_backgrounds_upstream.py',
+              'scripts/audit_origins_backgrounds_iss_upstream.py',
+              'scripts/audit_origins_furries_upstream.py',
+              'scripts/audit_origins_classes_extended_upstream.py',
+              'scripts/audit_origins_classes_iss_upstream.py',
+              'scripts/audit_origin_architect_upstream.py',
+          ]
+          for filename in scripts:
+              path = Path(filename)
+              text = path.read_text(encoding='utf-8')
+              updated, count = re.subn(r'^LOCALES\s*=.*$', 'LOCALES = ("so_so",)', text, count=1, flags=re.M)
+              if count == 0:
+                  updated, count = re.subn(r'^DEFAULT_LOCALES\s*=.*$', 'DEFAULT_LOCALES = ("so_so",)', text, count=1, flags=re.M)
+              if count != 1:
+                  raise SystemExit(f'Could not patch locale list in {filename}')
+              path.write_text(updated, encoding='utf-8')
+          PY
+
+      - name: Strict NeoOrigins audits
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref af467a3bc118f6bbc0970d68f7e03fa631d7e6f2 --output build/so-refined-121 --locale so_so --fallback-namespace-glob 'neoorigins_so_common_*' --extra-namespace neoorigins_so_121 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref aa207ef14cf3b938e28b4081162701953957c1d5 --output build/so-refined-261 --locale so_so --fallback-namespace-glob 'neoorigins_so_common_*' --extra-namespace neoorigins_26_1 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 511cadcafe3027d2a56b4448652ec9b74e2f3b07 --output build/so-refined-262 --locale so_so --fallback-namespace-glob 'neoorigins_so_common_*' --extra-namespace neoorigins_26_2 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Strict add-on audits
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_fantasy_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_furries_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_extended_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origin_architect_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Validate localization JSON
+        run: python3 scripts/validate.py
+
+      - name: Assert contextual terms and Somali text
+        run: |
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+          files = list(Path('src/main/resources/resourcepacks/fallback_localizations/assets').glob('**/lang/so_so.json'))
+          merged = {}; values = []
+          for p in files:
+              data = json.loads(p.read_text(encoding='utf-8'))
+              merged.update(data); values.extend(str(v) for v in data.values())
+          expected = {
+              'origins.layer.origin': 'Origin',
+              'origins.layer.class': 'Fasal',
+              'gui.neoorigins.detail.powers_header': 'Awoodaha',
+              'gui.neoorigins.creator.apply': 'Dhaqan geli',
+              'gui.neoorigins.mob_creator.tab.spawn_rules': 'Xeerarka Dhalashada',
+              'power.neoorigins.blazeling_blaze_scales.name': 'Qolofyada Blaze',
+              'power.origins_furries.scales.name': 'Qolofyo',
+              'power.origins_furries.pavlov.name': 'Falcelinta Pavlov',
+              'power.origins_furries.night_vision.name': 'Aragtida Habeenka',
+              'screen.originsmodernui.title': 'Dooro Origin-kaaga',
+          }
+          for key, want in expected.items():
+              got = merged.get(key)
+              if got != want:
+                  raise SystemExit(f'{key}: expected {want!r}, got {got!r}')
+          for i in range(1,65):
+              key=f'key.neoorigins.hotkey.{i}'
+              if merged.get(key) != f'Furaha Degdegga ah {i:02d}':
+                  raise SystemExit(f'Bad hotkey {i}: {merged.get(key)!r}')
+          text='\n'.join(values); low=text.lower().replace('’',"'").replace('‘',"'")
+          markers=len(re.findall(r'\b(?:iyo|waxaa|waxa|waa|ku|ka|in|oo|ah|ama|haddii|marka|aad|wuxuu|waxay|lagu|karo|si|ayaa|leh|aan|qof|ciyaar|isticmaal|awood|degdeg)\b', low))
+          shapes=len(re.findall(r'(?:dh|kh|sh|x|q|c)', low))
+          latin=len(re.findall(r'[A-Za-zÀ-ž]', text))
+          if markers < 1200 or shapes < 1800 or latin < 25000:
+              raise SystemExit(f'Somali sanity too low after refinement: markers={markers}, shapes={shapes}, latin={latin}')
+          suspicious = [v for v in values if re.search(r'\b(?:Hotkey|Night Vision|Toggle|Open Profile|Show Level)\b', v)]
+          if suspicious:
+              raise SystemExit(f'Known English UI remnants remain: {suspicious[:10]!r}')
+          print(f'Somali contextual assertions passed: {len(files)} files, {markers} lexical markers, {shapes} orthographic markers, {latin} Latin chars.')
+          PY
+
+      - name: Write contextual QA report
+        run: |
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+          rows=[]
+          for p in sorted(Path('src/main/resources/resourcepacks/fallback_localizations/assets').glob('**/lang/so_so.json')):
+              data=json.loads(p.read_text(encoding='utf-8'))
+              for k,v in data.items():
+                  s=str(v)
+                  if re.search(r'origin|power|awood|nether|vision|aragti|spawn|dhal|xp|class|fasal|scale|qolof|pavlov|apply|dhaqan|hotkey|degdeg', k+' '+s, re.I):
+                      rows.append({'file':str(p), 'key':k, 'value':s})
+          out=Path('build/so-contextual-report.json'); out.parent.mkdir(parents=True, exist_ok=True)
+          out.write_text(json.dumps(rows, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
+          print(f'Contextual QA report: {len(rows)} entries')
+          PY
+
+      - name: Restore temporary audit script changes
+        if: always()
+        run: git checkout HEAD -- scripts/audit_*_upstream.py
+
+      - name: Upload refined audits
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: somali-refined-audits-${{ github.sha }}
+          path: |
+            build/so-refined-*
+            build/so-contextual-report.json
+          if-no-files-found: warn
+
+      - name: Commit contextual refinement
+        if: success()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name 'so_so.json' -print0 | xargs -0 -r git add
+          if git diff --cached --quiet; then
+            echo 'No contextual changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Refine Somali gameplay terminology'
+          git fetch origin release/0.9.0-somali
+          git rebase origin/release/0.9.0-somali
+          git push origin HEAD:release/0.9.0-somali

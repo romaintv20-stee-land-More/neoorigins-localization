@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Toerusting wat jy maak, ontvang bonus-eienskappe - taaiheid, skade of mynspoed.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Kry dubbele XP deur kos in 'n roker te kook.",
+  "neoorigins.configuration.title": "NeoOrigins-konfigurasie",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Speletjie",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "NeoOrigins-spelinstellings",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Admin & Toestemmings",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "NeoOrigins Admin-instellings",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Krag oorheersing",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "Neoorigins mag oorheers",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Oorsprong & Klasse",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "NeoOrigins Oorsprong en Klas Wissel",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Kliënt vertoon",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "NeoOrigins kliënt instellings",
+  "neoorigins.configuration.show_cooldown_countdown": "Wys afkoel aftelling",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Afkoel-afteldeursigtigheid (%)",
+  "neoorigins.configuration.hud_ability_display": "Vermoë HUD-vertoonmodus",
+  "neoorigins.configuration.always_show_ability_icons": "Wys altyd vermoë ikone"
+}

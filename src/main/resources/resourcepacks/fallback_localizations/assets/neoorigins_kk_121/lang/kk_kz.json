@@ -1,0 +1,8 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Сіз жасайтын құрал-жабдықтар жақсырақ — құралдар тезірек қазылады, қарулар қаттырақ соғылады, қару-жарақтар қатал және бәрі ұзаққа созылады.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Шылым шегетін немесе пеште пісірілген тағам қосымша қоректік заттарды алады.",
+  "neoorigins.configuration.title": "NeoOrigins ортақ конфигурациясы",
+  "reward.neoorigins.loot_pool": "NeoOrigins: олжа пулын беру",
+  "reward.neoorigins.loot_pool.loot_table": "Талан-таражға арналған кесте",
+  "reward.neoorigins.loot_pool.rolls": "Роликтер"
+}

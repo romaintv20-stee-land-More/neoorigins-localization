@@ -11,7 +11,7 @@
     ],
     "loader": "NeoForge",
     "localization_mode": "low_priority_fallback",
-    "supported_locale_count": 69,
+    "supported_locale_count": 70,
     "builds": {
       "1.21.1": {
         "version": "0.9.0-beta+1.21.1",
@@ -208,7 +208,9 @@
           "bosnian_common_glob": "neoorigins_bs_common_*",
           "bosnian_mc_1_21_1": "neoorigins_bs_121",
           "bashkir_common_glob": "neoorigins_ba_common_*",
-          "bashkir_mc_1_21_1": "neoorigins_ba_121"
+          "bashkir_mc_1_21_1": "neoorigins_ba_121",
+          "breton_common_glob": "neoorigins_br_common_*",
+          "breton_mc_1_21_1": "neoorigins_br_121"
         },
         "note": "NeoOrigins 2.2.26 est audité séparément sur les trois cibles. neoorigins_226 est commun aux trois builds ; neoorigins_26_1 est réservé à 26.1.x ; neoorigins_26_2 est réservé à 26.2. Les trois clés reward.neoorigins.loot_pool* restent dans les fallbacks complets pour 1.21.1 et sont inoffensives sur 26.x.",
         "baseline_audit_2_2_27": {
@@ -243,7 +245,7 @@
             }
           }
         },
-        "coverage_note": "NeoOrigins 2.2.27 has the same en_us localization payload as 2.2.26 on all three targets. Historical gaps in it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz and hu_hu were recovered before language 59. All 69 currently supported locales are complete against 2.2.27 on their target builds.",
+        "coverage_note": "NeoOrigins 2.2.27 has the same en_us localization payload as 2.2.26 on all three targets. Historical gaps in it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz and hu_hu were recovered before language 59. All 70 currently supported locales are complete against 2.2.27 on their target builds.",
         "legacy_gap_recovery_completed": true
       },
       "languages": {
@@ -867,6 +869,15 @@
             "26.1.x",
             "26.2"
           ]
+        },
+        "br_fr": {
+          "name": "Brezhoneg",
+          "status": "supported",
+          "targets": [
+            "1.21.1",
+            "26.1.x",
+            "26.2"
+          ]
         }
       }
     },
@@ -1288,6 +1299,12 @@
           "name": "Башҡортса",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/ba_ru.json",
+          "fallback_keys": 401
+        },
+        "br_fr": {
+          "name": "Brezhoneg",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/br_fr.json",
           "fallback_keys": 401
         }
       }
@@ -1714,6 +1731,12 @@
           "name": "Башҡортса",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/ba_ru.json",
+          "fallback_keys": 69
+        },
+        "br_fr": {
+          "name": "Brezhoneg",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/br_fr.json",
           "fallback_keys": 69
         }
       }
@@ -2143,6 +2166,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/ba_ru.json",
           "fallback_keys": 240
+        },
+        "br_fr": {
+          "name": "Brezhoneg",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/br_fr.json",
+          "fallback_keys": 240
         }
       }
     },
@@ -2570,6 +2599,12 @@
           "name": "Башҡортса",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/ba_ru.json",
+          "fallback_keys": 65
+        },
+        "br_fr": {
+          "name": "Brezhoneg",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/br_fr.json",
           "fallback_keys": 65
         }
       }
@@ -3000,6 +3035,12 @@
           "name": "Башҡортса",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/ba_ru.json",
+          "fallback_keys": 39
+        },
+        "br_fr": {
+          "name": "Brezhoneg",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/br_fr.json",
           "fallback_keys": 39
         }
       }
@@ -3435,6 +3476,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/ba_ru.json",
           "fallback_keys": 77
+        },
+        "br_fr": {
+          "name": "Brezhoneg",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/br_fr.json",
+          "fallback_keys": 77
         }
       }
     },
@@ -3866,6 +3913,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/ba_ru.json",
           "fallback_keys": 117
+        },
+        "br_fr": {
+          "name": "Brezhoneg",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/br_fr.json",
+          "fallback_keys": 117
         }
       }
     },
@@ -4296,6 +4349,12 @@
           "name": "Башҡортса",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/ba_ru.json",
+          "fallback_keys": 124
+        },
+        "br_fr": {
+          "name": "Brezhoneg",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/br_fr.json",
           "fallback_keys": 124
         }
       }
@@ -4729,6 +4788,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/ba_ru.json",
           "fallback_keys": 99
+        },
+        "br_fr": {
+          "name": "Brezhoneg",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/br_fr.json",
+          "fallback_keys": 99
         }
       }
     },
@@ -5159,6 +5224,12 @@
           "name": "Башҡортса",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/ba_ru.json",
+          "fallback_keys": 22
+        },
+        "br_fr": {
+          "name": "Brezhoneg",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/br_fr.json",
           "fallback_keys": 22
         }
       }

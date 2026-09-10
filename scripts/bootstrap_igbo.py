@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Generate Igbo fallback localization by reusing the proven Norwegian bootstrap engine."""
 from pathlib import Path
-from concurrent.futures import ThreadPoolExecutor, as_completed
 import html
 import json
 import re
@@ -29,7 +28,7 @@ namespace = {"__name__": "igbo_bootstrap", "__file__": str(ROOT / "scripts/boots
 exec(compile(source, str(ROOT / "scripts/bootstrap_igbo.py"), "exec"), namespace)
 
 # Public translation endpoint with the mobile page as a conservative fallback.
-def igbo_translate_rpc(text: str, attempts: int = 5):
+def igbo_translate_rpc(text: str, attempts: int = 7):
     last_error = None
     for attempt in range(1, attempts + 1):
         try:
@@ -54,6 +53,8 @@ def igbo_translate_rpc(text: str, attempts: int = 5):
             raise ValueError("Google single endpoint returned no translated segments")
         except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError, ValueError, TypeError, IndexError, json.JSONDecodeError) as exc:
             last_error = exc
+            # The mobile fallback is useful for transient endpoint failures, but
+            # not as a high-rate alternate. It is tried once per primary failure.
             try:
                 params = urllib.parse.urlencode({"sl": "en", "tl": "ig", "q": text})
                 request = urllib.request.Request(
@@ -69,7 +70,8 @@ def igbo_translate_rpc(text: str, attempts: int = 5):
             except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError, ValueError) as fallback_exc:
                 last_error = fallback_exc
             if attempt != attempts:
-                time.sleep(2 ** (attempt - 1))
+                # Longer bounded backoff is intentional after the observed 429.
+                time.sleep(min(30, 2 ** attempt))
     raise RuntimeError(f"Igbo translation failed after {attempts} attempts: {last_error}")
 
 namespace["translate_rpc"] = igbo_translate_rpc
@@ -99,37 +101,66 @@ def igbo_restore(text: str, tokens: list[str]):
 namespace["protect"] = igbo_protect
 namespace["restore"] = igbo_restore
 
-# Igbo translation can rewrite or remove synthetic separators in multi-string
-# requests. Translate each source string independently, in bounded parallelism,
-# so item boundaries and placeholders never depend on separator survival.
+# Probe separators before using them. Igbo translation rewrote the earlier
+# human-readable delimiter. Private-use/control-style sentinels are tested on a
+# tiny sample and only a separator that round-trips with the correct item count
+# is accepted. This preserves the low-request batch workflow without trusting an
+# unverified delimiter.
+SEPARATOR_CANDIDATES = [
+    (lambda i: f"\ue000{i:04d}\ue001", re.compile(r"\ue000\s*\d{4}\s*\ue001")),
+    (lambda i: f"␞{i:04d}␟", re.compile(r"␞\s*\d{4}\s*␟")),
+    (lambda i: f"ZZQXSEP{i:04d}QXZZ", re.compile(r"ZZQXSEP\s*\d{4}\s*QXZZ", re.I)),
+]
+
+
+def choose_separator():
+    sample = ["Stone", "Night vision", "Choose a class", "Player speed"]
+    for maker, splitter in SEPARATOR_CANDIDATES:
+        joined = sample[0] + "".join(f"\n{maker(i)}\n{value}" for i, value in enumerate(sample[1:], 1))
+        translated = igbo_translate_rpc(joined)
+        parts = splitter.split(translated)
+        print(f"Igbo separator probe {maker(1)!r}: {len(parts)}/{len(sample)} parts")
+        if len(parts) == len(sample):
+            return maker, splitter
+    raise RuntimeError("No tested Igbo batch separator survived translation")
+
+
 def igbo_translate_values(values: list[str]):
     cache_path = namespace["CACHE_PATH"]
     cache = namespace["read_json"](cache_path) if cache_path.exists() else {}
     pending = list(dict.fromkeys(value for value in values if value not in cache))
-    print(f"Igbo cache: {len(cache)} entries; {len(pending)} new strings translated independently")
+    batches = namespace["make_batches"](pending, max_chars=1500, max_items=24)
+    print(f"Igbo cache: {len(cache)} entries; {len(pending)} new strings in {len(batches)} verified-separator batches")
+    if not pending:
+        return cache
 
-    def translate_one(source_text: str):
-        masked, tokens = igbo_protect(source_text)
-        result = igbo_translate_rpc(masked)
-        result = igbo_restore(result, tokens).strip()
-        expected = sorted(namespace["PLACEHOLDER_RE"].findall(source_text))
-        actual = sorted(namespace["PLACEHOLDER_RE"].findall(result))
-        if expected != actual:
-            raise RuntimeError(f"Placeholder mismatch after translation: {source_text!r} -> {result!r}")
-        return source_text, result
-
-    if pending:
-        completed = 0
-        with ThreadPoolExecutor(max_workers=6) as executor:
-            futures = {executor.submit(translate_one, value): value for value in pending}
-            for future in as_completed(futures):
-                source_text, result = future.result()
-                cache[source_text] = result
-                completed += 1
-                if completed % 50 == 0 or completed == len(pending):
-                    namespace["write_json"](cache_path, cache)
-                    print(f"Translated {completed}/{len(pending)} pending Igbo strings ({len(cache)} cached)")
+    maker, splitter = choose_separator()
+    for batch_number, batch in enumerate(batches, 1):
+        protected = []
+        token_sets = []
+        for value in batch:
+            masked, tokens = igbo_protect(value)
+            protected.append(masked)
+            token_sets.append(tokens)
+        joined = protected[0] + "".join(
+            f"\n{maker(index)}\n{value}" for index, value in enumerate(protected[1:], 1)
+        )
+        translated_joined = igbo_translate_rpc(joined)
+        translated = splitter.split(translated_joined)
+        if len(translated) != len(batch):
+            raise RuntimeError(
+                f"Igbo batch {batch_number}: verified separator later failed; expected {len(batch)} strings, received {len(translated)}"
+            )
+        for source_text, result, tokens in zip(batch, translated, token_sets):
+            result = igbo_restore(result, tokens).strip()
+            expected = sorted(namespace["PLACEHOLDER_RE"].findall(source_text))
+            actual = sorted(namespace["PLACEHOLDER_RE"].findall(result))
+            if expected != actual:
+                raise RuntimeError(f"Placeholder mismatch after translation: {source_text!r} -> {result!r}")
+            cache[source_text] = result
         namespace["write_json"](cache_path, cache)
+        print(f"Translated Igbo batch {batch_number}/{len(batches)} ({len(cache)} cached strings)")
+        time.sleep(0.25)
     return cache
 
 namespace["translate_values"] = igbo_translate_values

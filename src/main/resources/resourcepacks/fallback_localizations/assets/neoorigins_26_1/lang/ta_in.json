@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "நீங்கள் கைவினை செய்யும் உபகரணங்கள் போனஸ் பண்புகளைப் பெறுகின்றன - கடினத்தன்மை, சேதம் அல்லது சுரங்க வேகம்.",
+  "power.neoorigins.class_cook_smoker_xp.description": "புகைப்பிடிப்பவர் உணவு சமைப்பதன் மூலம் இரட்டிப்பு எக்ஸ்பி பெறுகிறது.",
+  "neoorigins.configuration.title": "NeoOrigins கட்டமைப்பு",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "விளையாட்டு",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "NeoOrigins விளையாட்டு அமைப்புகள்",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "நிர்வாகம் & அனுமதிகள்",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "NeoOrigins நிர்வாக அமைப்புகள்",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "சக்தி மீறுகிறது",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "NeoOrigins பவர் ஓவர்ரைடு",
+  "neoorigins.configuration.section.neoorigins.content.toml": "தோற்றம் & வகுப்புகள்",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "நியோஆரிஜின்ஸ் ஆரிஜின் & கிளாஸ் டோக்கிள்ஸ்",
+  "neoorigins.configuration.section.neoorigins.client.toml": "கிளையண்ட் காட்சி",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "NeoOrigins கிளையண்ட் அமைப்புகள்",
+  "neoorigins.configuration.show_cooldown_countdown": "கூல்டவுன் கவுண்ட்டவுனைக் காட்டு",
+  "neoorigins.configuration.cooldown_countdown_opacity": "கூல்டவுன் கவுண்டவுன் ஒளிபுகாநிலை (%)",
+  "neoorigins.configuration.hud_ability_display": "திறன் HUD காட்சி முறை",
+  "neoorigins.configuration.always_show_ability_icons": "திறன் ஐகான்களை எப்போதும் காட்டு"
+}

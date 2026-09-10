@@ -1,0 +1,67 @@
+name: Finalize Breton handoff
+
+on:
+  push:
+    branches: [ release/0.9.0-breton ]
+    paths:
+      - scripts/finalize_breton_handoff.py
+      - .github/workflows/finalize-breton-handoff.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  handoff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-breton
+          fetch-depth: 0
+
+      - name: Finalize Breton handoffs
+        run: python3 scripts/finalize_breton_handoff.py
+
+      - name: Assert handoff state
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          project = Path('PROJECT_HANDOFF.txt').read_text(encoding='utf-8')
+          nxt = Path('NEXT_CHAT_HANDOFF.md').read_text(encoding='utf-8')
+          expected_project = [
+              '0.9.0 development currently has 70 locales:',
+              '- 70: Breton / br_fr',
+              'SEVENTY IS NOT THE FINAL TARGET.',
+              'BRETON / LANGUAGE #70 FINAL STATUS',
+              'Language #71 is the next expansion task.',
+          ]
+          expected_next = [
+              'first **70 languages are complete',
+              '#70 Breton — `br_fr / Brezhoneg`',
+              'Start and finish **language #71**',
+          ]
+          missing = [x for x in expected_project if x not in project] + [x for x in expected_next if x not in nxt]
+          if missing:
+              raise SystemExit(f'Handoff assertions failed: {missing}')
+          print('Breton handoff assertions passed; #71 is next.')
+          PY
+
+      - name: Validate repository JSON and whitespace
+        run: |
+          python3 scripts/validate.py
+          git diff --check
+
+      - name: Commit final Breton handoffs
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add PROJECT_HANDOFF.txt NEXT_CHAT_HANDOFF.md
+          if git diff --cached --quiet; then
+            echo 'No handoff changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Finalize Breton localization handoff'
+          git fetch origin release/0.9.0-breton
+          git rebase origin/release/0.9.0-breton
+          git push origin HEAD:release/0.9.0-breton

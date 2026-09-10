@@ -4416,7 +4416,7 @@ Integration rule:
 
 NEXT LANGUAGE
 -------------
-Language #73 is the next expansion task. Determine it from current Minecraft locale data using the same regional-variant deduplication rule, then repeat the complete upstream audit, translation, QA, builds, JAR inspection, metadata, handoff, and fast-forward flow.
+Language #74 is the next expansion task. Determine it from current Minecraft locale data using the same regional-variant deduplication rule, then repeat the complete upstream audit, translation, QA, builds, JAR inspection, metadata, handoff, and fast-forward flow.
 
 OCCITAN / LANGUAGE #73 FINAL STATUS
 ------------------------------------

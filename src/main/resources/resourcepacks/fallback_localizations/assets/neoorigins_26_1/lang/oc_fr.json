@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "L'equipament que fabricatz recep d'atributs bonus — resisténcia, damatge, o velocitat d'extraccion.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Ganha doble XP en cosinant de manjar dins un fumador.",
+  "neoorigins.configuration.title": "Configuracion NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Jòc",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "Paramètres de jòc de NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Administrator e permissions",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "Paramètres d'administrator de NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Substitucions de poténcia",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "Substitucions de poténcia NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Origins e classas",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "Neoorigins origina e bascula de classa",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Afichatge del client",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "Paramètres del client NeoOrigins",
+  "neoorigins.configuration.show_cooldown_countdown": "Afichar lo compte enrè de refregiment",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Opacitat de compte enrè de refregiment (%)",
+  "neoorigins.configuration.hud_ability_display": "Abilitat mòde d'afichatge HUD",
+  "neoorigins.configuration.always_show_ability_icons": "Afichar totjorn las icònas d'abilitat"
+}

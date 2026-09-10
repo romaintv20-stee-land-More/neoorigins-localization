@@ -22,6 +22,9 @@ Original beta base used for staging:
 Final three-target build source:
 `1fe618c76fef2eb31c31229924100aca14e207d7`
 
+Handoff verification workflow:
+`34457524954` — success
+
 NeoOrigins 2.2.27 refs:
 - 1.21.1 `af467a3bc118f6bbc0970d68f7e03fa631d7e6f2`
 - 26.1.x `aa207ef14cf3b938e28b4081162701953957c1d5`

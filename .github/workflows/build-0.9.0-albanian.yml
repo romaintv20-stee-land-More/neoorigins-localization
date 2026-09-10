@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - release/0.9.0-albanian
+    paths:
+      - 'src/**'
+      - 'build.gradle'
+      - 'gradle.properties'
+      - '.github/workflows/build-0.9.0-albanian.yml'
   workflow_dispatch:
 
 permissions:
@@ -15,66 +20,107 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: minecraft-1.21.1
-            origins_version: 1.13.0-alpha.16+mc.1.21.1
-            carpet_version: 1.4.147+v240613
-            minecraft_version: 1.21.1
-            include_26_1_translations: "false"
-            include_26_2_translations: "false"
-            include_albanian_121_translations: "true"
+          - target: mc-1.21.1
+            java: '21'
+            gradle: '8.14.3'
+            minecraft: '1.21.1'
+            minecraft_range: '[1.21.1]'
+            neoforge: '21.1.248'
+            loader_range: '[1,)'
+            parchment: 'true'
+            pack_format: '34'
+            source_variant: mc1_21_1
+            include_addon_translations: 'true'
+            include_121_batch_translations: 'true'
+            include_26_1_translations: 'false'
+            include_26_2_translations: 'false'
+            include_albanian_121_translations: 'true'
             expected_delta: neoorigins_sq_121
-            excluded_delta_1: neoorigins_26_1
-            excluded_delta_2: neoorigins_26_2
-          - name: minecraft-26.1
-            origins_version: 1.17.0-alpha.17+mc.26.1
-            carpet_version: 26.1_1.4.206+v260407
-            minecraft_version: 26.1
-            include_26_1_translations: "true"
-            include_26_2_translations: "false"
-            include_albanian_121_translations: "false"
+            expected_files: '27'
+            mod_version: 0.9.0-beta+1.21.1
+          - target: mc-26.1.x
+            java: '25'
+            gradle: '9.4.1'
+            minecraft: '26.1.2'
+            minecraft_range: '[26.1,26.2)'
+            neoforge: '26.1.2.29-beta'
+            loader_range: '[4,)'
+            parchment: 'false'
+            pack_format: '84'
+            source_variant: mc26_1
+            include_addon_translations: 'false'
+            include_121_batch_translations: 'true'
+            include_26_1_translations: 'true'
+            include_26_2_translations: 'false'
+            include_albanian_121_translations: 'false'
             expected_delta: neoorigins_26_1
-            excluded_delta_1: neoorigins_sq_121
-            excluded_delta_2: neoorigins_26_2
-          - name: minecraft-26.2
-            origins_version: 1.17.0-alpha.18+mc.26.2
-            carpet_version: 26.2_1.4.209+v260616
-            minecraft_version: 26.2
-            include_26_1_translations: "false"
-            include_26_2_translations: "true"
-            include_albanian_121_translations: "false"
+            expected_files: '17'
+            mod_version: 0.9.0-beta+26.1
+          - target: mc-26.2
+            java: '25'
+            gradle: '9.4.1'
+            minecraft: '26.2'
+            minecraft_range: '[26.2,26.3)'
+            neoforge: '26.2.0.3-beta'
+            loader_range: '[4,)'
+            parchment: 'false'
+            pack_format: '84'
+            source_variant: mc26_1
+            include_addon_translations: 'false'
+            include_121_batch_translations: 'false'
+            include_26_1_translations: 'false'
+            include_26_2_translations: 'true'
+            include_albanian_121_translations: 'false'
             expected_delta: neoorigins_26_2
-            excluded_delta_1: neoorigins_sq_121
-            excluded_delta_2: neoorigins_26_1
+            expected_files: '17'
+            mod_version: 0.9.0-beta+26.2
 
-    name: Build ${{ matrix.name }}
+    name: Build ${{ matrix.target }}
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
-      - name: Set up JDK 21
-        uses: actions/setup-java@v5
+      - name: Set up Java ${{ matrix.java }}
+        uses: actions/setup-java@v6
         with:
           distribution: temurin
-          java-version: "21"
-          cache: gradle
+          java-version: ${{ matrix.java }}
 
-      - name: Build with pinned target
-        run: >
-          ./gradlew clean build -x test
-          -Porigins_version=${{ matrix.origins_version }}
-          -Pcarpet_version=${{ matrix.carpet_version }}
-          -Pminecraft_version=${{ matrix.minecraft_version }}
-          -Pinclude_26_1_translations=${{ matrix.include_26_1_translations }}
-          -Pinclude_26_2_translations=${{ matrix.include_26_2_translations }}
-          -Pinclude_albanian_121_translations=${{ matrix.include_albanian_121_translations }}
+      - name: Set up Gradle ${{ matrix.gradle }}
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          gradle-version: ${{ matrix.gradle }}
+
+      - name: Validate localization JSON
+        run: python3 scripts/validate.py
+
+      - name: Build pinned target
+        run: |
+          gradle build --stacktrace \
+            "-Pjava_version=${{ matrix.java }}" \
+            "-Puse_parchment=${{ matrix.parchment }}" \
+            "-Presource_pack_format=${{ matrix.pack_format }}" \
+            "-Psource_variant=${{ matrix.source_variant }}" \
+            "-Pinclude_addon_translations=${{ matrix.include_addon_translations }}" \
+            "-Pinclude_121_batch_translations=${{ matrix.include_121_batch_translations }}" \
+            "-Pinclude_turkish_split_translations=true" \
+            "-Pinclude_albanian_121_translations=${{ matrix.include_albanian_121_translations }}" \
+            "-Pinclude_26_1_translations=${{ matrix.include_26_1_translations }}" \
+            "-Pinclude_26_2_translations=${{ matrix.include_26_2_translations }}" \
+            "-Pminecraft_version=${{ matrix.minecraft }}" \
+            "-Pminecraft_version_range=${{ matrix.minecraft_range }}" \
+            "-Pneo_version=${{ matrix.neoforge }}" \
+            "-Ploader_version_range=${{ matrix.loader_range }}" \
+            "-Pmod_version=${{ matrix.mod_version }}"
 
       - name: Inspect Albanian files in built JAR
         env:
+          TARGET: ${{ matrix.target }}
           EXPECTED_DELTA: ${{ matrix.expected_delta }}
-          EXCLUDED_DELTA_1: ${{ matrix.excluded_delta_1 }}
-          EXCLUDED_DELTA_2: ${{ matrix.excluded_delta_2 }}
+          EXPECTED_FILES: ${{ matrix.expected_files }}
+          INCLUDE_ADDONS: ${{ matrix.include_addon_translations }}
         run: |
           python3 - <<'PY'
           import os
@@ -83,43 +129,60 @@ jobs:
 
           jars = [p for p in Path('build/libs').glob('*.jar') if not p.name.endswith('-sources.jar')]
           if len(jars) != 1:
-              raise SystemExit(f'Expected exactly one runtime JAR, found: {[p.name for p in jars]}')
+              raise SystemExit(f'Expected exactly one runtime JAR, found {[p.name for p in jars]}')
           jar = jars[0]
           with ZipFile(jar) as zf:
-              names = zf.namelist()
-              sq = sorted(n for n in names if n.endswith('/lang/sq_al.json'))
+              sq = sorted(n for n in zf.namelist() if n.endswith('/lang/sq_al.json'))
 
+          target = os.environ['TARGET']
           expected_delta = os.environ['EXPECTED_DELTA']
-          excluded = [os.environ['EXCLUDED_DELTA_1'], os.environ['EXCLUDED_DELTA_2']]
-          required = [
-              'neoorigins_sq_common_01/lang/sq_al.json',
-              'neoorigins_sq_common_16/lang/sq_al.json',
-              f'{expected_delta}/lang/sq_al.json',
-              'medievalorigins/lang/sq_al.json',
-              'ibarnorigins/lang/sq_al.json',
-              'origins_fantasy/lang/sq_al.json',
-              'origins_backgrounds/lang/sq_al.json',
-              'origins_backgrounds_two/lang/sq_al.json',
-              'origins_backgrounds_iss/lang/sq_al.json',
-              'origins_furries/lang/sq_al.json',
-              'origins_classes_ex/lang/sq_al.json',
-              'origins_classes_iss/lang/sq_al.json',
-              'originsmodernui/lang/sq_al.json',
+          expected_files = int(os.environ['EXPECTED_FILES'])
+          include_addons = os.environ['INCLUDE_ADDONS'] == 'true'
+
+          def present(fragment):
+              return any(fragment in name for name in sq)
+
+          missing_common = [
+              f'neoorigins_sq_common_{index:02d}/lang/sq_al.json'
+              for index in range(1, 17)
+              if not present(f'neoorigins_sq_common_{index:02d}/lang/sq_al.json')
           ]
-          missing = [needle for needle in required if not any(needle in n for n in sq)]
-          wrongly_included = [d for d in excluded if any(f'/{d}/lang/sq_al.json' in '/' + n for n in sq)]
-          if missing:
-              raise SystemExit(f'Missing Albanian JAR entries: {missing}')
-          if wrongly_included:
-              raise SystemExit(f'Wrong version-specific Albanian entries included: {wrongly_included}')
-          if len(sq) != 27:
-              raise SystemExit(f'Expected 27 sq_al files in target JAR, got {len(sq)}')
-          print(f'JAR inspection passed: {jar.name} contains {len(sq)} Albanian files; delta={expected_delta}; excluded={excluded}')
+          if missing_common:
+              raise SystemExit(f'Missing Albanian common entries: {missing_common}')
+          if not present(f'{expected_delta}/lang/sq_al.json'):
+              raise SystemExit(f'Missing expected Albanian delta: {expected_delta}')
+
+          addon_namespaces = [
+              'medievalorigins', 'ibarnorigins', 'origins_fantasy',
+              'origins_backgrounds', 'origins_backgrounds_two',
+              'origins_backgrounds_iss', 'origins_furries',
+              'origins_classes_ex', 'origins_classes_iss', 'originsmodernui',
+          ]
+          addon_entries = [f'{ns}/lang/sq_al.json' for ns in addon_namespaces]
+          if include_addons:
+              missing_addons = [entry for entry in addon_entries if not present(entry)]
+              if missing_addons:
+                  raise SystemExit(f'Missing Albanian add-on entries: {missing_addons}')
+              if present('neoorigins_26_1/lang/sq_al.json') or present('neoorigins_26_2/lang/sq_al.json'):
+                  raise SystemExit('1.21.1 JAR contains a 26.x Albanian delta')
+          else:
+              wrongly_included = [entry for entry in addon_entries if present(entry)]
+              if wrongly_included:
+                  raise SystemExit(f'26.x JAR contains Albanian add-ons: {wrongly_included}')
+              if present('neoorigins_sq_121/lang/sq_al.json'):
+                  raise SystemExit('26.x JAR contains the Albanian 1.21.1 delta')
+              other_delta = 'neoorigins_26_2' if expected_delta == 'neoorigins_26_1' else 'neoorigins_26_1'
+              if present(f'{other_delta}/lang/sq_al.json'):
+                  raise SystemExit(f'{target} JAR contains wrong Albanian delta {other_delta}')
+
+          if len(sq) != expected_files:
+              raise SystemExit(f'{target}: expected {expected_files} sq_al files, got {len(sq)}: {sq}')
+          print(f'JAR inspection passed for {target}: {jar.name}, {len(sq)} Albanian files, delta={expected_delta}')
           PY
 
-      - name: Upload built jars
-        uses: actions/upload-artifact@v4
+      - name: Upload built JAR
+        uses: actions/upload-artifact@v7
         with:
-          name: neoorigins-localization-0.9.0-${{ matrix.name }}
+          name: neoorigins-localization-0.9.0-${{ matrix.target }}-${{ github.sha }}
           path: build/libs/*.jar
           if-no-files-found: error

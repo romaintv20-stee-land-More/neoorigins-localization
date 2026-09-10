@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Generate Bashkir fallback localization by reusing the proven Norwegian bootstrap engine."""
 from pathlib import Path
+import re
 
 ROOT = Path(__file__).resolve().parents[1]
 source = (ROOT / "scripts/bootstrap_norwegian.py").read_text(encoding="utf-8")
@@ -30,6 +31,29 @@ source = source.replace(
 
 namespace = {"__name__": "bashkir_bootstrap", "__file__": str(ROOT / "scripts/bootstrap_bashkir.py")}
 exec(compile(source, str(ROOT / "scripts/bootstrap_bashkir.py"), "exec"), namespace)
+
+# Bashkir translation transliterates Latin placeholder masks. A punctuation+digits mask
+# remains stable; restoration tolerates spaces inserted around the digits.
+def bashkir_protect(text: str):
+    tokens = []
+    def replace(match):
+        index = len(tokens)
+        tokens.append(match.group(0))
+        return f"⟪{index:04d}⟫"
+    return namespace["TOKEN_RE"].sub(replace, text), tokens
+
+
+def bashkir_restore(text: str, tokens: list[str]):
+    for index, token in enumerate(tokens):
+        digits = f"{index:04d}"
+        pattern = r"⟪\s*" + r"\s*".join(re.escape(ch) for ch in digits) + r"\s*⟫"
+        text, count = re.subn(pattern, lambda _m, t=token: t, text)
+        if count == 0:
+            text = text.replace(f"⟪{digits}⟫", token)
+    return text
+
+namespace["protect"] = bashkir_protect
+namespace["restore"] = bashkir_restore
 
 # Preserve branded/project terminology and known fragile placeholder strings.
 namespace["MANUAL_OVERRIDES"] = {

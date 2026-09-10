@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "ອຸປະກອນທີ່ທ່ານຫັດຖະກໍາໄດ້ຮັບຄຸນລັກສະນະໂບນັດ — ຄວາມທົນທານ, ຄວາມເສຍຫາຍ, ຫຼືຄວາມໄວການຂຸດຄົ້ນ.",
+  "power.neoorigins.class_cook_smoker_xp.description": "ໄດ້ຮັບ XP ສອງເທົ່າຈາກການແຕ່ງອາຫານໃນຜູ້ສູບຢາ.",
+  "neoorigins.configuration.title": "ການຕັ້ງຄ່າ NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "ການຫຼິ້ນເກມ",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "ການຕັ້ງຄ່າການຫຼິ້ນເກມ NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "ຜູ້ເບິ່ງແຍງ & ການອະນຸຍາດ",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "ການຕັ້ງຄ່າຜູ້ເບິ່ງແຍງ NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "ການລົບລ້າງພະລັງງານ",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "Neoorigins overrides ພະລັງງານ",
+  "neoorigins.configuration.section.neoorigins.content.toml": "ຕົ້ນກໍາເນີດ & ຫ້ອງຮຽນ",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "ຕົ້ນສະບັບ NeoOrigins & ຫ້ອງຮຽນສະຫຼັບ",
+  "neoorigins.configuration.section.neoorigins.client.toml": "ຈໍສະແດງຜົນລູກຄ້າ",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "ການຕັ້ງຄ່າລູກຄ້າ NeoOrigins",
+  "neoorigins.configuration.show_cooldown_countdown": "ສະແດງການນັບຖອຍຫຼັງ cooldown",
+  "neoorigins.configuration.cooldown_countdown_opacity": "ຄວາມໂປ່ງໃສນັບຖອຍຫຼັງຂອງ cooldown (%)",
+  "neoorigins.configuration.hud_ability_display": "ຮູບແບບການສະແດງຄວາມສາມາດ HUD",
+  "neoorigins.configuration.always_show_ability_icons": "ສະແດງໄອຄອນຄວາມສາມາດສະເໝີ"
+}

@@ -124,6 +124,8 @@ VALUE_REPLACEMENTS = {
     "Neorigins": "NeoOrigins",
     "Neoorigins": "NeoOrigins",
     "Түнкү көрүнүш": "Түнкү көрүү",
+    "Night Vision": "Түндө көрүү",
+    "Rotten Flesh": "Чирик эт",
     "Нетерит": "Незерит",
     "Netherite": "Незерит",
 }

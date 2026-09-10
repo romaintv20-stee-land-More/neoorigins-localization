@@ -1,0 +1,183 @@
+name: Bootstrap Tagalog localization
+
+on:
+  push:
+    branches:
+      - release/0.9.0-tagalog
+    paths:
+      - scripts/bootstrap_tagalog.py
+      - .github/workflows/bootstrap-tagalog.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-tagalog
+
+      - name: Restrict add-on audits to Tagalog
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          scripts = [
+              'scripts/audit_medievalorigins_upstream.py',
+              'scripts/audit_ibarnorigins_upstream.py',
+              'scripts/audit_origins_fantasy_upstream.py',
+              'scripts/audit_origins_backgrounds_upstream.py',
+              'scripts/audit_origins_more_backgrounds_upstream.py',
+              'scripts/audit_origins_backgrounds_iss_upstream.py',
+              'scripts/audit_origins_furries_upstream.py',
+              'scripts/audit_origins_classes_extended_upstream.py',
+              'scripts/audit_origins_classes_iss_upstream.py',
+              'scripts/audit_origin_architect_upstream.py',
+          ]
+          for filename in scripts:
+              path = Path(filename)
+              text = path.read_text(encoding='utf-8')
+              updated, count = re.subn(r'^LOCALES\s*=.*$', 'LOCALES = ("tl_ph",)', text, count=1, flags=re.M)
+              if count == 0:
+                  updated, count = re.subn(r'^DEFAULT_LOCALES\s*=.*$', 'DEFAULT_LOCALES = ("tl_ph",)', text, count=1, flags=re.M)
+              if count != 1:
+                  raise SystemExit(f'Could not patch locale list in {filename}')
+              path.write_text(updated, encoding='utf-8')
+          PY
+
+      - name: Discover Tagalog NeoOrigins coverage
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref af467a3bc118f6bbc0970d68f7e03fa631d7e6f2 --output build/tl-discovery-mc-1.21.1 --locale tl_ph
+          python3 scripts/audit_neoorigins_upstream.py --ref aa207ef14cf3b938e28b4081162701953957c1d5 --output build/tl-discovery-mc-26.1 --locale tl_ph
+          python3 scripts/audit_neoorigins_upstream.py --ref 511cadcafe3027d2a56b4448652ec9b74e2f3b07 --output build/tl-discovery-mc-26.2 --locale tl_ph
+
+      - name: Discover Tagalog add-on coverage and English sources
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format
+          python3 scripts/audit_origins_fantasy_upstream.py
+          python3 scripts/audit_origins_backgrounds_upstream.py
+          python3 scripts/audit_origins_more_backgrounds_upstream.py
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py
+          python3 scripts/audit_origins_furries_upstream.py
+          python3 scripts/audit_origins_classes_extended_upstream.py
+          python3 scripts/audit_origins_classes_iss_upstream.py
+          python3 scripts/audit_origin_architect_upstream.py
+
+      - name: Generate Tagalog fallback files
+        run: python3 scripts/bootstrap_tagalog.py
+
+      - name: Prune add-on keys already translated upstream
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --prune
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --prune
+          python3 scripts/audit_origins_fantasy_upstream.py --prune
+          python3 scripts/audit_origins_backgrounds_upstream.py --prune
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --prune
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --prune
+          python3 scripts/audit_origins_furries_upstream.py --prune
+          python3 scripts/audit_origins_classes_extended_upstream.py --prune
+          python3 scripts/audit_origins_classes_iss_upstream.py --prune
+          python3 scripts/audit_origin_architect_upstream.py --prune
+
+      - name: Strict audit Tagalog NeoOrigins coverage
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref af467a3bc118f6bbc0970d68f7e03fa631d7e6f2 --output build/tl-audit-mc-1.21.1 --locale tl_ph --fallback-namespace-glob 'neoorigins_tl_common_*' --extra-namespace neoorigins_tl_121 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref aa207ef14cf3b938e28b4081162701953957c1d5 --output build/tl-audit-mc-26.1 --locale tl_ph --fallback-namespace-glob 'neoorigins_tl_common_*' --extra-namespace neoorigins_26_1 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 511cadcafe3027d2a56b4448652ec9b74e2f3b07 --output build/tl-audit-mc-26.2 --locale tl_ph --fallback-namespace-glob 'neoorigins_tl_common_*' --extra-namespace neoorigins_26_2 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Strict audit Tagalog add-on coverage
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_fantasy_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_furries_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_extended_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origin_architect_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Validate JSON localization structure
+        run: python3 scripts/validate.py
+
+      - name: Sanity-check Tagalog text
+        run: |
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+          files = list(Path('src/main/resources/resourcepacks/fallback_localizations/assets').glob('**/lang/tl_ph.json'))
+          if not files:
+              raise SystemExit('No tl_ph localization files found')
+          values = [str(v) for path in files for v in json.loads(path.read_text(encoding='utf-8')).values()]
+          text = '\n'.join(values)
+          low = text.lower()
+          markers = len(re.findall(r'\b(?:ang|mga|ng|sa|para|isang|iyong|mo|kapag|hindi|mula|gamit|maaari|upang|ito|iyon|lahat|nang|kung|may|pag|mag|lum|nilang|kanilang)\b', low))
+          letters = len(re.findall(r'[A-Za-zÀ-ÿ]', text))
+          if len(files) < 20:
+              raise SystemExit(f'Tagalog source file count too low: {len(files)}')
+          if markers < 1500:
+              raise SystemExit(f'Tagalog lexical sanity too low: {markers}')
+          if letters < 50000:
+              raise SystemExit(f'Tagalog text volume too low: {letters}')
+          print(f'Tagalog text sanity passed: {markers} lexical markers, {letters} Latin letters across {len(files)} files')
+          PY
+
+      - name: Add Tagalog target packaging switch
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('build.gradle')
+          text = path.read_text(encoding='utf-8')
+          if 'includeTagalog121Translations' not in text:
+              anchor = "def includeTamil121Translations = (project.findProperty('include_tamil_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()\n"
+              if anchor not in text:
+                  raise SystemExit('Tamil Gradle definition anchor not found')
+              text = text.replace(anchor, anchor + "def includeTagalog121Translations = (project.findProperty('include_tagalog_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()\n", 1)
+              anchor = "    inputs.property 'include_tamil_121_translations', includeTamil121Translations\n"
+              if anchor not in text:
+                  raise SystemExit('Tamil Gradle input anchor not found')
+              text = text.replace(anchor, anchor + "    inputs.property 'include_tagalog_121_translations', includeTagalog121Translations\n", 1)
+              anchor = "    if (!includeTamil121Translations) {\n        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_ta_121/**'\n    }\n"
+              if anchor not in text:
+                  raise SystemExit('Tamil Gradle exclusion anchor not found')
+              block = anchor + "\n    if (!includeTagalog121Translations) {\n        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_tl_121/**'\n    }\n"
+              text = text.replace(anchor, block, 1)
+              path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Restore temporary audit-script changes
+        if: always()
+        run: git checkout HEAD -- scripts/audit_*_upstream.py
+
+      - name: Upload Tagalog audit reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: tagalog-localization-audits-${{ github.sha }}
+          path: |
+            build/tl-discovery-*
+            build/tl-audit-*
+            build/*-upstream-audit
+          if-no-files-found: warn
+
+      - name: Commit validated Tagalog translations
+        if: success()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name 'tl_ph.json' -print0 | xargs -0 -r git add
+          git add build.gradle
+          if git diff --cached --quiet; then
+            echo 'No Tagalog translation changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Add Tagalog localization fallback'
+          git fetch origin release/0.9.0-tagalog
+          git rebase origin/release/0.9.0-tagalog
+          git push origin HEAD:release/0.9.0-tagalog

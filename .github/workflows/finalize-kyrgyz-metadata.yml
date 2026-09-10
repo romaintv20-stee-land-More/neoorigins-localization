@@ -1,0 +1,75 @@
+name: Finalize Kyrgyz metadata
+
+on:
+  push:
+    branches: [ release/0.9.0-kyrgyz ]
+    paths:
+      - scripts/finalize_kyrgyz_metadata.py
+      - .github/workflows/finalize-kyrgyz-metadata.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  metadata:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-kyrgyz
+          fetch-depth: 0
+
+      - name: Synchronize Kyrgyz catalog and README metadata
+        run: python3 scripts/finalize_kyrgyz_metadata.py
+
+      - name: Assert 64-language metadata state
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          catalog = json.loads(Path('catalog.json').read_text(encoding='utf-8'))
+          assert catalog['project']['supported_locale_count'] == 64
+          count = 0
+          def walk(obj):
+              global count
+              if isinstance(obj, dict):
+                  if 'ky_kg' in obj and isinstance(obj['ky_kg'], dict) and obj['ky_kg'].get('name') == 'Кыргызча':
+                      count += 1
+                  for value in obj.values(): walk(value)
+              elif isinstance(obj, list):
+                  for value in obj: walk(value)
+          walk(catalog)
+          assert count >= 11, count
+          neo = next(x for x in catalog['supported_projects']'] if x.get('id') == 'neoorigins')
+          ns = neo['compatibility']['fallback_namespaces']
+          assert ns['kyrgyz_common_glob'] == 'neoorigins_ky_common_*'
+          assert ns['kyrgyz_mc_1_21_1'] == 'neoorigins_ky_121'
+          readme = Path('README.md').read_text(encoding='utf-8')
+          assert readme.count('| 64 |') == 3
+          assert 'Kirghize (`ky_kg`)' in readme
+          assert 'Pour le kirghize :' in readme
+          assert 'Les soixante-quatre langues' in readme
+          catalogue = Path('CATALOG.md').read_text(encoding='utf-8')
+          assert catalogue.count('Кыргызча (`ky_kg`)') >= 11
+          print(f'Metadata assertions passed: 64 locales, {count} Kyrgyz catalog entries.')
+          PY
+
+      - name: Validate JSON and whitespace
+        run: |
+          python3 scripts/validate.py
+          git diff --check
+
+      - name: Commit Kyrgyz metadata
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add catalog.json CATALOG.md README.md
+          if git diff --cached --quiet; then
+            echo 'No metadata changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Document Kyrgyz localization in 0.9.0 beta'
+          git fetch origin release/0.9.0-kyrgyz
+          git rebase origin/release/0.9.0-kyrgyz
+          git push origin HEAD:release/0.9.0-kyrgyz

@@ -11,7 +11,7 @@
     ],
     "loader": "NeoForge",
     "localization_mode": "low_priority_fallback",
-    "supported_locale_count": 65,
+    "supported_locale_count": 66,
     "builds": {
       "1.21.1": {
         "version": "0.9.0-beta+1.21.1",
@@ -200,7 +200,9 @@
           "kyrgyz_common_glob": "neoorigins_ky_common_*",
           "kyrgyz_mc_1_21_1": "neoorigins_ky_121",
           "tamil_common_glob": "neoorigins_ta_common_*",
-          "tamil_mc_1_21_1": "neoorigins_ta_121"
+          "tamil_mc_1_21_1": "neoorigins_ta_121",
+          "albanian_common_glob": "neoorigins_sq_common_*",
+          "albanian_mc_1_21_1": "neoorigins_sq_121"
         },
         "note": "NeoOrigins 2.2.26 est audité séparément sur les trois cibles. neoorigins_226 est commun aux trois builds ; neoorigins_26_1 est réservé à 26.1.x ; neoorigins_26_2 est réservé à 26.2. Les trois clés reward.neoorigins.loot_pool* restent dans les fallbacks complets pour 1.21.1 et sont inoffensives sur 26.x.",
         "baseline_audit_2_2_27": {
@@ -235,7 +237,7 @@
             }
           }
         },
-        "coverage_note": "NeoOrigins 2.2.27 has the same en_us localization payload as 2.2.26 on all three targets. Historical gaps in it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz and hu_hu were recovered before language 59. All 65 currently supported locales are complete against 2.2.27 on their target builds.",
+        "coverage_note": "NeoOrigins 2.2.27 has the same en_us localization payload as 2.2.26 on all three targets. Historical gaps in it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz and hu_hu were recovered before language 59. All 66 currently supported locales are complete against 2.2.27 on their target builds.",
         "legacy_gap_recovery_completed": true
       },
       "languages": {
@@ -823,6 +825,15 @@
             "26.1.x",
             "26.2"
           ]
+        },
+        "sq_al": {
+          "name": "Shqip",
+          "status": "supported",
+          "targets": [
+            "1.21.1",
+            "26.1.x",
+            "26.2"
+          ]
         }
       }
     },
@@ -1220,6 +1231,12 @@
           "name": "தமிழ்",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/ta_in.json",
+          "fallback_keys": 401
+        },
+        "sq_al": {
+          "name": "Shqip",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/sq_al.json",
           "fallback_keys": 401
         }
       }
@@ -1622,6 +1639,12 @@
           "name": "தமிழ்",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/ta_in.json",
+          "fallback_keys": 69
+        },
+        "sq_al": {
+          "name": "Shqip",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/sq_al.json",
           "fallback_keys": 69
         }
       }
@@ -2027,6 +2050,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/ta_in.json",
           "fallback_keys": 240
+        },
+        "sq_al": {
+          "name": "Shqip",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/sq_al.json",
+          "fallback_keys": 240
         }
       }
     },
@@ -2430,6 +2459,12 @@
           "name": "தமிழ்",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/ta_in.json",
+          "fallback_keys": 65
+        },
+        "sq_al": {
+          "name": "Shqip",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/sq_al.json",
           "fallback_keys": 65
         }
       }
@@ -2836,6 +2871,12 @@
           "name": "தமிழ்",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/ta_in.json",
+          "fallback_keys": 39
+        },
+        "sq_al": {
+          "name": "Shqip",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/sq_al.json",
           "fallback_keys": 39
         }
       }
@@ -3247,6 +3288,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/ta_in.json",
           "fallback_keys": 77
+        },
+        "sq_al": {
+          "name": "Shqip",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/sq_al.json",
+          "fallback_keys": 77
         }
       }
     },
@@ -3654,6 +3701,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/ta_in.json",
           "fallback_keys": 117
+        },
+        "sq_al": {
+          "name": "Shqip",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/sq_al.json",
+          "fallback_keys": 117
         }
       }
     },
@@ -4060,6 +4113,12 @@
           "name": "தமிழ்",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/ta_in.json",
+          "fallback_keys": 124
+        },
+        "sq_al": {
+          "name": "Shqip",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/sq_al.json",
           "fallback_keys": 124
         }
       }
@@ -4469,6 +4528,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/ta_in.json",
           "fallback_keys": 99
+        },
+        "sq_al": {
+          "name": "Shqip",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/sq_al.json",
+          "fallback_keys": 99
         }
       }
     },
@@ -4875,6 +4940,12 @@
           "name": "தமிழ்",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/ta_in.json",
+          "fallback_keys": 22
+        },
+        "sq_al": {
+          "name": "Shqip",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/sq_al.json",
           "fallback_keys": 22
         }
       }

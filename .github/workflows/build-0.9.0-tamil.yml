@@ -157,7 +157,7 @@ jobs:
           allowed={'Origin','NeoOrigins','JSON','Origin Architect'}
           unexpected=sorted(set(latin_only)-allowed)
           if unexpected: raise SystemExit(f'Unexpected Latin-only Tamil values: {unexpected[:30]}')
-          suspicious=[v for v in values if re.search(r'\b(?:Night Vision|Rotten Flesh|Neorigins|Neoorigins)\b',v,re.I)]
+          suspicious=[v for v in values if 'Night Vision' in v or 'Rotten Flesh' in v or 'Neorigins' in v or 'Neoorigins' in v]
           if suspicious: raise SystemExit(f'Tamil English/contextual remnants remain: {suspicious[:10]!r}')
           print('Tamil contextual QA passed across',len(files),'files; Tamil-script',tamil,'Latin-only',sorted(set(latin_only)))
           PY

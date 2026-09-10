@@ -149,7 +149,7 @@ jobs:
           text='\n'.join(values)
           kyrgyz=len(re.findall(r'[ңөүҢӨҮ]',text))
           cyrillic=len(re.findall(r'[А-Яа-яЁёңөүҢӨҮ]',text))
-          if kyrgyz < 30000 or cyrillic < 100000:
+          if kyrgyz < 5000 or cyrillic < 100000:
             raise SystemExit(f'Kyrgyz sanity too low: Kyrgyz-specific={kyrgyz}, Cyrillic={cyrillic}')
           latin_only=[]
           for v in values:

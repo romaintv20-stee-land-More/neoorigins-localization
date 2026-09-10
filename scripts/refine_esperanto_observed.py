@@ -26,6 +26,16 @@ OVERRIDES = {
     'originsmodernui.config.hud.y_offset': 'Vertikala deŝovo',
 }
 
+# These are safe lexical remnants observed after the first deterministic pass.
+# Keep this deliberately narrow rather than applying broad English-word substitutions.
+PHRASE_REPLACEMENTS = {
+    'Rotten Flesh': 'Putra karno',
+    'Raw Mutton': 'kruda ŝafaĵo',
+    'Pufferfish': 'globfiŝo',
+    "Dolphin's Grace": 'Delfena Gracio',
+    'Knockback Resistance': 'Repuŝrezisto',
+}
+
 if not files:
     raise SystemExit('No Esperanto locale files found')
 
@@ -42,6 +52,16 @@ for path in files:
                 data[key] = value
                 changed += 1
                 dirty = True
+    for key, value in list(data.items()):
+        if not isinstance(value, str):
+            continue
+        new = value
+        for english, esperanto in PHRASE_REPLACEMENTS.items():
+            new = new.replace(english, esperanto)
+        if new != value:
+            data[key] = new
+            changed += 1
+            dirty = True
     if dirty:
         path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
         changed_files += 1
@@ -50,4 +70,14 @@ missing = sorted(set(OVERRIDES) - seen)
 if missing:
     raise SystemExit(f'Observed Esperanto QA keys not found: {missing}')
 
-print(f'Applied {changed} observed Esperanto corrections across {changed_files} files; {len(OVERRIDES)} guarded keys verified.')
+joined = '\n'.join(
+    str(v)
+    for path in files
+    for v in json.loads(path.read_text(encoding='utf-8')).values()
+    if isinstance(v, str)
+)
+remaining = [english for english in PHRASE_REPLACEMENTS if english in joined]
+if remaining:
+    raise SystemExit(f'Observed English remnants still present: {remaining}')
+
+print(f'Applied {changed} observed Esperanto corrections across {changed_files} files; {len(OVERRIDES)} guarded keys verified; {len(PHRASE_REPLACEMENTS)} English remnant classes cleared.')

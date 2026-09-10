@@ -7,7 +7,7 @@
   "neoorigins.configuration.section.neoorigins.admin.toml": "Admin at Mga Pahintulot",
   "neoorigins.configuration.section.neoorigins.admin.toml.title": "Mga Setting ng Admin ng NeoOrigins",
   "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Kapangyarihan overrides",
-  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "Neoorigins kapangyarihan overrides",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "NeoOrigins kapangyarihan overrides",
   "neoorigins.configuration.section.neoorigins.content.toml": "Mga Pinagmulan at Klase",
   "neoorigins.configuration.section.neoorigins.content.toml.title": "NeoOrigins Origin at Class Toggles",
   "neoorigins.configuration.section.neoorigins.client.toml": "Display ng Kliyente",

@@ -38,8 +38,8 @@ Mob Origins is NOT selected for 0.9.0. Earlier Mob Origins WIP inherited from a 
 0.8.0 Beta shipped with 17 locales:
 fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se.
 
-0.9.0 development currently has 71 locales:
-fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se, da_dk, fi_fi, no_no, ro_ro, el_gr, bg_bg, vi_vn, ar_sa, he_il, th_th, sk_sk, sl_si, hr_hr, sr_sp, sr_cs, ca_es, et_ee, lt_lt, lv_lv, eu_es, gl_es, hi_in, nn_no, fa_ir, is_is, ms_my, fil_ph, cy_gb, ga_ie, gd_gb, hy_am, ka_ge, kk_kz, mn_mn, mk_mk, be_by, fo_fo, af_za, az_az, kn_in, cv_cu, uz_uz, mt_mt, lb_lu, so_so, eo_uy, ky_kg, ta_in, sq_al, lo_la, bs_ba, ba_ru, br_fr, ast_es.
+0.9.0 development currently has 72 locales:
+fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se, da_dk, fi_fi, no_no, ro_ro, el_gr, bg_bg, vi_vn, ar_sa, he_il, th_th, sk_sk, sl_si, hr_hr, sr_sp, sr_cs, ca_es, et_ee, lt_lt, lv_lv, eu_es, gl_es, hi_in, nn_no, fa_ir, is_is, ms_my, fil_ph, cy_gb, ga_ie, gd_gb, hy_am, ka_ge, kk_kz, mn_mn, mk_mk, be_by, fo_fo, af_za, az_az, kn_in, cv_cu, uz_uz, mt_mt, lb_lu, so_so, eo_uy, ky_kg, ta_in, sq_al, lo_la, bs_ba, ba_ru, br_fr, ast_es, fy_nl.
 
 Expansion order so far:
 - 18: Danish / da_dk
@@ -96,8 +96,9 @@ Expansion order so far:
 - 69: Bashkir / ba_ru
 - 70: Breton / br_fr
 - 71: Asturian / ast_es
+- 72: West Frisian / fy_nl
 
-SEVENTY-ONE IS NOT THE FINAL TARGET. Continue expanding toward essentially all useful Minecraft languages unless Romain changes scope.
+SEVENTY-TWO IS NOT THE FINAL TARGET. Continue expanding toward essentially all useful Minecraft languages unless Romain changes scope.
 
 Norwegian Nynorsk (nn_no) is intentionally NOT merged with Bokmal. It is a distinct written standard and remains a valid future locale.
 
@@ -3099,8 +3100,8 @@ NOTE ABOUT FAILED GOVERNANCE WORKFLOW:
 - PROJECT_HANDOFF.txt = cross-chat decisions, current roadmap, latest operational status
 
 As of this update:
-- catalog.json says 71 supported locales
-- README.md says 71 languages and includes Asturian / ast_es.
+- catalog.json says 72 supported locales
+- README.md says 72 languages and includes West Frisian / fy_nl.
 - Romanian, Greek, Bulgarian, Vietnamese, Arabic, Hebrew, Thai, Slovak, Slovenian, Croatian, Serbian Cyrillic, Serbian Latin, Catalan, Estonian, Lithuanian, Latvian, Basque, Galician, Hindi, Norwegian Nynorsk, Persian, Icelandic, Malay, Filipino, Welsh, Irish, Scottish Gaelic, Armenian, Georgian, Kazakh, Mongolian, Macedonian, Belarusian, Faroese, Afrikaans, Azerbaijani and Kannada have passed final three-target packaging validation
 
 49. QUALITY / QA CAVEAT
@@ -4167,7 +4168,7 @@ Integration rule:
 
 NEXT LANGUAGE
 -------------
-Language #72 is the next expansion task. Re-evaluate the current Minecraft Java locale inventory, choose a useful distinct locale not already in the 69-locale set, apply the regional-variant deduplication rule, then repeat the complete upstream audit, translation, QA, builds, JAR inspection, metadata, handoff, and fast-forward flow.
+Language #73 is the next expansion task. Re-evaluate the current Minecraft Java locale inventory, choose a useful distinct locale not already in the 69-locale set, apply the regional-variant deduplication rule, then repeat the complete upstream audit, translation, QA, builds, JAR inspection, metadata, handoff, and fast-forward flow.
 
 BRETON / LANGUAGE #70 FINAL STATUS
 -----------------------------------
@@ -4332,4 +4333,87 @@ Integration rule:
 NEXT LANGUAGE
 -------------
 Language #72 is the next expansion task. Determine it from current Minecraft locale data using the same regional-variant deduplication rule, then repeat the complete upstream audit, translation, QA, builds, JAR inspection, metadata, handoff, and fast-forward flow.
+
+FRISIAN / LANGUAGE #72 FINAL STATUS
+------------------------------------
+West Frisian locale: fy_nl / Frysk.
+Status: COMPLETE FOR THE CURRENT 0.9.0 DEVELOPMENT BASELINE: GENERATED, STRICTLY AUDITED, CONTEXT-REFINED, BUILT, PACKAGING-VERIFIED, DOCUMENTED, AND COMMITTED.
+
+Selection / staging:
+- staging branch: release/0.9.0-frisian
+- exact beta base used: c288b5c65f8a3526057cb59c8f1c95c85b511e58
+- locale: fy_nl / Frysk
+- selected from current Minecraft Java locale data; West Frisian is a distinct language and is not a regional duplicate of Dutch under the project deduplication rule.
+
+Bootstrap / upstream audit:
+- workflow run 34505725859 / job 102967316056: SUCCESS
+- validated translation commit: 1b0e26fdcd19be85c0cabbf54e432e708c42ee9f
+- upstream official Frisian strings found: 0 for all three NeoOrigins targets and 0 for all 10 supported add-ons at the pinned references
+- 29 fy_nl.json source files generated
+- bootstrap sanity: 102,704 Latin-script characters, 2,648 Frisian orthographic signals, 3,301 lexical markers
+- bootstrap audit artifact: 10163849684; size 291,545 bytes; SHA256 db62cbcc1d81c15efe1c7d9b81f25bf4621c0a0144e9b062894bdefd1604d791
+
+NeoOrigins coverage against the pinned 2.2.27 baselines:
+- 1.21.1: 2,296 / 2,296
+- 26.1.x: 2,307 / 2,307
+- 26.2: 2,307 / 2,307
+- missing keys: 0
+- overlap errors: 0
+- placeholder errors: 0
+
+1.21.1 add-on coverage:
+- Medieval Origins Revival: 401 / 401
+- ibarn's quartet origins addon: 69 / 69
+- Origins Fantasy: 240 / 240
+- Origins: Backgrounds: 65 / 65
+- Origins: More Backgrounds: 44 / 44 effective
+- Origins: Backgrounds ISS: 79 / 79 effective
+- Origins Furries: 117 / 117
+- Origins: Classes Extended: 124 / 124
+- Origins: Classes ISS: 99 / 99
+- Origin Architect: 22 / 22
+- all strict add-on audits passed with missing=0, overlap=0 and placeholder errors=0.
+
+Localization architecture:
+- 16 Frisian common namespaces: neoorigins_fy_common_01 through neoorigins_fy_common_16
+- 1.21.1 delta: neoorigins_fy_121
+- Frisian entries in neoorigins_26_1 and neoorigins_26_2
+- 10 Frisian add-on fallback files on 1.21.1
+- 29 fy_nl.json source files total
+
+Contextual QA / refinement:
+- workflow run 34506347347 / job 102969373852: SUCCESS
+- refinement commit: dee444f7140f2ce6383dc103921dee7371800394
+- 110 values refined across 22 files
+- 0 sentence-spacing repairs were needed in the refinement pass
+- JSON validation and git diff --check passed
+- Frisian contextual sanity: 102,739 Latin-script characters, 2,675 orthographic signals, 3,314 lexical markers
+- high-visibility terminology was aligned with Minecraft West Frisian where applicable, including Nachtsicht, Snelheid, Krêft, Taal, Klear, OAN and ÚT.
+- automated/generative translation assistance was used; this is not a claim of full native-speaker review.
+
+Final builds and JAR inspection:
+- workflow: .github/workflows/build-0.9.0-frisian.yml
+- final build source SHA: 1be8937ef448d914b60323ebb403cad2ba827578
+- successful run: 34506531174
+- 1.21.1 job 102969980296: SUCCESS; 27 Frisian files packaged
+- 26.1.x job 102969980489: SUCCESS; 17 Frisian files packaged
+- 26.2 job 102969979932: SUCCESS; 17 Frisian files packaged
+- each build passed automated JAR-content inspection including required-delta checks and wrong-version/add-on exclusion checks.
+- 1.21.1 artifact: 10164115614; size 5,795,595 bytes; SHA256 989dbe3da2ad5328eed75b94a3cfb4f541169437170b06b7f1a34e15d07b43f2
+- 26.1.x artifact: 10164097519; size 3,207,353 bytes; SHA256 34f234fea2db05a98ecfcfa14a4e3609d851393eac8faea5fef876b3f2285056
+- 26.2 artifact: 10164081973; size 3,207,463 bytes; SHA256 2ed3c81f535a3994faa4698dc8d67714baff99bc8dc0ccf78bf09b8621e0cdc2
+
+Metadata:
+- metadata workflow run 34506557210 / job 102970064631: SUCCESS
+- metadata commit: 515038c299a2946d6405d20b5d55d21bb8251048
+- catalog.json now declares 72 supported locales and includes fy_nl / Frysk for NeoOrigins plus all 10 supported add-ons
+- CATALOG.md and README.md document West Frisian and the exact 2,296 / 2,307 / 2,307 core coverage.
+
+Integration rule:
+- release/0.9.0-beta must be fast-forwarded to the final release/0.9.0-frisian HEAD with force=false only after this handoff validation succeeds.
+- main remains intentionally untouched.
+
+NEXT LANGUAGE
+-------------
+Language #73 is the next expansion task. Determine it from current Minecraft locale data using the same regional-variant deduplication rule, then repeat the complete upstream audit, translation, QA, builds, JAR inspection, metadata, handoff, and fast-forward flow.
 

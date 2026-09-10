@@ -53,8 +53,6 @@ def igbo_translate_rpc(text: str, attempts: int = 7):
             raise ValueError("Google single endpoint returned no translated segments")
         except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError, ValueError, TypeError, IndexError, json.JSONDecodeError) as exc:
             last_error = exc
-            # The mobile fallback is useful for transient endpoint failures, but
-            # not as a high-rate alternate. It is tried once per primary failure.
             try:
                 params = urllib.parse.urlencode({"sl": "en", "tl": "ig", "q": text})
                 request = urllib.request.Request(
@@ -70,46 +68,18 @@ def igbo_translate_rpc(text: str, attempts: int = 7):
             except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError, ValueError) as fallback_exc:
                 last_error = fallback_exc
             if attempt != attempts:
-                # Longer bounded backoff is intentional after the observed 429.
                 time.sleep(min(30, 2 ** attempt))
     raise RuntimeError(f"Igbo translation failed after {attempts} attempts: {last_error}")
 
 namespace["translate_rpc"] = igbo_translate_rpc
 
-# Protect formatting/printf/tag tokens with punctuation-digit sentinels.
-def igbo_protect(text: str):
-    tokens = []
-    def replace(match):
-        index = len(tokens)
-        tokens.append(match.group(0))
-        return f"⟪{index:04d}⟫"
-    return namespace["TOKEN_RE"].sub(replace, text), tokens
-
-
-def igbo_restore(text: str, tokens: list[str]):
-    for index, token in enumerate(tokens):
-        digits = f"{index:04d}"
-        pattern = r"⟪\s*" + r"\s*".join(re.escape(ch) for ch in digits) + r"\s*⟫"
-        text, count = re.subn(pattern, lambda _m, t=token: t, text)
-        if count == 0:
-            text = text.replace(f"⟪{digits}⟫", token)
-        if token not in text:
-            bare = rf"(?<!\d){re.escape(digits)}(?!\d)"
-            text, _ = re.subn(bare, lambda _m, t=token: t, text, count=1)
-    return text
-
-namespace["protect"] = igbo_protect
-namespace["restore"] = igbo_restore
-
-# Probe separators before using them. Igbo translation rewrote the earlier
-# human-readable delimiter. Private-use/control-style sentinels are tested on a
-# tiny sample and only a separator that round-trips with the correct item count
-# is accepted. This preserves the low-request batch workflow without trusting an
-# unverified delimiter.
+# Batch separators are probed before use. The human-readable candidate below
+# survived Igbo translation in the previous diagnostic run; the probe remains a
+# hard guard so batching is never trusted blindly.
 SEPARATOR_CANDIDATES = [
+    (lambda i: f"ZZQXSEP{i:04d}QXZZ", re.compile(r"ZZQXSEP\s*\d{4}\s*QXZZ", re.I)),
     (lambda i: f"\ue000{i:04d}\ue001", re.compile(r"\ue000\s*\d{4}\s*\ue001")),
     (lambda i: f"␞{i:04d}␟", re.compile(r"␞\s*\d{4}\s*␟")),
-    (lambda i: f"ZZQXSEP{i:04d}QXZZ", re.compile(r"ZZQXSEP\s*\d{4}\s*QXZZ", re.I)),
 ]
 
 
@@ -124,43 +94,113 @@ def choose_separator():
             return maker, splitter
     raise RuntimeError("No tested Igbo batch separator survived translation")
 
+# Token-bearing strings are intentionally excluded from multi-string batches.
+# Each is translated independently with ASCII nonsense markers, and only a
+# marker scheme that survives exactly is accepted. This prevents printf/tag
+# tokens from interacting with sentence boundaries or batch delimiters.
+TOKEN_MARKER_MAKERS = [
+    lambda i: f"ZXQTK{i:04d}QXZ",
+    lambda i: f"NEOPH{i:04d}TOKEN",
+    lambda i: f"QXZPLACE{i:04d}ZXQ",
+]
+
+
+def translate_tokenized(source_text: str):
+    token_re = namespace["TOKEN_RE"]
+    matches = list(token_re.finditer(source_text))
+    if not matches:
+        result = igbo_translate_rpc(source_text).strip()
+        return result
+
+    for maker in TOKEN_MARKER_MAKERS:
+        tokens = []
+        def replace(match):
+            index = len(tokens)
+            tokens.append(match.group(0))
+            return maker(index)
+        masked = token_re.sub(replace, source_text)
+        translated = igbo_translate_rpc(masked)
+        markers = [maker(i) for i in range(len(tokens))]
+        if not all(marker in translated for marker in markers):
+            print(f"Igbo token marker {maker(0)!r} did not round-trip for {source_text!r}")
+            continue
+        restored = translated
+        for marker, token in zip(markers, tokens):
+            restored = restored.replace(marker, token)
+        restored = restored.strip()
+        expected = sorted(namespace["PLACEHOLDER_RE"].findall(source_text))
+        actual = sorted(namespace["PLACEHOLDER_RE"].findall(restored))
+        if expected != actual:
+            print(f"Igbo token marker {maker(0)!r} restored wrong printf multiset for {source_text!r}")
+            continue
+        return restored
+    raise RuntimeError(f"No tested token marker survived Igbo translation for {source_text!r}")
+
+# Compatibility functions used by inherited helpers if they call protect/restore.
+def igbo_protect(text: str):
+    tokens = []
+    def replace(match):
+        index = len(tokens)
+        tokens.append(match.group(0))
+        return f"ZXQTK{index:04d}QXZ"
+    return namespace["TOKEN_RE"].sub(replace, text), tokens
+
+
+def igbo_restore(text: str, tokens: list[str]):
+    for index, token in enumerate(tokens):
+        text = text.replace(f"ZXQTK{index:04d}QXZ", token)
+    return text
+
+namespace["protect"] = igbo_protect
+namespace["restore"] = igbo_restore
+
 
 def igbo_translate_values(values: list[str]):
     cache_path = namespace["CACHE_PATH"]
     cache = namespace["read_json"](cache_path) if cache_path.exists() else {}
     pending = list(dict.fromkeys(value for value in values if value not in cache))
-    batches = namespace["make_batches"](pending, max_chars=1500, max_items=24)
-    print(f"Igbo cache: {len(cache)} entries; {len(pending)} new strings in {len(batches)} verified-separator batches")
     if not pending:
         return cache
 
-    maker, splitter = choose_separator()
-    for batch_number, batch in enumerate(batches, 1):
-        protected = []
-        token_sets = []
-        for value in batch:
-            masked, tokens = igbo_protect(value)
-            protected.append(masked)
-            token_sets.append(tokens)
-        joined = protected[0] + "".join(
-            f"\n{maker(index)}\n{value}" for index, value in enumerate(protected[1:], 1)
-        )
-        translated_joined = igbo_translate_rpc(joined)
-        translated = splitter.split(translated_joined)
-        if len(translated) != len(batch):
-            raise RuntimeError(
-                f"Igbo batch {batch_number}: verified separator later failed; expected {len(batch)} strings, received {len(translated)}"
+    token_re = namespace["TOKEN_RE"]
+    plain = [value for value in pending if not token_re.search(value)]
+    tokenized = [value for value in pending if token_re.search(value)]
+    batches = namespace["make_batches"](plain, max_chars=1500, max_items=24)
+    print(
+        f"Igbo cache: {len(cache)} entries; {len(pending)} new strings = "
+        f"{len(plain)} plain in {len(batches)} batches + {len(tokenized)} tokenized individually"
+    )
+
+    if plain:
+        maker, splitter = choose_separator()
+        for batch_number, batch in enumerate(batches, 1):
+            joined = batch[0] + "".join(
+                f"\n{maker(index)}\n{value}" for index, value in enumerate(batch[1:], 1)
             )
-        for source_text, result, tokens in zip(batch, translated, token_sets):
-            result = igbo_restore(result, tokens).strip()
-            expected = sorted(namespace["PLACEHOLDER_RE"].findall(source_text))
-            actual = sorted(namespace["PLACEHOLDER_RE"].findall(result))
-            if expected != actual:
-                raise RuntimeError(f"Placeholder mismatch after translation: {source_text!r} -> {result!r}")
-            cache[source_text] = result
-        namespace["write_json"](cache_path, cache)
-        print(f"Translated Igbo batch {batch_number}/{len(batches)} ({len(cache)} cached strings)")
-        time.sleep(0.25)
+            translated_joined = igbo_translate_rpc(joined)
+            translated = splitter.split(translated_joined)
+            if len(translated) != len(batch):
+                raise RuntimeError(
+                    f"Igbo plain batch {batch_number}: expected {len(batch)} strings, received {len(translated)}"
+                )
+            for source_text, result in zip(batch, translated):
+                result = result.strip()
+                expected = sorted(namespace["PLACEHOLDER_RE"].findall(source_text))
+                actual = sorted(namespace["PLACEHOLDER_RE"].findall(result))
+                if expected != actual:
+                    raise RuntimeError(f"Unexpected placeholder change in plain Igbo string: {source_text!r} -> {result!r}")
+                cache[source_text] = result
+            namespace["write_json"](cache_path, cache)
+            print(f"Translated Igbo plain batch {batch_number}/{len(batches)} ({len(cache)} cached strings)")
+            time.sleep(0.3)
+
+    for index, source_text in enumerate(tokenized, 1):
+        cache[source_text] = translate_tokenized(source_text)
+        if index % 10 == 0 or index == len(tokenized):
+            namespace["write_json"](cache_path, cache)
+            print(f"Translated Igbo tokenized string {index}/{len(tokenized)} ({len(cache)} cached strings)")
+        time.sleep(0.4)
+    namespace["write_json"](cache_path, cache)
     return cache
 
 namespace["translate_values"] = igbo_translate_values

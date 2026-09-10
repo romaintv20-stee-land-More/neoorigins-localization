@@ -1,0 +1,96 @@
+name: Finalize Esperanto handoff
+
+on:
+  push:
+    branches: [ release/0.9.0-esperanto ]
+    paths:
+      - scripts/finalize_esperanto_handoff.py
+      - .github/workflows/finalize-esperanto-handoff.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  handoff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-esperanto
+          fetch-depth: 0
+
+      - name: Finalize Esperanto handoffs
+        run: python3 scripts/finalize_esperanto_handoff.py
+
+      - name: Assert final handoff state
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          project = Path('PROJECT_HANDOFF.txt').read_text(encoding='utf-8')
+          nxt = Path('NEXT_CHAT_HANDOFF.md').read_text(encoding='utf-8')
+          catalog = json.loads(Path('catalog.json').read_text(encoding='utf-8'))
+          assert catalog['project']['supported_locale_count'] == 63
+          required_project = [
+            '0.9.0 development currently has 63 locales:',
+            'so_so, eo_uy.',
+            '- 63: Esperanto / eo_uy',
+            'SIXTY-THREE IS NOT THE FINAL TARGET.',
+            '55. ESPERANTO 0.9.0 STATUS',
+            'release/0.9.0-esperanto',
+            '073908c30b0eb6f4d044db02e2208e4a3929ea16',
+            'ff46ada079431c58b496b5a423f44d159bde05ac',
+            '34427693801', '102716316421', '10133339592',
+            '262163d18febec0eca0786e77097c100310d61118e0d16c299d23956440a6651',
+            '34428286046', '102718101057', '10133478568',
+            'd0f20d508e9161beabf664f8e66dc8922aa9b00af7ee5a7f01c8777265e999e2',
+            '34428336352', '102718249903', '9ad0ea92cfd0626c94515a0d34664301578d65dd',
+            '34428493073',
+            '102718727355', '10133590817', '79415d11b7b136965d15327eed20f11329a373f3549c6ddb73c654bd9c59b456',
+            '80201e09822aa1ea01325c39aa9e4eca905020649aea23d7a0949f9931569638',
+            '102718727302', '10133580258', '71769b255590bc7fd63c1bd74a541691567c7acae83054cab930a6a04c8059aa',
+            '693dee48783edced236b76171a29ce8a0f54f013a8fdc19c99c4b803956b738a',
+            '102718727118', '10133581176', 'b4e6e9fb0f991afbbd2942c324d1ee2f30e435e65c6d2c297cc9e1ed8ca1cca7',
+            '9f7bdb2e4670a15d95f09b8f9edc78694bcc65055f6b8d4b9347fbf4ec7a6d11',
+            'NEXT LANGUAGE = language 64.',
+          ]
+          for item in required_project:
+            assert item in project, item
+          required_next = [
+            'Completed language count: **63**.',
+            '#63 Esperanto — `eo_uy / Esperanto`',
+            'Next language: **#64**.',
+            '2296/2296', '2307/2307',
+            '3660 lexical markers', '2018 Esperanto diacritics', '103603 Latin characters',
+            '34428493073', 'ff46ada079431c58b496b5a423f44d159bde05ac',
+            '79415d11b7b136965d15327eed20f11329a373f3549c6ddb73c654bd9c59b456',
+            '71769b255590bc7fd63c1bd74a541691567c7acae83054cab930a6a04c8059aa',
+            'b4e6e9fb0f991afbbd2942c324d1ee2f30e435e65c6d2c297cc9e1ed8ca1cca7',
+            '## Start of language #64',
+          ]
+          for item in required_next:
+            assert item in nxt, item
+          assert 'NEXT LANGUAGE = language 63.' not in project
+          assert 'Do not stop permanently at 62' not in project
+          print('Esperanto handoff assertions passed; language 64 is next.')
+          PY
+
+      - name: Validate repository state
+        run: |
+          python3 scripts/validate.py
+          git diff --check
+
+      - name: Commit final handoffs
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add PROJECT_HANDOFF.txt NEXT_CHAT_HANDOFF.md
+          if git diff --cached --quiet; then
+            echo 'No handoff changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Finalize Esperanto handoff and prepare language 64'
+          git fetch origin release/0.9.0-esperanto
+          git rebase origin/release/0.9.0-esperanto
+          git push origin HEAD:release/0.9.0-esperanto

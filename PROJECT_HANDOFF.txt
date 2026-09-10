@@ -38,8 +38,8 @@ Mob Origins is NOT selected for 0.9.0. Earlier Mob Origins WIP inherited from a 
 0.8.0 Beta shipped with 17 locales:
 fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se.
 
-0.9.0 development currently has 63 locales:
-fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se, da_dk, fi_fi, no_no, ro_ro, el_gr, bg_bg, vi_vn, ar_sa, he_il, th_th, sk_sk, sl_si, hr_hr, sr_sp, sr_cs, ca_es, et_ee, lt_lt, lv_lv, eu_es, gl_es, hi_in, nn_no, fa_ir, is_is, ms_my, fil_ph, cy_gb, ga_ie, gd_gb, hy_am, ka_ge, kk_kz, mn_mn, mk_mk, be_by, fo_fo, af_za, az_az, kn_in, cv_cu, uz_uz, mt_mt, lb_lu, so_so, eo_uy.
+0.9.0 development currently has 64 locales:
+fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se, da_dk, fi_fi, no_no, ro_ro, el_gr, bg_bg, vi_vn, ar_sa, he_il, th_th, sk_sk, sl_si, hr_hr, sr_sp, sr_cs, ca_es, et_ee, lt_lt, lv_lv, eu_es, gl_es, hi_in, nn_no, fa_ir, is_is, ms_my, fil_ph, cy_gb, ga_ie, gd_gb, hy_am, ka_ge, kk_kz, mn_mn, mk_mk, be_by, fo_fo, af_za, az_az, kn_in, cv_cu, uz_uz, mt_mt, lb_lu, so_so, eo_uy, ky_kg.
 
 Expansion order so far:
 - 18: Danish / da_dk
@@ -88,8 +88,9 @@ Expansion order so far:
 - 61: Luxembourgish / lb_lu
 - 62: Somali / so_so
 - 63: Esperanto / eo_uy
+- 64: Kyrgyz / ky_kg
 
-SIXTY-THREE IS NOT THE FINAL TARGET. Continue expanding toward essentially all useful Minecraft languages unless Romain changes scope.
+SIXTY-FOUR IS NOT THE FINAL TARGET. Continue expanding toward essentially all useful Minecraft languages unless Romain changes scope.
 
 Norwegian Nynorsk (nn_no) is intentionally NOT merged with Bokmal. It is a distinct written standard and remains a valid future locale.
 
@@ -3091,8 +3092,8 @@ NOTE ABOUT FAILED GOVERNANCE WORKFLOW:
 - PROJECT_HANDOFF.txt = cross-chat decisions, current roadmap, latest operational status
 
 As of this update:
-- catalog.json says 63 supported locales
-- README.md says 63 languages and includes Esperanto eo_uy alongside the previously completed locales
+- catalog.json says 64 supported locales
+- README.md says 64 languages and includes Kyrgyz ky_kg alongside the previously completed locales
 - Romanian, Greek, Bulgarian, Vietnamese, Arabic, Hebrew, Thai, Slovak, Slovenian, Croatian, Serbian Cyrillic, Serbian Latin, Catalan, Estonian, Lithuanian, Latvian, Basque, Galician, Hindi, Norwegian Nynorsk, Persian, Icelandic, Malay, Filipino, Welsh, Irish, Scottish Gaelic, Armenian, Georgian, Kazakh, Mongolian, Macedonian, Belarusian, Faroese, Afrikaans, Azerbaijani and Kannada have passed final three-target packaging validation
 
 49. QUALITY / QA CAVEAT
@@ -3733,3 +3734,60 @@ When Romain says continue / prochaine langue / vas-y:
 8. Update catalog.json, CATALOG.md, README.md and this PROJECT_HANDOFF.txt.
 9. Do not re-add Mob Origins.
 10. Do not stop permanently at 63; language expansion should continue unless Romain changes scope.
+
+KYRGYZ / LANGUAGE #64 FINAL STATUS
+----------------------------------
+Kyrgyz locale: ky_kg / Кыргызча.
+Minecraft language metadata: Кыргызстан.
+Status: COMPLETE FOR THE CURRENT 0.9.0 DEVELOPMENT BASELINE: GENERATED, CONTEXTUALLY REFINED, STRICTLY AUDITED, BUILT, PACKAGING-VERIFIED, DOCUMENTED, AND READY/INTEGRATED THROUGH THE STANDARD FAST-FORWARD PROCESS.
+
+Selection / staging:
+- staging branch: release/0.9.0-kyrgyz
+- exact beta base used to create staging: b1752b55144914a8982ab42393d197188a4bb92b
+- final three-target build source SHA: 4566bf7ad56ec8d72a15865c80e5340028bbffe1
+- NeoOrigins has zero official ky_kg strings at all three pinned 2.2.27 refs
+- all 10 supported 1.21.1 add-ons also had zero official ky_kg strings at their audited refs
+
+Architecture / packaging:
+- 16 common namespaces: neoorigins_ky_common_01 through neoorigins_ky_common_16
+- 1.21.1 delta namespace: neoorigins_ky_121
+- 26.1.x overlay: ky_kg inside neoorigins_26_1
+- 26.2 overlay: ky_kg inside neoorigins_26_2
+- 1.21.1 packages 27 ky_kg files = 16 common + 1 target delta + 10 add-ons
+- 26.1.x packages 17 ky_kg files = 16 common + correct modern overlay
+- 26.2 packages 17 ky_kg files = 16 common + correct modern overlay
+- no wrong-version overlays or add-on files leak between targets
+- packaged NeoOrigins keysets are exact and duplicate-free
+
+Coverage / strict QA:
+- NeoOrigins 1.21.1: 2296 / 2296
+- NeoOrigins 26.1.x: 2307 / 2307
+- NeoOrigins 26.2: 2307 / 2307
+- all 10 supported 1.21.1 add-ons: complete
+- missing: 0
+- overlap: 0
+- placeholder errors: 0
+- scripts/validate.py: passed
+- final contextual QA: 29 source files, 7,103 Kyrgyz-specific letters, 103,247 Cyrillic characters
+- intentional Latin-only values are limited to JSON, NeoOrigins, Origin and Origin Architect
+- final English-remnant guard passed
+- official Minecraft Kyrgyz terms used in the final cleanup include Night Vision = Түндө көрүү and Rotten Flesh = Чирик эт
+
+Final three-target CI:
+- workflow: .github/workflows/build-0.9.0-kyrgyz.yml
+- run: 34449980026
+- source: 4566bf7ad56ec8d72a15865c80e5340028bbffe1
+- mc-1.21.1 job 102783283272: SUCCESS
+  - artifact 10141174534
+  - JAR SHA256 9af4c8411eb33b9ea45b31d833ae323224651acc33c16565f8129f22dcf0f9e9
+  - artifact ZIP SHA256 88b4ce6650d4c0a7323097333d672272b9b5d8fd65885b14d2820cf6d5a6390d
+- mc-26.1.x job 102783283332: SUCCESS
+  - artifact 10141175254
+  - artifact ZIP SHA256 8f055c05a19f4cb7d3fa2bf19d500316ca02b13d0469a246fe5d09b53f951594
+- mc-26.2 job 102783283016: SUCCESS
+  - artifact 10141176895
+  - artifact ZIP SHA256 4c25ce448c3650405f3201de73ba7dfaf886c15bf397372526e4d3f236530209
+
+NEXT LANGUAGE = #65.
+Before starting #65, refetch release/0.9.0-beta and use its exact current HEAD as the staging base. Do not use main. Re-audit the current Minecraft Java locale inventory, apply the regional-variant dedup rule, verify official upstream strings before generating fallbacks, preserve placeholders exactly, run contextual QA, build all three targets, inspect JAR contents, and integrate only by non-forced fast-forward after confirming the staging branch is ahead-only.
+

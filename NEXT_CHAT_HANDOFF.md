@@ -15,31 +15,31 @@ Reference / integration branch: `release/0.9.0-beta`
 
 ## Completed language baseline
 
-The first **70 languages are complete and integrated through the Breton staging flow**.
+The first **71 languages are complete and integrated through the Asturian staging flow**.
 
 Latest completed language:
-- **#70 Breton — `br_fr / Brezhoneg`**
+- **#71 Asturian — `ast_es / Asturianu`**
 
-Breton is complete: NeoOrigins and all 10 supported 1.21.1 add-ons are fully covered; strict missing/overlap/placeholder checks and JSON validation passed; contextual refinement passed; all three pinned builds and automated JAR inspections passed; catalog/README metadata is at 70 locales. Do not redo Breton.
+Asturian is complete: NeoOrigins and all 10 supported 1.21.1 add-ons are fully covered; strict missing/overlap/placeholder checks and JSON validation passed; contextual refinement passed; all three pinned builds and automated JAR inspections passed; catalog/README metadata is at 71 locales. Do not redo Asturian.
 
-## Breton final references
+## Asturian final references
 
-- staging branch: `release/0.9.0-breton`
-- staging base: `6cd7efc642b22313f58d1024975ae7b5406d7f67`
-- bootstrap run/job: `34499084751` / `102944976049` — successful
-- translation commit: `551f79ef1c402dfa37140e6574590cdc42c2e436`
-- bootstrap audit artifact: `10161171163`; SHA256 `7628f5374445b6058637b4b34c005d949cb42a6d8ec45ec246c8afbdee7b7f21`
-- refinement run/job: `34499606349` / `102946756904` — successful
-- refinement commit: `ae5dffcdcfbd1d5cf9d489912383f5a76a3f4a1f`
-- refinement: 317 values across 21 files, including 244 spacing repairs; final sanity 108,480 Latin chars / 4,568 Breton orthographic signals / 4,323 lexical markers
-- final build source: `6871dfe04d3c7742c500da45c2c4181472989f73`
-- build run: `34499725033` — all three targets successful and JAR-inspected
-- build jobs: 1.21.1 `102947162125`; 26.1.x `102947161983`; 26.2 `102947162157`
-- packaged Breton file counts: 27 on 1.21.1, 17 on 26.1.x, 17 on 26.2
-- build artifacts: 1.21.1 `10161377271`; 26.1.x `10161372162`; 26.2 `10161365047`
-- artifact SHA256: 1.21.1 `d8cedd93d490c09b103b4ea06f1eb0492190f04ed1056f0e2d8118f02e8b0875`; 26.1.x `de1b59c502979851568bcc825b3e04da1fbb386b4f7530a61af2a989a28d9970`; 26.2 `7e69754747c0f28771b70473e4ef1312dcb12c37439a6c9b261c44c3c588fa14`
-- metadata run/job: `34499961101` / `102947953799` — successful
-- metadata commit: `d620425512de44e031c51a6135433aca4848246c`
+- staging branch: `release/0.9.0-asturian`
+- staging base: `4d19e06eb0adba2476330a2d6cb8541a13c191c6`
+- bootstrap run/job: `34503615246` / `102960216880` — successful
+- translation commit: `c27a6fd526df7c45b658d4f1cfb752eb58ac8c2b`
+- bootstrap audit artifact: `10162968911`; SHA256 `fbad94ef90654da2896963564d36294a4afb6a2cfeed0eca468d5b7a9677b169`
+- refinement run/job: `34504053058` / `102961692864` — successful
+- refinement commit: `246f4ad1cd19bc4a0bce33d8651614e4fa2d7579`
+- refinement: 117 values across 20 files; final sanity 97,090 Latin chars / 1,032 Asturian orthographic signals / 40 lexical markers
+- final build source: `ca9af33d43fe52d1980de1d64ba31a69e9dabf62`
+- build run: `34504996882` — all three targets successful and JAR-inspected
+- build jobs: 1.21.1 `102964864622`; 26.1.x `102964864208`; 26.2 `102964864491`
+- packaged Asturian file counts: 27 on 1.21.1, 17 on 26.1.x, 17 on 26.2
+- build artifacts: 1.21.1 `10163475348`; 26.1.x `10163472700`; 26.2 `10163490791`
+- artifact SHA256: 1.21.1 `664fa5414476193f6ca1fff459e9e700fa2462f55cdfa1cdde312311274c2fc0`; 26.1.x `46a191016eb1d8a3b94175af2546fe4690ce0757b878c0f564d2cff081e70433`; 26.2 `fb82ce40b0e97799a8b4a4c385b5597acd002ee4ec87469009d1fb79afde9224`
+- metadata run/job: `34505083168` / `102965157510` — successful
+- metadata commit: `10dcd15ccc5048587770d5c2624a2ab66e0b7d98`
 
 ## Current pinned upstream baseline
 
@@ -64,6 +64,6 @@ The 1.21.1 build also supports these 10 projects:
 
 ## Next task
 
-Start and finish **language #71**. Identify the next useful Minecraft locale from current locale data, applying the existing regional-variant deduplication rule. Then complete the full established flow: NeoOrigins + 10 add-on upstream audits, translation, contextual QA, placeholders/JSON checks, pinned 1.21.1 / 26.1.x / 26.2 builds, JAR-content inspection, metadata, both handoffs, and finally fast-forward the validated staging HEAD to `release/0.9.0-beta` with `force=false`.
+Start and finish **language #72**. Identify the next useful Minecraft locale from current locale data, applying the existing regional-variant deduplication rule. Then complete the full established flow: NeoOrigins + 10 add-on upstream audits, translation, contextual QA, placeholders/JSON checks, pinned 1.21.1 / 26.1.x / 26.2 builds, JAR-content inspection, metadata, both handoffs, and finally fast-forward the validated staging HEAD to `release/0.9.0-beta` with `force=false`.
 
-Do not stop after generation or QA: language #71 is only complete once the full integration cycle is finished.
+Do not stop after generation or QA: language #72 is only complete once the full integration cycle is finished.

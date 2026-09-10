@@ -65,6 +65,7 @@ namespace["MANUAL_OVERRIDES"] = {
     "%1$s was purified by %2$s's dragonfire using %3$s": "Nilinis si %1$s ng apoy ng dragon ni %2$s gamit ang %3$s",
     "%1$s had their soul ripped apart by %2$s's %3$s": "Winasak ang kaluluwa ni %1$s ng %3$s ni %2$s",
     "%1$s faced the divine judgment of %2$s's %3$s": "Hinarap ni %1$s ang banal na paghatol ng %3$s ni %2$s",
+    "§5Void Warp:§r Press %s while holding an ender pearl to rip through the fabric of reality and teleport yourself directly where you're looking, up to 50 blocks away": "§5Void Warp:§r Pindutin ang %s habang may hawak na ender pearl upang punitin ang tela ng realidad at direktang mag-teleport sa tinitingnan mo, hanggang 50 bloke ang layo",
 }
 
 namespace["write_json"](namespace["CACHE_PATH"], namespace["MANUAL_OVERRIDES"])

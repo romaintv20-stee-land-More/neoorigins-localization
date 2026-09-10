@@ -1,0 +1,67 @@
+name: Finalize Asturian handoff
+
+on:
+  push:
+    branches: [ release/0.9.0-asturian ]
+    paths:
+      - scripts/finalize_asturian_handoff.py
+      - .github/workflows/finalize-asturian-handoff.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  handoff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-asturian
+          fetch-depth: 0
+
+      - name: Finalize Asturian handoffs
+        run: python3 scripts/finalize_asturian_handoff.py
+
+      - name: Assert handoff state
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          project = Path('PROJECT_HANDOFF.txt').read_text(encoding='utf-8')
+          nxt = Path('NEXT_CHAT_HANDOFF.md').read_text(encoding='utf-8')
+          expected_project = [
+              '0.9.0 development currently has 71 locales:',
+              '- 71: Asturian / ast_es',
+              'SEVENTY-ONE IS NOT THE FINAL TARGET.',
+              'ASTURIAN / LANGUAGE #71 FINAL STATUS',
+              'Language #72 is the next expansion task.',
+          ]
+          expected_next = [
+              'first **71 languages are complete',
+              '#71 Asturian — `ast_es / Asturianu`',
+              'Start and finish **language #72**',
+          ]
+          missing = [x for x in expected_project if x not in project] + [x for x in expected_next if x not in nxt]
+          if missing:
+              raise SystemExit(f'Handoff assertions failed: {missing}')
+          print('Asturian handoff assertions passed; #72 is next.')
+          PY
+
+      - name: Validate repository JSON and whitespace
+        run: |
+          python3 scripts/validate.py
+          git diff --check
+
+      - name: Commit final Asturian handoffs
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add PROJECT_HANDOFF.txt NEXT_CHAT_HANDOFF.md
+          if git diff --cached --quiet; then
+            echo 'No handoff changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Finalize Asturian localization handoff'
+          git fetch origin release/0.9.0-asturian
+          git rebase origin/release/0.9.0-asturian
+          git push origin HEAD:release/0.9.0-asturian

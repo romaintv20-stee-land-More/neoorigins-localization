@@ -11,7 +11,7 @@
     ],
     "loader": "NeoForge",
     "localization_mode": "low_priority_fallback",
-    "supported_locale_count": 73,
+    "supported_locale_count": 74,
     "builds": {
       "1.21.1": {
         "version": "0.9.0-beta+1.21.1",
@@ -216,7 +216,9 @@
           "frisian_common_glob": "neoorigins_fy_common_*",
           "frisian_mc_1_21_1": "neoorigins_fy_121",
           "occitan_common_glob": "neoorigins_oc_common_*",
-          "occitan_mc_1_21_1": "neoorigins_oc_121"
+          "occitan_mc_1_21_1": "neoorigins_oc_121",
+          "igbo_common_glob": "neoorigins_ig_common_*",
+          "igbo_mc_1_21_1": "neoorigins_ig_121"
         },
         "note": "NeoOrigins 2.2.26 est audité séparément sur les trois cibles. neoorigins_226 est commun aux trois builds ; neoorigins_26_1 est réservé à 26.1.x ; neoorigins_26_2 est réservé à 26.2. Les trois clés reward.neoorigins.loot_pool* restent dans les fallbacks complets pour 1.21.1 et sont inoffensives sur 26.x.",
         "baseline_audit_2_2_27": {
@@ -251,7 +253,7 @@
             }
           }
         },
-        "coverage_note": "NeoOrigins 2.2.27 has the same en_us localization payload as 2.2.26 on all three targets. Historical gaps in it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz and hu_hu were recovered before language 59. All 73 currently supported locales are complete against 2.2.27 on their target builds.",
+        "coverage_note": "NeoOrigins 2.2.27 has the same en_us localization payload as 2.2.26 on all three targets. Historical gaps in it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz and hu_hu were recovered before language 59. All 74 currently supported locales are complete against 2.2.27 on their target builds.",
         "legacy_gap_recovery_completed": true
       },
       "languages": {
@@ -911,6 +913,15 @@
             "26.1.x",
             "26.2"
           ]
+        },
+        "ig_ng": {
+          "name": "Igbo",
+          "status": "supported",
+          "targets": [
+            "1.21.1",
+            "26.1.x",
+            "26.2"
+          ]
         }
       }
     },
@@ -1356,6 +1367,12 @@
           "name": "Occitan",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/oc_fr.json",
+          "fallback_keys": 401
+        },
+        "ig_ng": {
+          "name": "Igbo",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/ig_ng.json",
           "fallback_keys": 401
         }
       }
@@ -1806,6 +1823,12 @@
           "name": "Occitan",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/oc_fr.json",
+          "fallback_keys": 69
+        },
+        "ig_ng": {
+          "name": "Igbo",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/ig_ng.json",
           "fallback_keys": 69
         }
       }
@@ -2259,6 +2282,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/oc_fr.json",
           "fallback_keys": 240
+        },
+        "ig_ng": {
+          "name": "Igbo",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/ig_ng.json",
+          "fallback_keys": 240
         }
       }
     },
@@ -2710,6 +2739,12 @@
           "name": "Occitan",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/oc_fr.json",
+          "fallback_keys": 65
+        },
+        "ig_ng": {
+          "name": "Igbo",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/ig_ng.json",
           "fallback_keys": 65
         }
       }
@@ -3164,6 +3199,12 @@
           "name": "Occitan",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/oc_fr.json",
+          "fallback_keys": 39
+        },
+        "ig_ng": {
+          "name": "Igbo",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/ig_ng.json",
           "fallback_keys": 39
         }
       }
@@ -3623,6 +3664,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/oc_fr.json",
           "fallback_keys": 77
+        },
+        "ig_ng": {
+          "name": "Igbo",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/ig_ng.json",
+          "fallback_keys": 77
         }
       }
     },
@@ -4078,6 +4125,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/oc_fr.json",
           "fallback_keys": 117
+        },
+        "ig_ng": {
+          "name": "Igbo",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/ig_ng.json",
+          "fallback_keys": 117
         }
       }
     },
@@ -4532,6 +4585,12 @@
           "name": "Occitan",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/oc_fr.json",
+          "fallback_keys": 124
+        },
+        "ig_ng": {
+          "name": "Igbo",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/ig_ng.json",
           "fallback_keys": 124
         }
       }
@@ -4989,6 +5048,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/oc_fr.json",
           "fallback_keys": 99
+        },
+        "ig_ng": {
+          "name": "Igbo",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/ig_ng.json",
+          "fallback_keys": 99
         }
       }
     },
@@ -5443,6 +5508,12 @@
           "name": "Occitan",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/oc_fr.json",
+          "fallback_keys": 22
+        },
+        "ig_ng": {
+          "name": "Igbo",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/ig_ng.json",
           "fallback_keys": 22
         }
       }

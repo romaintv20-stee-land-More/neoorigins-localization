@@ -1,0 +1,256 @@
+name: Build 0.9.0 Kyrgyz
+
+on:
+  push:
+    branches: [ release/0.9.0-kyrgyz ]
+    paths:
+      - '.github/workflows/build-0.9.0-kyrgyz.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Kyrgyz ${{ matrix.target }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: mc-1.21.1
+            minecraft: '1.21.1'
+            minecraft_range: '[1.21.1]'
+            java: '21'
+            gradle: '8.14.3'
+            neoforge: '21.1.248'
+            loader_range: '[1,)'
+            parchment: 'true'
+            pack_format: '34'
+            source_variant: 'mc1_21_1'
+            upstream_ref: 'af467a3bc118f6bbc0970d68f7e03fa631d7e6f2'
+            ky_extra_namespace: 'neoorigins_ky_121'
+            include_addons: true
+            include_121_batch: true
+            include_26_1: false
+            include_26_2: false
+          - target: mc-26.1.x
+            minecraft: '26.1.2'
+            minecraft_range: '[26.1,26.2)'
+            java: '25'
+            gradle: '9.4.1'
+            neoforge: '26.1.2.29-beta'
+            loader_range: '[4,)'
+            parchment: 'false'
+            pack_format: '84'
+            source_variant: 'mc26_1'
+            upstream_ref: 'aa207ef14cf3b938e28b4081162701953957c1d5'
+            ky_extra_namespace: 'neoorigins_26_1'
+            include_addons: false
+            include_121_batch: false
+            include_26_1: true
+            include_26_2: false
+          - target: mc-26.2
+            minecraft: '26.2'
+            minecraft_range: '[26.2,26.3)'
+            java: '25'
+            gradle: '9.4.1'
+            neoforge: '26.2.0.3-beta'
+            loader_range: '[4,)'
+            parchment: 'false'
+            pack_format: '84'
+            source_variant: 'mc26_1'
+            upstream_ref: '511cadcafe3027d2a56b4448652ec9b74e2f3b07'
+            ky_extra_namespace: 'neoorigins_26_2'
+            include_addons: false
+            include_121_batch: false
+            include_26_1: false
+            include_26_2: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Java ${{ matrix.java }}
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+
+      - name: Set up Gradle ${{ matrix.gradle }}
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          gradle-version: ${{ matrix.gradle }}
+
+      - name: Strict audit Kyrgyz NeoOrigins
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref '${{ matrix.upstream_ref }}' --output 'build/ky-${{ matrix.target }}' --locale ky_kg --fallback-namespace-glob 'neoorigins_ky_common_*' --extra-namespace '${{ matrix.ky_extra_namespace }}' --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Strict audit Kyrgyz add-ons
+        if: matrix.include_addons == true
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re, subprocess
+          scripts=[
+            ('scripts/audit_medievalorigins_upstream.py',['--ref','1.21.1-fabric']),
+            ('scripts/audit_ibarnorigins_upstream.py',['--ref','multiloader-1.21.1-new-pack-format']),
+            ('scripts/audit_origins_fantasy_upstream.py',[]),
+            ('scripts/audit_origins_backgrounds_upstream.py',[]),
+            ('scripts/audit_origins_more_backgrounds_upstream.py',[]),
+            ('scripts/audit_origins_backgrounds_iss_upstream.py',[]),
+            ('scripts/audit_origins_furries_upstream.py',[]),
+            ('scripts/audit_origins_classes_extended_upstream.py',[]),
+            ('scripts/audit_origins_classes_iss_upstream.py',[]),
+            ('scripts/audit_origin_architect_upstream.py',[]),
+          ]
+          originals={n:Path(n).read_text(encoding='utf-8') for n,_ in scripts}
+          try:
+            for name,extra in scripts:
+              p=Path(name); src=originals[name]
+              out,count=re.subn(r'^LOCALES\s*=.*$','LOCALES = ("ky_kg",)',src,count=1,flags=re.M)
+              if count==0: out,count=re.subn(r'^DEFAULT_LOCALES\s*=.*$','DEFAULT_LOCALES = ("ky_kg",)',src,count=1,flags=re.M)
+              if count!=1: raise SystemExit(f'Could not patch locale in {name}')
+              p.write_text(out,encoding='utf-8')
+              subprocess.run(['python3',name,*extra,'--fail-on-overlap','--fail-on-missing','--fail-on-placeholders'],check=True)
+              p.write_text(src,encoding='utf-8')
+          finally:
+            for n,src in originals.items(): Path(n).write_text(src,encoding='utf-8')
+          PY
+
+      - name: Validate localization files
+        run: python3 scripts/validate.py
+
+      - name: Assert Kyrgyz contextual QA
+        run: |
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+          files=list(Path('src/main/resources/resourcepacks/fallback_localizations/assets').glob('**/lang/ky_kg.json'))
+          if len(files) != 29: raise SystemExit(f'Expected 29 Kyrgyz source files, got {len(files)}')
+          merged={}; values=[]
+          for p in files:
+            data=json.loads(p.read_text(encoding='utf-8'))
+            merged.update(data); values.extend(str(v) for v in data.values())
+          expected={
+            'origins.layer.origin':'Origin',
+            'origins.neoorigins.class_nitwit.name':'Аңкоо',
+            'neoorigins.configuration.classes.class_nitwit':'Аңкоо',
+            'origins.neoorigins.kraken.name':'Кракен',
+            'origins.neoorigins.sculkborn.name':'Скалкборн',
+            'origins.neoorigins.enderian.name':'Эндериан',
+            'origins.neoorigins.sylvan.name':'Сильван',
+            'origins.neoorigins.voidwalker.name':'Боштук кезгини',
+            'origins.neoorigins.class_lumberjack.name':'Токойчу',
+            'origins.neoorigins.wraith.name':'Арбак',
+          }
+          bad=[f'{k}={merged.get(k)!r}' for k,v in expected.items() if merged.get(k)!=v]
+          if bad: raise SystemExit(f'Kyrgyz contextual QA failed: {bad}')
+          text='\n'.join(values)
+          kyrgyz=len(re.findall(r'[ңөүҢӨҮ]',text))
+          cyrillic=len(re.findall(r'[А-Яа-яЁёңөүҢӨҮ]',text))
+          if kyrgyz < 30000 or cyrillic < 100000:
+            raise SystemExit(f'Kyrgyz sanity too low: Kyrgyz-specific={kyrgyz}, Cyrillic={cyrillic}')
+          latin_only=[]
+          for v in values:
+            s=v.strip()
+            if re.search(r'[A-Za-z]',s) and not re.search(r'[А-Яа-яЁёңөүҢӨҮ]',s) and re.fullmatch(r'[A-Za-z0-9 ._+:/()\-]+',s):
+              latin_only.append(s)
+          allowed={'Origin','NeoOrigins','JSON','Origin Architect'}
+          unexpected=sorted(set(latin_only)-allowed)
+          if unexpected: raise SystemExit(f'Unexpected Latin-only Kyrgyz values: {unexpected[:30]}')
+          suspicious=[v for v in values if re.search(r'\b(?:Night Vision|Hotkey|Knockback Resistance|Raw Mutton|Rotten Flesh|Pufferfish|Darkness Mage)\b',v,re.I)]
+          if suspicious: raise SystemExit(f'Kyrgyz English/contextual remnants remain: {suspicious[:10]!r}')
+          print('Kyrgyz contextual QA passed across',len(files),'files; Kyrgyz-specific',kyrgyz,'Cyrillic',cyrillic,'Latin-only',sorted(set(latin_only)))
+          PY
+
+      - name: Build mod
+        run: |
+          gradle build --stacktrace \
+            "-Pjava_version=${{ matrix.java }}" \
+            "-Puse_parchment=${{ matrix.parchment }}" \
+            "-Presource_pack_format=${{ matrix.pack_format }}" \
+            "-Psource_variant=${{ matrix.source_variant }}" \
+            "-Pinclude_addon_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_121_batch_translations=${{ matrix.include_121_batch }}" \
+            "-Pinclude_turkish_split_translations=true" \
+            "-Pinclude_maltese_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_luxembourgish_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_somali_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_esperanto_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_kyrgyz_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_26_1_translations=${{ matrix.include_26_1 }}" \
+            "-Pinclude_26_2_translations=${{ matrix.include_26_2 }}" \
+            "-Pminecraft_version=${{ matrix.minecraft }}" \
+            "-Pminecraft_version_range=${{ matrix.minecraft_range }}" \
+            "-Pneo_version=${{ matrix.neoforge }}" \
+            "-Ploader_version_range=${{ matrix.loader_range }}" \
+            "-Pmod_version=0.9.0-beta+ky-${{ matrix.target }}"
+
+      - name: Verify Kyrgyz packaging and key uniqueness
+        env:
+          UPSTREAM_REF: ${{ matrix.upstream_ref }}
+          TARGET: ${{ matrix.target }}
+          EXTRA_NS: ${{ matrix.ky_extra_namespace }}
+          INCLUDE_ADDONS: ${{ matrix.include_addons }}
+        run: |
+          JAR=$(find build/libs -type f -name '*.jar' ! -name '*-sources.jar' | head -n1)
+          test -n "$JAR"
+          export JAR
+          python3 - <<'PY'
+          import json, os, urllib.request, urllib.error, zipfile
+          jar=os.environ['JAR']; ref=os.environ['UPSTREAM_REF']; target=os.environ['TARGET']; extra_ns=os.environ['EXTRA_NS']; addons=os.environ['INCLUDE_ADDONS']=='true'
+          url=f'https://raw.githubusercontent.com/CyberDay1/NeoOrigins/{ref}/src/main/resources/assets/neoorigins/lang/'+'{}.json'
+          def get(locale):
+            try:
+              with urllib.request.urlopen(url.format(locale),timeout=30) as r:return json.load(r)
+            except urllib.error.HTTPError as e:
+              if e.code==404:return {}
+              raise
+          english=get('en_us'); official=get('ky_kg'); expected=set(english)-set(official)
+          addon_names={'medievalorigins','ibarnorigins','origins_fantasy','origins_backgrounds','origins_backgrounds_two','origins_backgrounds_iss','origins_furries','origins_classes_ex','origins_classes_iss','originsmodernui'}
+          with zipfile.ZipFile(jar) as z:
+            names=z.namelist(); ky=[n for n in names if n.endswith('/lang/ky_kg.json')]; neo=[]
+            for n in ky:
+              if '/assets/' not in n: continue
+              ns=n.split('/assets/',1)[1].split('/',1)[0]
+              if ns=='neoorigins' or ns.startswith('neoorigins_'): neo.append(n)
+            merged={}; dup=[]
+            for n in sorted(neo):
+              data=json.loads(z.read(n).decode('utf-8'))
+              for k,v in data.items():
+                if k in merged: dup.append((k,n))
+                merged[k]=v
+            missing=sorted(expected-set(merged)); extra=sorted(set(merged)-expected)
+            if dup: raise SystemExit(f'{target}: duplicate NeoOrigins Kyrgyz keys: {dup[:10]}')
+            if missing or extra: raise SystemExit(f'{target}: Kyrgyz packaged key mismatch missing={missing[:10]} extra={extra[:10]}')
+            for i in range(1,17):
+              want=f'assets/neoorigins_ky_common_{i:02d}/lang/ky_kg.json'
+              if not any(n.endswith(want) for n in names): raise SystemExit(f'{target}: missing {want}')
+            namespaces=[n.split('/assets/',1)[1].split('/',1)[0] for n in ky if '/assets/' in n]
+            if addons:
+              if len(ky)!=27: raise SystemExit(f'{target}: expected 27 Kyrgyz files, got {len(ky)}')
+              if 'neoorigins_ky_121' not in namespaces: raise SystemExit('1.21.1: missing Kyrgyz delta')
+              for ns in addon_names:
+                if ns not in namespaces and not (ns=='medievalorigins' and any(x.startswith('medievalorigins_ky_') for x in namespaces)):
+                  raise SystemExit(f'1.21.1: missing addon namespace {ns}')
+              if any(x in namespaces for x in ('neoorigins_26_1','neoorigins_26_2')): raise SystemExit('1.21.1: modern Kyrgyz overlay leaked')
+            else:
+              if len(ky)!=17: raise SystemExit(f'{target}: expected 17 Kyrgyz files, got {len(ky)}')
+              if 'neoorigins_ky_121' in namespaces: raise SystemExit(f'{target}: 1.21.1 Kyrgyz delta leaked')
+              if any(ns in addon_names or ns.startswith('medievalorigins_ky_') for ns in namespaces): raise SystemExit(f'{target}: addon Kyrgyz file leaked')
+              if extra_ns not in namespaces: raise SystemExit(f'{target}: missing {extra_ns}')
+              wrong='neoorigins_26_2' if target=='mc-26.1.x' else 'neoorigins_26_1'
+              if wrong in namespaces: raise SystemExit(f'{target}: wrong modern Kyrgyz overlay leaked: {wrong}')
+            print(target,'Kyrgyz files',len(ky),'NeoOrigins fallback keys',len(merged),'expected',len(expected),'duplicates',len(dup))
+          PY
+          sha256sum "$JAR" | tee "build/${{ matrix.target }}.sha256"
+
+      - name: Upload final verified JAR
+        uses: actions/upload-artifact@v7
+        with:
+          name: neoorigins-localization-kyrgyz-${{ matrix.target }}-${{ github.sha }}
+          path: |
+            build/libs/*.jar
+            build/${{ matrix.target }}.sha256
+          if-no-files-found: error

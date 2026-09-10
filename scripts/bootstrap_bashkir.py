@@ -12,6 +12,16 @@ source = source.replace("build/no-discovery", "build/ba-discovery")
 source = source.replace("no_no", "ba_ru")
 source = source.replace("neoorigins_no_", "neoorigins_ba_")
 source = source.replace('[[text, "en", "no", True]', '[[text, "en", "ba", True]')
+# Google may translate alphabetic separator sentinels for Bashkir. Use a punctuation+digits
+# marker instead, with optional spaces tolerated by the splitter.
+source = source.replace(
+    'SEPARATOR_RE = re.compile(r"\\n?ZXQSEP\\d{4}ZXQ\\n?")',
+    'SEPARATOR_RE = re.compile(r"\\n?⟦\\s*\\d{4}\\s*⟧\\n?")',
+)
+source = source.replace(
+    'f"\\nZXQSEP{index:04d}ZXQ\\n{value}"',
+    'f"\\n⟦{index:04d}⟧\\n{value}"',
+)
 # Numbered printf placeholders may legitimately move in Bashkir word order.
 source = source.replace(
     "if PLACEHOLDER_RE.findall(source) != PLACEHOLDER_RE.findall(result):",

@@ -1,0 +1,125 @@
+name: Refine Lao localization
+
+on:
+  push:
+    branches: [ release/0.9.0-lao ]
+    paths:
+      - 'scripts/refine_lao.py'
+      - '.github/workflows/refine-lao.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-lao
+          fetch-depth: 0
+
+      - name: Apply Lao contextual refinement
+        run: python3 scripts/refine_lao.py
+
+      - name: Validate JSON localization structure
+        run: python3 scripts/validate.py
+
+      - name: Strict audit Lao NeoOrigins
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref af467a3bc118f6bbc0970d68f7e03fa631d7e6f2 --output build/lo-refined-mc-1.21.1 --locale lo_la --fallback-namespace-glob 'neoorigins_lo_common_*' --extra-namespace neoorigins_lo_121 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref aa207ef14cf3b938e28b4081162701953957c1d5 --output build/lo-refined-mc-26.1 --locale lo_la --fallback-namespace-glob 'neoorigins_lo_common_*' --extra-namespace neoorigins_26_1 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 511cadcafe3027d2a56b4448652ec9b74e2f3b07 --output build/lo-refined-mc-26.2 --locale lo_la --fallback-namespace-glob 'neoorigins_lo_common_*' --extra-namespace neoorigins_26_2 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Strict audit Lao add-ons
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re, subprocess
+          scripts=[
+            ('scripts/audit_medievalorigins_upstream.py',['--ref','1.21.1-fabric']),
+            ('scripts/audit_ibarnorigins_upstream.py',['--ref','multiloader-1.21.1-new-pack-format']),
+            ('scripts/audit_origins_fantasy_upstream.py',[]),
+            ('scripts/audit_origins_backgrounds_upstream.py',[]),
+            ('scripts/audit_origins_more_backgrounds_upstream.py',[]),
+            ('scripts/audit_origins_backgrounds_iss_upstream.py',[]),
+            ('scripts/audit_origins_furries_upstream.py',[]),
+            ('scripts/audit_origins_classes_extended_upstream.py',[]),
+            ('scripts/audit_origins_classes_iss_upstream.py',[]),
+            ('scripts/audit_origin_architect_upstream.py',[]),
+          ]
+          originals={name:Path(name).read_text(encoding='utf-8') for name,_ in scripts}
+          try:
+            for name,extra in scripts:
+              path=Path(name); src=originals[name]
+              out,count=re.subn(r'^LOCALES\s*=.*$','LOCALES = ("lo_la",)',src,count=1,flags=re.M)
+              if count==0:
+                out,count=re.subn(r'^DEFAULT_LOCALES\s*=.*$','DEFAULT_LOCALES = ("lo_la",)',src,count=1,flags=re.M)
+              if count!=1:
+                raise SystemExit(f'Could not patch locale in {name}')
+              path.write_text(out,encoding='utf-8')
+              subprocess.run(['python3',name,*extra,'--fail-on-overlap','--fail-on-missing','--fail-on-placeholders'],check=True)
+              path.write_text(src,encoding='utf-8')
+          finally:
+            for name,src in originals.items():
+              Path(name).write_text(src,encoding='utf-8')
+          PY
+
+      - name: Assert Lao contextual QA
+        run: |
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+          files=list(Path('src/main/resources/resourcepacks/fallback_localizations/assets').glob('**/lang/lo_la.json'))
+          if len(files) != 29:
+            raise SystemExit(f'Expected 29 Lao source files, got {len(files)}')
+          merged={}; values=[]
+          for path in files:
+            data=json.loads(path.read_text(encoding='utf-8'))
+            merged.update(data); values.extend(str(v) for v in data.values())
+          expected={
+            'origins.layer.origin':'Origin',
+            'origins.layer.class':'ຄລາສ',
+            'neoorigins.toggle.on':'ເປີດໃຊ້ຄວາມສາມາດແລ້ວ',
+            'neoorigins.toggle.off':'ປິດໃຊ້ຄວາມສາມາດແລ້ວ',
+            'neoorigins.night_vision.on':'ເປີດການເບິ່ງເຫັນຕອນກາງຄືນແລ້ວ',
+            'neoorigins.ultimine.no_power':'Origin ຂອງເຈົ້າບໍ່ມີຄວາມສາມາດ Ultimine.',
+            'screen.neoorigins.choose_origin':'ເລືອກ Origin',
+            'key.category.neoorigins.neoorigins':'NeoOrigins',
+            'key.neoorigins.open_mob_creator':'ເປີດຕົວສ້າງ Mob Origin',
+            'gui.neoorigins.mob_creator.tab.spawn_rules':'ກົດການເກີດ',
+            'screen.neoorigins.origin_editor':'ຕົວແກ້ໄຂ Origin',
+          }
+          bad=[f'{k}={merged.get(k)!r}' for k,v in expected.items() if merged.get(k)!=v]
+          if bad:
+            raise SystemExit(f'Lao contextual QA failed: {bad}')
+          text='\n'.join(values)
+          lao_chars=len(re.findall(r'[\u0E80-\u0EFF]',text))
+          markers=len(re.findall(r'(?:ຂອງ|ແລະ|ໃນ|ທີ່|ໄດ້|ເປັນ|ຈະ|ກັບ|ຈາກ|ສາມາດ|ບໍ່|ເມື່ອ|ນີ້|ໃຫ້|ຄວາມ|ການ|ເຈົ້າ)',text))
+          if lao_chars < 80000 or markers < 3500:
+            raise SystemExit(f'Lao sanity too low: Lao chars={lao_chars}, lexical markers={markers}')
+          suspicious=[v for v in values if 'Neorigins' in v or 'Neoorigins' in v]
+          if suspicious:
+            raise SystemExit(f'Lao contextual branding remnants remain: {suspicious[:20]!r}')
+          print('Lao contextual QA passed across',len(files),'files; Lao chars',lao_chars,'lexical markers',markers)
+          PY
+
+      - name: Check whitespace
+        run: git diff --check
+
+      - name: Commit refined Lao localization
+        if: success()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name 'lo_la.json' -print0 | xargs -0 -r git add
+          if git diff --cached --quiet; then
+            echo 'No Lao refinement changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Refine Lao localization context'
+          git fetch origin release/0.9.0-lao
+          git rebase origin/release/0.9.0-lao
+          git push origin HEAD:release/0.9.0-lao

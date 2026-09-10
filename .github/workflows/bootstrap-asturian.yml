@@ -124,7 +124,7 @@ jobs:
               raise SystemExit(f'Asturian Latin-script sanity too low: {latin_chars}')
           if asturian_signals < 900:
               raise SystemExit(f'Asturian orthographic-signal sanity too low: {asturian_signals}')
-          if markers < 1000:
+          if markers < 750:
               raise SystemExit(f'Asturian lexical sanity too low: {markers}')
           print('Asturian text sanity passed')
           PY

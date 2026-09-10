@@ -7,7 +7,7 @@
   "neoorigins.configuration.section.neoorigins.admin.toml": "ຜູ້ເບິ່ງແຍງ & ການອະນຸຍາດ",
   "neoorigins.configuration.section.neoorigins.admin.toml.title": "ການຕັ້ງຄ່າຜູ້ເບິ່ງແຍງ NeoOrigins",
   "neoorigins.configuration.section.neoorigins.power.overrides.toml": "ການລົບລ້າງພະລັງງານ",
-  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "Neoorigins overrides ພະລັງງານ",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "NeoOrigins overrides ພະລັງງານ",
   "neoorigins.configuration.section.neoorigins.content.toml": "ຕົ້ນກໍາເນີດ & ຫ້ອງຮຽນ",
   "neoorigins.configuration.section.neoorigins.content.toml.title": "ຕົ້ນສະບັບ NeoOrigins & ຫ້ອງຮຽນສະຫຼັບ",
   "neoorigins.configuration.section.neoorigins.client.toml": "ຈໍສະແດງຜົນລູກຄ້າ",

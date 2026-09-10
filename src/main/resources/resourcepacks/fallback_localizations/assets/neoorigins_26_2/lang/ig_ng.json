@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Akụrụngwa ị rụpụtara na-enweta njirimara ego - ike, mmebi, ma ọ bụ ọsọ ngwuputa.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Na-enweta XP okpukpu abụọ site na isi nri na onye na-ese anwụrụ.",
+  "neoorigins.configuration.title": "Nhazi NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Egwuregwu egwu",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "Ntọala egwuregwu egwuregwu NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Onye nchịkwa & ikike",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "Ntọala Admin NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Ike na-ekpu",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "Ike NeoOrigins na-emebi",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Mmalite & klaasị",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "Mmalite NeoOrigins & Klas Toggles",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Ngosipụta ndị ahịa",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "Ntọala ndị ahịa NeoOrigins",
+  "neoorigins.configuration.show_cooldown_countdown": "Gosi agụta nkwụsịtụ",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Opacity akwụsị akwụsị (%)",
+  "neoorigins.configuration.hud_ability_display": "Ụdị ngosi HUD ike",
+  "neoorigins.configuration.always_show_ability_icons": "Gosi akara ngosi ike mgbe niile"
+}

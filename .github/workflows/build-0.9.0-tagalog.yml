@@ -1,0 +1,249 @@
+name: Build 0.9.0 Tagalog
+
+on:
+  push:
+    branches: [ release/0.9.0-tagalog ]
+    paths:
+      - '.github/workflows/build-0.9.0-tagalog.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Tagalog ${{ matrix.target }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: mc-1.21.1
+            minecraft: '1.21.1'
+            minecraft_range: '[1.21.1]'
+            java: '21'
+            gradle: '8.14.3'
+            neoforge: '21.1.248'
+            loader_range: '[1,)'
+            parchment: 'true'
+            pack_format: '34'
+            source_variant: 'mc1_21_1'
+            upstream_ref: 'af467a3bc118f6bbc0970d68f7e03fa631d7e6f2'
+            tl_extra_namespace: 'neoorigins_tl_121'
+            include_addons: true
+            include_121_batch: true
+            include_26_1: false
+            include_26_2: false
+          - target: mc-26.1.x
+            minecraft: '26.1.2'
+            minecraft_range: '[26.1,26.2)'
+            java: '25'
+            gradle: '9.4.1'
+            neoforge: '26.1.2.29-beta'
+            loader_range: '[4,)'
+            parchment: 'false'
+            pack_format: '84'
+            source_variant: 'mc26_1'
+            upstream_ref: 'aa207ef14cf3b938e28b4081162701953957c1d5'
+            tl_extra_namespace: 'neoorigins_26_1'
+            include_addons: false
+            include_121_batch: false
+            include_26_1: true
+            include_26_2: false
+          - target: mc-26.2
+            minecraft: '26.2'
+            minecraft_range: '[26.2,26.3)'
+            java: '25'
+            gradle: '9.4.1'
+            neoforge: '26.2.0.3-beta'
+            loader_range: '[4,)'
+            parchment: 'false'
+            pack_format: '84'
+            source_variant: 'mc26_1'
+            upstream_ref: '511cadcafe3027d2a56b4448652ec9b74e2f3b07'
+            tl_extra_namespace: 'neoorigins_26_2'
+            include_addons: false
+            include_121_batch: false
+            include_26_1: false
+            include_26_2: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Java ${{ matrix.java }}
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+
+      - name: Set up Gradle ${{ matrix.gradle }}
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          gradle-version: ${{ matrix.gradle }}
+
+      - name: Strict audit Tagalog NeoOrigins
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref '${{ matrix.upstream_ref }}' --output 'build/tl-${{ matrix.target }}' --locale tl_ph --fallback-namespace-glob 'neoorigins_tl_common_*' --extra-namespace '${{ matrix.tl_extra_namespace }}' --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Strict audit Tagalog add-ons
+        if: matrix.include_addons == true
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re, subprocess
+          scripts=[
+            ('scripts/audit_medievalorigins_upstream.py',['--ref','1.21.1-fabric']),
+            ('scripts/audit_ibarnorigins_upstream.py',['--ref','multiloader-1.21.1-new-pack-format']),
+            ('scripts/audit_origins_fantasy_upstream.py',[]),
+            ('scripts/audit_origins_backgrounds_upstream.py',[]),
+            ('scripts/audit_origins_more_backgrounds_upstream.py',[]),
+            ('scripts/audit_origins_backgrounds_iss_upstream.py',[]),
+            ('scripts/audit_origins_furries_upstream.py',[]),
+            ('scripts/audit_origins_classes_extended_upstream.py',[]),
+            ('scripts/audit_origins_classes_iss_upstream.py',[]),
+            ('scripts/audit_origin_architect_upstream.py',[]),
+          ]
+          originals={n:Path(n).read_text(encoding='utf-8') for n,_ in scripts}
+          try:
+            for name,extra in scripts:
+              p=Path(name); src=originals[name]
+              out,count=re.subn(r'^LOCALES\s*=.*$','LOCALES = ("tl_ph",)',src,count=1,flags=re.M)
+              if count==0: out,count=re.subn(r'^DEFAULT_LOCALES\s*=.*$','DEFAULT_LOCALES = ("tl_ph",)',src,count=1,flags=re.M)
+              if count!=1: raise SystemExit(f'Could not patch locale in {name}')
+              p.write_text(out,encoding='utf-8')
+              subprocess.run(['python3',name,*extra,'--fail-on-overlap','--fail-on-missing','--fail-on-placeholders'],check=True)
+              p.write_text(src,encoding='utf-8')
+          finally:
+            for n,src in originals.items(): Path(n).write_text(src,encoding='utf-8')
+          PY
+
+      - name: Validate localization files
+        run: python3 scripts/validate.py
+
+      - name: Assert Tagalog contextual QA
+        run: |
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+          files=list(Path('src/main/resources/resourcepacks/fallback_localizations/assets').glob('**/lang/tl_ph.json'))
+          if len(files) != 29: raise SystemExit(f'Expected 29 Tagalog source files, got {len(files)}')
+          merged={}; values=[]
+          for p in files:
+            data=json.loads(p.read_text(encoding='utf-8'))
+            merged.update(data); values.extend(str(v) for v in data.values())
+          expected={
+            'origins.layer.origin':'Origin',
+            'neoorigins.toggle.on':'Pinagana ang kakayahan',
+            'neoorigins.toggle.off':'Hindi pinagana ang kakayahan',
+            'neoorigins.night_vision.on':'Pinagana ang Pagkakita sa Dilim',
+            'screen.neoorigins.choose_origin':'Pumili ng Origin',
+            'key.category.neoorigins.neoorigins':'NeoOrigins',
+            'key.neoorigins.open_mob_creator':'Buksan ang Mob Origin Creator',
+            'gui.neoorigins.mob_creator.tab.spawn_rules':'Mga Panuntunan sa Pag-spawn',
+            'screen.neoorigins.origin_editor':'Editor ng Origin',
+          }
+          bad=[f'{k}={merged.get(k)!r}' for k,v in expected.items() if merged.get(k)!=v]
+          if bad: raise SystemExit(f'Tagalog contextual QA failed: {bad}')
+          text='\n'.join(values); low=text.lower()
+          markers=len(re.findall(r'\b(?:ang|mga|ng|sa|para|isang|iyong|mo|kapag|hindi|mula|gamit|maaari|upang|ito|iyon|lahat|nang|kung|may|pag|mag|kanilang)\b',low))
+          letters=len(re.findall(r'[A-Za-zÀ-ÿ]',text))
+          if markers < 1500: raise SystemExit(f'Tagalog lexical sanity too low: {markers}')
+          if letters < 50000: raise SystemExit(f'Tagalog text volume too low: {letters}')
+          suspicious=[v for v in values if 'Night Vision' in v or 'Rotten Flesh' in v or 'Neorigins' in v or 'Neoorigins' in v]
+          if suspicious: raise SystemExit(f'Tagalog English/contextual remnants remain: {suspicious[:10]!r}')
+          print('Tagalog contextual QA passed across',len(files),'files; lexical markers',markers,'Latin letters',letters)
+          PY
+
+      - name: Build mod
+        run: |
+          gradle build --stacktrace \
+            "-Pjava_version=${{ matrix.java }}" \
+            "-Puse_parchment=${{ matrix.parchment }}" \
+            "-Presource_pack_format=${{ matrix.pack_format }}" \
+            "-Psource_variant=${{ matrix.source_variant }}" \
+            "-Pinclude_addon_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_121_batch_translations=${{ matrix.include_121_batch }}" \
+            "-Pinclude_turkish_split_translations=true" \
+            "-Pinclude_maltese_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_luxembourgish_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_somali_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_esperanto_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_kyrgyz_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_tamil_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_tagalog_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_26_1_translations=${{ matrix.include_26_1 }}" \
+            "-Pinclude_26_2_translations=${{ matrix.include_26_2 }}" \
+            "-Pminecraft_version=${{ matrix.minecraft }}" \
+            "-Pminecraft_version_range=${{ matrix.minecraft_range }}" \
+            "-Pneo_version=${{ matrix.neoforge }}" \
+            "-Ploader_version_range=${{ matrix.loader_range }}" \
+            "-Pmod_version=0.9.0-beta+tl-${{ matrix.target }}"
+
+      - name: Verify Tagalog packaging and key uniqueness
+        env:
+          UPSTREAM_REF: ${{ matrix.upstream_ref }}
+          TARGET: ${{ matrix.target }}
+          EXTRA_NS: ${{ matrix.tl_extra_namespace }}
+          INCLUDE_ADDONS: ${{ matrix.include_addons }}
+        run: |
+          JAR=$(find build/libs -type f -name '*.jar' ! -name '*-sources.jar' | head -n1)
+          test -n "$JAR"
+          export JAR
+          python3 - <<'PY'
+          import json, os, urllib.request, urllib.error, zipfile
+          jar=os.environ['JAR']; ref=os.environ['UPSTREAM_REF']; target=os.environ['TARGET']; extra_ns=os.environ['EXTRA_NS']; addons=os.environ['INCLUDE_ADDONS']=='true'
+          url=f'https://raw.githubusercontent.com/CyberDay1/NeoOrigins/{ref}/src/main/resources/assets/neoorigins/lang/'+'{}.json'
+          def get(locale):
+            try:
+              with urllib.request.urlopen(url.format(locale),timeout=30) as r:return json.load(r)
+            except urllib.error.HTTPError as e:
+              if e.code==404:return {}
+              raise
+          english=get('en_us'); official=get('tl_ph'); expected=set(english)-set(official)
+          addon_names={'medievalorigins','ibarnorigins','origins_fantasy','origins_backgrounds','origins_backgrounds_two','origins_backgrounds_iss','origins_furries','origins_classes_ex','origins_classes_iss','originsmodernui'}
+          with zipfile.ZipFile(jar) as z:
+            names=z.namelist(); tl=[n for n in names if n.endswith('/lang/tl_ph.json')]; neo=[]
+            for n in tl:
+              if '/assets/' not in n: continue
+              ns=n.split('/assets/',1)[1].split('/',1)[0]
+              if ns=='neoorigins' or ns.startswith('neoorigins_'): neo.append(n)
+            merged={}; dup=[]
+            for n in sorted(neo):
+              data=json.loads(z.read(n).decode('utf-8'))
+              for k,v in data.items():
+                if k in merged: dup.append((k,n))
+                merged[k]=v
+            missing=sorted(expected-set(merged)); extra=sorted(set(merged)-expected)
+            if dup: raise SystemExit(f'{target}: duplicate NeoOrigins Tagalog keys: {dup[:10]}')
+            if missing or extra: raise SystemExit(f'{target}: Tagalog packaged key mismatch missing={missing[:10]} extra={extra[:10]}')
+            for i in range(1,17):
+              want=f'assets/neoorigins_tl_common_{i:02d}/lang/tl_ph.json'
+              if not any(n.endswith(want) for n in names): raise SystemExit(f'{target}: missing {want}')
+            namespaces=[n.split('/assets/',1)[1].split('/',1)[0] for n in tl if '/assets/' in n]
+            if addons:
+              if len(tl)!=27: raise SystemExit(f'{target}: expected 27 Tagalog files, got {len(tl)}')
+              if 'neoorigins_tl_121' not in namespaces: raise SystemExit('1.21.1: missing Tagalog delta')
+              for ns in addon_names:
+                if ns not in namespaces and not (ns=='medievalorigins' and any(x.startswith('medievalorigins_tl_') for x in namespaces)):
+                  raise SystemExit(f'1.21.1: missing addon namespace {ns}')
+              if any(x in namespaces for x in ('neoorigins_26_1','neoorigins_26_2')): raise SystemExit('1.21.1: modern Tagalog overlay leaked')
+            else:
+              if len(tl)!=17: raise SystemExit(f'{target}: expected 17 Tagalog files, got {len(tl)}')
+              if 'neoorigins_tl_121' in namespaces: raise SystemExit(f'{target}: 1.21.1 Tagalog delta leaked')
+              if any(ns in addon_names or ns.startswith('medievalorigins_tl_') for ns in namespaces): raise SystemExit(f'{target}: addon Tagalog file leaked')
+              if extra_ns not in namespaces: raise SystemExit(f'{target}: missing {extra_ns}')
+              wrong='neoorigins_26_2' if target=='mc-26.1.x' else 'neoorigins_26_1'
+              if wrong in namespaces: raise SystemExit(f'{target}: wrong modern Tagalog overlay leaked: {wrong}')
+            print(target,'Tagalog files',len(tl),'NeoOrigins fallback keys',len(merged),'expected',len(expected),'duplicates',len(dup))
+          PY
+          sha256sum "$JAR" | tee "build/${{ matrix.target }}.sha256"
+
+      - name: Upload final verified JAR
+        uses: actions/upload-artifact@v7
+        with:
+          name: neoorigins-localization-tagalog-${{ matrix.target }}-${{ github.sha }}
+          path: |
+            build/libs/*.jar
+            build/${{ matrix.target }}.sha256
+          if-no-files-found: error

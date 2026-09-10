@@ -1,0 +1,114 @@
+name: Refine Tagalog localization
+
+on:
+  push:
+    branches:
+      - release/0.9.0-tagalog
+    paths:
+      - scripts/refine_tagalog.py
+      - .github/workflows/refine-tagalog.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-tagalog
+
+      - name: Apply contextual Tagalog fixes
+        run: python3 scripts/refine_tagalog.py
+
+      - name: Validate JSON localization structure
+        run: python3 scripts/validate.py
+
+      - name: Strict Tagalog NeoOrigins audit
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref af467a3bc118f6bbc0970d68f7e03fa631d7e6f2 --output build/tl-refine-audit-121 --locale tl_ph --fallback-namespace-glob 'neoorigins_tl_common_*' --extra-namespace neoorigins_tl_121 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref aa207ef14cf3b938e28b4081162701953957c1d5 --output build/tl-refine-audit-261 --locale tl_ph --fallback-namespace-glob 'neoorigins_tl_common_*' --extra-namespace neoorigins_26_1 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 511cadcafe3027d2a56b4448652ec9b74e2f3b07 --output build/tl-refine-audit-262 --locale tl_ph --fallback-namespace-glob 'neoorigins_tl_common_*' --extra-namespace neoorigins_26_2 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Strict Tagalog add-on audits
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re, subprocess
+          scripts=[
+            ('scripts/audit_medievalorigins_upstream.py',['--ref','1.21.1-fabric']),
+            ('scripts/audit_ibarnorigins_upstream.py',['--ref','multiloader-1.21.1-new-pack-format']),
+            ('scripts/audit_origins_fantasy_upstream.py',[]),
+            ('scripts/audit_origins_backgrounds_upstream.py',[]),
+            ('scripts/audit_origins_more_backgrounds_upstream.py',[]),
+            ('scripts/audit_origins_backgrounds_iss_upstream.py',[]),
+            ('scripts/audit_origins_furries_upstream.py',[]),
+            ('scripts/audit_origins_classes_extended_upstream.py',[]),
+            ('scripts/audit_origins_classes_iss_upstream.py',[]),
+            ('scripts/audit_origin_architect_upstream.py',[]),
+          ]
+          originals={n:Path(n).read_text(encoding='utf-8') for n,_ in scripts}
+          try:
+            for name,extra in scripts:
+              p=Path(name); src=originals[name]
+              out,count=re.subn(r'^LOCALES\s*=.*$','LOCALES = ("tl_ph",)',src,count=1,flags=re.M)
+              if count==0: out,count=re.subn(r'^DEFAULT_LOCALES\s*=.*$','DEFAULT_LOCALES = ("tl_ph",)',src,count=1,flags=re.M)
+              if count!=1: raise SystemExit(f'Could not patch locale in {name}')
+              p.write_text(out,encoding='utf-8')
+              subprocess.run(['python3',name,*extra,'--fail-on-overlap','--fail-on-missing','--fail-on-placeholders'],check=True)
+              p.write_text(src,encoding='utf-8')
+          finally:
+            for n,src in originals.items(): Path(n).write_text(src,encoding='utf-8')
+          PY
+
+      - name: Tagalog contextual sanity
+        run: |
+          python3 - <<'PY'
+          import json,re
+          from pathlib import Path
+          files=list(Path('src/main/resources/resourcepacks/fallback_localizations/assets').glob('**/lang/tl_ph.json'))
+          if len(files) != 29:
+              raise SystemExit(f'Expected 29 Tagalog files, got {len(files)}')
+          all_data={}; values=[]
+          for p in files:
+              data=json.loads(p.read_text(encoding='utf-8'))
+              all_data.update(data); values.extend(str(v) for v in data.values())
+          expected={
+            'neoorigins.toggle.on':'Pinagana ang kakayahan',
+            'neoorigins.night_vision.on':'Pinagana ang Pagkakita sa Dilim',
+            'origins.layer.origin':'Origin',
+            'screen.neoorigins.choose_origin':'Pumili ng Origin',
+            'key.category.neoorigins.neoorigins':'NeoOrigins',
+            'key.neoorigins.open_mob_creator':'Buksan ang Mob Origin Creator',
+            'gui.neoorigins.mob_creator.tab.spawn_rules':'Mga Panuntunan sa Pag-spawn',
+            'screen.neoorigins.origin_editor':'Editor ng Origin',
+          }
+          bad=[f'{k}={all_data.get(k)!r}' for k,v in expected.items() if all_data.get(k)!=v]
+          if bad: raise SystemExit(f'Tagalog contextual fixes missing: {bad}')
+          text='\n'.join(values); low=text.lower()
+          forbidden=['Night Vision','Rotten Flesh','Neorigins','Neoorigins']
+          found=[x for x in forbidden if x in text]
+          if found: raise SystemExit(f'Known bad Tagalog residues remain: {found}')
+          markers=len(re.findall(r'\b(?:ang|mga|ng|sa|para|isang|iyong|mo|kapag|hindi|mula|gamit|maaari|upang|ito|iyon|lahat|nang|kung|may|pag|mag|kanilang)\b',low))
+          letters=len(re.findall(r'[A-Za-zÀ-ÿ]',text))
+          if markers < 1500: raise SystemExit(f'Tagalog lexical sanity too low: {markers}')
+          if letters < 50000: raise SystemExit(f'Tagalog text volume too low: {letters}')
+          print(f'Tagalog refinement sanity passed: {markers} lexical markers, {letters} Latin letters across {len(files)} files')
+          PY
+
+      - name: Commit refined Tagalog translations
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name 'tl_ph.json' -print0 | xargs -0 -r git add
+          if git diff --cached --quiet; then
+            echo 'No Tagalog refinement changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Refine Tagalog localization terminology'
+          git fetch origin release/0.9.0-tagalog
+          git rebase origin/release/0.9.0-tagalog
+          git push origin HEAD:release/0.9.0-tagalog

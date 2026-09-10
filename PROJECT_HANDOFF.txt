@@ -38,8 +38,8 @@ Mob Origins is NOT selected for 0.9.0. Earlier Mob Origins WIP inherited from a 
 0.8.0 Beta shipped with 17 locales:
 fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se.
 
-0.9.0 development currently has 68 locales:
-fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se, da_dk, fi_fi, no_no, ro_ro, el_gr, bg_bg, vi_vn, ar_sa, he_il, th_th, sk_sk, sl_si, hr_hr, sr_sp, sr_cs, ca_es, et_ee, lt_lt, lv_lv, eu_es, gl_es, hi_in, nn_no, fa_ir, is_is, ms_my, fil_ph, cy_gb, ga_ie, gd_gb, hy_am, ka_ge, kk_kz, mn_mn, mk_mk, be_by, fo_fo, af_za, az_az, kn_in, cv_cu, uz_uz, mt_mt, lb_lu, so_so, eo_uy, ky_kg, ta_in, sq_al, lo_la, bs_ba.
+0.9.0 development currently has 69 locales:
+fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se, da_dk, fi_fi, no_no, ro_ro, el_gr, bg_bg, vi_vn, ar_sa, he_il, th_th, sk_sk, sl_si, hr_hr, sr_sp, sr_cs, ca_es, et_ee, lt_lt, lv_lv, eu_es, gl_es, hi_in, nn_no, fa_ir, is_is, ms_my, fil_ph, cy_gb, ga_ie, gd_gb, hy_am, ka_ge, kk_kz, mn_mn, mk_mk, be_by, fo_fo, af_za, az_az, kn_in, cv_cu, uz_uz, mt_mt, lb_lu, so_so, eo_uy, ky_kg, ta_in, sq_al, lo_la, bs_ba, ba_ru.
 
 Expansion order so far:
 - 18: Danish / da_dk
@@ -93,8 +93,9 @@ Expansion order so far:
 - 66: Albanian / sq_al
 - 67: Lao / lo_la
 - 68: Bosnian / bs_ba
+- 69: Bashkir / ba_ru
 
-SIXTY-EIGHT IS NOT THE FINAL TARGET. Continue expanding toward essentially all useful Minecraft languages unless Romain changes scope.
+SIXTY-NINE IS NOT THE FINAL TARGET. Continue expanding toward essentially all useful Minecraft languages unless Romain changes scope.
 
 Norwegian Nynorsk (nn_no) is intentionally NOT merged with Bokmal. It is a distinct written standard and remains a valid future locale.
 
@@ -3096,8 +3097,8 @@ NOTE ABOUT FAILED GOVERNANCE WORKFLOW:
 - PROJECT_HANDOFF.txt = cross-chat decisions, current roadmap, latest operational status
 
 As of this update:
-- catalog.json says 68 supported locales
-- README.md says 68 languages and includes Bosnian / bs_ba.
+- catalog.json says 69 supported locales
+- README.md says 69 languages and includes Bashkir / ba_ru.
 - Romanian, Greek, Bulgarian, Vietnamese, Arabic, Hebrew, Thai, Slovak, Slovenian, Croatian, Serbian Cyrillic, Serbian Latin, Catalan, Estonian, Lithuanian, Latvian, Basque, Galician, Hindi, Norwegian Nynorsk, Persian, Icelandic, Malay, Filipino, Welsh, Irish, Scottish Gaelic, Armenian, Georgian, Kazakh, Mongolian, Macedonian, Belarusian, Faroese, Afrikaans, Azerbaijani and Kannada have passed final three-target packaging validation
 
 49. QUALITY / QA CAVEAT
@@ -4080,4 +4081,89 @@ Integration rule:
 NEXT LANGUAGE
 -------------
 Language #69 is the next expansion task. Determine it from current Minecraft locale data using the same regional-variant deduplication rule, then repeat the complete upstream audit, translation, QA, builds, JAR inspection, metadata, handoff, and fast-forward flow.
+
+BASHKIR / LANGUAGE #69 FINAL STATUS
+------------------------------------
+Bashkir locale: ba_ru / Башҡортса.
+Status: COMPLETE FOR THE CURRENT 0.9.0 DEVELOPMENT BASELINE: GENERATED, STRICTLY AUDITED, CONTEXT-REFINED, BUILT, PACKAGING-VERIFIED, DOCUMENTED, AND COMMITTED.
+
+Selection / staging:
+- staging branch: release/0.9.0-bashkir
+- exact beta base used: a52ed0fa7f70c61f93e70520cb7f1f536b44b6be
+- locale: ba_ru / Башҡортса
+- selected from current Minecraft Java locale data; Bashkir is a distinct Turkic language and is not a regional duplicate under the project deduplication rule.
+
+Bootstrap / upstream audit:
+- final successful workflow run 34471747172 / job 102853001005: SUCCESS
+- validated translation commit: cec9ab0a71957b24962080248f1df0cdb6222515
+- 29 ba_ru.json source files generated
+- bootstrap generation: 2,717 new strings in 79 batches, plus protected/manual seed entries; title-like refinement improved 1 / 4 remaining title-like English strings
+- bootstrap audit artifact: 10149880478; SHA256 daa959a3fbf638371afc3f275cb5453696ef9c0072a22f1d755c99ab99792316
+- final bootstrap sanity: 103,242 Cyrillic characters, 21,637 Bashkir-specific letters, 1,428 lexical markers
+- three earlier bootstrap attempts failed before localization integration while hardening Google Translate separator/placeholder masking; only the final successful run is authoritative.
+
+NeoOrigins coverage against the pinned 2.2.27 baselines:
+- 1.21.1: 2,296 / 2,296
+- 26.1.x: 2,307 / 2,307
+- 26.2: 2,307 / 2,307
+- missing keys: 0
+- overlap errors: 0
+- placeholder errors: 0
+
+1.21.1 add-on coverage:
+- Medieval Origins Revival: 401 / 401
+- ibarn's quartet origins addon: 69 / 69
+- Origins Fantasy: 240 / 240
+- Origins: Backgrounds: 65 / 65
+- Origins: More Backgrounds: 44 / 44 effective
+- Origins: Backgrounds ISS: 79 / 79 effective
+- Origins Furries: 117 / 117
+- Origins: Classes Extended: 124 / 124
+- Origins: Classes ISS: 99 / 99
+- Origin Architect: 22 / 22
+- all strict add-on audits passed with missing=0, overlap=0 and placeholder errors=0.
+
+Localization architecture:
+- 16 Bashkir common namespaces: neoorigins_ba_common_01 through neoorigins_ba_common_16
+- 1.21.1 delta: neoorigins_ba_121
+- Bashkir entries in neoorigins_26_1 and neoorigins_26_2
+- 10 Bashkir add-on fallback files on 1.21.1
+- 29 ba_ru.json source files total
+- Gradle switch: include_bashkir_121_translations / includeBashkir121Translations
+
+Contextual QA / refinement:
+- workflow run 34472164124 / job 102854348131: SUCCESS
+- refinement commit: debf0015dbc1b8e656bc2f122c95cfd7351aaad0
+- 338 values refined across 22 files
+- 251 sentence-spacing repairs
+- JSON validation and git diff --check passed
+- post-refinement sanity: 103,135 Cyrillic characters, 21,666 Bashkir-specific letters, 1,488 lexical markers
+- official Minecraft Bashkir terminology was used where useful; product/project names such as Origin and NeoOrigins remain canonical where appropriate.
+- automated/generative translation assistance was used; this is not a claim of full native-speaker review.
+
+Final builds and JAR inspection:
+- workflow: .github/workflows/build-0.9.0-bashkir.yml
+- final build source SHA: 69f334d70c5aa86eeda69dc25a96daa1380aec63
+- successful run: 34472412396
+- 1.21.1 job 102855147842: SUCCESS; 27 Bashkir files packaged
+- 26.1.x job 102855147718: SUCCESS; 17 Bashkir files packaged
+- 26.2 job 102855147907: SUCCESS; 17 Bashkir files packaged
+- each build passed automated JAR-content inspection including required-delta checks and wrong-version/add-on exclusion checks.
+- 1.21.1 artifact: 10150102626; SHA256 d4acbd23c9ada2e87b0212d3642b68689402601cfc1a63a1f4e2f5003449fd15
+- 26.1.x artifact: 10150108739; SHA256 9f087da8bbdda18ecb40b17a9d9877c3c768a91099a48d030e6449e21081465e
+- 26.2 artifact: 10150094595; SHA256 8a49f9ef080d42f8228ee1f8415b1c615d64eccdb5afae3da57de52ccf2ea926
+
+Metadata:
+- metadata workflow run 34472476635 / job 102855353494: SUCCESS
+- metadata commit: cf3cb363f19c89f9f121407c3a5ca01ed9787c58
+- catalog.json now declares 69 supported locales and includes ba_ru / Башҡортса for NeoOrigins plus all 10 supported add-ons
+- CATALOG.md and README.md document Bashkir and the exact 2,296 / 2,307 / 2,307 core coverage.
+
+Integration rule:
+- release/0.9.0-beta must be fast-forwarded to the final release/0.9.0-bashkir HEAD with force=false only after this handoff validation succeeds.
+- main remains intentionally untouched.
+
+NEXT LANGUAGE
+-------------
+Language #70 is the next expansion task. Re-evaluate the current Minecraft Java locale inventory, choose a useful distinct locale not already in the 69-locale set, apply the regional-variant deduplication rule, then repeat the complete upstream audit, translation, QA, builds, JAR inspection, metadata, handoff, and fast-forward flow.
 

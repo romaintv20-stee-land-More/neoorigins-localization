@@ -1,0 +1,125 @@
+name: Build NeoOrigins Localization 0.9.0 Albanian
+
+on:
+  push:
+    branches:
+      - release/0.9.0-albanian
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: minecraft-1.21.1
+            origins_version: 1.13.0-alpha.16+mc.1.21.1
+            carpet_version: 1.4.147+v240613
+            minecraft_version: 1.21.1
+            include_26_1_translations: "false"
+            include_26_2_translations: "false"
+            include_albanian_121_translations: "true"
+            expected_delta: neoorigins_sq_121
+            excluded_delta_1: neoorigins_26_1
+            excluded_delta_2: neoorigins_26_2
+          - name: minecraft-26.1
+            origins_version: 1.17.0-alpha.17+mc.26.1
+            carpet_version: 26.1_1.4.206+v260407
+            minecraft_version: 26.1
+            include_26_1_translations: "true"
+            include_26_2_translations: "false"
+            include_albanian_121_translations: "false"
+            expected_delta: neoorigins_26_1
+            excluded_delta_1: neoorigins_sq_121
+            excluded_delta_2: neoorigins_26_2
+          - name: minecraft-26.2
+            origins_version: 1.17.0-alpha.18+mc.26.2
+            carpet_version: 26.2_1.4.209+v260616
+            minecraft_version: 26.2
+            include_26_1_translations: "false"
+            include_26_2_translations: "true"
+            include_albanian_121_translations: "false"
+            expected_delta: neoorigins_26_2
+            excluded_delta_1: neoorigins_sq_121
+            excluded_delta_2: neoorigins_26_1
+
+    name: Build ${{ matrix.name }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: gradle
+
+      - name: Build with pinned target
+        run: >
+          ./gradlew clean build -x test
+          -Porigins_version=${{ matrix.origins_version }}
+          -Pcarpet_version=${{ matrix.carpet_version }}
+          -Pminecraft_version=${{ matrix.minecraft_version }}
+          -Pinclude_26_1_translations=${{ matrix.include_26_1_translations }}
+          -Pinclude_26_2_translations=${{ matrix.include_26_2_translations }}
+          -Pinclude_albanian_121_translations=${{ matrix.include_albanian_121_translations }}
+
+      - name: Inspect Albanian files in built JAR
+        env:
+          EXPECTED_DELTA: ${{ matrix.expected_delta }}
+          EXCLUDED_DELTA_1: ${{ matrix.excluded_delta_1 }}
+          EXCLUDED_DELTA_2: ${{ matrix.excluded_delta_2 }}
+        run: |
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+          from zipfile import ZipFile
+
+          jars = [p for p in Path('build/libs').glob('*.jar') if not p.name.endswith('-sources.jar')]
+          if len(jars) != 1:
+              raise SystemExit(f'Expected exactly one runtime JAR, found: {[p.name for p in jars]}')
+          jar = jars[0]
+          with ZipFile(jar) as zf:
+              names = zf.namelist()
+              sq = sorted(n for n in names if n.endswith('/lang/sq_al.json'))
+
+          expected_delta = os.environ['EXPECTED_DELTA']
+          excluded = [os.environ['EXCLUDED_DELTA_1'], os.environ['EXCLUDED_DELTA_2']]
+          required = [
+              'neoorigins_sq_common_01/lang/sq_al.json',
+              'neoorigins_sq_common_16/lang/sq_al.json',
+              f'{expected_delta}/lang/sq_al.json',
+              'medievalorigins/lang/sq_al.json',
+              'ibarnorigins/lang/sq_al.json',
+              'origins_fantasy/lang/sq_al.json',
+              'origins_backgrounds/lang/sq_al.json',
+              'origins_backgrounds_two/lang/sq_al.json',
+              'origins_backgrounds_iss/lang/sq_al.json',
+              'origins_furries/lang/sq_al.json',
+              'origins_classes_ex/lang/sq_al.json',
+              'origins_classes_iss/lang/sq_al.json',
+              'originsmodernui/lang/sq_al.json',
+          ]
+          missing = [needle for needle in required if not any(needle in n for n in sq)]
+          wrongly_included = [d for d in excluded if any(f'/{d}/lang/sq_al.json' in '/' + n for n in sq)]
+          if missing:
+              raise SystemExit(f'Missing Albanian JAR entries: {missing}')
+          if wrongly_included:
+              raise SystemExit(f'Wrong version-specific Albanian entries included: {wrongly_included}')
+          if len(sq) != 27:
+              raise SystemExit(f'Expected 27 sq_al files in target JAR, got {len(sq)}')
+          print(f'JAR inspection passed: {jar.name} contains {len(sq)} Albanian files; delta={expected_delta}; excluded={excluded}')
+          PY
+
+      - name: Upload built jars
+        uses: actions/upload-artifact@v4
+        with:
+          name: neoorigins-localization-0.9.0-${{ matrix.name }}
+          path: build/libs/*.jar
+          if-no-files-found: error

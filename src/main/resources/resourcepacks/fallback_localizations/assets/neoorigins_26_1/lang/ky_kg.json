@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Сиз жасаган жабдыктар бонустук атрибуттарды алат — бышыктык, зыян же казып алуу ылдамдыгы.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Тамеки чегүүчүдө тамак бышыруудан эки эсе XP алат.",
+  "neoorigins.configuration.title": "NeoOrigins конфигурациясы",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Оюн ойноо",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "NeoOrigins Оюн ойноо жөндөөлөрү",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Администратор жана уруксаттар",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "NeoOrigins Admin Орнотуулары",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Бийлик жокко чыгарат",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "Neorigins бийликти жокко чыгарат",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Келип чыгышы жана класстары",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "Neorigins келип чыгышы жана класс которуштуруулары",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Кардар дисплейи",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "NeoOrigins Кардар Орнотуулары",
+  "neoorigins.configuration.show_cooldown_countdown": "Муздатуу үчүн артка санаууну көрсөтүү",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Муздатуу убактысынын тунуктугу (%)",
+  "neoorigins.configuration.hud_ability_display": "Жөндөмдүүлүк HUD дисплей режими",
+  "neoorigins.configuration.always_show_ability_icons": "Ар дайым жөндөм сүрөтчөлөрүн көрсөтүңүз"
+}

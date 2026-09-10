@@ -1,8 +1,8 @@
 {
   "power.neoorigins.class_blacksmith_quality.description": "Сиз жасаган жабдыктар жакшыраак — куралдар тезирээк миналанат, куралдар катуураак тийет, сооттор катуураак жана баары узакка созулат.",
   "power.neoorigins.class_cook_smoker_xp.description": "Тамеки чегүүчүдө же меште бышырылган тамак кошумча азыктарды алат.",
-  "neoorigins.configuration.title": "Neorigins жалпы конфигурация",
-  "reward.neoorigins.loot_pool": "Neorigins: грант олжо бассейни",
+  "neoorigins.configuration.title": "NeoOrigins жалпы конфигурация",
+  "reward.neoorigins.loot_pool": "NeoOrigins: грант олжо бассейни",
   "reward.neoorigins.loot_pool.loot_table": "Олжо стол",
   "reward.neoorigins.loot_pool.rolls": "Роликтер"
 }

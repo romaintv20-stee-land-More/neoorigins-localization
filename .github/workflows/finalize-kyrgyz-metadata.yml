@@ -41,7 +41,7 @@ jobs:
                   for value in obj: walk(value)
           walk(catalog)
           assert count >= 11, count
-          neo = next(x for x in catalog['supported_projects']'] if x.get('id') == 'neoorigins')
+          neo = next(x for x in catalog['supported_projects'] if x.get('id') == 'neoorigins')
           ns = neo['compatibility']['fallback_namespaces']
           assert ns['kyrgyz_common_glob'] == 'neoorigins_ky_common_*'
           assert ns['kyrgyz_mc_1_21_1'] == 'neoorigins_ky_121'

@@ -38,8 +38,8 @@ Mob Origins is NOT selected for 0.9.0. Earlier Mob Origins WIP inherited from a 
 0.8.0 Beta shipped with 17 locales:
 fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se.
 
-0.9.0 development currently has 66 locales:
-fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se, da_dk, fi_fi, no_no, ro_ro, el_gr, bg_bg, vi_vn, ar_sa, he_il, th_th, sk_sk, sl_si, hr_hr, sr_sp, sr_cs, ca_es, et_ee, lt_lt, lv_lv, eu_es, gl_es, hi_in, nn_no, fa_ir, is_is, ms_my, fil_ph, cy_gb, ga_ie, gd_gb, hy_am, ka_ge, kk_kz, mn_mn, mk_mk, be_by, fo_fo, af_za, az_az, kn_in, cv_cu, uz_uz, mt_mt, lb_lu, so_so, eo_uy, ky_kg, ta_in, sq_al.
+0.9.0 development currently has 67 locales:
+fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se, da_dk, fi_fi, no_no, ro_ro, el_gr, bg_bg, vi_vn, ar_sa, he_il, th_th, sk_sk, sl_si, hr_hr, sr_sp, sr_cs, ca_es, et_ee, lt_lt, lv_lv, eu_es, gl_es, hi_in, nn_no, fa_ir, is_is, ms_my, fil_ph, cy_gb, ga_ie, gd_gb, hy_am, ka_ge, kk_kz, mn_mn, mk_mk, be_by, fo_fo, af_za, az_az, kn_in, cv_cu, uz_uz, mt_mt, lb_lu, so_so, eo_uy, ky_kg, ta_in, sq_al, lo_la.
 
 Expansion order so far:
 - 18: Danish / da_dk
@@ -91,8 +91,9 @@ Expansion order so far:
 - 64: Kyrgyz / ky_kg
 - 65: Tamil / ta_in
 - 66: Albanian / sq_al
+- 67: Lao / lo_la
 
-SIXTY-SIX IS NOT THE FINAL TARGET. Continue expanding toward essentially all useful Minecraft languages unless Romain changes scope.
+SIXTY-SEVEN IS NOT THE FINAL TARGET. Continue expanding toward essentially all useful Minecraft languages unless Romain changes scope.
 
 Norwegian Nynorsk (nn_no) is intentionally NOT merged with Bokmal. It is a distinct written standard and remains a valid future locale.
 
@@ -3094,8 +3095,8 @@ NOTE ABOUT FAILED GOVERNANCE WORKFLOW:
 - PROJECT_HANDOFF.txt = cross-chat decisions, current roadmap, latest operational status
 
 As of this update:
-- catalog.json says 66 supported locales
-- README.md says 66 languages and includes Albanian / sq_al.
+- catalog.json says 67 supported locales
+- README.md says 67 languages and includes Lao / lo_la.
 - Romanian, Greek, Bulgarian, Vietnamese, Arabic, Hebrew, Thai, Slovak, Slovenian, Croatian, Serbian Cyrillic, Serbian Latin, Catalan, Estonian, Lithuanian, Latvian, Basque, Galician, Hindi, Norwegian Nynorsk, Persian, Icelandic, Malay, Filipino, Welsh, Irish, Scottish Gaelic, Armenian, Georgian, Kazakh, Mongolian, Macedonian, Belarusian, Faroese, Afrikaans, Azerbaijani and Kannada have passed final three-target packaging validation
 
 49. QUALITY / QA CAVEAT
@@ -3919,4 +3920,82 @@ Integration rule:
 NEXT LANGUAGE
 -------------
 Language #67 is the next expansion task. Determine it from current Minecraft locale data using the same regional-variant deduplication rule, then repeat the complete upstream audit, translation, QA, builds, JAR inspection, metadata, handoff, and fast-forward flow.
+
+LAO / LANGUAGE #67 FINAL STATUS
+-------------------------------
+Lao locale: lo_la / ລາວ.
+Status: COMPLETE FOR THE CURRENT 0.9.0 DEVELOPMENT BASELINE: GENERATED, STRICTLY AUDITED, CONTEXT-REFINED, BUILT, PACKAGING-VERIFIED, DOCUMENTED, AND COMMITTED.
+
+Quality note:
+- automated/generative translation assistance was used; structural and contextual QA passed, but this must not be presented as a full native-speaker review.
+
+Selection / staging:
+- staging branch: release/0.9.0-lao
+- exact beta base used: 7843a7511e5c618733e3d485a74d42c302535cfd
+- bootstrap workflow run/job: 34465982708 / 102834552752: SUCCESS
+- translation commit: 1ee66f61eca3c33e7ceabc0889d71bb736f7c5bd
+- refinement workflow run/job: 34466422963 / 102835964108: SUCCESS
+- refinement commit: 1d6ab15ead3597a0415151f897b6c39af403573a
+- final build source SHA: f15d657b56227083df4e7fb844e483851a9e7dda
+- locale: lo_la / ລາວ
+
+NeoOrigins coverage against the pinned 2.2.27 baselines:
+- 1.21.1: 2,296 / 2,296
+- 26.1.x: 2,307 / 2,307
+- 26.2: 2,307 / 2,307
+- missing keys: 0
+- overlap errors: 0
+- placeholder errors: 0
+
+1.21.1 add-on coverage:
+- Medieval Origins Revival: 401 / 401
+- ibarn's quartet origins addon: 69 / 69
+- Origins Fantasy: 240 / 240
+- Origins: Backgrounds: 65 / 65
+- Origins: More Backgrounds: 44 / 44 effective
+- Origins: Backgrounds ISS: 79 / 79 effective
+- Origins Furries: 117 / 117
+- Origins: Classes Extended: 124 / 124
+- Origins: Classes ISS: 99 / 99
+- Origin Architect: 22 / 22
+- all strict add-on audits passed with missing=0, overlap=0 and placeholder errors=0.
+
+Localization architecture:
+- 16 Lao common namespaces: neoorigins_lo_common_01 through neoorigins_lo_common_16
+- 1.21.1 delta: neoorigins_lo_121
+- Lao entries in neoorigins_26_1 and neoorigins_26_2
+- 10 Lao add-on fallback files on 1.21.1
+- 29 lo_la.json source files total
+
+Contextual QA / refinement:
+- 335 values refined across 25 files
+- 241 sentence-spacing repairs
+- JSON validation passed
+- Lao sanity after refinement: 94,545 Lao-script characters and 6,056 Lao lexical markers
+- canonical Origin / NeoOrigins terminology checks passed
+
+Final builds and JAR inspection:
+- workflow: .github/workflows/build-0.9.0-lao.yml
+- successful run: 34466597033
+- 1.21.1 job 102836514572: SUCCESS; 27 Lao files packaged
+- 26.1.x job 102836514235: SUCCESS; 17 Lao files packaged
+- 26.2 job 102836514614: SUCCESS; 17 Lao files packaged
+- each build passed automated JAR-content inspection, including required deltas, the 10 add-on files on 1.21.1, and exclusion of wrong-version/add-on Lao resources on 26.x.
+- 1.21.1 artifact: 10147827354; SHA256 4e8b664f4f7f379ba4398f6d6f3742eda440c0d4c2b6530d0f39a774b148d671
+- 26.1.x artifact: 10147821367; SHA256 1de8476269fbbcaf6f872ef78866274057e207bdebd687b2d7e531902b47e427
+- 26.2 artifact: 10147795437; SHA256 66e46b893c5ab67c7550200a6298c177ec93d8e5df08d0606c3e85da62613b4a
+
+Metadata:
+- metadata workflow run/job: 34466658695 / 102836711475: SUCCESS
+- metadata commit: b6ceffa4b3428dc95ac4d64e08ce5c766c729120
+- catalog.json now declares 67 supported locales and contains lo_la / ລາວ for NeoOrigins plus all 10 supported add-ons
+- CATALOG.md and README.md document Lao and exact 2,296 / 2,307 / 2,307 core coverage.
+
+Integration rule:
+- release/0.9.0-beta must be fast-forwarded to the final release/0.9.0-lao HEAD with force=false only after this handoff validation succeeds.
+- main remains intentionally untouched.
+
+NEXT LANGUAGE
+-------------
+Language #68 is the next expansion task. Determine it from current Minecraft locale data using the same regional-variant deduplication rule, then repeat the complete upstream audit, translation, contextual QA, builds, JAR inspection, metadata, handoff, and non-forced fast-forward flow.
 

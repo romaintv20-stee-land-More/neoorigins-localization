@@ -10,28 +10,34 @@ Reference / integration branch: `release/0.9.0-beta`
 - Use `release/0.9.0-beta` as the source-of-truth branch.
 - **Do not use `main`**; it is intentionally behind the cumulative 0.9.0 beta development state.
 - Preserve upstream-first fallback behavior: official translations always win and fallback overlaps must be pruned.
-- Continue automatically through audit, translation, QA, builds, JAR inspection, metadata, handoffs and a non-forced fast-forward back to `release/0.9.0-beta`.
+- Continue automatically through audit, translation, contextual QA, builds, JAR inspection, metadata, handoffs and a non-forced fast-forward back to `release/0.9.0-beta`.
+- Automated/generative translation assistance is used; do not describe generated locales as fully native-speaker-reviewed unless a real native review occurred.
 
 ## Completed language baseline
 
-The first **66 languages are complete and integrated through the Albanian staging flow**.
+The first **67 languages are complete and integrated through the Lao staging flow**.
 
 Latest completed language:
-- **#66 Albanian — `sq_al / Shqip`**
+- **#67 Lao — `lo_la / ລາວ`**
 
-Albanian is complete: NeoOrigins and all 10 supported 1.21.1 add-ons are fully covered; strict missing/overlap/placeholder checks and JSON validation passed; contextual refinement passed; all three pinned builds and automated JAR inspections passed; catalog/README metadata is at 66 locales. Do not redo Albanian.
+Lao is complete: NeoOrigins and all 10 supported 1.21.1 add-ons are fully covered; strict missing/overlap/placeholder checks and JSON validation passed; contextual refinement passed; all three pinned builds and automated JAR inspections passed; catalog/README metadata is at 67 locales. Do not redo Lao.
 
-## Albanian final references
+## Lao final references
 
-- staging branch: `release/0.9.0-albanian`
-- staging base: `d7953c259da3e5bc6bde8cb02ed47ffb0482b9b5`
-- translation commit: `bf24f1a0622212b9af9a4e28c7c86dbe8c53eb87`
-- refinement commit: `6ef4da3d82244a0e8c6866b1c199c2ab3bd75831`
-- final build source: `e5e84d84545fd4841d67d622c14196a6ea204159`
-- build run: `34463303486` — all three targets successful and JAR-inspected
-- metadata run/job: `34463482954` / `102826521699` — successful
-- metadata commit: `81155713426a99e749bc6183da3ea44a32db778c`
-- packaged Albanian file counts: 27 on 1.21.1, 17 on 26.1.x, 17 on 26.2
+- staging branch: `release/0.9.0-lao`
+- staging base: `7843a7511e5c618733e3d485a74d42c302535cfd`
+- bootstrap run/job: `34465982708` / `102834552752` — successful
+- translation commit: `1ee66f61eca3c33e7ceabc0889d71bb736f7c5bd`
+- refinement run/job: `34466422963` / `102835964108` — successful
+- refinement commit: `1d6ab15ead3597a0415151f897b6c39af403573a`
+- final build source: `f15d657b56227083df4e7fb844e483851a9e7dda`
+- build run: `34466597033` — all three targets successful and JAR-inspected
+- build jobs: 1.21.1 `102836514572`; 26.1.x `102836514235`; 26.2 `102836514614`
+- packaged Lao file counts: 27 on 1.21.1, 17 on 26.1.x, 17 on 26.2
+- build artifacts: 1.21.1 `10147827354`; 26.1.x `10147821367`; 26.2 `10147795437`
+- artifact SHA256: 1.21.1 `4e8b664f4f7f379ba4398f6d6f3742eda440c0d4c2b6530d0f39a774b148d671`; 26.1.x `1de8476269fbbcaf6f872ef78866274057e207bdebd687b2d7e531902b47e427`; 26.2 `66e46b893c5ab67c7550200a6298c177ec93d8e5df08d0606c3e85da62613b4a`
+- metadata run/job: `34466658695` / `102836711475` — successful
+- metadata commit: `b6ceffa4b3428dc95ac4d64e08ce5c766c729120`
 
 ## Current pinned upstream baseline
 
@@ -56,6 +62,6 @@ The 1.21.1 build also supports these 10 projects:
 
 ## Next task
 
-Start and finish **language #67**. Identify the next useful Minecraft locale from current locale data, applying the existing regional-variant deduplication rule. Then complete the full established flow: NeoOrigins + 10 add-on upstream audits, translation, contextual QA, placeholders/JSON checks, pinned 1.21.1 / 26.1.x / 26.2 builds, JAR-content inspection, metadata, both handoffs, and finally fast-forward the validated staging HEAD to `release/0.9.0-beta` with `force=false`.
+Start and finish **language #68**. Identify the next useful Minecraft locale from current locale data, applying the existing regional-variant deduplication rule. Then complete the full established flow: NeoOrigins + 10 add-on upstream audits, translation, contextual QA, placeholders/JSON checks, pinned 1.21.1 / 26.1.x / 26.2 builds, JAR-content inspection, metadata, both handoffs, and finally fast-forward the validated staging HEAD to `release/0.9.0-beta` with `force=false`.
 
-Do not stop after generation or QA: language #67 is only complete once the full integration cycle is finished.
+Do not stop after generation or QA: language #68 is only complete once the full integration cycle is finished.

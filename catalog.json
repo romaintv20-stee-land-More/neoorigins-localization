@@ -11,7 +11,7 @@
     ],
     "loader": "NeoForge",
     "localization_mode": "low_priority_fallback",
-    "supported_locale_count": 62,
+    "supported_locale_count": 63,
     "builds": {
       "1.21.1": {
         "version": "0.9.0-beta+1.21.1",
@@ -194,7 +194,9 @@
           "luxembourgish_common_glob": "neoorigins_lb_common_*",
           "luxembourgish_mc_1_21_1": "neoorigins_lb_121",
           "somali_common_glob": "neoorigins_so_common_*",
-          "somali_mc_1_21_1": "neoorigins_so_121"
+          "somali_mc_1_21_1": "neoorigins_so_121",
+          "esperanto_common_glob": "neoorigins_eo_common_*",
+          "esperanto_mc_1_21_1": "neoorigins_eo_121"
         },
         "note": "NeoOrigins 2.2.26 est audité séparément sur les trois cibles. neoorigins_226 est commun aux trois builds ; neoorigins_26_1 est réservé à 26.1.x ; neoorigins_26_2 est réservé à 26.2. Les trois clés reward.neoorigins.loot_pool* restent dans les fallbacks complets pour 1.21.1 et sont inoffensives sur 26.x.",
         "baseline_audit_2_2_27": {
@@ -229,7 +231,7 @@
             }
           }
         },
-        "coverage_note": "NeoOrigins 2.2.27 has the same en_us localization payload as 2.2.26 on all three targets. Historical gaps in it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz and hu_hu were recovered before language 59. All 62 currently supported locales are complete against 2.2.27 on their target builds.",
+        "coverage_note": "NeoOrigins 2.2.27 has the same en_us localization payload as 2.2.26 on all three targets. Historical gaps in it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz and hu_hu were recovered before language 59. All 63 currently supported locales are complete against 2.2.27 on their target builds.",
         "legacy_gap_recovery_completed": true
       },
       "languages": {
@@ -790,6 +792,15 @@
             "26.1.x",
             "26.2"
           ]
+        },
+        "eo_uy": {
+          "name": "Esperanto",
+          "status": "supported",
+          "targets": [
+            "1.21.1",
+            "26.1.x",
+            "26.2"
+          ]
         }
       }
     },
@@ -1169,6 +1180,12 @@
           "name": "Soomaali",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/so_so.json",
+          "fallback_keys": 401
+        },
+        "eo_uy": {
+          "name": "Esperanto",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/eo_uy.json",
           "fallback_keys": 401
         }
       }
@@ -1553,6 +1570,12 @@
           "name": "Soomaali",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/so_so.json",
+          "fallback_keys": 69
+        },
+        "eo_uy": {
+          "name": "Esperanto",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/eo_uy.json",
           "fallback_keys": 69
         }
       }
@@ -1940,6 +1963,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/so_so.json",
           "fallback_keys": 240
+        },
+        "eo_uy": {
+          "name": "Esperanto",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/eo_uy.json",
+          "fallback_keys": 240
         }
       }
     },
@@ -2325,6 +2354,12 @@
           "name": "Soomaali",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/so_so.json",
+          "fallback_keys": 65
+        },
+        "eo_uy": {
+          "name": "Esperanto",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/eo_uy.json",
           "fallback_keys": 65
         }
       }
@@ -2713,6 +2748,12 @@
           "name": "Soomaali",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/so_so.json",
+          "fallback_keys": 39
+        },
+        "eo_uy": {
+          "name": "Esperanto",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/eo_uy.json",
           "fallback_keys": 39
         }
       }
@@ -3106,6 +3147,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/so_so.json",
           "fallback_keys": 77
+        },
+        "eo_uy": {
+          "name": "Esperanto",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/eo_uy.json",
+          "fallback_keys": 77
         }
       }
     },
@@ -3495,6 +3542,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/so_so.json",
           "fallback_keys": 117
+        },
+        "eo_uy": {
+          "name": "Esperanto",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/eo_uy.json",
+          "fallback_keys": 117
         }
       }
     },
@@ -3883,6 +3936,12 @@
           "name": "Soomaali",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/so_so.json",
+          "fallback_keys": 124
+        },
+        "eo_uy": {
+          "name": "Esperanto",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/eo_uy.json",
           "fallback_keys": 124
         }
       }
@@ -4274,6 +4333,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/so_so.json",
           "fallback_keys": 99
+        },
+        "eo_uy": {
+          "name": "Esperanto",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/eo_uy.json",
+          "fallback_keys": 99
         }
       }
     },
@@ -4662,6 +4727,12 @@
           "name": "Soomaali",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/so_so.json",
+          "fallback_keys": 22
+        },
+        "eo_uy": {
+          "name": "Esperanto",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/eo_uy.json",
           "fallback_keys": 22
         }
       }

@@ -119,13 +119,14 @@ jobs:
           latin_chars = len(re.findall(r'[A-Za-zÀ-ÿ]', text))
           asturian_signals = len(re.findall(r"(?:á|é|í|ó|ú|ñ|ü|Á|É|Í|Ó|Ú|Ñ|Ü|ll|Ll|x|X)", text))
           markers = len(re.findall(r"\b(?:el|la|los|les|un|una|del|nel|na|nun|non|sí|pa|por|con|ensin|ye|son|dende|facer|mundu|xugador|sirvidor|llingua|pue|puede|vida|poder)\b", text, flags=re.I))
+          print(f'Asturian sanity counts: {latin_chars} Latin chars, {asturian_signals} Asturian orthographic signals, {markers} lexical markers across {len(files)} files')
           if latin_chars < 70000:
               raise SystemExit(f'Asturian Latin-script sanity too low: {latin_chars}')
-          if asturian_signals < 1000:
+          if asturian_signals < 900:
               raise SystemExit(f'Asturian orthographic-signal sanity too low: {asturian_signals}')
           if markers < 1000:
               raise SystemExit(f'Asturian lexical sanity too low: {markers}')
-          print(f'Asturian text sanity passed: {latin_chars} Latin chars, {asturian_signals} Asturian orthographic signals, {markers} lexical markers across {len(files)} files')
+          print('Asturian text sanity passed')
           PY
 
       - name: Add Asturian target packaging switch

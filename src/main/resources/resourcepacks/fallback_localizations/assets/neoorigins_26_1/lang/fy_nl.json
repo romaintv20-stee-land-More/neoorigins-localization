@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Apparatuer dy't jo meitsje, ûntfangt bonusattributen - hurdens, skea, as miningsnelheid.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Wint dûbele XP troch iten te koken yn in smoker.",
+  "neoorigins.configuration.title": "NeoOrigins konfiguraasje",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Gameplay",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "NeoOrigins Gameplay Ynstellings",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Behearder en tagongsrjochten",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "NeoOrigins Admin ynstellings",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Macht overrides",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "Neoorigins macht overrides",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Oarsprong & Klassen",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "NeoOrigins oarsprong en klasse wikselje",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Klant werjefte",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "NeoOrigins Client Ynstellings",
+  "neoorigins.configuration.show_cooldown_countdown": "Lit ôftelling ôfkoeling sjen",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Cooldown countdown dekking (%)",
+  "neoorigins.configuration.hud_ability_display": "Mooglikheid HUD display modus",
+  "neoorigins.configuration.always_show_ability_icons": "Toan altyd fermogensikoanen"
+}

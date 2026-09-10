@@ -1,75 +1,61 @@
-# NEXT CHAT HANDOFF — NeoOrigins Localization
+# NeoOrigins Localization — Next Chat Handoff
 
-## Source of truth
+Last updated: 2026-09-10
+Repository: `romaintv20-stee-land-More/neoorigins-localization`
+Reference / integration branch: `release/0.9.0-beta`
 
-- Repository: `romaintv20-stee-land-More/neoorigins-localization`
-- Current release branch: `release/0.9.0-beta`
-- **Do not use `main`**: it is behind.
-- Read `PROJECT_HANDOFF.txt` first.
-- Completed language count: **65**.
-- Last completed language: **#65 Tamil — `ta_in / தமிழ்`**.
-- **Do not redo Tamil.**
-- Next language: **#66**.
-- The historical NeoOrigins 2.2.27 gaps in Italian, Polish, Russian, Simplified Chinese, Turkish, Czech and Hungarian were recovered before #59; do not treat that recovery as pending.
+## Mandatory starting rules
 
-## #65 Tamil verification
+- Read this file and `PROJECT_HANDOFF.txt` before changing anything.
+- Use `release/0.9.0-beta` as the source-of-truth branch.
+- **Do not use `main`**; it is intentionally behind the cumulative 0.9.0 beta development state.
+- Preserve upstream-first fallback behavior: official translations always win and fallback overlaps must be pruned.
+- Continue automatically through audit, translation, QA, builds, JAR inspection, metadata, handoffs and a non-forced fast-forward back to `release/0.9.0-beta`.
 
-Staging branch: `release/0.9.0-tamil`
+## Completed language baseline
 
-Original beta base used for staging:
-`3cea648923ed56797976c08a437d6b8e0691bfba`
+The first **66 languages are complete and integrated through the Albanian staging flow**.
 
-Final three-target build source:
-`1fe618c76fef2eb31c31229924100aca14e207d7`
+Latest completed language:
+- **#66 Albanian — `sq_al / Shqip`**
 
-Handoff verification workflow:
-`34457524954` — success
+Albanian is complete: NeoOrigins and all 10 supported 1.21.1 add-ons are fully covered; strict missing/overlap/placeholder checks and JSON validation passed; contextual refinement passed; all three pinned builds and automated JAR inspections passed; catalog/README metadata is at 66 locales. Do not redo Albanian.
 
-NeoOrigins 2.2.27 refs:
-- 1.21.1 `af467a3bc118f6bbc0970d68f7e03fa631d7e6f2`
-- 26.1.x `aa207ef14cf3b938e28b4081162701953957c1d5`
-- 26.2 `511cadcafe3027d2a56b4448652ec9b74e2f3b07`
+## Albanian final references
 
-Coverage:
-- 1.21.1: **2296/2296**
-- 26.1.x: **2307/2307**
-- 26.2: **2307/2307**
+- staging branch: `release/0.9.0-albanian`
+- staging base: `d7953c259da3e5bc6bde8cb02ed47ffb0482b9b5`
+- translation commit: `bf24f1a0622212b9af9a4e28c7c86dbe8c53eb87`
+- refinement commit: `6ef4da3d82244a0e8c6866b1c199c2ab3bd75831`
+- final build source: `e5e84d84545fd4841d67d622c14196a6ea204159`
+- build run: `34463303486` — all three targets successful and JAR-inspected
+- metadata run/job: `34463482954` / `102826521699` — successful
+- metadata commit: `81155713426a99e749bc6183da3ea44a32db778c`
+- packaged Albanian file counts: 27 on 1.21.1, 17 on 26.1.x, 17 on 26.2
 
-Strict QA:
-- official Tamil strings upstream at audited refs: **0** for NeoOrigins and **0** for all 10 supported add-ons
-- missing: **0**
-- overlap: **0**
-- placeholder errors: **0**
-- all 10 supported 1.21.1 add-ons: strict success
-- JSON validator: success
-- contextual refinement: success
-- final sanity: **29 files, 125,382 Tamil-script characters**
-- intentional Latin-only values: `JSON`, `NeoOrigins`, `Origin`, `Origin Architect`
-- final English/contextual-remnant guard: success
-- official Minecraft Tamil terminology used in cleanup includes `இரவு பார்வை` for Night Vision and `அழுகிய சதை` for Rotten Flesh
+## Current pinned upstream baseline
 
-## Final build run and artifacts
+NeoOrigins 2.2.27:
+- 1.21.1: `af467a3bc118f6bbc0970d68f7e03fa631d7e6f2` — 2,296 English keys
+- 26.1.x: `aa207ef14cf3b938e28b4081162701953957c1d5` — 2,307 English keys
+- 26.2: `511cadcafe3027d2a56b4448652ec9b74e2f3b07` — 2,307 English keys
 
-Run `34452266217`, source `1fe618c76fef2eb31c31229924100aca14e207d7`: all three jobs succeeded.
+The 1.21.1 build also supports these 10 projects:
+1. Medieval Origins Revival
+2. ibarn's quartet origins addon
+3. Origins Fantasy for NeoOrigins
+4. Origins: Backgrounds for NeoOrigins
+5. Origins: More Backgrounds for NeoOrigins
+6. Origins: Backgrounds ISS for NeoOrigins
+7. Origins Furries for NeoOrigins
+8. Origins: Classes Extended for NeoOrigins
+9. Origins: Classes ISS for NeoOrigins
+10. Origin Architect
 
-- 1.21.1 job `102790466252`, artifact `10142050230`, package **27/27**, JAR SHA256 `231686076894b26663d9f0373c4b3c47ebed6d72ebb63903e787ce92645fec69`, ZIP SHA256 `57c73642ac86fb409c36134245ff939662d10b6187bad9710be8f34c17c62735`
-- 26.1.x job `102790465990`, artifact `10142041119`, package **17/17**, JAR SHA256 `11c47ef075604fc5a4024e8c268a3503581d28d46da9185be0bce7d1cbaa4839`, ZIP SHA256 `dda833380593609d5b7d5496c30716037de733f8a47347646f1a916fc05aa552`
-- 26.2 job `102790466194`, artifact `10142057119`, package **17/17**, JAR SHA256 `a766230b80011bda25e92a5312d0997a995570e14becfb5a89d22331bc4babf1`, ZIP SHA256 `b10e229c8b44913660b5507fb30af64b3193ffd0d30a61a8bb2437288e493104`
+26.x builds intentionally package NeoOrigins translations only.
 
-Packaging semantics:
-- 1.21.1: 16 common + `neoorigins_ta_121` + 10 add-ons = **27** Tamil files
-- 26.1.x: 16 common + `neoorigins_26_1` = **17** Tamil files
-- 26.2: 16 common + `neoorigins_26_2` = **17** Tamil files
-- no wrong-version overlays or add-ons leak between targets
-- packaged NeoOrigins keysets are exact and duplicate-free
+## Next task
 
-## Start of language #66
+Start and finish **language #67**. Identify the next useful Minecraft locale from current locale data, applying the existing regional-variant deduplication rule. Then complete the full established flow: NeoOrigins + 10 add-on upstream audits, translation, contextual QA, placeholders/JSON checks, pinned 1.21.1 / 26.1.x / 26.2 builds, JAR-content inspection, metadata, both handoffs, and finally fast-forward the validated staging HEAD to `release/0.9.0-beta` with `force=false`.
 
-1. Refetch `release/0.9.0-beta` and use its exact HEAD as the new staging base.
-2. Re-read this file and `PROJECT_HANDOFF.txt`; do not use `main`.
-3. Re-audit the current Minecraft Java locale inventory and apply the regional-variant dedup rule.
-4. Verify NeoOrigins and all 10 add-ons for official translations before creating fallbacks.
-5. Prefer official upstream strings, translate only missing keys, preserve placeholders exactly, and run contextual QA after machine generation.
-6. Require strict NeoOrigins coverage **2296/2296, 2307/2307, 2307/2307**, plus all 10 add-ons, JSON validation and target-aware packaging.
-7. Build all three targets and inspect JAR contents before integration.
-8. Immediately before integration, refetch beta and staging; require staging to be ahead-only / `behind_by=0`, fast-forward with `force=false`, then verify both refs are identical.
+Do not stop after generation or QA: language #67 is only complete once the full integration cycle is finished.

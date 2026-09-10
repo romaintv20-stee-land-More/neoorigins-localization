@@ -38,8 +38,8 @@ Mob Origins is NOT selected for 0.9.0. Earlier Mob Origins WIP inherited from a 
 0.8.0 Beta shipped with 17 locales:
 fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se.
 
-0.9.0 development currently has 65 locales:
-fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se, da_dk, fi_fi, no_no, ro_ro, el_gr, bg_bg, vi_vn, ar_sa, he_il, th_th, sk_sk, sl_si, hr_hr, sr_sp, sr_cs, ca_es, et_ee, lt_lt, lv_lv, eu_es, gl_es, hi_in, nn_no, fa_ir, is_is, ms_my, fil_ph, cy_gb, ga_ie, gd_gb, hy_am, ka_ge, kk_kz, mn_mn, mk_mk, be_by, fo_fo, af_za, az_az, kn_in, cv_cu, uz_uz, mt_mt, lb_lu, so_so, eo_uy, ky_kg, ta_in.
+0.9.0 development currently has 66 locales:
+fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se, da_dk, fi_fi, no_no, ro_ro, el_gr, bg_bg, vi_vn, ar_sa, he_il, th_th, sk_sk, sl_si, hr_hr, sr_sp, sr_cs, ca_es, et_ee, lt_lt, lv_lv, eu_es, gl_es, hi_in, nn_no, fa_ir, is_is, ms_my, fil_ph, cy_gb, ga_ie, gd_gb, hy_am, ka_ge, kk_kz, mn_mn, mk_mk, be_by, fo_fo, af_za, az_az, kn_in, cv_cu, uz_uz, mt_mt, lb_lu, so_so, eo_uy, ky_kg, ta_in, sq_al.
 
 Expansion order so far:
 - 18: Danish / da_dk
@@ -90,8 +90,9 @@ Expansion order so far:
 - 63: Esperanto / eo_uy
 - 64: Kyrgyz / ky_kg
 - 65: Tamil / ta_in
+- 66: Albanian / sq_al
 
-SIXTY-FIVE IS NOT THE FINAL TARGET. Continue expanding toward essentially all useful Minecraft languages unless Romain changes scope.
+SIXTY-SIX IS NOT THE FINAL TARGET. Continue expanding toward essentially all useful Minecraft languages unless Romain changes scope.
 
 Norwegian Nynorsk (nn_no) is intentionally NOT merged with Bokmal. It is a distinct written standard and remains a valid future locale.
 
@@ -3093,8 +3094,8 @@ NOTE ABOUT FAILED GOVERNANCE WORKFLOW:
 - PROJECT_HANDOFF.txt = cross-chat decisions, current roadmap, latest operational status
 
 As of this update:
-- catalog.json says 65 supported locales
-- README.md says 65 languages and includes Tamil ta_in alongside the previously completed locales
+- catalog.json says 66 supported locales
+- README.md says 66 languages and includes Albanian / sq_al.
 - Romanian, Greek, Bulgarian, Vietnamese, Arabic, Hebrew, Thai, Slovak, Slovenian, Croatian, Serbian Cyrillic, Serbian Latin, Catalan, Estonian, Lithuanian, Latvian, Basque, Galician, Hindi, Norwegian Nynorsk, Persian, Icelandic, Malay, Filipino, Welsh, Irish, Scottish Gaelic, Armenian, Georgian, Kazakh, Mongolian, Macedonian, Belarusian, Faroese, Afrikaans, Azerbaijani and Kannada have passed final three-target packaging validation
 
 49. QUALITY / QA CAVEAT
@@ -3848,4 +3849,74 @@ Final three-target CI:
 
 NEXT LANGUAGE = #66.
 Before starting #66, refetch release/0.9.0-beta and use its exact current HEAD as the staging base. Do not use main. Re-audit the current Minecraft Java locale inventory, apply the regional-variant dedup rule, verify official upstream strings before generating fallbacks, preserve placeholders exactly, run contextual QA, build all three targets, inspect JAR contents, and integrate only by non-forced fast-forward after confirming the staging branch is ahead-only.
+
+ALBANIAN / LANGUAGE #66 FINAL STATUS
+------------------------------------
+Albanian locale: sq_al / Shqip.
+Status: COMPLETE FOR THE CURRENT 0.9.0 DEVELOPMENT BASELINE: GENERATED, STRICTLY AUDITED, CONTEXT-REFINED, BUILT, PACKAGING-VERIFIED, DOCUMENTED, AND COMMITTED.
+
+Selection / staging:
+- staging branch: release/0.9.0-albanian
+- exact beta base used: d7953c259da3e5bc6bde8cb02ed47ffb0482b9b5
+- final build source SHA: e5e84d84545fd4841d67d622c14196a6ea204159
+- locale: sq_al / Shqip
+
+NeoOrigins coverage against the pinned 2.2.27 baselines:
+- 1.21.1: 2,296 / 2,296
+- 26.1.x: 2,307 / 2,307
+- 26.2: 2,307 / 2,307
+- missing keys: 0
+- overlap errors: 0
+- placeholder errors: 0
+
+1.21.1 add-on coverage:
+- Medieval Origins Revival: 401 / 401
+- ibarn's quartet origins addon: 69 / 69
+- Origins Fantasy: 240 / 240
+- Origins: Backgrounds: 65 / 65
+- Origins: More Backgrounds: 44 / 44 effective
+- Origins: Backgrounds ISS: 79 / 79 effective
+- Origins Furries: 117 / 117
+- Origins: Classes Extended: 124 / 124
+- Origins: Classes ISS: 99 / 99
+- Origin Architect: 22 / 22
+- all strict add-on audits passed with missing=0, overlap=0 and placeholder errors=0.
+
+Localization architecture:
+- 16 Albanian common namespaces: neoorigins_sq_common_01 through neoorigins_sq_common_16
+- 1.21.1 delta: neoorigins_sq_121
+- Albanian entries in neoorigins_26_1 and neoorigins_26_2
+- 10 Albanian add-on fallback files on 1.21.1
+- 29 sq_al.json source files total
+
+Contextual QA / refinement:
+- 348 values refined across 24 files
+- 253 sentence-spacing repairs
+- JSON validation passed
+- Albanian sanity after refinement: 112,919 Latin-script characters, 10,085 Albanian-specific ë/ç letters, 4,394 Albanian lexical markers
+
+Final builds and JAR inspection:
+- workflow: .github/workflows/build-0.9.0-albanian.yml
+- successful run: 34463303486
+- 1.21.1 job 102825934665: SUCCESS; 27 Albanian files packaged
+- 26.1.x job 102825934924: SUCCESS; 17 Albanian files packaged
+- 26.2 job 102825934996: SUCCESS; 17 Albanian files packaged
+- each build passed its automated JAR-content inspection, including required delta checks and exclusion of wrong-version Albanian resources.
+- 1.21.1 artifact: 10146482161; SHA256 56a5ab0fbc9592b7d1c2b6ad2b8dc785ebcc4c2f38da357fc5880c3691d60ec6
+- 26.1.x artifact: 10146489963; SHA256 1157f85383760714424fb39d7ed2baf694bd59dca92d41062ecbcc3cd7cd6635
+- 26.2 artifact: 10146478687; SHA256 4ed27ad607fc66fe7138fa5571d5d98c09003685167deaec5bd045ba506cca33
+
+Metadata:
+- metadata workflow run 34463482954 / job 102826521699: SUCCESS
+- metadata commit: 81155713426a99e749bc6183da3ea44a32db778c
+- catalog.json now declares 66 supported locales and contains sq_al / Shqip for NeoOrigins plus all 10 supported add-ons
+- CATALOG.md and README.md document Albanian and the exact 2,296 / 2,307 / 2,307 core coverage.
+
+Integration rule:
+- release/0.9.0-beta must be fast-forwarded to the final release/0.9.0-albanian HEAD with force=false only after this handoff validation succeeds.
+- main remains intentionally untouched.
+
+NEXT LANGUAGE
+-------------
+Language #67 is the next expansion task. Determine it from current Minecraft locale data using the same regional-variant deduplication rule, then repeat the complete upstream audit, translation, QA, builds, JAR inspection, metadata, handoff, and fast-forward flow.
 

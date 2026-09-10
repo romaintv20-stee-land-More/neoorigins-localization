@@ -9,7 +9,7 @@
   "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Mbështetja e fuqisë",
   "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "Mbështetja e fuqisë së NeoOrigins",
   "neoorigins.configuration.section.neoorigins.content.toml": "Origjina & Klasat",
-  "neoorigins.configuration.section.neoorigins.content.toml.title": "Neoorigins origjina dhe ndërrime të klasës",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "NeoOrigins origjina dhe ndërrime të klasës",
   "neoorigins.configuration.section.neoorigins.client.toml": "Shfaqja e klientit",
   "neoorigins.configuration.section.neoorigins.client.toml.title": "Cilësimet e klientit të NeoOrigins",
   "neoorigins.configuration.show_cooldown_countdown": "Shfaq numërimin mbrapsht të ftohjes",

@@ -23,6 +23,17 @@ OVERRIDES = {
     "origins.neoorigins.wraith.name": "Арбак",
 }
 
+# A few add-on/configuration labels reuse the raw NeoOrigins identity name under
+# a different key. Replace only exact standalone values so branded words inside
+# longer sentences remain untouched.
+VALUE_OVERRIDES = {
+    "Enderian": "Эндериан",
+    "Kraken": "Кракен",
+    "Sculkborn": "Скалкборн",
+    "Sylvan": "Сильван",
+    "Voidwalker": "Боштук кезгини",
+}
+
 changed_files = 0
 changed_values = 0
 seen = set()
@@ -36,6 +47,11 @@ for path in sorted(ASSETS.glob("**/lang/ky_kg.json")):
                 data[key] = replacement
                 changed = True
                 changed_values += 1
+    for key, value in list(data.items()):
+        if value in VALUE_OVERRIDES:
+            data[key] = VALUE_OVERRIDES[value]
+            changed = True
+            changed_values += 1
     if changed:
         path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         changed_files += 1

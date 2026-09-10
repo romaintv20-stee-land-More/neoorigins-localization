@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Generate Igbo fallback localization by reusing the proven Norwegian bootstrap engine."""
 from pathlib import Path
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import html
 import json
 import re
@@ -19,15 +20,6 @@ source = source.replace("build/no-discovery", "build/ig-discovery")
 source = source.replace("no_no", "ig_ng")
 source = source.replace("neoorigins_no_", "neoorigins_ig_")
 source = source.replace('[[text, "en", "no", True]', '[[text, "en", "ig", True]')
-source = source.replace("max_chars: int = 3500", "max_chars: int = 1800")
-source = source.replace(
-    'SEPARATOR_RE = re.compile(r"\\n?ZXQSEP\\d{4}ZXQ\\n?")',
-    'SEPARATOR_RE = re.compile(r"\\n?⟦\\s*\\d{4}\\s*⟧\\n?")',
-)
-source = source.replace(
-    'f"\\nZXQSEP{index:04d}ZXQ\\n{value}"',
-    'f"\\n⟦{index:04d}⟧\\n{value}"',
-)
 source = source.replace(
     "if PLACEHOLDER_RE.findall(source) != PLACEHOLDER_RE.findall(result):",
     "if sorted(PLACEHOLDER_RE.findall(source)) != sorted(PLACEHOLDER_RE.findall(result)):",
@@ -106,6 +98,41 @@ def igbo_restore(text: str, tokens: list[str]):
 
 namespace["protect"] = igbo_protect
 namespace["restore"] = igbo_restore
+
+# Igbo translation can rewrite or remove synthetic separators in multi-string
+# requests. Translate each source string independently, in bounded parallelism,
+# so item boundaries and placeholders never depend on separator survival.
+def igbo_translate_values(values: list[str]):
+    cache_path = namespace["CACHE_PATH"]
+    cache = namespace["read_json"](cache_path) if cache_path.exists() else {}
+    pending = list(dict.fromkeys(value for value in values if value not in cache))
+    print(f"Igbo cache: {len(cache)} entries; {len(pending)} new strings translated independently")
+
+    def translate_one(source_text: str):
+        masked, tokens = igbo_protect(source_text)
+        result = igbo_translate_rpc(masked)
+        result = igbo_restore(result, tokens).strip()
+        expected = sorted(namespace["PLACEHOLDER_RE"].findall(source_text))
+        actual = sorted(namespace["PLACEHOLDER_RE"].findall(result))
+        if expected != actual:
+            raise RuntimeError(f"Placeholder mismatch after translation: {source_text!r} -> {result!r}")
+        return source_text, result
+
+    if pending:
+        completed = 0
+        with ThreadPoolExecutor(max_workers=6) as executor:
+            futures = {executor.submit(translate_one, value): value for value in pending}
+            for future in as_completed(futures):
+                source_text, result = future.result()
+                cache[source_text] = result
+                completed += 1
+                if completed % 50 == 0 or completed == len(pending):
+                    namespace["write_json"](cache_path, cache)
+                    print(f"Translated {completed}/{len(pending)} pending Igbo strings ({len(cache)} cached)")
+        namespace["write_json"](cache_path, cache)
+    return cache
+
+namespace["translate_values"] = igbo_translate_values
 
 # Preserve project branding and pre-seed short/high-visibility wording.
 namespace["MANUAL_OVERRIDES"] = {

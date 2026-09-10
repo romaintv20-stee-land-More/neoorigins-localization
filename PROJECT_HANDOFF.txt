@@ -38,8 +38,8 @@ Mob Origins is NOT selected for 0.9.0. Earlier Mob Origins WIP inherited from a 
 0.8.0 Beta shipped with 17 locales:
 fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se.
 
-0.9.0 development currently has 67 locales:
-fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se, da_dk, fi_fi, no_no, ro_ro, el_gr, bg_bg, vi_vn, ar_sa, he_il, th_th, sk_sk, sl_si, hr_hr, sr_sp, sr_cs, ca_es, et_ee, lt_lt, lv_lv, eu_es, gl_es, hi_in, nn_no, fa_ir, is_is, ms_my, fil_ph, cy_gb, ga_ie, gd_gb, hy_am, ka_ge, kk_kz, mn_mn, mk_mk, be_by, fo_fo, af_za, az_az, kn_in, cv_cu, uz_uz, mt_mt, lb_lu, so_so, eo_uy, ky_kg, ta_in, sq_al, lo_la.
+0.9.0 development currently has 68 locales:
+fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se, da_dk, fi_fi, no_no, ro_ro, el_gr, bg_bg, vi_vn, ar_sa, he_il, th_th, sk_sk, sl_si, hr_hr, sr_sp, sr_cs, ca_es, et_ee, lt_lt, lv_lv, eu_es, gl_es, hi_in, nn_no, fa_ir, is_is, ms_my, fil_ph, cy_gb, ga_ie, gd_gb, hy_am, ka_ge, kk_kz, mn_mn, mk_mk, be_by, fo_fo, af_za, az_az, kn_in, cv_cu, uz_uz, mt_mt, lb_lu, so_so, eo_uy, ky_kg, ta_in, sq_al, lo_la, bs_ba.
 
 Expansion order so far:
 - 18: Danish / da_dk
@@ -92,8 +92,9 @@ Expansion order so far:
 - 65: Tamil / ta_in
 - 66: Albanian / sq_al
 - 67: Lao / lo_la
+- 68: Bosnian / bs_ba
 
-SIXTY-SEVEN IS NOT THE FINAL TARGET. Continue expanding toward essentially all useful Minecraft languages unless Romain changes scope.
+SIXTY-EIGHT IS NOT THE FINAL TARGET. Continue expanding toward essentially all useful Minecraft languages unless Romain changes scope.
 
 Norwegian Nynorsk (nn_no) is intentionally NOT merged with Bokmal. It is a distinct written standard and remains a valid future locale.
 
@@ -3095,8 +3096,8 @@ NOTE ABOUT FAILED GOVERNANCE WORKFLOW:
 - PROJECT_HANDOFF.txt = cross-chat decisions, current roadmap, latest operational status
 
 As of this update:
-- catalog.json says 67 supported locales
-- README.md says 67 languages and includes Lao / lo_la.
+- catalog.json says 68 supported locales
+- README.md says 68 languages and includes Bosnian / bs_ba.
 - Romanian, Greek, Bulgarian, Vietnamese, Arabic, Hebrew, Thai, Slovak, Slovenian, Croatian, Serbian Cyrillic, Serbian Latin, Catalan, Estonian, Lithuanian, Latvian, Basque, Galician, Hindi, Norwegian Nynorsk, Persian, Icelandic, Malay, Filipino, Welsh, Irish, Scottish Gaelic, Armenian, Georgian, Kazakh, Mongolian, Macedonian, Belarusian, Faroese, Afrikaans, Azerbaijani and Kannada have passed final three-target packaging validation
 
 49. QUALITY / QA CAVEAT
@@ -3998,4 +3999,85 @@ Integration rule:
 NEXT LANGUAGE
 -------------
 Language #68 is the next expansion task. Determine it from current Minecraft locale data using the same regional-variant deduplication rule, then repeat the complete upstream audit, translation, contextual QA, builds, JAR inspection, metadata, handoff, and non-forced fast-forward flow.
+
+BOSNIAN / LANGUAGE #68 FINAL STATUS
+------------------------------------
+Bosnian locale: bs_ba / Bosanski.
+Status: COMPLETE FOR THE CURRENT 0.9.0 DEVELOPMENT BASELINE: GENERATED, STRICTLY AUDITED, CONTEXT-REFINED, BUILT, PACKAGING-VERIFIED, DOCUMENTED, AND COMMITTED.
+
+Selection / staging:
+- staging branch: release/0.9.0-bosnian
+- exact beta base used: 94ff74b7a4e7ed3571d94bff1a41ff171158426f
+- locale: bs_ba / Bosanski
+- selected from current Minecraft Java locale data; treated as distinct from Croatian and Serbian under the regional-variant deduplication rule.
+
+Bootstrap / upstream audit:
+- workflow run 34469365449 / job 102845395440: SUCCESS
+- validated translation commit: ad27a83ada1156b5ba7ffea155faa3f59c49f258
+- upstream official Bosnian strings found: 0 for all three NeoOrigins targets and 0 for all 10 supported add-ons at the pinned references
+- 29 bs_ba.json source files generated
+- bootstrap audit artifact: 10148972792; SHA256 a4f5468f996484cd0dc19428fb8546f0350e58b7b77044a4d7a3929f3cbb6517
+
+NeoOrigins coverage against the pinned 2.2.27 baselines:
+- 1.21.1: 2,296 / 2,296
+- 26.1.x: 2,307 / 2,307
+- 26.2: 2,307 / 2,307
+- missing keys: 0
+- overlap errors: 0
+- placeholder errors: 0
+
+1.21.1 add-on coverage:
+- Medieval Origins Revival: 401 / 401
+- ibarn's quartet origins addon: 69 / 69
+- Origins Fantasy: 240 / 240
+- Origins: Backgrounds: 65 / 65
+- Origins: More Backgrounds: 44 / 44 effective
+- Origins: Backgrounds ISS: 79 / 79 effective
+- Origins Furries: 117 / 117
+- Origins: Classes Extended: 124 / 124
+- Origins: Classes ISS: 99 / 99
+- Origin Architect: 22 / 22
+- all strict add-on audits passed with missing=0, overlap=0 and placeholder errors=0.
+
+Localization architecture:
+- 16 Bosnian common namespaces: neoorigins_bs_common_01 through neoorigins_bs_common_16
+- 1.21.1 delta: neoorigins_bs_121
+- Bosnian entries in neoorigins_26_1 and neoorigins_26_2
+- 10 Bosnian add-on fallback files on 1.21.1
+- 29 bs_ba.json source files total
+
+Contextual QA / refinement:
+- workflow run 34469833240 / job 102846888580: SUCCESS
+- refinement commit: c4874f19d108ce23118920a0c78d0fdd6d2aad69
+- 323 values refined across 24 files
+- 246 sentence-spacing repairs
+- JSON validation and git diff --check passed
+- Bosnian contextual sanity: 102,647 Latin-script characters, 3,507 Bosnian diacritics, 2,011 lexical markers
+- automated/generative translation assistance was used; this is not a claim of full native-speaker review.
+
+Final builds and JAR inspection:
+- workflow: .github/workflows/build-0.9.0-bosnian.yml
+- final build source SHA: 1167b4f0d7d6b350f98b75d1fcd6744742709b92
+- successful run: 34469928487
+- 1.21.1 job 102847193069: SUCCESS; 27 Bosnian files packaged
+- 26.1.x job 102847192735: SUCCESS; 17 Bosnian files packaged
+- 26.2 job 102847192853: SUCCESS; 17 Bosnian files packaged
+- each build passed automated JAR-content inspection including required-delta checks and wrong-version/add-on exclusion checks.
+- 1.21.1 artifact: 10149121049; SHA256 131df8a0fad135ee302da35f94ef5c7991aea576f522b69bc9a2e2188a115075
+- 26.1.x artifact: 10149112587; SHA256 f02bfd71854421d36d31dc5e48a39d0f1d6539cc9c0f7ad428ac923f45ac8e5f
+- 26.2 artifact: 10149131718; SHA256 bd471371808c0b31ca24edc3a5d1e92b3403f9925c03e969ec409b76d0142dd5
+
+Metadata:
+- metadata workflow run 34469948759 / job 102847260469: SUCCESS
+- metadata commit: caf356913e18a20068fca1519c04e0e58d0641d8
+- catalog.json now declares 68 supported locales and includes bs_ba / Bosanski for NeoOrigins plus all 10 supported add-ons
+- CATALOG.md and README.md document Bosnian and the exact 2,296 / 2,307 / 2,307 core coverage.
+
+Integration rule:
+- release/0.9.0-beta must be fast-forwarded to the final release/0.9.0-bosnian HEAD with force=false only after this handoff validation succeeds.
+- main remains intentionally untouched.
+
+NEXT LANGUAGE
+-------------
+Language #69 is the next expansion task. Determine it from current Minecraft locale data using the same regional-variant deduplication rule, then repeat the complete upstream audit, translation, QA, builds, JAR inspection, metadata, handoff, and fast-forward flow.
 

@@ -11,7 +11,7 @@
     ],
     "loader": "NeoForge",
     "localization_mode": "low_priority_fallback",
-    "supported_locale_count": 71,
+    "supported_locale_count": 72,
     "builds": {
       "1.21.1": {
         "version": "0.9.0-beta+1.21.1",
@@ -212,7 +212,9 @@
           "breton_common_glob": "neoorigins_br_common_*",
           "breton_mc_1_21_1": "neoorigins_br_121",
           "asturian_common_glob": "neoorigins_ast_common_*",
-          "asturian_mc_1_21_1": "neoorigins_ast_121"
+          "asturian_mc_1_21_1": "neoorigins_ast_121",
+          "frisian_common_glob": "neoorigins_fy_common_*",
+          "frisian_mc_1_21_1": "neoorigins_fy_121"
         },
         "note": "NeoOrigins 2.2.26 est audité séparément sur les trois cibles. neoorigins_226 est commun aux trois builds ; neoorigins_26_1 est réservé à 26.1.x ; neoorigins_26_2 est réservé à 26.2. Les trois clés reward.neoorigins.loot_pool* restent dans les fallbacks complets pour 1.21.1 et sont inoffensives sur 26.x.",
         "baseline_audit_2_2_27": {
@@ -247,7 +249,7 @@
             }
           }
         },
-        "coverage_note": "NeoOrigins 2.2.27 has the same en_us localization payload as 2.2.26 on all three targets. Historical gaps in it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz and hu_hu were recovered before language 59. All 71 currently supported locales are complete against 2.2.27 on their target builds.",
+        "coverage_note": "NeoOrigins 2.2.27 has the same en_us localization payload as 2.2.26 on all three targets. Historical gaps in it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz and hu_hu were recovered before language 59. All 72 currently supported locales are complete against 2.2.27 on their target builds.",
         "legacy_gap_recovery_completed": true
       },
       "languages": {
@@ -889,6 +891,15 @@
             "26.1.x",
             "26.2"
           ]
+        },
+        "fy_nl": {
+          "name": "Frysk",
+          "status": "supported",
+          "targets": [
+            "1.21.1",
+            "26.1.x",
+            "26.2"
+          ]
         }
       }
     },
@@ -1322,6 +1333,12 @@
           "name": "Asturianu",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/ast_es.json",
+          "fallback_keys": 401
+        },
+        "fy_nl": {
+          "name": "Frysk",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/fy_nl.json",
           "fallback_keys": 401
         }
       }
@@ -1760,6 +1777,12 @@
           "name": "Asturianu",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/ast_es.json",
+          "fallback_keys": 69
+        },
+        "fy_nl": {
+          "name": "Frysk",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/fy_nl.json",
           "fallback_keys": 69
         }
       }
@@ -2201,6 +2224,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/ast_es.json",
           "fallback_keys": 240
+        },
+        "fy_nl": {
+          "name": "Frysk",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/fy_nl.json",
+          "fallback_keys": 240
         }
       }
     },
@@ -2640,6 +2669,12 @@
           "name": "Asturianu",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/ast_es.json",
+          "fallback_keys": 65
+        },
+        "fy_nl": {
+          "name": "Frysk",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/fy_nl.json",
           "fallback_keys": 65
         }
       }
@@ -3082,6 +3117,12 @@
           "name": "Asturianu",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/ast_es.json",
+          "fallback_keys": 39
+        },
+        "fy_nl": {
+          "name": "Frysk",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/fy_nl.json",
           "fallback_keys": 39
         }
       }
@@ -3529,6 +3570,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/ast_es.json",
           "fallback_keys": 77
+        },
+        "fy_nl": {
+          "name": "Frysk",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/fy_nl.json",
+          "fallback_keys": 77
         }
       }
     },
@@ -3972,6 +4019,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/ast_es.json",
           "fallback_keys": 117
+        },
+        "fy_nl": {
+          "name": "Frysk",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/fy_nl.json",
+          "fallback_keys": 117
         }
       }
     },
@@ -4414,6 +4467,12 @@
           "name": "Asturianu",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/ast_es.json",
+          "fallback_keys": 124
+        },
+        "fy_nl": {
+          "name": "Frysk",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/fy_nl.json",
           "fallback_keys": 124
         }
       }
@@ -4859,6 +4918,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/ast_es.json",
           "fallback_keys": 99
+        },
+        "fy_nl": {
+          "name": "Frysk",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/fy_nl.json",
+          "fallback_keys": 99
         }
       }
     },
@@ -5301,6 +5366,12 @@
           "name": "Asturianu",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/ast_es.json",
+          "fallback_keys": 22
+        },
+        "fy_nl": {
+          "name": "Frysk",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/fy_nl.json",
           "fallback_keys": 22
         }
       }

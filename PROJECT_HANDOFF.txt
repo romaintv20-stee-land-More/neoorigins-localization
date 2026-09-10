@@ -38,8 +38,8 @@ Mob Origins is NOT selected for 0.9.0. Earlier Mob Origins WIP inherited from a 
 0.8.0 Beta shipped with 17 locales:
 fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se.
 
-0.9.0 development currently has 69 locales:
-fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se, da_dk, fi_fi, no_no, ro_ro, el_gr, bg_bg, vi_vn, ar_sa, he_il, th_th, sk_sk, sl_si, hr_hr, sr_sp, sr_cs, ca_es, et_ee, lt_lt, lv_lv, eu_es, gl_es, hi_in, nn_no, fa_ir, is_is, ms_my, fil_ph, cy_gb, ga_ie, gd_gb, hy_am, ka_ge, kk_kz, mn_mn, mk_mk, be_by, fo_fo, af_za, az_az, kn_in, cv_cu, uz_uz, mt_mt, lb_lu, so_so, eo_uy, ky_kg, ta_in, sq_al, lo_la, bs_ba, ba_ru.
+0.9.0 development currently has 70 locales:
+fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se, da_dk, fi_fi, no_no, ro_ro, el_gr, bg_bg, vi_vn, ar_sa, he_il, th_th, sk_sk, sl_si, hr_hr, sr_sp, sr_cs, ca_es, et_ee, lt_lt, lv_lv, eu_es, gl_es, hi_in, nn_no, fa_ir, is_is, ms_my, fil_ph, cy_gb, ga_ie, gd_gb, hy_am, ka_ge, kk_kz, mn_mn, mk_mk, be_by, fo_fo, af_za, az_az, kn_in, cv_cu, uz_uz, mt_mt, lb_lu, so_so, eo_uy, ky_kg, ta_in, sq_al, lo_la, bs_ba, ba_ru, br_fr.
 
 Expansion order so far:
 - 18: Danish / da_dk
@@ -94,8 +94,9 @@ Expansion order so far:
 - 67: Lao / lo_la
 - 68: Bosnian / bs_ba
 - 69: Bashkir / ba_ru
+- 70: Breton / br_fr
 
-SIXTY-NINE IS NOT THE FINAL TARGET. Continue expanding toward essentially all useful Minecraft languages unless Romain changes scope.
+SEVENTY IS NOT THE FINAL TARGET. Continue expanding toward essentially all useful Minecraft languages unless Romain changes scope.
 
 Norwegian Nynorsk (nn_no) is intentionally NOT merged with Bokmal. It is a distinct written standard and remains a valid future locale.
 
@@ -3097,8 +3098,8 @@ NOTE ABOUT FAILED GOVERNANCE WORKFLOW:
 - PROJECT_HANDOFF.txt = cross-chat decisions, current roadmap, latest operational status
 
 As of this update:
-- catalog.json says 69 supported locales
-- README.md says 69 languages and includes Bashkir / ba_ru.
+- catalog.json says 70 supported locales
+- README.md says 70 languages and includes Breton / br_fr.
 - Romanian, Greek, Bulgarian, Vietnamese, Arabic, Hebrew, Thai, Slovak, Slovenian, Croatian, Serbian Cyrillic, Serbian Latin, Catalan, Estonian, Lithuanian, Latvian, Basque, Galician, Hindi, Norwegian Nynorsk, Persian, Icelandic, Malay, Filipino, Welsh, Irish, Scottish Gaelic, Armenian, Georgian, Kazakh, Mongolian, Macedonian, Belarusian, Faroese, Afrikaans, Azerbaijani and Kannada have passed final three-target packaging validation
 
 49. QUALITY / QA CAVEAT
@@ -4165,5 +4166,88 @@ Integration rule:
 
 NEXT LANGUAGE
 -------------
-Language #70 is the next expansion task. Re-evaluate the current Minecraft Java locale inventory, choose a useful distinct locale not already in the 69-locale set, apply the regional-variant deduplication rule, then repeat the complete upstream audit, translation, QA, builds, JAR inspection, metadata, handoff, and fast-forward flow.
+Language #71 is the next expansion task. Re-evaluate the current Minecraft Java locale inventory, choose a useful distinct locale not already in the 69-locale set, apply the regional-variant deduplication rule, then repeat the complete upstream audit, translation, QA, builds, JAR inspection, metadata, handoff, and fast-forward flow.
+
+BRETON / LANGUAGE #70 FINAL STATUS
+-----------------------------------
+Breton locale: br_fr / Brezhoneg.
+Status: COMPLETE FOR THE CURRENT 0.9.0 DEVELOPMENT BASELINE: GENERATED, STRICTLY AUDITED, CONTEXT-REFINED, BUILT, PACKAGING-VERIFIED, DOCUMENTED, AND COMMITTED.
+
+Selection / staging:
+- staging branch: release/0.9.0-breton
+- exact beta base used: 6cd7efc642b22313f58d1024975ae7b5406d7f67
+- locale: br_fr / Brezhoneg
+- selected from current Minecraft Java locale data; Breton is a distinct Celtic language and is not a regional duplicate of French under the project deduplication rule.
+
+Bootstrap / upstream audit:
+- workflow run 34499084751 / job 102944976049: SUCCESS
+- validated translation commit: 551f79ef1c402dfa37140e6574590cdc42c2e436
+- upstream official Breton strings found: 0 for all three NeoOrigins targets and 0 for all 10 supported add-ons at the pinned references
+- 29 br_fr.json source files generated
+- bootstrap sanity: 108,323 Latin-script characters, 4,583 Breton orthographic signals, 4,255 lexical markers
+- bootstrap audit artifact: 10161171163; size 291,547 bytes; SHA256 7628f5374445b6058637b4b34c005d949cb42a6d8ec45ec246c8afbdee7b7f21
+
+NeoOrigins coverage against the pinned 2.2.27 baselines:
+- 1.21.1: 2,296 / 2,296
+- 26.1.x: 2,307 / 2,307
+- 26.2: 2,307 / 2,307
+- missing keys: 0
+- overlap errors: 0
+- placeholder errors: 0
+
+1.21.1 add-on coverage:
+- Medieval Origins Revival: 401 / 401
+- ibarn's quartet origins addon: 69 / 69
+- Origins Fantasy: 240 / 240
+- Origins: Backgrounds: 65 / 65
+- Origins: More Backgrounds: 44 / 44 effective
+- Origins: Backgrounds ISS: 79 / 79 effective
+- Origins Furries: 117 / 117
+- Origins: Classes Extended: 124 / 124
+- Origins: Classes ISS: 99 / 99
+- Origin Architect: 22 / 22
+- all strict add-on audits passed with missing=0, overlap=0 and placeholder errors=0.
+
+Localization architecture:
+- 16 Breton common namespaces: neoorigins_br_common_01 through neoorigins_br_common_16
+- 1.21.1 delta: neoorigins_br_121
+- Breton entries in neoorigins_26_1 and neoorigins_26_2
+- 10 Breton add-on fallback files on 1.21.1
+- 29 br_fr.json source files total
+
+Contextual QA / refinement:
+- workflow run 34499606349 / job 102946756904: SUCCESS
+- refinement commit: ae5dffcdcfbd1d5cf9d489912383f5a76a3f4a1f
+- 317 values refined across 21 files
+- 244 sentence-spacing repairs
+- JSON validation and git diff --check passed
+- Breton contextual sanity: 108,480 Latin-script characters, 4,568 Breton orthographic signals, 4,323 lexical markers
+- high-visibility terminology was aligned with Minecraft Breton where applicable, including Gwelet en noz, Galloud, Tizh and Kreñvder.
+- automated/generative translation assistance was used; this is not a claim of full native-speaker review.
+
+Final builds and JAR inspection:
+- workflow: .github/workflows/build-0.9.0-breton.yml
+- final build source SHA: 6871dfe04d3c7742c500da45c2c4181472989f73
+- successful run: 34499725033
+- 1.21.1 job 102947162125: SUCCESS; 27 Breton files packaged
+- 26.1.x job 102947161983: SUCCESS; 17 Breton files packaged
+- 26.2 job 102947162157: SUCCESS; 17 Breton files packaged
+- each build passed automated JAR-content inspection including required-delta checks and wrong-version/add-on exclusion checks.
+- 1.21.1 artifact: 10161377271; size 5,639,499 bytes; SHA256 d8cedd93d490c09b103b4ea06f1eb0492190f04ed1056f0e2d8118f02e8b0875
+- 26.1.x artifact: 10161372162; size 3,116,437 bytes; SHA256 de1b59c502979851568bcc825b3e04da1fbb386b4f7530a61af2a989a28d9970
+- 26.2 artifact: 10161365047; size 3,116,561 bytes; SHA256 7e69754747c0f28771b70473e4ef1312dcb12c37439a6c9b261c44c3c588fa14
+
+Metadata:
+- metadata workflow run 34499961101 / job 102947953799: SUCCESS
+- metadata commit: d620425512de44e031c51a6135433aca4848246c
+- catalog.json now declares 70 supported locales and includes br_fr / Brezhoneg for NeoOrigins plus all 10 supported add-ons
+- CATALOG.md and README.md document Breton and the exact 2,296 / 2,307 / 2,307 core coverage.
+
+Integration rule:
+- release/0.9.0-beta must be fast-forwarded to the final release/0.9.0-breton HEAD with force=false only after this handoff validation succeeds.
+- main remains intentionally untouched.
+
+NEXT LANGUAGE
+-------------
+Language #71 is the next expansion task. Determine it from current Minecraft locale data using the same regional-variant deduplication rule, then repeat the complete upstream audit, translation, QA, builds, JAR inspection, metadata, handoff, and fast-forward flow.
 

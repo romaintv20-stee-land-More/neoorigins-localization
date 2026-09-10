@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Ҡорамалдар һеҙ һөнәрселек бонус атрибуттары ала — ҡатылыҡ, зыян, йәки тиҙлек менән файҙаланыу.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Тәмәке тартыусыла ризыҡ бешереүҙән икеләтә XP ала.",
+  "neoorigins.configuration.title": "НеоОригинс конфигурацияһы",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Геймплей",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "НеоОригинс геймплей параметрҙары",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Админ һәм рөхсәттәр",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "НеоОригинс Админ параметрҙары",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Ҡөҙрәтте өҫтөнә ала",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "НеоОригинс ҡөҙрәте өҫтөндә эшләй",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Сығышы һәм кластар",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "НеоОригинс сығышы һәм класс алмаштырыуҙары",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Клиент дисплейы",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "НеоОригинс клиент параметрҙары",
+  "neoorigins.configuration.show_cooldown_countdown": "Кулддаун кире иҫәбен күрһәтеү",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Һыуытыу ваҡыты кире иҫәп асыҡ булмауы (%)",
+  "neoorigins.configuration.hud_ability_display": "Мөмкинлек HUD дисплей режимы",
+  "neoorigins.configuration.always_show_ability_icons": "Һәр ваҡыт һәләт иконкаларын күрһәтегеҙ"
+}

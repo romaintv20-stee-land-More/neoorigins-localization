@@ -32,8 +32,10 @@ source = source.replace(
 namespace = {"__name__": "bashkir_bootstrap", "__file__": str(ROOT / "scripts/bootstrap_bashkir.py")}
 exec(compile(source, str(ROOT / "scripts/bootstrap_bashkir.py"), "exec"), namespace)
 
-# Bashkir translation transliterates Latin placeholder masks. A punctuation+digits mask
-# remains stable; restoration tolerates spaces inserted around the digits.
+# Bashkir translation transliterates Latin placeholder masks and may strip uncommon
+# delimiter glyphs. Restore both the normal punctuation+digits mask and, only when
+# that mask disappeared, its isolated four-digit payload. The strict placeholder
+# audit still validates every resulting string afterwards.
 def bashkir_protect(text: str):
     tokens = []
     def replace(match):
@@ -50,6 +52,10 @@ def bashkir_restore(text: str, tokens: list[str]):
         text, count = re.subn(pattern, lambda _m, t=token: t, text)
         if count == 0:
             text = text.replace(f"⟪{digits}⟫", token)
+        if token not in text:
+            # Google Bashkir sometimes returns only 0000 / 0001 after dropping ⟪ ⟫.
+            bare = rf"(?<!\d){re.escape(digits)}(?!\d)"
+            text, _ = re.subn(bare, lambda _m, t=token: t, text, count=1)
     return text
 
 namespace["protect"] = bashkir_protect

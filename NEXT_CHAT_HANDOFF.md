@@ -15,32 +15,32 @@ Reference / integration branch: `release/0.9.0-beta`
 
 ## Completed language baseline
 
-The first **73 languages are complete and integrated through the Occitan staging flow**.
+The first **74 languages are complete and integrated through the Igbo staging flow**.
 
 Latest completed language:
-- **#73 Occitan — `oc_fr / Occitan`**
+- **#74 Igbo — `ig_ng / Igbo`**
 
-Occitan is complete: NeoOrigins and all 10 supported 1.21.1 add-ons are fully covered; strict missing/overlap/placeholder checks and JSON validation passed; contextual refinement passed; all three pinned builds and automated JAR inspections passed; catalog/README metadata is at 73 locales. Do not redo Occitan.
+Igbo is complete: NeoOrigins and all 10 supported 1.21.1 add-ons are fully covered; strict missing/overlap/placeholder checks and JSON validation passed; contextual refinement passed; all three pinned builds and automated JAR inspections passed; catalog/README metadata is at 74 locales. Do not redo Igbo.
 
-## Occitan final references
+## Igbo final references
 
-- staging branch: `release/0.9.0-occitan`
-- staging base: `5102ca8bebfd1d0934ca580dfa94ca442f665097`
-- bootstrap run/job: `34508278437` / `102975735103` — successful
-- translation commit: `b17e68f045068492f0b1d3c862cf557e8bb0407a`
-- bootstrap audit artifact: `10164816852`; SHA256 `a7d1c3cdc8148c3893facaa2debb46e554af5ba0208bdfb08602bead4460cb77`
-- bootstrap sanity: 114,301 Latin chars / 4,578 Occitan orthographic signals / 6,297 lexical markers
-- refinement run/job: `34508845577` / `102977624166` — successful
-- refinement commit: `4f5c1e4832a83f3baee7caa18271ffef21bcf2a4`
-- refinement: 77 values across 20 files; 0 spacing repairs; final sanity 114,347 Latin chars / 4,567 orthographic signals / 6,403 lexical markers
-- final build source: `12b0907cb0b64ba16d3b580f8d624956c9ce0507`
-- build run: `34509055896` — all three targets successful and JAR-inspected
-- build jobs: 1.21.1 `102978341229`; 26.1.x `102978340959`; 26.2 `102978341174`
-- packaged Occitan file counts: 27 on 1.21.1, 17 on 26.1.x, 17 on 26.2
-- build artifacts: 1.21.1 `10165061817`; 26.1.x `10165053701`; 26.2 `10165062695`
-- artifact SHA256: 1.21.1 `985829a6d7af4aaa416fab26ecfd147feb500905691ed887bc299845da29ffef`; 26.1.x `81dd4f7c4e0178202561804b502b01f9acd76b41634f707a263d22145785a421`; 26.2 `01369a0df00858961f8c297ebabdfd1d759f8ab414cfb9ecf6ec7296f1c7e850`
-- metadata run/job: `34509107556` / `102978517417` — successful
-- metadata commit: `667164192da1c464e282d6f89428abf4598ae94c`
+- staging branch: `release/0.9.0-igbo`
+- staging base: `a62e6fb15615f24d10467b04db47654e148d131a`
+- bootstrap run/job: `34513745788` / `102993943356` — successful
+- translation commit: `d95c009ade599f1ec93c3df2b03d571daf6e0f48`
+- bootstrap audit artifact: `10167049707`; size `291,550 bytes`; SHA256 `9a10d81cadd3821830caf44ed4ebf99d8188e918c94320a2ba8d76e42e941797`
+- bootstrap sanity: 95,348 Latin chars / 14,283 Igbo orthographic signals / 5,054 lexical markers
+- refinement run/job: `34515088488` / `102998388143` — successful
+- refinement commit: `4ac1335f0b4c404ca4310a68229337de1d05e8d3`
+- refinement: 68 values across 19 files; 0 spacing repairs; final sanity 95,363 Latin chars / 15,082 orthographic signals / 5,579 lexical markers
+- final build source: `08f7f3becc3c705f0bce3883fe00904a569fa262`
+- build run: `34515317584` — all three targets successful and JAR-inspected
+- build jobs: 1.21.1 `102999143169`; 26.1.x `102999143300`; 26.2 `102999142841`
+- packaged Igbo file counts: 27 on 1.21.1, 17 on 26.1.x, 17 on 26.2
+- build artifacts: 1.21.1 `10167475323`; 26.1.x `10167467067`; 26.2 `10167472739`
+- artifact SHA256: 1.21.1 `4845c5308aa45534351927e47da395d42b6613691a9a69a5dbb5d66909736791`; 26.1.x `6eeb4de265df30ec3e5fdc55eabfc79e77914d48b19b618a70c6ac26210ec3e7`; 26.2 `5fc31ce80069248a09f9ace1050c8da7ea22154665b0aaacbb7182b9850109df`
+- metadata run/job: `34515339345` / `102999216329` — successful
+- metadata commit: `6f99eb011d4207a2cee7ef9af9396deb2f075ef9`
 
 ## Current pinned upstream baseline
 
@@ -65,6 +65,6 @@ The 1.21.1 build also supports these 10 projects:
 
 ## Next task
 
-Start and finish **language #74**. Identify the next useful Minecraft locale from current locale data, applying the existing regional-variant deduplication rule. Then complete the full established flow: NeoOrigins + 10 add-on upstream audits, translation, contextual QA, placeholders/JSON checks, pinned 1.21.1 / 26.1.x / 26.2 builds, JAR-content inspection, metadata, both handoffs, and finally fast-forward the validated staging HEAD to `release/0.9.0-beta` with `force=false`.
+Start and finish **language #75**. Identify the next useful Minecraft locale from current locale data, applying the existing regional-variant deduplication rule. Then complete the full established flow: NeoOrigins + 10 add-on upstream audits, translation, contextual QA, placeholders/JSON checks, pinned 1.21.1 / 26.1.x / 26.2 builds, JAR-content inspection, metadata, both handoffs, and finally fast-forward the validated staging HEAD to `release/0.9.0-beta` with `force=false`.
 
-Do not stop after generation or QA: language #74 is only complete once the full integration cycle is finished.
+Do not stop after generation or QA: language #75 is only complete once the full integration cycle is finished.

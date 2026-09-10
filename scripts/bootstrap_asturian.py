@@ -1,7 +1,13 @@
 #!/usr/bin/env python3
 """Generate Asturian fallback localization by reusing the proven Norwegian bootstrap engine."""
 from pathlib import Path
+import html
+import json
 import re
+import time
+import urllib.error
+import urllib.parse
+import urllib.request
 
 ROOT = Path(__file__).resolve().parents[1]
 source = (ROOT / "scripts/bootstrap_norwegian.py").read_text(encoding="utf-8")
@@ -13,6 +19,7 @@ source = source.replace("build/no-discovery", "build/ast-discovery")
 source = source.replace("no_no", "ast_es")
 source = source.replace("neoorigins_no_", "neoorigins_ast_")
 source = source.replace('[[text, "en", "no", True]', '[[text, "en", "ast", True]')
+source = source.replace("max_chars: int = 3500", "max_chars: int = 1800")
 # Use punctuation+digits separators so the translation service cannot lexicalize them.
 source = source.replace(
     'SEPARATOR_RE = re.compile(r"\\n?ZXQSEP\\d{4}ZXQ\\n?")',
@@ -30,6 +37,54 @@ source = source.replace(
 
 namespace = {"__name__": "asturian_bootstrap", "__file__": str(ROOT / "scripts/bootstrap_asturian.py")}
 exec(compile(source, str(ROOT / "scripts/bootstrap_asturian.py"), "exec"), namespace)
+
+# The legacy Translate Webserver RPC returns a null payload for Asturian even though
+# Asturian is available in the current Google Translate UI. Use the public web
+# translation endpoint first, with the mobile page as a conservative fallback.
+def asturian_translate_rpc(text: str, attempts: int = 5):
+    last_error = None
+    for attempt in range(1, attempts + 1):
+        try:
+            params = urllib.parse.urlencode({
+                "client": "gtx", "sl": "en", "tl": "ast", "dt": "t", "q": text,
+            })
+            request = urllib.request.Request(
+                "https://translate.googleapis.com/translate_a/single?" + params,
+                headers={"User-Agent": "Mozilla/5.0"},
+            )
+            raw = urllib.request.urlopen(request, timeout=60).read().decode("utf-8")
+            payload = json.loads(raw)
+            segments = payload[0] if isinstance(payload, list) and payload else None
+            if isinstance(segments, list):
+                translated = "".join(
+                    segment[0]
+                    for segment in segments
+                    if isinstance(segment, list) and segment and isinstance(segment[0], str)
+                )
+                if translated:
+                    return translated
+            raise ValueError("Google single endpoint returned no translated segments")
+        except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError, ValueError, TypeError, IndexError, json.JSONDecodeError) as exc:
+            last_error = exc
+            try:
+                params = urllib.parse.urlencode({"sl": "en", "tl": "ast", "q": text})
+                request = urllib.request.Request(
+                    "https://translate.google.com/m?" + params,
+                    headers={"User-Agent": "Mozilla/5.0"},
+                )
+                raw = urllib.request.urlopen(request, timeout=60).read().decode("utf-8")
+                match = re.search(r'<div class="result-container">(.*?)</div>', raw, flags=re.S)
+                if match:
+                    translated = html.unescape(re.sub(r"<[^>]+>", "", match.group(1))).strip()
+                    if translated:
+                        return translated
+            except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError, ValueError) as fallback_exc:
+                last_error = fallback_exc
+            if attempt != attempts:
+                time.sleep(2 ** (attempt - 1))
+    raise RuntimeError(f"Asturian translation failed after {attempts} attempts: {last_error}")
+
+namespace["translate_rpc"] = asturian_translate_rpc
 
 # Protect formatting/printf/tag tokens with punctuation-digit sentinels. Tolerate
 # whitespace and stripped delimiter glyphs, while the strict audit still checks all

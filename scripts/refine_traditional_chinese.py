@@ -55,6 +55,8 @@ OVERRIDES = {
     "neoorigins.night_vision.disabled_by_server": "此伺服器已停用夜視。",
     "neoorigins.night_vision.no_power": "你的起源沒有夜視能力。",
     "neoorigins.ultimine.no_power": "你的起源無法使用連鎖挖掘。",
+    "neoorigins.configuration.sun_damage.helmet_protection": "頭盔防護",
+    "neoorigins.configuration.helmet_protection": "頭盔防護",
     "origins.layer.origin": "起源",
     "origins.layer.class": "職業",
     "screen.neoorigins.choose_origin": "選擇你的起源",
@@ -138,7 +140,7 @@ normalized_values = 0
 english_candidates = []
 english_title = re.compile(r"^[A-Za-z][A-Za-z0-9 &'’:+/()._-]{1,70}$")
 allowed_english = {
-    "NeoOrigins", "JSON", "Ultimine", "Alfiq", "Banshee", "Fae", "Pixie", "Yeti",
+    "NeoOrigins", "Origin Architect", "JSON", "Ultimine", "Alfiq", "Banshee", "Fae", "Pixie", "Yeti",
     "Cinderborn", "Elytrian", "Sculkborn", "Warden", "Wither", "Enderian", "Enderite",
 }
 

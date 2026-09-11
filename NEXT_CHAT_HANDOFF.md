@@ -15,7 +15,7 @@ Reference / integration branch: `release/1.0.0`
 
 ## Completed language baseline
 
-The first **83 selected locales are complete and integrated**.
+The first **84 selected locales are complete and integrated**.
 
 Latest completed languages:
 - **#77 Traditional Chinese — `zh_tw / 繁體中文`**
@@ -25,44 +25,38 @@ Latest completed languages:
 - **#81 Andalusian — `esan / Andalûh`**
 - **#82 East Franconian — `fra_de / Fränggisch`**
 - **#83 Friulian — `fur_it / Furlan`**
+- **#84 Gallo — `go_fr / Galo`**
 
-The catalogue and README are at **83 locales**. There are **30 selected locales remaining** for 1.0.0; the authoritative queue and exclusion policy are in `docs/RELEASE_1_0_0_LOCALE_PLAN.md`.
+The catalogue and README are at **84 locales**. There are **29 selected locales remaining** for 1.0.0; the authoritative queue and exclusion policy are in `docs/RELEASE_1_0_0_LOCALE_PLAN.md`.
 
-## Friulian final references
+## Gallo final references
 
-- staging branch: `release/1.0.0-friulian`
-- bootstrap run: `34639651015`
-- bootstrap job: `103395940394`
-- bootstrap commit: `cac1127f9e586298e1ddbf71d7d9b93677db2d29`
-- generated source layout: 16 common NeoOrigins chunks + 1.21.1 delta + shared 26.x deltas + 10 add-ons = 29 `fur_it` source files
-- source strategy: complete Italian semantic coverage plus pinned Minecraft `it_it` ↔ `fur_it` corpus; empty, placeholder-mismatched, unsupported-script, unchanged-English and poorly aligned unsafe pairs are rejected; exact safe mappings may be reused and word projection requires repeated/dominant evidence
-- bootstrap corpus metrics: 8,557 aligned entries, 928 rejected pairs, 243 unchanged pairs, 6,874 exact Friulian strings, 272 learned word mappings
-- local Italian fallback pool: 1,380 distinct keys across 18 files
-- semantic coverage pools: 1.21.1 official=2,237 / merged=3,549; 26.1 and 26.2 official=2,180 / merged=3,560
-- bootstrap dialect sanity: 1,631 lexical markers across 1,050 marked values
-- contextual QA found visible Italian leftovers `< Indietro` and `Chiudi`; pinned Friulian Minecraft corpus attests `Indaûr` and `Siere`
-- safe refinement run: `34641007434`
-- safe refinement job: `103400336402`
-- refinement commit: `f96230d1ecbb023b072f8d5d6d351dee5840ae6f`
-- refinement result: all 3,583 generated values checked; 2 high-visibility labels corrected; 1,631 dialect markers retained; 0 known unsafe UI leftovers
+- staging branch: `release/1.0.0-gallo`
+- successful bootstrap run: `34642158821`
+- bootstrap output commit: `3ef631a8c90842e177b595433405d9dc1cac6099`
+- generated source layout: 16 common NeoOrigins chunks + 1.21.1 delta + shared 26.x deltas + 10 add-ons = 29 `go_fr` source files
+- source strategy: complete French semantic coverage plus pinned Minecraft `fr_fr` ↔ `go_fr` corpus; projection is conservative and official upstream strings retain priority
+- contextual QA found the unsafe high-visibility projection `Phantom` → `Sebllan`; all 3 affected Phantom values were restored/protected
+- safe refinement run: `34642867766`
+- safe refinement commit: `5565fbf7f50670cf28ca0b092c97b2e647b617d1`
+- refinement result: all 3,583 generated values checked; 3 unsafe Phantom projections corrected; 459 Gallo lexical markers retained
 - strict NeoOrigins audits passed at 2,296/2,296 keys on 1.21.1 and 2,307/2,307 on both 26.x targets; all 10 compatible 1.21.1 add-on audits passed; overlaps and placeholder errors are zero
-- build workflow commit: `17857d2e7facab30128dee3d45fa1049fb092e93`
-- build run: `34641157601` — successful on all three targets
-- build jobs: 1.21.1 `103400840619`, 26.1.x `103400840931`, 26.2 `103400840975`
-- packaged Friulian file counts enforced by JAR inspection gates:
-  - 1.21.1: 27 (16 common + `neoorigins_fur_121` + 10 add-ons)
+- build workflow commit: `34ed82f78e024f1c7901f695f5e2a6612d40bbe9`
+- build run: `34643042947` — successful on all three targets
+- packaged Gallo file counts enforced by JAR inspection gates:
+  - 1.21.1: 27 (16 common + `neoorigins_go_121` + 10 add-ons)
   - 26.1.x: 17 (16 common + `neoorigins_26_1`)
   - 26.2: 17 (16 common + `neoorigins_26_2`)
-- JAR isolation gates passed: 26.x contain no 1.21.1 add-ons or `neoorigins_fur_121`; each build contains only its proper version delta
-- metadata workflow run: `34641686116`
-- metadata job: `103402721382`
-- final branch metadata commit: `2c0c753db59026fea6838db352dfcc406da8cd5a`
-- metadata final state: 83 supported locales, `fur_it` present across all 11 projects, 29 source files, fallback namespaces `friulian_common_glob = neoorigins_fur_common_*` and `friulian_mc_1_21_1 = neoorigins_fur_121`
-- native metadata/catalog name: `Furlan`; README French label: `Frioulan`
-- integration PR: `#20`
-- integration commit on `release/1.0.0`: `848057a62b4eccb0a6f0a176a2f8a82b89c7014c`
+- JAR isolation gates passed: 26.x contain no 1.21.1 add-ons or `neoorigins_go_121`; each build contains only its proper version delta
+- metadata workflow run: `34643884667`
+- metadata job/check: `103409897617`
+- final branch metadata commit: `593402eb323d5b33b14c0b2f5dd1bab846840467`
+- metadata final state: 84 supported locales, `go_fr` present across all 11 projects, 29 source files, fallback namespaces `gallo_common_glob = neoorigins_go_common_*` and `gallo_mc_1_21_1 = neoorigins_go_121`
+- native metadata/catalog name: `Galo`; README French label: `Gallo`
+- integration PR: `#21`
+- integration commit on `release/1.0.0`: `83a697348e1b8d15741cbe6bb7fe53bd8dc0445c`
 
-Do not redo Friulian, East Franconian, Andalusian, Brabantian, Bavarian, Northern Sami, or Traditional Chinese metadata.
+Do not redo Gallo, Friulian, East Franconian, Andalusian, Brabantian, Bavarian, Northern Sami, or Traditional Chinese metadata.
 
 ## Current pinned upstream baseline
 
@@ -80,8 +74,8 @@ The 1.21.1 build also supports the established 10 add-ons; 26.x builds intention
 
 ## Next task
 
-Start and finish **language #84 — Gallo (`go_fr`)** from the current `release/1.0.0` branch.
+Start and finish **language #85 — Manx (`gv_im`)** from the current `release/1.0.0` branch.
 
-Use the full established flow: inspect the pinned `go_fr` Minecraft corpus first, choose a defensible complete semantic source, bootstrap conservatively, run strict audits, perform contextual QA/refinement, build all three targets with JAR isolation checks, finalize metadata to 84, merge, and update this handoff plus the locale plan.
+Inspect the pinned `gv_im` Minecraft corpus first and choose a defensible semantic/projection strategy before generating anything. Do not assume that another Celtic language can safely stand in for Manx. Then use the full established flow: bootstrap conservatively, run strict audits, perform contextual QA/refinement, build all three targets with JAR isolation checks, finalize metadata to 85, merge, and update this handoff plus the locale plan.
 
 Low German (`nds_de`) remains selected but is explicitly deferred until a translation path that targets Low German rather than silently substituting Standard German is available.

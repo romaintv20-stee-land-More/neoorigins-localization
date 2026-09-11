@@ -1,0 +1,79 @@
+name: Probe Northern Sami context terminology
+
+on:
+  push:
+    branches:
+      - release/1.0.0-northern-sami
+    paths:
+      - '.github/workflows/probe-northern-sami-terms.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/1.0.0-northern-sami
+
+      - name: Translate high-risk terms independently
+        run: |
+          python3 - <<'PY'
+          import json
+          import time
+          import urllib.parse
+          import urllib.request
+          from pathlib import Path
+
+          terms = [
+              'origin', 'choose your origin', 'origin creator', 'mob origin creator',
+              'class', 'choose a class', 'power', 'powers', 'ability', 'abilities',
+              'apply', 'cancel', 'done', 'reset', 'position', 'scale',
+              'flight', 'unique flight', 'support', 'phasing', 'undead',
+              'magic', 'unique abilities', 'dagger damage', 'dextrous',
+              'stealthy', "doesn't sleep", 'physical damage', 'armor',
+              'soul mage attributes', 'sand person attributes', 'grant attributes',
+              'revoke attributes', 'cooldown', 'cooldown countdown', 'opacity',
+              'loot pool', 'loot table', 'feather footed', 'feather hop',
+              'arcane spell power', 'frost spell power', 'high elf', 'high elves',
+              'overview', 'weakness', 'resistance', 'health', 'damage',
+              'player', 'target', 'key', 'hotkey',
+          ]
+
+          def translate(text):
+              params = urllib.parse.urlencode({
+                  'client': 'gtx', 'sl': 'en', 'tl': 'se', 'dt': 't', 'q': text,
+              })
+              req = urllib.request.Request(
+                  'https://translate.googleapis.com/translate_a/single?' + params,
+                  headers={'User-Agent': 'Mozilla/5.0'},
+              )
+              raw = urllib.request.urlopen(req, timeout=60).read().decode('utf-8')
+              payload = json.loads(raw)
+              return ''.join(seg[0] for seg in payload[0] if seg and isinstance(seg[0], str)).strip()
+
+          lines = []
+          for term in terms:
+              result = translate(term)
+              lines.append(f'{term}\t{result}')
+              print(f'{term} -> {result}')
+              time.sleep(0.15)
+
+          out = Path('diagnostics/northern-sami-term-probe.tsv')
+          out.parent.mkdir(parents=True, exist_ok=True)
+          out.write_text('\n'.join(lines) + '\n', encoding='utf-8')
+          PY
+
+      - name: Commit term probe
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add diagnostics/northern-sami-term-probe.tsv
+          git commit -m 'Record Northern Sami terminology probe'
+          git fetch origin release/1.0.0-northern-sami
+          git rebase origin/release/1.0.0-northern-sami
+          git push origin HEAD:release/1.0.0-northern-sami

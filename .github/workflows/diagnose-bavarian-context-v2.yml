@@ -1,0 +1,77 @@
+name: Recheck hardened Bavarian context
+
+on:
+  push:
+    branches:
+      - release/1.0.0-bavarian
+    paths:
+      - '.github/workflows/diagnose-bavarian-context-v2.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: release/1.0.0-bavarian
+      - name: Context and corruption audit
+        run: |
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+          assets = Path('src/main/resources/resourcepacks/fallback_localizations/assets')
+          rows=[]
+          for path in sorted(assets.glob('**/lang/bar.json')):
+              ns=path.parts[path.parts.index('assets')+1]
+              data=json.loads(path.read_text(encoding='utf-8'))
+              rows.extend((ns,k,str(v)) for k,v in data.items())
+
+          keys = {
+            'origins.layer.origin','origins.layer.class','screen.neoorigins.choose_origin',
+            'screen.neoorigins.choose.origins.layer.origin','screen.neoorigins.choose.origins.layer.class',
+            'gui.neoorigins.detail.powers_header','gui.neoorigins.search.label','gui.neoorigins.picker.no_results',
+            'gui.neoorigins.hint.select','gui.neoorigins.sort.class','key.neoorigins.class_skill',
+            'key.neoorigins.open_creator','key.neoorigins.open_mob_creator','screen.neoorigins.hud_editor',
+            'screen.neoorigins.hud_editor.scale','screen.neoorigins.origin_info','gui.neoorigins.info.no_origin',
+            'gui.neoorigins.info.your_origin','screen.neoorigins.origin_editor','gui.neoorigins.editor.layers_header',
+            'gui.neoorigins.editor.powers_header','screen.neoorigins.creator','gui.neoorigins.creator.tab.powers',
+            'gui.neoorigins.creator.tab.layer','gui.neoorigins.creator.apply','screen.neoorigins.mob_creator',
+            'gui.neoorigins.mob_creator.tab.powers','gui.neoorigins.mob_creator.apply',
+            'neoorigins.configuration.sun_damage.helmet_protection','neoorigins.configuration.helmet_protection',
+            'effect.ibarnorigins.inflation_effect','power.ibarnorigins.ghasterinflate.name',
+            'power.ibarnorigins.wpairswim.name','power.origins_fantasy.fae_flight.name',
+            'screen.originsmodernui.title','originsmodernui.config.hud.position','originsmodernui.config.hud.scale',
+          }
+          print('=== HIGH VISIBILITY ===')
+          for ns,k,v in rows:
+              if k in keys: print(f'{ns}\t{k}\t{v}')
+
+          print('=== DEATH MESSAGES ===')
+          for ns,k,v in rows:
+              if k.startswith('death.') or '.death.' in k:
+                  print(f'{ns}\t{k}\t{v}')
+
+          # Generic corruption checks: trailing orphan tokens, implausibly tiny translations,
+          # missing placeholders compared with another bar value cannot be inferred here, but
+          # strict placeholder audit already passed upstream.
+          bad=[]
+          orphan=re.compile(r'(?:\b(?:zu|zum|zur|von|mit|für|durch|auf|in|an)\s+[a-zA-ZäöüÄÖÜß]{1,2}|\b[a-zA-Z]{1,2})$')
+          for ns,k,v in rows:
+              clean=re.sub(r'§.', '', v).strip()
+              if len(clean) >= 18 and orphan.search(clean):
+                  bad.append((ns,k,v))
+          print('=== POSSIBLE TRUNCATIONS ===')
+          for row in bad[:100]: print('\t'.join(row))
+          print('possible_truncations=',len(bad))
+
+          english=[]
+          eng=re.compile(r'\b(?:Helmet Protection|Choose your origin|Search origins|No origins found|Apply|Powers|Origin Info|Your Origin|No Origin)\b',re.I)
+          for ns,k,v in rows:
+              if eng.search(v): english.append((ns,k,v))
+          print('=== ENGLISH UI SURVIVORS ===')
+          for row in english: print('\t'.join(row))
+          print('english_ui_survivors=',len(english))
+          PY

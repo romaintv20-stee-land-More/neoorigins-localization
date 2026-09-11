@@ -168,10 +168,11 @@ def build_corpus_maps():
         share = top / total
         similarity = SequenceMatcher(None, source, target).ratio()
         plausible = len(target) >= 2 and similarity >= 0.35
+        # Only learn transformations that recur in the corpus. Singleton word
+        # alignments are too noisy and previously produced malformed UI vocabulary.
         if plausible and (
             (top >= 2 and share >= 0.60)
             or (top >= 5 and share >= 0.50)
-            or (top == 1 and total == 1 and len(source) >= 4 and similarity >= 0.52)
         ):
             learned[source] = target
 

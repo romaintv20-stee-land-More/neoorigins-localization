@@ -42,7 +42,7 @@
   "neoorigins.configuration.protect_villagers": "Dorfbewohna schützen",
   "neoorigins.configuration.protect_iron_golems": "Eisengolems schützen",
   "neoorigins.configuration.helmet_dura_damage_chance": "Helm-Haltbarkeitsschaden-Chance",
-  "neoorigins.configuration.helmet_protection": "Helmet protection",
+  "neoorigins.configuration.helmet_protection": "Helmschutz",
   "neoorigins.configuration.mode": "Zuweisungsmodus",
   "neoorigins.configuration.rerolls": "Neuwürfe erlaubt",
   "neoorigins.configuration.compat_min_power_ratio": "Min. Kraftlade-Verhältnis",

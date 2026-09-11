@@ -21,7 +21,7 @@
   "entity.ibarnorigins.homing_wither_skull": "Zielsuchender Witherschädel",
   "entity.ibarnorigins.owned_area_effect_cloud": "Effektwolke",
   "death.attack.ibarnorigins.soul_burn": "%1$ss Seele verbrannte",
-  "death.attack.ibarnorigins.soul_burn.player": "%1$ss Seele verbrannte beim Versuch, %2$s zu entkommen",
+  "death.attack.ibarnorigins.soul_burn.player": "%1$ss Seele verbrannte beim Versuch, %2$s zu entkomma",
   "death.attack.ibarnorigins.soulBlast": "%1$s wurde vo konzentrierter Seelenenergie verdampft",
   "death.attack.ibarnorigins.soulBlast.player": "%1$s wurde vo konzentrierter Seelenenergie verdampft, als de Flucht voa %2$s scheiterte",
   "origin.ibarnorigins.ghaster.name": "Ghaster",

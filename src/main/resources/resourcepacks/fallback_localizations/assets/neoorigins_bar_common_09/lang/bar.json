@@ -107,7 +107,7 @@
   "neoorigins.configuration.friendly_fire.protect_villagers": "Dorfbewohna schützen",
   "neoorigins.configuration.friendly_fire.protect_iron_golems": "Eisengolems schützen",
   "neoorigins.configuration.sun_damage.helmet_dura_damage_chance": "Helm-Haltbarkeitsschaden-Chance",
-  "neoorigins.configuration.sun_damage.helmet_protection": "Helmet protection",
+  "neoorigins.configuration.sun_damage.helmet_protection": "Helmschutz",
   "neoorigins.configuration.origins.human": "Mensch",
   "neoorigins.configuration.origins.merling": "Merling",
   "neoorigins.configuration.origins.avian": "Avier",

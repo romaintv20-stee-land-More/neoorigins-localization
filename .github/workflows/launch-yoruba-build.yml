@@ -18,4 +18,4 @@ jobs:
       - name: Dispatch pinned Yoruba build workflow
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh workflow run build-0.9.0-yoruba.yml --ref release/0.9.0-yoruba
+        run: gh workflow run build-0.9.0-yoruba.yml --repo romaintv20-stee-land-More/neoorigins-localization --ref release/0.9.0-yoruba

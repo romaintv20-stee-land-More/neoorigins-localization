@@ -1,0 +1,8 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Vo da gefertigte Asrüstung is überlegen – Werkzeuge schürfen schneller, Waffn schlagen härter, Rüstung is robuster und ois hält länger.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Im Reichaofn oda Ofn gegarte Nahrung erhält zusätzliche Nahrhaftigkeit.",
+  "neoorigins.configuration.title": "NeoOrigins Ollgemeine Konfiguration",
+  "reward.neoorigins.loot_pool": "NeoOrigins: Beutepool gewähren",
+  "reward.neoorigins.loot_pool.loot_table": "Beutetabelle",
+  "reward.neoorigins.loot_pool.rolls": "Würfe"
+}

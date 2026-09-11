@@ -77,3 +77,5 @@ jobs:
           git fetch origin release/1.0.0-bavarian
           git rebase origin/release/1.0.0-bavarian
           git push origin HEAD:release/1.0.0-bavarian
+
+# Triggered after tightening the truncation guard.

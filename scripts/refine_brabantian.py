@@ -30,8 +30,7 @@ DIALECT_MARKER_RE = re.compile(
 )
 MIN_DIALECT_MARKERS = 150
 
-FORBIDDEN_FRAGMENTS = (
-    "Beweirek",
+FORBIDDEN_SUBSTRINGS = (
     "zaadige ien ut doenker",
     "zaadige ien ut donker",
 )
@@ -81,7 +80,8 @@ def main() -> None:
     bad = [
         (str(path), key, value)
         for path, key, value in rows
-        if any(fragment.casefold() in value.casefold() for fragment in FORBIDDEN_FRAGMENTS)
+        if value.casefold() == "beweirek"
+        or any(fragment.casefold() in value.casefold() for fragment in FORBIDDEN_SUBSTRINGS)
     ]
     if bad:
         raise SystemExit(f"Known Brabantian corruption patterns survived: {bad[:20]}")

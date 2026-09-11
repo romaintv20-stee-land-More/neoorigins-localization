@@ -11,7 +11,7 @@
     ],
     "loader": "NeoForge",
     "localization_mode": "low_priority_fallback",
-    "supported_locale_count": 76,
+    "supported_locale_count": 78,
     "builds": {
       "1.21.1": {
         "version": "0.9.0-beta+1.21.1",
@@ -222,7 +222,11 @@
           "yoruba_common_glob": "neoorigins_yo_common_*",
           "yoruba_mc_1_21_1": "neoorigins_yo_121",
           "tatar_common_glob": "neoorigins_tt_common_*",
-          "tatar_mc_1_21_1": "neoorigins_tt_121"
+          "tatar_mc_1_21_1": "neoorigins_tt_121",
+          "traditional_chinese_common_glob": "neoorigins_zhtw_common_*",
+          "traditional_chinese_mc_1_21_1": "neoorigins_zhtw_121",
+          "northern_sami_common_glob": "neoorigins_se_common_*",
+          "northern_sami_mc_1_21_1": "neoorigins_se_121"
         },
         "note": "NeoOrigins 2.2.26 est audité séparément sur les trois cibles. neoorigins_226 est commun aux trois builds ; neoorigins_26_1 est réservé à 26.1.x ; neoorigins_26_2 est réservé à 26.2. Les trois clés reward.neoorigins.loot_pool* restent dans les fallbacks complets pour 1.21.1 et sont inoffensives sur 26.x.",
         "baseline_audit_2_2_27": {
@@ -257,7 +261,7 @@
             }
           }
         },
-        "coverage_note": "NeoOrigins 2.2.27 has the same en_us localization payload as 2.2.26 on all three targets. Historical gaps in it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz and hu_hu were recovered before language 59. All 76 currently supported locales are complete against 2.2.27 on their target builds.",
+        "coverage_note": "NeoOrigins 2.2.27 has the same en_us localization payload as 2.2.26 on all three targets. Historical gaps in it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz and hu_hu were recovered before language 59. All 78 currently supported locales are complete against 2.2.27 on their target builds.",
         "legacy_gap_recovery_completed": true
       },
       "languages": {
@@ -944,6 +948,24 @@
             "26.1.x",
             "26.2"
           ]
+        },
+        "zh_tw": {
+          "name": "繁體中文",
+          "status": "supported",
+          "targets": [
+            "1.21.1",
+            "26.1.x",
+            "26.2"
+          ]
+        },
+        "se_no": {
+          "name": "Davvisámegiella",
+          "status": "supported",
+          "targets": [
+            "1.21.1",
+            "26.1.x",
+            "26.2"
+          ]
         }
       }
     },
@@ -1407,6 +1429,18 @@
           "name": "Татарча",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/tt_ru.json",
+          "fallback_keys": 401
+        },
+        "zh_tw": {
+          "name": "繁體中文",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/zh_tw.json",
+          "fallback_keys": 401
+        },
+        "se_no": {
+          "name": "Davvisámegiella",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/se_no.json",
           "fallback_keys": 401
         }
       }
@@ -1875,6 +1909,18 @@
           "name": "Татарча",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/tt_ru.json",
+          "fallback_keys": 69
+        },
+        "zh_tw": {
+          "name": "繁體中文",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/zh_tw.json",
+          "fallback_keys": 69
+        },
+        "se_no": {
+          "name": "Davvisámegiella",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/se_no.json",
           "fallback_keys": 69
         }
       }
@@ -2346,6 +2392,18 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/tt_ru.json",
           "fallback_keys": 240
+        },
+        "zh_tw": {
+          "name": "繁體中文",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/zh_tw.json",
+          "fallback_keys": 240
+        },
+        "se_no": {
+          "name": "Davvisámegiella",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/se_no.json",
+          "fallback_keys": 240
         }
       }
     },
@@ -2815,6 +2873,18 @@
           "name": "Татарча",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/tt_ru.json",
+          "fallback_keys": 65
+        },
+        "zh_tw": {
+          "name": "繁體中文",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/zh_tw.json",
+          "fallback_keys": 65
+        },
+        "se_no": {
+          "name": "Davvisámegiella",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/se_no.json",
           "fallback_keys": 65
         }
       }
@@ -3287,6 +3357,18 @@
           "name": "Татарча",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/tt_ru.json",
+          "fallback_keys": 39
+        },
+        "zh_tw": {
+          "name": "繁體中文",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/zh_tw.json",
+          "fallback_keys": 39
+        },
+        "se_no": {
+          "name": "Davvisámegiella",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/se_no.json",
           "fallback_keys": 39
         }
       }
@@ -3764,6 +3846,18 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/tt_ru.json",
           "fallback_keys": 77
+        },
+        "zh_tw": {
+          "name": "繁體中文",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/zh_tw.json",
+          "fallback_keys": 77
+        },
+        "se_no": {
+          "name": "Davvisámegiella",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/se_no.json",
+          "fallback_keys": 77
         }
       }
     },
@@ -4237,6 +4331,18 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/tt_ru.json",
           "fallback_keys": 117
+        },
+        "zh_tw": {
+          "name": "繁體中文",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/zh_tw.json",
+          "fallback_keys": 117
+        },
+        "se_no": {
+          "name": "Davvisámegiella",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/se_no.json",
+          "fallback_keys": 117
         }
       }
     },
@@ -4709,6 +4815,18 @@
           "name": "Татарча",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/tt_ru.json",
+          "fallback_keys": 124
+        },
+        "zh_tw": {
+          "name": "繁體中文",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/zh_tw.json",
+          "fallback_keys": 124
+        },
+        "se_no": {
+          "name": "Davvisámegiella",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/se_no.json",
           "fallback_keys": 124
         }
       }
@@ -5184,6 +5302,18 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/tt_ru.json",
           "fallback_keys": 99
+        },
+        "zh_tw": {
+          "name": "繁體中文",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/zh_tw.json",
+          "fallback_keys": 99
+        },
+        "se_no": {
+          "name": "Davvisámegiella",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/se_no.json",
+          "fallback_keys": 99
         }
       }
     },
@@ -5656,6 +5786,18 @@
           "name": "Татарча",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/tt_ru.json",
+          "fallback_keys": 22
+        },
+        "zh_tw": {
+          "name": "繁體中文",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/zh_tw.json",
+          "fallback_keys": 22
+        },
+        "se_no": {
+          "name": "Davvisámegiella",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/se_no.json",
           "fallback_keys": 22
         }
       }

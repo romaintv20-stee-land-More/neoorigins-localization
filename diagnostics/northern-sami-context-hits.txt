@@ -1,0 +1,6 @@
+files=0
+values=0
+sami_specific_chars=0
+english_term_values=0
+standard_german_term_values=0
+

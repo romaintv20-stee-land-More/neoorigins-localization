@@ -118,15 +118,16 @@ def main() -> None:
         raise SystemExit(f"English high-visibility UI survived Bavarian refinement: {english_hits[:20]}")
 
     forbidden_fragments = [
-        "zu s",
         "Herkunft durchsuchen",
         "Keine Herkunft gefunden",
         "Wähle einen Ursprung",
     ]
+    truncated_token_re = re.compile(r"\bzu\s+s(?:\s|$|[.,;:!?])", re.I)
     bad = [
         (str(path), key, value)
         for path, key, value in rows
-        if any(fragment.casefold() in value.casefold() for fragment in forbidden_fragments)
+        if truncated_token_re.search(value)
+        or any(fragment.casefold() in value.casefold() for fragment in forbidden_fragments)
     ]
     if bad:
         raise SystemExit(f"Known Bavarian contextual/corruption patterns survived: {bad[:20]}")

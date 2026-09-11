@@ -15,38 +15,30 @@ Reference / integration branch: `release/1.0.0`
 
 ## Completed language baseline
 
-The first **78 selected locales are complete and integrated**.
+The first **79 selected locales are complete and integrated**.
 
 Latest completed languages:
 - **#77 Traditional Chinese — `zh_tw / 繁體中文`**
 - **#78 Northern Sami — `se_no / Davvisámegiella`**
+- **#79 Bavarian — `bar / Boarisch`**
 
-The catalogue and README are at **78 locales**. There are **35 selected locales remaining** for 1.0.0; the authoritative queue and exclusion policy are in `docs/RELEASE_1_0_0_LOCALE_PLAN.md`.
+The catalogue and README are at **79 locales**. There are **34 selected locales remaining** for 1.0.0; the authoritative queue and exclusion policy are in `docs/RELEASE_1_0_0_LOCALE_PLAN.md`.
 
-## Northern Sami final references
+## Bavarian final references
 
-- staging branch: `release/1.0.0-northern-sami`
-- refined source commit: `5b2190d7fc0d259ed8cd80f3ab06dc8575dd89f1`
-- build workflow source commit: `c2a009303ee0eba843f7a21a4269a0ac098e4cc9`
-- build run: `34590740817` — successful on all three targets
-- build jobs:
-  - 1.21.1: `103235214321`
-  - 26.1.x: `103235214660`
-  - 26.2: `103235214603`
-- packaged Northern Sami file counts:
+- staging branch: `release/1.0.0-bavarian`
+- final pre-metadata build source: `f6f7d3c1c845a8e4562467b6e74828608ee53c22`
+- build run: `34628916718` — successful on all three targets
+- packaged Bavarian file counts:
   - 1.21.1: 27
   - 26.1.x: 17
   - 26.2: 17
-- build artifacts:
-  - 1.21.1: `10195568704`
-  - 26.1.x: `10195550884`
-  - 26.2: `10195550128`
-- metadata run/job: `34591141087` / `103236468908` — successful
-- metadata integration also finalized pending Traditional Chinese (`zh_tw`) metadata and moved the project count 76 → 78
-- integration PR: `#15`
-- integration commit on `release/1.0.0`: `af8250dd2a3e122eacdae1812f3089db83637dda`
+- metadata run: `34631900275` — successful
+- final metadata commit: `436af54d19589c3b2c065aa7dd08f1f3fc047546`
+- integration PR: `#16`
+- integration commit on `release/1.0.0`: `575fe95814490e151d15f2964d4ed00a4ac39e10`
 
-Do not redo Northern Sami or Traditional Chinese metadata.
+Do not redo Bavarian, Northern Sami, or Traditional Chinese metadata.
 
 ## Current pinned upstream baseline
 
@@ -59,6 +51,6 @@ The 1.21.1 build also supports the established 10 add-ons; 26.x builds intention
 
 ## Next task
 
-Start and finish **language #79** from `release/1.0.0`. The first locale in the current queue is **Bavarian (`bar`)**.
+Start and finish **language #80 — Brabantian (`brb`)** from the current `release/1.0.0` branch.
 
 Follow the full established flow and integrate only after all audits/build/JAR gates pass. Low German (`nds_de`) remains selected but is explicitly deferred until a translation path that targets Low German rather than silently substituting Standard German is available.

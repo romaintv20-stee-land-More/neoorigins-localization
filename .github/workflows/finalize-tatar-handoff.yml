@@ -23,6 +23,15 @@ jobs:
       - name: Finalize Tatar handoffs
         run: python3 scripts/finalize_tatar_handoff.py
 
+      - name: Normalize handoff EOF
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          for name in ('PROJECT_HANDOFF.txt', 'NEXT_CHAT_HANDOFF.md'):
+              path = Path(name)
+              path.write_text(path.read_text(encoding='utf-8').rstrip() + '\n', encoding='utf-8')
+          PY
+
       - name: Check handoff state
         run: |
           grep -F '76 languages' NEXT_CHAT_HANDOFF.md

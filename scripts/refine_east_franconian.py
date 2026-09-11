@@ -41,6 +41,17 @@ MANUAL_WORDS = {
     "zurück": "zurügg",
 }
 
+# Exact one-label values that should stay clear and stable rather than inherit an
+# unrelated Minecraft UI spelling through the exact-string corpus map.
+PRESERVE_VALUES = {
+    "Phantom",
+    "Standard",
+    "Schließen",
+    "Bearbeiten",
+    "Speichern",
+    "Zurück",
+}
+
 # High-visibility labels where clarity is more important than speculative phonetic
 # projection. These remain German-compatible and avoid obvious bootstrap artefacts.
 KEY_OVERRIDES = {
@@ -137,6 +148,8 @@ def build_safe_corpus_maps():
 
 
 def dialectize(text: str, exact: dict[str, str], learned: dict[str, str]) -> str:
+    if text in PRESERVE_VALUES:
+        return text
     if text in base.MANUAL_VALUES:
         return base.MANUAL_VALUES[text]
     if text in exact:

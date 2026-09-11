@@ -82,8 +82,9 @@ jobs:
 
           root = Path('src/main/resources/resourcepacks/fallback_localizations/assets')
           files = sorted(root.glob('**/lang/se_no.json'))
+          errors = []
           if len(files) != 29:
-              raise SystemExit(f'Expected 29 se_no source files, found {len(files)}')
+              errors.append(f'Expected 29 se_no source files, found {len(files)}')
 
           data = {}
           values = []
@@ -101,8 +102,9 @@ jobs:
           text = '\n'.join(values)
           sami_chars = len(re.findall(r'[ÁáČčĐđŊŋŠšŦŧŽž]', text))
           markers = len(re.findall(r'\b(?:ja|lea|ii|dát|don|son|mii|sii|sáhttá|geavahit|vállje|fápmu|máhttu|vahágat|vuostálasvuohta|dearvvašvuohta|spealli|ulbmil)\b', text, flags=re.I))
+          print(f'Northern Sami totals: files={len(files)}, sami_chars={sami_chars}, markers={markers}')
           if sami_chars < 8500 or markers < 400:
-              raise SystemExit(f'Northern Sami text sanity failed: sami_chars={sami_chars}, markers={markers}')
+              errors.append(f'Northern Sami text sanity failed: sami_chars={sami_chars}, markers={markers}')
 
           expected = {
               'origins.layer.class': 'Ámmát',
@@ -118,13 +120,12 @@ jobs:
           }
           for key, wanted in expected.items():
               if data.get(key) != wanted:
-                  raise SystemExit(f'Context assertion failed for {key}: {data.get(key)!r} != {wanted!r}')
+                  errors.append(f'Context assertion failed for {key}: {data.get(key)!r} != {wanted!r}')
 
-          # Every numbered NeoOrigins hotkey should use one consistent Sami label.
           for key, value in data.items():
               m = re.fullmatch(r'key\.neoorigins\.hotkey\.(\d+)', key)
               if m and value != f'Čujuhus {int(m.group(1)):02d}':
-                  raise SystemExit(f'Hotkey normalization failed for {key}: {value!r}')
+                  errors.append(f'Hotkey normalization failed for {key}: {value!r}')
 
           medieval_text = '\n'.join(medieval)
           banned_medieval = (
@@ -137,17 +138,36 @@ jobs:
           )
           for phrase in banned_medieval:
               if phrase in medieval_text:
-                  raise SystemExit(f'Unrefined Medieval Origins phrase remains: {phrase!r}')
+                  examples = [v for v in medieval if phrase in v][:3]
+                  errors.append(f'Unrefined Medieval Origins phrase remains: {phrase!r}; examples={examples!r}')
 
           ibarn_text = '\n'.join(ibarn)
           for phrase in ('Soul Sorcerer Attributes', 'Sand Person Attributes'):
               if phrase in ibarn_text:
-                  raise SystemExit(f'Unrefined iBarn phrase remains: {phrase!r}')
+                  examples = [v for v in ibarn if phrase in v][:3]
+                  errors.append(f'Unrefined iBarn phrase remains: {phrase!r}; examples={examples!r}')
 
           if data.get('gui.neoorigins.creator.apply') == 'Ohcat' or data.get('gui.neoorigins.mob_creator.apply') == 'Ohcat':
-              raise SystemExit('Apply is still using the apply-for/search sense')
-          if 'Geassevišuvdna' in text or 'Geassegovva' in text:
-              raise SystemExit('Known summer/night mistranslation remains')
+              errors.append('Apply is still using the apply-for/search sense')
+          for phrase in ('Geassevišuvdna', 'Geassegovva'):
+              if phrase in text:
+                  matches = []
+                  for path in files:
+                      obj = json.loads(path.read_text(encoding='utf-8'))
+                      for key, value in obj.items():
+                          if phrase in str(value):
+                              matches.append(f'{path}:{key}={value!r}')
+                              if len(matches) >= 5:
+                                  break
+                      if len(matches) >= 5:
+                          break
+                  errors.append(f'Known summer/night mistranslation remains: {phrase!r}; matches={matches!r}')
+
+          if errors:
+              print('Northern Sami contextual sanity failures:')
+              for error in errors:
+                  print(f' - {error}')
+              raise SystemExit(f'{len(errors)} contextual sanity failure(s)')
 
           print(f'Northern Sami contextual sanity passed: {sami_chars} Sami-specific letters, {markers} lexical markers across {len(files)} files')
           PY

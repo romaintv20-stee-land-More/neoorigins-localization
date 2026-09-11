@@ -6,42 +6,41 @@ Last updated: 2026-09-11
 
 For 1.0.0, keep one useful locale per language when regional variants do not provide a meaningfully distinct localization. Keep genuinely distinct languages/dialects and meaningful standardized variants. Exclude joke/gadget locales, fictional/fantasy languages, historical language forms, and redundant regional/script variants when an already-supported locale sufficiently covers them.
 
-The first **83 selected locales are complete**, through Friulian (`fur_it`). Traditional Chinese (`zh_tw`) is language #77, Northern Sami (`se_no`) is language #78, Bavarian (`bar`) is language #79, Brabantian (`brb`) is language #80, Andalusian (`esan`) is language #81, East Franconian (`fra_de`) is language #82, and Friulian (`fur_it`) is language #83.
+The first **84 selected locales are complete**, through Gallo (`go_fr`). Traditional Chinese (`zh_tw`) is language #77, Northern Sami (`se_no`) is language #78, Bavarian (`bar`) is language #79, Brabantian (`brb`) is language #80, Andalusian (`esan`) is language #81, East Franconian (`fra_de`) is language #82, Friulian (`fur_it`) is language #83, and Gallo (`go_fr`) is language #84.
 
 ## Remaining selected locales
 
-There are **30** selected locales remaining for 1.0.0:
+There are **29** selected locales remaining for 1.0.0:
 
-1. `go_fr` — Gallo
-2. `gv_im` — Manx
-3. `haw_us` — Hawaiian
-4. `io_en` — Ido
-5. `isv` — Interslavic
-6. `kab_kab` — Kabyle
-7. `ksh` — Kölsch
-8. `kw_gb` — Cornish
-9. `li_li` — Limburgish
-10. `lmo` — Lombard
-11. `mi_nz` — Māori
-12. `moh_ca` — Mohawk
-13. `nah` — Nahuatl
-14. `nds_de` — Low German
-15. `nuk` — Nuu-chah-nulth
-16. `oj_ca` — Ojibwe
-17. `ovd` — Elfdalian
-18. `pls` — Ngiiwa
-19. `pt_pt` — European Portuguese
-20. `ry_ua` — Rusyn
-21. `sah_sah` — Yakut
-22. `scn` — Sicilian
-23. `swg` — Swabian
-24. `sxu` — Upper Saxon
-25. `szl` — Silesian
-26. `tok` — Toki Pona
-27. `tzo_mx` — Tzotzil
-28. `vec_it` — Venetian
-29. `vro` — Võro
-30. `yi_de` — Yiddish
+1. `gv_im` — Manx
+2. `haw_us` — Hawaiian
+3. `io_en` — Ido
+4. `isv` — Interslavic
+5. `kab_kab` — Kabyle
+6. `ksh` — Kölsch
+7. `kw_gb` — Cornish
+8. `li_li` — Limburgish
+9. `lmo` — Lombard
+10. `mi_nz` — Māori
+11. `moh_ca` — Mohawk
+12. `nah` — Nahuatl
+13. `nds_de` — Low German
+14. `nuk` — Nuu-chah-nulth
+15. `oj_ca` — Ojibwe
+16. `ovd` — Elfdalian
+17. `pls` — Ngiiwa
+18. `pt_pt` — European Portuguese
+19. `ry_ua` — Rusyn
+20. `sah_sah` — Yakut
+21. `scn` — Sicilian
+22. `swg` — Swabian
+23. `sxu` — Upper Saxon
+24. `szl` — Silesian
+25. `tok` — Toki Pona
+26. `tzo_mx` — Tzotzil
+27. `vec_it` — Venetian
+28. `vro` — Võro
+29. `yi_de` — Yiddish
 
 ## Explicitly not selected from the remaining Minecraft locale inventory
 
@@ -51,31 +50,31 @@ English regional/joke variants and special-purpose locales are excluded. Histori
 
 ## Latest completed work
 
-Language #83 **Friulian (`fur_it`)** is complete and integrated into `release/1.0.0`.
+Language #84 **Gallo (`go_fr`)** is complete and integrated into `release/1.0.0`.
 
-- staging branch: `release/1.0.0-friulian`
-- bootstrap run: `34639651015`
-- bootstrap commit: `cac1127f9e586298e1ddbf71d7d9b93677db2d29` — 29 locale source files generated with full strict coverage
-- source strategy: complete Italian semantic coverage + pinned Minecraft `it_it` ↔ `fur_it` corpus, rejecting unsafe/unaligned pairs and requiring conservative evidence for lexical projection
-- bootstrap corpus metrics: 8,557 aligned entries, 928 rejected pairs, 243 unchanged pairs, 6,874 exact Friulian strings, 272 learned word mappings
-- bootstrap semantic pools: local Italian fallback pool 1,380 distinct keys across 18 files; 1.21.1 official/merged semantic coverage 2,237/3,549; 26.x 2,180/3,560
-- bootstrap dialect sanity: 1,631 Friulian markers across 1,050 marked values
-- contextual QA corrected visible Italian leftovers `< Indietro` and `Chiudi` using corpus-attested Friulian forms `< Indaûr` and `Siere`
-- safe refinement run: `34641007434` — successful; 3,583 values checked, 2 high-visibility values changed, 1,631 dialect markers retained, zero known unsafe UI leftovers
-- safe refinement commit: `f96230d1ecbb023b072f8d5d6d351dee5840ae6f`
-- strict NeoOrigins and 10 add-on audits passed; placeholders, JSON and whitespace passed
-- build run: `34641157601` — 1.21.1, 26.1.x and 26.2 all successful
-- packaged `fur_it` files: 27 on 1.21.1, 17 on 26.1.x, 17 on 26.2
+- staging branch: `release/1.0.0-gallo`
+- successful bootstrap run: `34642158821`
+- bootstrap output commit: `3ef631a8c90842e177b595433405d9dc1cac6099`
+- generated source layout: 16 common NeoOrigins chunks + 1.21.1 delta + shared 26.x deltas + 10 add-ons = 29 `go_fr` source files
+- source strategy: complete French semantic coverage plus the pinned Minecraft `fr_fr` ↔ `go_fr` corpus, with conservative rejection/projection guards and upstream-first pruning
+- contextual QA found the unsafe high-visibility projection `Phantom` → `Sebllan`; all 3 affected Phantom values were restored/protected
+- successful refinement run: `34642867766`
+- refinement commit: `5565fbf7f50670cf28ca0b092c97b2e647b617d1`
+- refinement result: 3,583 generated values checked, 3 unsafe Phantom projections corrected, 459 Gallo lexical markers retained
+- strict NeoOrigins audits passed at 2,296/2,296 keys on 1.21.1 and 2,307/2,307 on both 26.x targets; all 10 compatible 1.21.1 add-on audits passed; overlap and placeholder gates are clean
+- build workflow commit: `34ed82f78e024f1c7901f695f5e2a6612d40bbe9`
+- build run: `34643042947` — 1.21.1, 26.1.x and 26.2 all successful
+- packaged `go_fr` files: 27 on 1.21.1, 17 on 26.1.x, 17 on 26.2
 - JAR isolation gates passed for add-ons and version-specific deltas
-- metadata run: `34641686116` — successful
-- final branch metadata commit: `2c0c753db59026fea6838db352dfcc406da8cd5a`
-- native catalog name: `Furlan`
-- PR: `#20`
-- integration commit: `848057a62b4eccb0a6f0a176a2f8a82b89c7014c`
-- catalog/README count: 83 locales
+- metadata run: `34643884667` — successful
+- final branch metadata commit: `593402eb323d5b33b14c0b2f5dd1bab846840467`
+- metadata final state: 84 supported locales, `go_fr` present across all 11 projects, native catalog name `Galo`, fallback namespaces `gallo_common_glob = neoorigins_go_common_*` and `gallo_mc_1_21_1 = neoorigins_go_121`
+- PR: `#21`
+- integration commit: `83a697348e1b8d15741cbe6bb7fe53bd8dc0445c`
+- catalog/README count: 84 locales
 
 ## Next work
 
-Start and finish **language #84: Gallo (`go_fr`)** from the current `release/1.0.0` integration branch.
+Start and finish **language #85: Manx (`gv_im`)** from the current `release/1.0.0` integration branch.
 
 Low German (`nds_de`) remains selected, but its bootstrap is deferred until a translation path that actually targets Low German is available; the current Google-based bootstrap must not silently substitute Standard German.

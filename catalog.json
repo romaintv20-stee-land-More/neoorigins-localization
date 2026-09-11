@@ -11,7 +11,7 @@
     ],
     "loader": "NeoForge",
     "localization_mode": "low_priority_fallback",
-    "supported_locale_count": 82,
+    "supported_locale_count": 83,
     "builds": {
       "1.21.1": {
         "version": "0.9.0-beta+1.21.1",
@@ -234,7 +234,9 @@
           "andalusian_common_glob": "neoorigins_esan_common_*",
           "andalusian_mc_1_21_1": "neoorigins_esan_121",
           "east_franconian_common_glob": "neoorigins_fra_common_*",
-          "east_franconian_mc_1_21_1": "neoorigins_fra_121"
+          "east_franconian_mc_1_21_1": "neoorigins_fra_121",
+          "friulian_common_glob": "neoorigins_fur_common_*",
+          "friulian_mc_1_21_1": "neoorigins_fur_121"
         },
         "note": "NeoOrigins 2.2.26 est audité séparément sur les trois cibles. neoorigins_226 est commun aux trois builds ; neoorigins_26_1 est réservé à 26.1.x ; neoorigins_26_2 est réservé à 26.2. Les trois clés reward.neoorigins.loot_pool* restent dans les fallbacks complets pour 1.21.1 et sont inoffensives sur 26.x.",
         "baseline_audit_2_2_27": {
@@ -269,7 +271,7 @@
             }
           }
         },
-        "coverage_note": "NeoOrigins 2.2.27 has the same en_us localization payload as 2.2.26 on all three targets. Historical gaps in it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz and hu_hu were recovered before language 59. All 82 currently supported locales are complete against 2.2.27 on their target builds.",
+        "coverage_note": "NeoOrigins 2.2.27 has the same en_us localization payload as 2.2.26 on all three targets. Historical gaps in it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz and hu_hu were recovered before language 59. All 83 currently supported locales are complete against 2.2.27 on their target builds.",
         "legacy_gap_recovery_completed": true
       },
       "languages": {
@@ -1010,6 +1012,15 @@
             "26.1.x",
             "26.2"
           ]
+        },
+        "fur_it": {
+          "name": "Furlan",
+          "status": "supported",
+          "targets": [
+            "1.21.1",
+            "26.1.x",
+            "26.2"
+          ]
         }
       }
     },
@@ -1509,6 +1520,12 @@
           "name": "Fränggisch",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/fra_de.json",
+          "fallback_keys": 401
+        },
+        "fur_it": {
+          "name": "Furlan",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/fur_it.json",
           "fallback_keys": 401
         }
       }
@@ -2013,6 +2030,12 @@
           "name": "Fränggisch",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/fra_de.json",
+          "fallback_keys": 69
+        },
+        "fur_it": {
+          "name": "Furlan",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/fur_it.json",
           "fallback_keys": 69
         }
       }
@@ -2520,6 +2543,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/fra_de.json",
           "fallback_keys": 240
+        },
+        "fur_it": {
+          "name": "Furlan",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/fur_it.json",
+          "fallback_keys": 240
         }
       }
     },
@@ -3025,6 +3054,12 @@
           "name": "Fränggisch",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/fra_de.json",
+          "fallback_keys": 65
+        },
+        "fur_it": {
+          "name": "Furlan",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/fur_it.json",
           "fallback_keys": 65
         }
       }
@@ -3533,6 +3568,12 @@
           "name": "Fränggisch",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/fra_de.json",
+          "fallback_keys": 39
+        },
+        "fur_it": {
+          "name": "Furlan",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/fur_it.json",
           "fallback_keys": 39
         }
       }
@@ -4046,6 +4087,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/fra_de.json",
           "fallback_keys": 77
+        },
+        "fur_it": {
+          "name": "Furlan",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/fur_it.json",
+          "fallback_keys": 77
         }
       }
     },
@@ -4555,6 +4602,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/fra_de.json",
           "fallback_keys": 117
+        },
+        "fur_it": {
+          "name": "Furlan",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/fur_it.json",
+          "fallback_keys": 117
         }
       }
     },
@@ -5063,6 +5116,12 @@
           "name": "Fränggisch",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/fra_de.json",
+          "fallback_keys": 124
+        },
+        "fur_it": {
+          "name": "Furlan",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/fur_it.json",
           "fallback_keys": 124
         }
       }
@@ -5574,6 +5633,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/fra_de.json",
           "fallback_keys": 99
+        },
+        "fur_it": {
+          "name": "Furlan",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/fur_it.json",
+          "fallback_keys": 99
         }
       }
     },
@@ -6082,6 +6147,12 @@
           "name": "Fränggisch",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/fra_de.json",
+          "fallback_keys": 22
+        },
+        "fur_it": {
+          "name": "Furlan",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/fur_it.json",
           "fallback_keys": 22
         }
       }

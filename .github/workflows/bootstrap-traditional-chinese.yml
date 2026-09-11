@@ -1,0 +1,57 @@
+name: Bootstrap Traditional Chinese localization
+
+on:
+  push:
+    branches:
+      - release/0.10.0-traditional-chinese
+    paths:
+      - scripts/bootstrap_traditional_chinese.py
+      - scripts/run_traditional_chinese_bootstrap.py
+      - .github/workflows/bootstrap-traditional-chinese.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.10.0-traditional-chinese
+
+      - name: Generate and strictly audit Traditional Chinese fallback
+        run: python3 scripts/run_traditional_chinese_bootstrap.py
+
+      - name: Restore temporary audit-script changes
+        if: always()
+        run: git checkout HEAD -- scripts/audit_*_upstream.py
+
+      - name: Upload Traditional Chinese audit reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: traditional-chinese-localization-audits-${{ github.sha }}
+          path: |
+            build/zhtw-discovery-*
+            build/zhtw-audit-*
+            build/*-upstream-audit
+          if-no-files-found: warn
+
+      - name: Commit validated Traditional Chinese translations
+        if: success()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name 'zh_tw.json' -print0 | xargs -0 -r git add
+          git add build.gradle
+          if git diff --cached --quiet; then
+            echo 'No Traditional Chinese translation changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Add Traditional Chinese localization fallback'
+          git fetch origin release/0.10.0-traditional-chinese
+          git rebase origin/release/0.10.0-traditional-chinese
+          git push origin HEAD:release/0.10.0-traditional-chinese

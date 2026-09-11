@@ -1,6 +1,6 @@
 NEOORIGINS LOCALIZATION - PROJECT HANDOFF
 =========================================
-Last updated: 2026-09-10
+Last updated: 2026-09-11
 Repository: romaintv20-stee-land-More/neoorigins-localization
 Current development branch: release/0.9.0-beta
 
@@ -38,8 +38,8 @@ Mob Origins is NOT selected for 0.9.0. Earlier Mob Origins WIP inherited from a 
 0.8.0 Beta shipped with 17 locales:
 fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se.
 
-0.9.0 development currently has 74 locales:
-fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se, da_dk, fi_fi, no_no, ro_ro, el_gr, bg_bg, vi_vn, ar_sa, he_il, th_th, sk_sk, sl_si, hr_hr, sr_sp, sr_cs, ca_es, et_ee, lt_lt, lv_lv, eu_es, gl_es, hi_in, nn_no, fa_ir, is_is, ms_my, fil_ph, cy_gb, ga_ie, gd_gb, hy_am, ka_ge, kk_kz, mn_mn, mk_mk, be_by, fo_fo, af_za, az_az, kn_in, cv_cu, uz_uz, mt_mt, lb_lu, so_so, eo_uy, ky_kg, ta_in, sq_al, lo_la, bs_ba, ba_ru, br_fr, ast_es, fy_nl, oc_fr, ig_ng.
+0.9.0 development currently has 75 locales:
+fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz, hu_hu, ja_jp, ko_kr, uk_ua, id_id, sv_se, da_dk, fi_fi, no_no, ro_ro, el_gr, bg_bg, vi_vn, ar_sa, he_il, th_th, sk_sk, sl_si, hr_hr, sr_sp, sr_cs, ca_es, et_ee, lt_lt, lv_lv, eu_es, gl_es, hi_in, nn_no, fa_ir, is_is, ms_my, fil_ph, cy_gb, ga_ie, gd_gb, hy_am, ka_ge, kk_kz, mn_mn, mk_mk, be_by, fo_fo, af_za, az_az, kn_in, cv_cu, uz_uz, mt_mt, lb_lu, so_so, eo_uy, ky_kg, ta_in, sq_al, lo_la, bs_ba, ba_ru, br_fr, ast_es, fy_nl, oc_fr, ig_ng, yo_ng.
 
 Expansion order so far:
 - 18: Danish / da_dk
@@ -99,8 +99,9 @@ Expansion order so far:
 - 72: West Frisian / fy_nl
 - 73: Occitan / oc_fr
 - 74: Igbo / ig_ng
+- 75: Yoruba / yo_ng
 
-SEVENTY-FOUR IS NOT THE FINAL TARGET. Continue expanding toward essentially all useful Minecraft languages unless Romain changes scope.
+SEVENTY-FIVE IS NOT THE FINAL TARGET. Continue expanding toward essentially all useful Minecraft languages unless Romain changes scope.
 
 Norwegian Nynorsk (nn_no) is intentionally NOT merged with Bokmal. It is a distinct written standard and remains a valid future locale.
 
@@ -3102,8 +3103,8 @@ NOTE ABOUT FAILED GOVERNANCE WORKFLOW:
 - PROJECT_HANDOFF.txt = cross-chat decisions, current roadmap, latest operational status
 
 As of this update:
-- catalog.json says 74 supported locales
-- README.md says 74 languages and includes Occitan / oc_fr plus Igbo / ig_ng.
+- catalog.json says 75 supported locales
+- README.md says 75 languages and includes Occitan / oc_fr, Igbo / ig_ng, and Yoruba / yo_ng.
 - Romanian, Greek, Bulgarian, Vietnamese, Arabic, Hebrew, Thai, Slovak, Slovenian, Croatian, Serbian Cyrillic, Serbian Latin, Catalan, Estonian, Lithuanian, Latvian, Basque, Galician, Hindi, Norwegian Nynorsk, Persian, Icelandic, Malay, Filipino, Welsh, Irish, Scottish Gaelic, Armenian, Georgian, Kazakh, Mongolian, Macedonian, Belarusian, Faroese, Afrikaans, Azerbaijani and Kannada have passed final three-target packaging validation
 
 49. QUALITY / QA CAVEAT
@@ -4587,3 +4588,90 @@ Integration rule:
 NEXT LANGUAGE
 -------------
 Language #75 is the next expansion task. Re-evaluate the current Minecraft Java locale inventory, choose a useful distinct locale not already in the 74-locale set, apply the regional-variant deduplication rule, then repeat the complete upstream audit, translation, contextual QA, builds, JAR inspection, metadata, handoff, and non-forced fast-forward flow.
+
+YORUBA / LANGUAGE #75 FINAL STATUS
+-----------------------------------
+Yoruba locale: yo_ng / Yorùbá.
+Status: COMPLETE FOR THE CURRENT 0.9.0 DEVELOPMENT BASELINE: GENERATED, STRICTLY AUDITED, CONTEXT-REFINED, BUILT, PACKAGING-VERIFIED, DOCUMENTED, AND COMMITTED.
+
+Selection / staging:
+- staging branch: release/0.9.0-yoruba
+- exact beta base used: da37f6628fc54a9bd55909211e48b293a9a48fcd
+- locale: yo_ng / Yorùbá
+- selected from current Minecraft Java locale data; Yoruba is a distinct language and has no regional-dedup conflict with the existing locale set.
+- automated/generative translation assistance was used; this is not a claim of full native-speaker review.
+
+Bootstrap / upstream audit:
+- final successful workflow run 34567349486 / job 103162079968: SUCCESS
+- validated translation commit: 0ce252fc3102d02db94925c85c789636ae83f7fc
+- upstream official Yoruba strings found: 0 for all three NeoOrigins targets and 0 for all 10 supported add-ons at the pinned references
+- 29 yo_ng.json source files generated
+- bootstrap sanity: 91,064 Latin-script characters, 9,288 Yoruba orthographic signals, 5,586 lexical markers
+- bootstrap audit artifact: 10186637364; size 291,553 bytes; SHA256 9dbbbc6c9161d278ff7cede7cd1dc2d00f3cf5ede82ef4f752451d612b064f42
+- one internal bootstrap token transport case fell back safely during generation; final strict placeholder audits passed with zero errors.
+
+NeoOrigins coverage against the pinned 2.2.27 baselines:
+- 1.21.1: 2,296 / 2,296
+- 26.1.x: 2,307 / 2,307
+- 26.2: 2,307 / 2,307
+- missing keys: 0
+- overlap errors: 0
+- placeholder errors: 0
+
+1.21.1 add-on coverage:
+- Medieval Origins Revival: 401 / 401
+- ibarn's quartet origins addon: 69 / 69
+- Origins Fantasy: 240 / 240
+- Origins: Backgrounds: 65 / 65
+- Origins: More Backgrounds: 44 / 44 effective
+- Origins: Backgrounds ISS: 79 / 79 effective
+- Origins Furries: 117 / 117
+- Origins: Classes Extended: 124 / 124
+- Origins: Classes ISS: 99 / 99
+- Origin Architect: 22 / 22
+- all strict add-on audits passed with missing=0, overlap=0 and placeholder errors=0.
+
+Localization architecture:
+- 16 Yoruba common namespaces: neoorigins_yo_common_01 through neoorigins_yo_common_16
+- 1.21.1 delta: neoorigins_yo_121
+- Yoruba entries in neoorigins_26_1 and neoorigins_26_2
+- 10 Yoruba add-on fallback files on 1.21.1
+- 29 yo_ng.json source files total
+- Gradle switch: include_yoruba_121_translations / includeYoruba121Translations
+
+Contextual QA / refinement:
+- workflow run 34568292817 / job 103164814413: SUCCESS
+- refinement trigger/source commit: 214170886e4c9a0229b3fe784fe3300a6bd6b6ae
+- refinement commit: 734f13fe855a87c191ef56a3bc980a006e64f977
+- 80 values refined across 18 files
+- 2 sentence-spacing repairs
+- JSON validation and git diff --check passed
+- final sanity: 91,057 Latin-script characters, 9,374 Yoruba orthographic signals, 5,751 lexical markers
+- high-visibility UI terminology was context-refined, while Origin and NeoOrigins branding remains canonical.
+
+Final builds and JAR inspection:
+- workflow: .github/workflows/build-0.9.0-yoruba-push.yml
+- final build source SHA: b9d899e821c60551cbc1155c8f372f6721be9a92
+- successful run: 34568924469
+- 1.21.1 job 103166661972: SUCCESS; 27 Yoruba files packaged
+- 26.1.x job 103166662064: SUCCESS; 17 Yoruba files packaged
+- 26.2 job 103166662118: SUCCESS; 17 Yoruba files packaged
+- each build passed automated JAR-content inspection including all 16 common namespaces, required target delta, exact file count, and wrong-version/add-on exclusion checks.
+- 1.21.1 artifact: 10187053675; size 6,037,615 bytes; SHA256 c438c21a1e60e3e46861bbf2cb8e07dffef3f3d331789a78fae687c410263476
+- 26.1.x artifact: 10187049368; size 3,350,206 bytes; SHA256 a3082238049d9b9e28b898e82231b691a08af7a369a50d01069bac524b952bd8
+- 26.2 artifact: 10187050767; size 3,350,300 bytes; SHA256 87b91374434de54a3a96088a6b603d49e118313c67232f9666c4d4b5a97a2c96
+
+Metadata:
+- metadata workflow run 34568960023 / job 103166767297: SUCCESS
+- metadata trigger/source commit: 18403650d97461dce4161001423f281b0b01986b
+- metadata commit: 2fd590a29d9fb3ca84de6c221d3b7454c2a70a97
+- catalog.json now declares 75 supported locales and includes yo_ng / Yoruba for NeoOrigins plus all 10 supported add-ons
+- CATALOG.md and README.md document Yoruba and the exact 2,296 / 2,307 / 2,307 core coverage.
+
+Integration rule:
+- release/0.9.0-beta must be fast-forwarded to the final release/0.9.0-yoruba HEAD with force=false only after this handoff validation succeeds and compare shows behind_by=0 with the exact old beta merge base.
+- main remains intentionally untouched.
+
+NEXT LANGUAGE
+-------------
+Language #76 is the next expansion task. Re-evaluate the current Minecraft Java locale inventory, choose a useful distinct locale not already in the 75-locale set, apply the regional-variant deduplication rule, then repeat the complete upstream audit, translation, contextual QA, builds, JAR inspection, metadata, handoff, and non-forced fast-forward flow.

@@ -90,8 +90,10 @@ jobs:
 
           data = {}
           values = []
+          documents = []
           for path in files:
               obj = json.loads(path.read_text(encoding='utf-8'))
+              documents.append((path, obj))
               data.update(obj)
               values.extend(str(value) for value in obj.values())
           text = '\n'.join(values)
@@ -127,6 +129,12 @@ jobs:
           )
           remaining = [phrase for phrase in bad_phrases if phrase in text]
           if remaining:
+              print('Known out-of-context translation hits:')
+              for phrase in remaining:
+                  for path, obj in documents:
+                      for key, value in obj.items():
+                          if phrase in str(value):
+                              print(f'  {phrase} | {path} | {key} = {value}')
               raise SystemExit(f'Known out-of-context machine translations remain: {remaining}')
 
           han = sum('\u3400' <= char <= '\u9fff' for char in text)

@@ -18,11 +18,10 @@ import bootstrap_gallo as base
 ASSETS = base.ASSETS
 
 # `Phantom` is a NeoOrigins origin/proper name and must not be projected through an
-# unrelated corpus word mapping. The bootstrap produced `Sebllan`, which is therefore
-# explicitly reverted to the canonical technical/proper name.
-KEY_OVERRIDES = {
-    "origins.neoorigins.phantom.name": "Phantom",
-}
+# unrelated corpus word mapping. The bootstrap produced `Sebllan`. Only exact
+# `Sebllan` values on keys explicitly referring to `phantom` are rewritten.
+PHANTOM_BAD_VALUE = "Sebllan"
+PHANTOM_SAFE_VALUE = "Phantom"
 
 FORBIDDEN_PATTERNS = (
     re.compile(r"^Sebllan$", re.I),
@@ -48,14 +47,12 @@ def main() -> None:
     for path in files:
         data = read_json(path)
         dirty = False
-        for key, expected in KEY_OVERRIDES.items():
-            if key not in data:
-                continue
-            source_value = str(data[key])
-            if base.placeholder_signature(source_value) != base.placeholder_signature(expected):
-                raise SystemExit(f"Placeholder mismatch for override {key}: {source_value!r} -> {expected!r}")
-            if source_value != expected:
-                data[key] = expected
+        for key, raw_value in list(data.items()):
+            value = str(raw_value)
+            if "phantom" in key.casefold() and value.casefold() == PHANTOM_BAD_VALUE.casefold():
+                if base.placeholder_signature(value) != base.placeholder_signature(PHANTOM_SAFE_VALUE):
+                    raise SystemExit(f"Placeholder mismatch for Phantom correction {key}: {value!r}")
+                data[key] = PHANTOM_SAFE_VALUE
                 changed += 1
                 dirty = True
         if dirty:
@@ -75,6 +72,7 @@ def main() -> None:
 
     expected_values = {
         "origins.neoorigins.phantom.name": "Phantom",
+        "neoorigins.configuration.origins.phantom": "Phantom",
         "gui.neoorigins.button.back": "< Retour",
         "gui.neoorigins.info.close": "Fermer",
         "gui.neoorigins.creator.save": "Saover",
@@ -89,7 +87,7 @@ def main() -> None:
 
     print(
         f"Gallo conservative refinement passed: checked {total} values across {len(files)} files; "
-        f"changed {changed} high-visibility values; {marker_count} dialect markers; "
+        f"changed {changed} unsafe Phantom values; {marker_count} dialect markers; "
         "0 known unsafe visible projections."
     )
 

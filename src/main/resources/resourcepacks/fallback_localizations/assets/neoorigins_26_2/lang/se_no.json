@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Rusttet maid ráhkadat oažžu lassi iešvuođaid — gierdavašvuođa, vahága dahje ruvkedoaimma jođánisvuođa.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Oažžu duppal XP go ráhkada biepmu duhpátrusttegis.",
+  "neoorigins.configuration.title": "NeoOrigins konfigurašuvdna",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Speallanvuohki",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "NeoOrigins speallanásahusat",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Hálddašeaddji ja lobit",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "NeoOrigins hálddašanásahusat",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Fápmu nuppástuhttimat",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "Neoorigins fápmu badjelgeahččá",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Álgoálggut ja luohkát",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "Neoorigins álgo- ja luohkkáválljemat",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Klieantačájáhus",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "NeoOrigins klieantta njuolggadusat",
+  "neoorigins.configuration.show_cooldown_countdown": "Čájet cooldown-lohkama",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Cooldown-lohkan-opasitehta (%)",
+  "neoorigins.configuration.hud_ability_display": "Máhttu HUD čájehanmodealla",
+  "neoorigins.configuration.always_show_ability_icons": "Čájet álo máhttoikonaid"
+}

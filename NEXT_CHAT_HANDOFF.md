@@ -15,33 +15,35 @@ Reference / integration branch: `release/1.0.0`
 
 ## Completed language baseline
 
-The first **80 selected locales are complete and integrated**.
+The first **81 selected locales are complete and integrated**.
 
 Latest completed languages:
 - **#77 Traditional Chinese — `zh_tw / 繁體中文`**
 - **#78 Northern Sami — `se_no / Davvisámegiella`**
 - **#79 Bavarian — `bar / Boarisch`**
 - **#80 Brabantian — `brb / Braobans`**
+- **#81 Andalusian — `esan / Andalûh`**
 
-The catalogue and README are at **80 locales**. There are **33 selected locales remaining** for 1.0.0; the authoritative queue and exclusion policy are in `docs/RELEASE_1_0_0_LOCALE_PLAN.md`.
+The catalogue and README are at **81 locales**. There are **32 selected locales remaining** for 1.0.0; the authoritative queue and exclusion policy are in `docs/RELEASE_1_0_0_LOCALE_PLAN.md`.
 
-## Brabantian final references
+## Andalusian final references
 
-- staging branch: `release/1.0.0-brabantian`
-- validated build source: `7bd19fa2bebbffd8638333e1845fb57cef653c88`
-- build run: `34634057893` — successful on all three targets
-- packaged Brabantian file counts:
+- staging branch: `release/1.0.0-andalusian`
+- safe refinement commit: `d807b5308b08ea9d1d83f882caa2288a35057172`
+- build run: `34635563461` — successful on all three targets
+- packaged Andalusian file counts:
   - 1.21.1: 27
   - 26.1.x: 17
   - 26.2: 17
-- bootstrap source strategy: complete local Dutch semantic coverage + pinned Minecraft `nl_nl` ↔ `brb` corpus, with contaminated/suspicious pairs filtered and singleton learned transformations rejected
-- contextual refinements: `Human` → `Mens`; edit UI label → `Beweireke`
-- metadata run: `34634337318` — successful
-- final metadata commit: `2dc089e9c9330cb923a0128e1fdc38da53858e71`
-- integration PR: `#17`
-- integration commit on `release/1.0.0`: `7c358f40c6b55af42d9ac1d17c1f8a774e4ce05a`
+- source strategy: complete Spanish semantic coverage + pinned Minecraft `es_es` ↔ `esan` corpus
+- contextual QA caught a false positional mapping (`daño` → `de`); refinement was regenerated with isolated one-word-to-one-word diff alignment, repeated evidence and explicit semantic guards while preserving safe exact corpus phrases
+- strict NeoOrigins audits and all 10 compatible 1.21.1 add-on audits passed; placeholders, JSON and whitespace passed
+- metadata run: `34635816552` — successful
+- final metadata commit: `c9d1f7aec67e145e90559d79051516fa458a5bf2`
+- integration PR: `#18`
+- integration commit on `release/1.0.0`: `0876b310cacf29e429308c84abcdbd0b11e5b8b9`
 
-Do not redo Brabantian, Bavarian, Northern Sami, or Traditional Chinese metadata.
+Do not redo Andalusian, Brabantian, Bavarian, Northern Sami, or Traditional Chinese metadata.
 
 ## Current pinned upstream baseline
 
@@ -54,6 +56,6 @@ The 1.21.1 build also supports the established 10 add-ons; 26.x builds intention
 
 ## Next task
 
-Start and finish **language #81 — Andalusian (`esan`)** from the current `release/1.0.0` branch.
+Start and finish **language #82 — East Franconian (`fra_de`)** from the current `release/1.0.0` branch.
 
 Follow the full established flow and integrate only after all audits/build/JAR gates pass. Low German (`nds_de`) remains selected but is explicitly deferred until a translation path that targets Low German rather than silently substituting Standard German is available.

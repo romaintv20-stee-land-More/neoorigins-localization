@@ -21,6 +21,7 @@ jobs:
         with:
           ref: release/1.0.0-northern-sami
 
+      # This report-only pass is intentionally re-runnable after bootstrap/refinement.
       - name: Record suspicious context hits
         run: |
           python3 - <<'PY'

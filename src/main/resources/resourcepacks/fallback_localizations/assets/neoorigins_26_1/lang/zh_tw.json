@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "你製作的裝備會獲得獎勵屬性——韌性、傷害或採礦速度。",
+  "power.neoorigins.class_cook_smoker_xp.description": "在煙燻爐中烹調食物可獲得雙倍經驗值。",
+  "neoorigins.configuration.title": "NeoOrigins 配置",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "遊戲玩法",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "NeoOrigins 遊戲設置",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "管理和權限",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "NeoOrigins 管理設置",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "電源覆蓋",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "NeoOrigins 電源覆蓋",
+  "neoorigins.configuration.section.neoorigins.content.toml": "起源與類別",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "NeoOrigins 起源與類別切換",
+  "neoorigins.configuration.section.neoorigins.client.toml": "客戶端展示",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "NeoOrigins 用戶端設置",
+  "neoorigins.configuration.show_cooldown_countdown": "顯示冷卻倒數計時",
+  "neoorigins.configuration.cooldown_countdown_opacity": "冷卻倒數不透明度 (%)",
+  "neoorigins.configuration.hud_ability_display": "能力HUD顯示模式",
+  "neoorigins.configuration.always_show_ability_icons": "始終顯示能力圖標"
+}

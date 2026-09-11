@@ -1,0 +1,131 @@
+name: Refine Yoruba localization
+
+on:
+  push:
+    branches:
+      - release/0.9.0-yoruba
+    paths:
+      - 'src/main/resources/resourcepacks/fallback_localizations/**/yo_ng.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-yoruba
+
+      - name: Restrict add-on audits to Yoruba
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          scripts = [
+              'scripts/audit_medievalorigins_upstream.py',
+              'scripts/audit_ibarnorigins_upstream.py',
+              'scripts/audit_origins_fantasy_upstream.py',
+              'scripts/audit_origins_backgrounds_upstream.py',
+              'scripts/audit_origins_more_backgrounds_upstream.py',
+              'scripts/audit_origins_backgrounds_iss_upstream.py',
+              'scripts/audit_origins_furries_upstream.py',
+              'scripts/audit_origins_classes_extended_upstream.py',
+              'scripts/audit_origins_classes_iss_upstream.py',
+              'scripts/audit_origin_architect_upstream.py',
+          ]
+          for filename in scripts:
+              path = Path(filename)
+              text = path.read_text(encoding='utf-8')
+              updated, count = re.subn(r'^LOCALES\s*=.*$', 'LOCALES = ("yo_ng",)', text, count=1, flags=re.M)
+              if count == 0:
+                  updated, count = re.subn(r'^DEFAULT_LOCALES\s*=.*$', 'DEFAULT_LOCALES = ("yo_ng",)', text, count=1, flags=re.M)
+              if count != 1:
+                  raise SystemExit(f'Could not patch locale list in {filename}')
+              path.write_text(updated, encoding='utf-8')
+          PY
+
+      - name: Refine Yoruba localization context
+        run: python3 scripts/refine_yoruba.py
+
+      - name: Strict audit Yoruba NeoOrigins coverage
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref af467a3bc118f6bbc0970d68f7e03fa631d7e6f2 --output build/yo-refine-mc-1.21.1 --locale yo_ng --fallback-namespace-glob 'neoorigins_yo_common_*' --extra-namespace neoorigins_yo_121 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref aa207ef14cf3b938e28b4081162701953957c1d5 --output build/yo-refine-mc-26.1 --locale yo_ng --fallback-namespace-glob 'neoorigins_yo_common_*' --extra-namespace neoorigins_26_1 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 511cadcafe3027d2a56b4448652ec9b74e2f3b07 --output build/yo-refine-mc-26.2 --locale yo_ng --fallback-namespace-glob 'neoorigins_yo_common_*' --extra-namespace neoorigins_26_2 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Strict audit Yoruba add-on coverage
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_fantasy_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_furries_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_extended_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origin_architect_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Validate JSON
+        run: python3 scripts/validate.py
+
+      - name: Yoruba contextual sanity
+        run: |
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+          root = Path('src/main/resources/resourcepacks/fallback_localizations/assets')
+          files = list(root.glob('**/lang/yo_ng.json'))
+          if len(files) != 29:
+              raise SystemExit(f'Expected 29 yo_ng source files, found {len(files)}')
+          data = {}
+          values = []
+          for p in files:
+              obj = json.loads(p.read_text(encoding='utf-8'))
+              data.update(obj)
+              values.extend(str(v) for v in obj.values())
+          text = '\n'.join(values)
+          latin = len(re.findall(r'[A-Za-zÀ-ÿẸẹỌọṢṣ]', text))
+          signals = len(re.findall(r'(?:[ẸẹỌọṢṣ]|[ÀÁÈÉÌÍÒÓÙÚàáèéìíòóùú]|gb)', text, flags=re.I))
+          markers = len(re.findall(r"\b(?:ati|ti|ni|lati|fun|ninu|eyi|rẹ|ṣe|awọn|kan|pẹlu|jẹ|agbara|iyara|aye|ede|ere|nigbati|le|ko|si|lọwọ|ọkan|ọna|naa|yan|kilasi|alẹ|iran)\b", text, flags=re.I))
+          if latin < 70000 or signals < 1000 or markers < 500:
+              raise SystemExit(f'Yoruba text sanity failed: latin={latin}, signals={signals}, markers={markers}')
+          expected = {
+              'key.category.neoorigins.neoorigins': 'NeoOrigins',
+              'screen.neoorigins.choose_origin': 'Yan Origin',
+              'neoorigins.night_vision.on': 'Alẹ Iran TAN',
+              'key.neoorigins.class_skill': 'Ọgbọn kilasi',
+          }
+          for key, value in expected.items():
+              if data.get(key) != value:
+                  raise SystemExit(f'Context assertion failed for {key}: {data.get(key)!r}')
+          if 'Neorigins' in text or 'Neoorigins' in text:
+              raise SystemExit('Non-canonical NeoOrigins branding remains')
+          print(f'Yoruba contextual sanity passed: {latin} Latin chars, {signals} orthographic signals, {markers} lexical markers across {len(files)} files')
+          PY
+
+      - name: Check whitespace
+        run: git diff --check
+
+      - name: Restore temporary audit-script changes
+        if: always()
+        run: git checkout HEAD -- scripts/audit_*_upstream.py
+
+      - name: Commit Yoruba refinement
+        if: success()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name 'yo_ng.json' -print0 | xargs -0 -r git add
+          if git diff --cached --quiet; then
+            echo 'No Yoruba refinement changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Refine Yoruba localization context'
+          git fetch origin release/0.9.0-yoruba
+          git rebase origin/release/0.9.0-yoruba
+          git push origin HEAD:release/0.9.0-yoruba

@@ -1,0 +1,48 @@
+name: Finalize Tatar handoff
+
+on:
+  push:
+    branches:
+      - release/0.9.0-tatar
+    paths:
+      - '.github/workflows/finalize-tatar-handoff.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-tatar
+
+      - name: Finalize Tatar handoffs
+        run: python3 scripts/finalize_tatar_handoff.py
+
+      - name: Check handoff state
+        run: |
+          grep -F '76 languages' NEXT_CHAT_HANDOFF.md
+          grep -F '#76 Tatar' NEXT_CHAT_HANDOFF.md
+          grep -F '#77' NEXT_CHAT_HANDOFF.md
+          grep -F '0.9.0 development currently has 76 locales:' PROJECT_HANDOFF.txt
+          grep -F '76. TATAR 0.9.0 STATUS' PROJECT_HANDOFF.txt
+          grep -F 'NEXT LANGUAGE:' PROJECT_HANDOFF.txt
+          git diff --check
+
+      - name: Commit Tatar handoffs
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add PROJECT_HANDOFF.txt NEXT_CHAT_HANDOFF.md
+          if git diff --cached --quiet; then
+            echo 'No Tatar handoff changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Finalize Tatar localization handoff'
+          git fetch origin release/0.9.0-tatar
+          git rebase origin/release/0.9.0-tatar
+          git push origin HEAD:release/0.9.0-tatar

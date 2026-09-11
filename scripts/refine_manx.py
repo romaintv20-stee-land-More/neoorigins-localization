@@ -5,8 +5,9 @@ Contextual QA showed that projecting isolated corpus words into otherwise-Englis
 sentences creates unsafe hybrids. Google Translate has direct Manx support, so this
 pass translates the complete English semantic source to Manx while keeping the pinned
 Minecraft en_us -> gv_im corpus as the preferred source for exact whole-string matches.
-Technical tokens and placeholders are protected and validated. This is automated
-translation assistance, not native-speaker review.
+Technical tokens and placeholders are protected and validated. Network translations
+are grouped into small validated batches to avoid thousands of individual requests.
+This is automated translation assistance, not native-speaker review.
 """
 from __future__ import annotations
 
@@ -30,6 +31,7 @@ GOOGLE_PROTECT_RE = re.compile(
     r"%(?:\d+\$)?[sdif]|§.|\\n|\n|\{[^{}]+\}|<[^<>]+>|"
     r"\b(?:NeoOrigins|Origin Architect|HUD|JSON|XP|HP|NeoForge|Minecraft|CurseForge)\b"
 )
+BATCH_SEPARATOR_RE = re.compile(r"\s*ZXQSEP(\d{4})QXZ\s*")
 
 FORBIDDEN_MIXED_PATTERNS = (
     re.compile(r"\bAquatic Bieauid\b", re.I),
@@ -72,8 +74,7 @@ def restore_google_tokens(text: str, tokens: list[str]) -> str:
     return text
 
 
-def google_translate_one(source: str) -> str:
-    masked, tokens = protect_for_google(source)
+def google_request(masked: str) -> str:
     params = urlencode(
         {
             "client": "gtx",
@@ -87,7 +88,7 @@ def google_translate_one(source: str) -> str:
     )
     url = f"{GOOGLE_ENDPOINT}?{params}"
     last_error: Exception | None = None
-    for attempt in range(6):
+    for attempt in range(5):
         try:
             request = urllib.request.Request(
                 url,
@@ -96,24 +97,94 @@ def google_translate_one(source: str) -> str:
                     "Accept": "application/json,text/plain,*/*",
                 },
             )
-            with urllib.request.urlopen(request, timeout=30) as response:
+            with urllib.request.urlopen(request, timeout=25) as response:
                 payload = json.loads(response.read().decode("utf-8"))
             segments = payload[0]
             translated = "".join(segment[0] for segment in segments if segment and segment[0])
-            translated = restore_google_tokens(translated, tokens)
-            if base.placeholder_signature(source) != base.placeholder_signature(translated):
-                raise RuntimeError(
-                    f"Placeholder mismatch after Google translation: {source!r} -> {translated!r}"
-                )
             if not translated.strip():
-                raise RuntimeError(f"Empty Google translation for {source!r}")
+                raise RuntimeError("Google returned an empty translation")
             return translated
         except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError, RuntimeError, ValueError) as exc:
             last_error = exc
-            if attempt == 5:
+            if attempt == 4:
                 break
-            time.sleep((1.4 ** attempt) + random.random() * 0.35)
-    raise RuntimeError(f"Google Manx translation failed for {source!r}: {last_error}")
+            time.sleep((1.35 ** attempt) + random.random() * 0.30)
+    raise RuntimeError(f"Google Manx request failed: {last_error}")
+
+
+def google_translate_one(source: str) -> str:
+    masked, tokens = protect_for_google(source)
+    translated = restore_google_tokens(google_request(masked), tokens)
+    if base.placeholder_signature(source) != base.placeholder_signature(translated):
+        raise RuntimeError(
+            f"Placeholder mismatch after Google translation: {source!r} -> {translated!r}"
+        )
+    return translated
+
+
+def google_translate_batch(sources: list[str]) -> dict[str, str]:
+    if len(sources) == 1:
+        return {sources[0]: google_translate_one(sources[0])}
+
+    protected = [protect_for_google(source) for source in sources]
+    pieces: list[str] = []
+    for index, (masked, _) in enumerate(protected):
+        pieces.append(masked)
+        if index + 1 < len(protected):
+            pieces.append(f"\nZXQSEP{index:04d}QXZ\n")
+    joined = "".join(pieces)
+
+    try:
+        translated_joined = google_request(joined)
+        matches = list(BATCH_SEPARATOR_RE.finditer(translated_joined))
+        if len(matches) != len(sources) - 1:
+            raise RuntimeError(
+                f"Batch separator count mismatch: expected {len(sources) - 1}, found {len(matches)}"
+            )
+        translated_parts: list[str] = []
+        start = 0
+        for expected_index, match in enumerate(matches):
+            if int(match.group(1)) != expected_index:
+                raise RuntimeError(
+                    f"Batch separator order mismatch: expected {expected_index}, got {match.group(1)}"
+                )
+            translated_parts.append(translated_joined[start:match.start()].strip())
+            start = match.end()
+        translated_parts.append(translated_joined[start:].strip())
+        if len(translated_parts) != len(sources):
+            raise RuntimeError("Batch split produced the wrong number of translations")
+
+        result: dict[str, str] = {}
+        for source, translated, (_, tokens) in zip(sources, translated_parts, protected):
+            translated = restore_google_tokens(translated, tokens)
+            if base.placeholder_signature(source) != base.placeholder_signature(translated):
+                raise RuntimeError(
+                    f"Batch placeholder mismatch: {source!r} -> {translated!r}"
+                )
+            if not translated.strip():
+                raise RuntimeError(f"Empty batch translation for {source!r}")
+            result[source] = translated
+        return result
+    except RuntimeError as exc:
+        print(f"Batch validation fallback ({len(sources)} strings): {exc}")
+        return {source: google_translate_one(source) for source in sources}
+
+
+def make_batches(sources: list[str], max_items: int = 8, max_chars: int = 1500) -> list[list[str]]:
+    batches: list[list[str]] = []
+    current: list[str] = []
+    current_chars = 0
+    for source in sources:
+        source_chars = len(source)
+        if current and (len(current) >= max_items or current_chars + source_chars > max_chars):
+            batches.append(current)
+            current = []
+            current_chars = 0
+        current.append(source)
+        current_chars += source_chars
+    if current:
+        batches.append(current)
+    return batches
 
 
 def build_sources() -> tuple[dict[str, str], dict[str, str], dict[str, str], dict[str, str], dict[str, dict[str, str]]]:
@@ -145,24 +216,14 @@ def build_sources() -> tuple[dict[str, str], dict[str, str], dict[str, str], dic
     addons_en = {namespace: read_json(path) for namespace, path in source_files.items()}
     shared_background_keys = set(addons_en["origins_backgrounds"])
     addons_en["origins_backgrounds_two"] = {
-        key: value
-        for key, value in addons_en["origins_backgrounds_two"].items()
+        key: value for key, value in addons_en["origins_backgrounds_two"].items()
         if key not in shared_background_keys
     }
     addons_en["origins_backgrounds_iss"] = {
-        key: value
-        for key, value in addons_en["origins_backgrounds_iss"].items()
+        key: value for key, value in addons_en["origins_backgrounds_iss"].items()
         if key not in shared_background_keys
     }
     return common_en, delta_121_en, delta_261_en, delta_262_en, addons_en
-
-
-def translate_value(source: str, exact: dict[str, str]) -> str:
-    if source in base.MANUAL_VALUES:
-        return base.MANUAL_VALUES[source]
-    if source in exact:
-        return exact[source]
-    return google_translate_one(source)
 
 
 def main() -> None:
@@ -188,7 +249,7 @@ def main() -> None:
     unique_sources = sorted({str(value) for payload in source_payloads for value in payload.values()})
 
     translated_by_source: dict[str, str] = {}
-    network_sources = []
+    network_sources: list[str] = []
     for source in unique_sources:
         if source in base.MANUAL_VALUES:
             translated_by_source[source] = base.MANUAL_VALUES[source]
@@ -197,20 +258,27 @@ def main() -> None:
         else:
             network_sources.append(source)
 
+    batches = make_batches(network_sources)
     print(
         f"Manx translation pool: {len(unique_sources)} unique strings; "
-        f"{len(translated_by_source)} corpus/manual hits; {len(network_sources)} direct Google translations."
+        f"{len(translated_by_source)} corpus/manual hits; {len(network_sources)} direct translations "
+        f"in {len(batches)} validated batches."
     )
 
-    with ThreadPoolExecutor(max_workers=8) as executor:
-        futures = {executor.submit(google_translate_one, source): source for source in network_sources}
-        completed = 0
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        futures = {executor.submit(google_translate_batch, batch): batch for batch in batches}
+        completed_strings = 0
+        completed_batches = 0
         for future in as_completed(futures):
-            source = futures[future]
-            translated_by_source[source] = future.result()
-            completed += 1
-            if completed % 250 == 0 or completed == len(network_sources):
-                print(f"Direct Manx translations completed: {completed}/{len(network_sources)}")
+            batch = futures[future]
+            translated_by_source.update(future.result())
+            completed_strings += len(batch)
+            completed_batches += 1
+            if completed_batches % 50 == 0 or completed_batches == len(batches):
+                print(
+                    f"Direct Manx translation progress: {completed_strings}/{len(network_sources)} strings "
+                    f"({completed_batches}/{len(batches)} batches)"
+                )
 
     def translated_payload(source: dict[str, str]) -> dict[str, str]:
         result = {}
@@ -267,6 +335,8 @@ def main() -> None:
                 source_changed += 1
 
     text = "\n".join(str(value) for data in after.values() for value in data.values())
+    if "__MANX_BATCH_LOCK__" in text:
+        raise SystemExit("Temporary Manx batch lock survived generated output")
     for pattern in FORBIDDEN_MIXED_PATTERNS:
         match = pattern.search(text)
         if match:
@@ -274,9 +344,7 @@ def main() -> None:
 
     marker_count = len(base.MANX_MARKER_RE.findall(text))
     marked_values = sum(
-        1
-        for data in after.values()
-        for value in data.values()
+        1 for data in after.values() for value in data.values()
         if base.MANX_MARKER_RE.search(str(value))
     )
     if marker_count < 250 or marked_values < 200:

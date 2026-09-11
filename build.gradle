@@ -82,6 +82,7 @@ def includeTatar121Translations = (project.findProperty('include_tatar_121_trans
 def includeTraditionalChinese121Translations = (project.findProperty('include_traditional_chinese_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
 def includeNorthernSami121Translations = (project.findProperty('include_northern_sami_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
 def includeBavarian121Translations = (project.findProperty('include_bavarian_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeBrabantian121Translations = (project.findProperty('include_brabantian_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
 def include26_1Translations = (project.findProperty('include_26_1_translations') ?: 'false').toBoolean()
 def include26_2Translations = (project.findProperty('include_26_2_translations') ?: 'false').toBoolean()
 
@@ -201,6 +202,7 @@ tasks.named('processResources', ProcessResources) {
     inputs.property 'include_traditional_chinese_121_translations', includeTraditionalChinese121Translations
     inputs.property 'include_northern_sami_121_translations', includeNorthernSami121Translations
     inputs.property 'include_bavarian_121_translations', includeBavarian121Translations
+    inputs.property 'include_brabantian_121_translations', includeBrabantian121Translations
     inputs.property 'include_26_1_translations', include26_1Translations
     inputs.property 'include_26_2_translations', include26_2Translations
 
@@ -480,6 +482,10 @@ tasks.named('processResources', ProcessResources) {
 
     if (!includeBavarian121Translations) {
         exclude 'resourcepacks/fallback_localizations/assets/neoorigins_bar_121/**'
+    }
+
+    if (!includeBrabantian121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_brb_121/**'
     }
 
     if (!include26_1Translations) {

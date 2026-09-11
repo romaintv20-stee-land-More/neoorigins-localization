@@ -12,6 +12,13 @@ source = source.replace("ba_ru", "tt_ru")
 source = source.replace("neoorigins_ba_", "neoorigins_tt_")
 source = source.replace('[[text, "en", "ba", True]', '[[text, "en", "tt", True]')
 
+# Keep the hardened separator and placeholder transport from Bashkir, but stop before
+# its Bashkir-specific manual seed and final main() call. Tatar receives its own seed.
+marker = "# Preserve branded/project terminology and known fragile placeholder strings."
+if marker not in source:
+    raise SystemExit("Could not locate Bashkir manual-override marker")
+source = source.split(marker, 1)[0]
+
 namespace = {"__name__": "tatar_bootstrap", "__file__": str(ROOT / "scripts/bootstrap_tatar.py")}
 exec(compile(source, str(ROOT / "scripts/bootstrap_tatar.py"), "exec"), namespace)
 

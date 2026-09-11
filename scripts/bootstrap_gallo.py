@@ -14,6 +14,7 @@ from difflib import SequenceMatcher
 from pathlib import Path
 import json
 import re
+import unicodedata
 import urllib.error
 import urllib.request
 
@@ -21,7 +22,7 @@ ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / "src/main/resources/resourcepacks/fallback_localizations/assets"
 TOKEN_RE = re.compile(r"%(?:\d+\$)?[sdif]|§.|\\n|\{[^{}]+\}|<[^<>]+>")
 PLACEHOLDER_RE = re.compile(r"%(?:\d+\$)?[sdif]")
-WORD_RE = re.compile(r"[A-Za-zÀ-ÖØ-öø-ÿẞ]+(?:[-'’`][A-Za-zÀ-ÖØ-öø-ÿẞ]+)*")
+WORD_RE = re.compile(r"[^\W\d_]+(?:[-'’`][^\W\d_]+)*", re.UNICODE)
 GALLO_MARKER_RE = re.compile(
     r"\b(?:servouer|pouint|eune|qheuqe|blloqe|blloqes|vilaije|vilaijouéz|deûz|asteure|"
     r"qhi|qe|ao|châqe|mettr|terouer|qeriature|qeriatures|alivë|alivës|dezalivë|"
@@ -102,7 +103,9 @@ def unsupported_script(text: str) -> bool:
     for char in text:
         if not char.isalpha():
             continue
-        if char.isascii() or "À" <= char <= "ÿ" or char == "ẞ":
+        if char.isascii():
+            continue
+        if "LATIN" in unicodedata.name(char, ""):
             continue
         return True
     return False

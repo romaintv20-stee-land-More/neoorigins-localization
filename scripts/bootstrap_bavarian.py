@@ -180,11 +180,12 @@ def build_corpus_maps():
         ):
             learned[source] = target
 
-    # Explicit Minecraft-observed forms win over the statistical dictionary.
-    learned.update(MANUAL_WORDS)
     destructive = {s: t for s, t in learned.items() if len(s) >= 5 and len(t) <= 2}
     if destructive:
         raise RuntimeError(f"Destructive learned Bavarian mappings detected: {destructive}")
+
+    # Explicit Minecraft-observed/manual forms win over the statistical dictionary.
+    learned.update(MANUAL_WORDS)
     print(
         f"Minecraft Bavarian corpus: {len(shared)} aligned entries, "
         f"{len(exact)} exact dialect strings, {len(learned)} learned word mappings"

@@ -115,11 +115,11 @@
   "key.neoorigins.hotkey.63": "Sneltoets 63",
   "key.neoorigins.hotkey.64": "Sneltoets 64",
   "screen.neoorigins.hud_editor": "Bronbalk-editor - Sleep um te verplaatsen",
-  "screen.neoorigins.hud_editor.reset": "Alle resetten",
+  "screen.neoorigins.hud_editor.reset": "Alles resetten",
   "screen.neoorigins.hud_editor.rotate": "Draaien",
   "screen.neoorigins.hud_editor.split": "Splitsen",
   "screen.neoorigins.hud_editor.merge": "Samenvoegen",
-  "screen.neoorigins.hud_editor.scale": "Schoal: %s%%",
+  "screen.neoorigins.hud_editor.scale": "Schaal: %s%%",
   "screen.neoorigins.origin_info": "Origin-info",
   "screen.neoorigins.debug_powers": "Actieve krachten (debug)",
   "gui.neoorigins.info.no_origin": "Er is nog gin Origin gekozen.",
@@ -136,7 +136,7 @@
   "screen.neoorigins.origin_editor": "Origin-editor",
   "gui.neoorigins.editor.layers_header": "Origin-lagen",
   "gui.neoorigins.editor.powers_header": "Krachten an/oit",
-  "gui.neoorigins.editor.change": "Wèèzege",
+  "gui.neoorigins.editor.change": "Wijzigen",
   "gui.neoorigins.editor.pick": "Keeze",
   "gui.neoorigins.editor.on": "An",
   "gui.neoorigins.editor.off": "Oit",
@@ -145,8 +145,8 @@
   "gui.neoorigins.creator.tab.identity": "Identiteit",
   "gui.neoorigins.creator.tab.powers": "Krachten",
   "gui.neoorigins.creator.tab.appearance": "Uiterlijk",
-  "gui.neoorigins.creator.tab.layer": "Laog",
+  "gui.neoorigins.creator.tab.layer": "Laag",
   "gui.neoorigins.creator.tab.json": "JSON",
   "gui.neoorigins.creator.save": "Opslaon",
-  "gui.neoorigins.creator.apply": "Toepasse"
+  "gui.neoorigins.creator.apply": "Toepassen"
 }

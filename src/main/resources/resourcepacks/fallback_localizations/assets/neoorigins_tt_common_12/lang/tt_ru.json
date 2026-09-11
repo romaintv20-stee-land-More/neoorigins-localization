@@ -22,7 +22,7 @@
   "power.neoorigins.skeleton_marksmanship.description": "Кораллы корал белән бонус зыян.",
   "power.neoorigins.skeleton_speed.name": "Сөяк нуры",
   "power.neoorigins.skeleton_speed.description": "Сезнең буш сөякләр сезне аякта 20% тизрәк итә.",
-  "power.neoorigins.skeleton_jump.name": ".Иңел",
+  "power.neoorigins.skeleton_jump.name": ". Иңел",
   "power.neoorigins.skeleton_jump.description": "Гадәттән 30% югарырак сикерегез.",
   "power.neoorigins.skeleton_brittle_frame.name": "Ватык рам",
   "power.neoorigins.skeleton_brittle_frame.description": "Сезнең нечкә сөякләрегез максималь сәламәтлекне 7 йөрәккә киметә.",
@@ -146,7 +146,7 @@
   "power.neoorigins.draconic_evolved_hp.description": "+2 максималь сәламәтлек.",
   "power.neoorigins.draconic_ascended_hp.name": "Күтәрелгән тормыш",
   "power.neoorigins.draconic_ascended_hp.description": "+4 максималь сәламәтлек.",
-  "power.neoorigins.draconic_ascended_attack.name": "Күтәрелгән",
+  "power.neoorigins.draconic_ascended_attack.name": "Көчәйтелгән көч",
   "power.neoorigins.draconic_ascended_attack.description": "+1 һөҗүм зыян.",
   "power.neoorigins.draconic_apex_hp.name": "Иң югары тормыш"
 }

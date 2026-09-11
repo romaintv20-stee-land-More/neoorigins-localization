@@ -1,0 +1,67 @@
+name: Diagnose Traditional Chinese context
+
+on:
+  push:
+    branches:
+      - release/0.10.0-traditional-chinese
+    paths:
+      - '.github/workflows/diagnose-traditional-chinese-context.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.10.0-traditional-chinese
+
+      - name: Install Traditional Chinese converter
+        run: python3 -m pip install --disable-pip-version-check opencc-python-reimplemented==0.1.7
+
+      - name: Apply contextual refinement in workspace
+        run: python3 scripts/refine_traditional_chinese.py
+
+      - name: Record remaining context hits
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path('src/main/resources/resourcepacks/fallback_localizations/assets')
+          bad_phrases = (
+              '產地', '原產地', '始發地', '班級', '權力', '平視顯示器', '有功功率',
+              '通貨膨脹', '格蘭特沙人物屬性', '鏟子漏洞', '航班',
+          )
+          hits = []
+          for path in sorted(root.glob('**/lang/zh_tw.json')):
+              obj = json.loads(path.read_text(encoding='utf-8'))
+              for key, value in obj.items():
+                  value = str(value)
+                  for phrase in bad_phrases:
+                      if phrase in value:
+                          hits.append(f'{phrase}\t{path}\t{key}\t{value}')
+
+          out = Path('diagnostics/zhtw-context-hits.txt')
+          out.parent.mkdir(parents=True, exist_ok=True)
+          out.write_text('\n'.join(hits) + ('\n' if hits else ''), encoding='utf-8')
+          print(f'Recorded {len(hits)} context hits')
+          PY
+
+      - name: Commit diagnostic report
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add diagnostics/zhtw-context-hits.txt
+          if git diff --cached --quiet; then
+            echo 'No diagnostic changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Record Traditional Chinese context diagnostics'
+          git fetch origin release/0.10.0-traditional-chinese
+          git rebase origin/release/0.10.0-traditional-chinese
+          git push origin HEAD:release/0.10.0-traditional-chinese

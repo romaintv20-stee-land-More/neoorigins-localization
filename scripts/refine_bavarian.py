@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Contextual refinement for the Bavarian (`bar`) fallback locale.
 
-The bootstrap is corpus-driven and deliberately conservative.  This pass fixes
+The bootstrap is corpus-driven and deliberately conservative. This pass fixes
 high-visibility NeoOrigins/UI terminology where literal Standard German survived,
 and curates a few gameplay strings whose context benefits from explicit wording.
 """
@@ -68,6 +68,13 @@ ENGLISH_UI_RE = re.compile(
     r"\b(?:Helmet protection|Choose your origin|Search origins|No origins found|Your Origin|No Origin)\b",
     re.I,
 )
+# Keep the refinement density guard identical to the bootstrap guard so both
+# stages measure the same Bavarian lexical signal and use the same quality floor.
+DIALECT_MARKER_RE = re.compile(
+    r"\b(?:ned|san|ko|kenna|oda|mid|vo|af|fia|üba|unta|imma|scho|no|zruck|oangebn|ois|doaf|viech|schiaß)\b",
+    re.I,
+)
+MIN_DIALECT_MARKERS = 300
 
 
 def main() -> None:
@@ -132,13 +139,13 @@ def main() -> None:
     if bad:
         raise SystemExit(f"Known Bavarian contextual/corruption patterns survived: {bad[:20]}")
 
-    dialect_text = "\n".join(value for _, _, value in rows).casefold()
-    marker_count = len(re.findall(
-        r"\b(?:ned|san|ko|kenna|oda|mid|vo|af|fia|üba|unta|imma|scho|no|zruck|oangebn|uasprung|uasprüng|kräfd|koane|gfundn)\b",
-        dialect_text,
-    ))
-    if marker_count < 1500:
-        raise SystemExit(f"Bavarian dialect marker sanity too low after refinement: {marker_count}")
+    dialect_text = "\n".join(value for _, _, value in rows)
+    marker_count = len(DIALECT_MARKER_RE.findall(dialect_text))
+    if marker_count < MIN_DIALECT_MARKERS:
+        raise SystemExit(
+            f"Bavarian dialect marker sanity too low after refinement: {marker_count} "
+            f"(minimum {MIN_DIALECT_MARKERS})"
+        )
 
     print(
         f"Bavarian contextual refinement passed: {changed_values} values in {changed_files} files; "

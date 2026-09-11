@@ -1,5 +1,5 @@
 {
-  "screen.originsmodernui.title": "選擇您的原產地",
+  "screen.originsmodernui.title": "選擇你的起源",
   "screen.originsmodernui.search": "搜尋",
   "screen.originsmodernui.search_hint": "搜尋起源...",
   "screen.originsmodernui.select": "選擇",
@@ -10,9 +10,9 @@
   "key.categories.originsmodernui": "Origin Architect",
   "key.originsmodernui.toggle_hud": "切換建築師 HUD",
   "originsmodernui.config.hud.enabled": "啟用整合 HUD",
-  "originsmodernui.config.hud.position": "平視顯示器位置",
+  "originsmodernui.config.hud.position": "HUD 位置",
   "originsmodernui.config.hud.style": "視覺顯示器風格",
-  "originsmodernui.config.hud.scale": "平視顯示器比例",
+  "originsmodernui.config.hud.scale": "HUD 縮放",
   "originsmodernui.config.hud.opacity": "HUD 不透明度",
   "originsmodernui.config.hud.x_offset": "水平偏移",
   "originsmodernui.config.hud.y_offset": "垂直偏移",

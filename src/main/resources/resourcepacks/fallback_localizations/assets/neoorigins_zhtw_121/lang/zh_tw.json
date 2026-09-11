@@ -1,8 +1,8 @@
 {
-  "power.neoorigins.class_blacksmith_quality.description": "你製作的裝備更優越——工具開採速度更快，武器攻擊力更強，盔甲更堅韌，所有東西的使用壽命也更長。",
-  "power.neoorigins.class_cook_smoker_xp.description": "在煙燻爐或火爐中烹調的食物會獲得額外的營養。",
+  "power.neoorigins.class_blacksmith_quality.description": "你製作的裝備更優 —— 工具挖掘更快、武器攻擊更重、護甲更堅韌，且一切更耐用。",
+  "power.neoorigins.class_cook_smoker_xp.description": "在煙燻爐或熔爐中烹飪的食物獲得額外營養。",
   "neoorigins.configuration.title": "NeoOrigins 通用配置",
   "reward.neoorigins.loot_pool": "NeoOrigins：授予戰利品池",
   "reward.neoorigins.loot_pool.loot_table": "戰利品表",
-  "reward.neoorigins.loot_pool.rolls": "勞斯萊斯"
+  "reward.neoorigins.loot_pool.rolls": "擲骰次數"
 }

@@ -42,6 +42,10 @@ OVERRIDES = {
     "effect.ibarnorigins.grant_sand_person_attributes": "Addit sáivaolbmo attribuhtaid",
     "effect.ibarnorigins.revoke_sand_person_attributes": "Heaittihit sáivaolbmo attribuhtaid",
 
+    # Origins Furries: Google confused "night" with the season "summer".
+    "power.origins_furries.night_vision.name": "Idjaoaidnu",
+    "power.origins_furries.night_vision.description": "Dus lea idjaoaidnu.",
+
     # High-visibility Medieval Origins names / descriptions.
     "origin.medievalorigins.high_elf.name": "Alla elf",
     "power.medievalorigins.high_elf.ebonbreath.name": "Čáhppes essensa",

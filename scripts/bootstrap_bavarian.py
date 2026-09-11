@@ -71,6 +71,17 @@ MANUAL_WORDS = {
     "eingeben": "oangebn",
     "auslösen": "Aslösn",
     "wiederholen": "Wiederholn",
+    "der": "da",
+    "die": "de",
+    "das": "as",
+    "aus": "as",
+    "durch": "duach",
+    "wird": "wiad",
+    "werden": "wern",
+    "alle": "olle",
+    "mehr": "meah",
+    "weniger": "weniga",
+    "klein": "kloan",
 }
 
 # Context-sensitive project vocabulary.  Keep canonical product/technical names
@@ -161,15 +172,19 @@ def build_corpus_maps():
         # related.  These pairs still come exclusively from Minecraft's official
         # de_de/bar parallel corpus.
         similarity = SequenceMatcher(None, source, target).ratio()
-        if (
+        plausible = len(target) >= 3 and similarity >= 0.45
+        if plausible and (
             (top >= 2 and share >= 0.60)
             or (top >= 5 and share >= 0.50)
-            or (top == 1 and total == 1 and len(source) >= 4 and len(target) >= 3 and similarity >= 0.55)
+            or (top == 1 and total == 1 and len(source) >= 4 and similarity >= 0.55)
         ):
             learned[source] = target
 
     # Explicit Minecraft-observed forms win over the statistical dictionary.
     learned.update(MANUAL_WORDS)
+    destructive = {s: t for s, t in learned.items() if len(s) >= 5 and len(t) <= 2}
+    if destructive:
+        raise RuntimeError(f"Destructive learned Bavarian mappings detected: {destructive}")
     print(
         f"Minecraft Bavarian corpus: {len(shared)} aligned entries, "
         f"{len(exact)} exact dialect strings, {len(learned)} learned word mappings"

@@ -6,45 +6,44 @@ Last updated: 2026-09-11
 
 For 1.0.0, keep one useful locale per language when regional variants do not provide a meaningfully distinct localization. Keep genuinely distinct languages/dialects and meaningful standardized variants. Exclude joke/gadget locales, fictional/fantasy languages, historical language forms, and redundant regional/script variants when an already-supported locale sufficiently covers them.
 
-The first **80 selected locales are complete**, through Brabantian (`brb`). Traditional Chinese (`zh_tw`) is language #77, Northern Sami (`se_no`) is language #78, Bavarian (`bar`) is language #79, and Brabantian (`brb`) is language #80.
+The first **81 selected locales are complete**, through Andalusian (`esan`). Traditional Chinese (`zh_tw`) is language #77, Northern Sami (`se_no`) is language #78, Bavarian (`bar`) is language #79, Brabantian (`brb`) is language #80, and Andalusian (`esan`) is language #81.
 
 ## Remaining selected locales
 
-There are **33** selected locales remaining for 1.0.0:
+There are **32** selected locales remaining for 1.0.0:
 
-1. `esan` — Andalusian
-2. `fra_de` — East Franconian
-3. `fur_it` — Friulian
-4. `go_fr` — Gallo
-5. `gv_im` — Manx
-6. `haw_us` — Hawaiian
-7. `io_en` — Ido
-8. `isv` — Interslavic
-9. `kab_kab` — Kabyle
-10. `ksh` — Kölsch
-11. `kw_gb` — Cornish
-12. `li_li` — Limburgish
-13. `lmo` — Lombard
-14. `mi_nz` — Māori
-15. `moh_ca` — Mohawk
-16. `nah` — Nahuatl
-17. `nds_de` — Low German
-18. `nuk` — Nuu-chah-nulth
-19. `oj_ca` — Ojibwe
-20. `ovd` — Elfdalian
-21. `pls` — Ngiiwa
-22. `pt_pt` — European Portuguese
-23. `ry_ua` — Rusyn
-24. `sah_sah` — Yakut
-25. `scn` — Sicilian
-26. `swg` — Swabian
-27. `sxu` — Upper Saxon
-28. `szl` — Silesian
-29. `tok` — Toki Pona
-30. `tzo_mx` — Tzotzil
-31. `vec_it` — Venetian
-32. `vro` — Võro
-33. `yi_de` — Yiddish
+1. `fra_de` — East Franconian
+2. `fur_it` — Friulian
+3. `go_fr` — Gallo
+4. `gv_im` — Manx
+5. `haw_us` — Hawaiian
+6. `io_en` — Ido
+7. `isv` — Interslavic
+8. `kab_kab` — Kabyle
+9. `ksh` — Kölsch
+10. `kw_gb` — Cornish
+11. `li_li` — Limburgish
+12. `lmo` — Lombard
+13. `mi_nz` — Māori
+14. `moh_ca` — Mohawk
+15. `nah` — Nahuatl
+16. `nds_de` — Low German
+17. `nuk` — Nuu-chah-nulth
+18. `oj_ca` — Ojibwe
+19. `ovd` — Elfdalian
+20. `pls` — Ngiiwa
+21. `pt_pt` — European Portuguese
+22. `ry_ua` — Rusyn
+23. `sah_sah` — Yakut
+24. `scn` — Sicilian
+25. `swg` — Swabian
+26. `sxu` — Upper Saxon
+27. `szl` — Silesian
+28. `tok` — Toki Pona
+29. `tzo_mx` — Tzotzil
+30. `vec_it` — Venetian
+31. `vro` — Võro
+32. `yi_de` — Yiddish
 
 ## Explicitly not selected from the remaining Minecraft locale inventory
 
@@ -54,22 +53,23 @@ English regional/joke variants and special-purpose locales are excluded. Histori
 
 ## Latest completed work
 
-Language #80 **Brabantian (`brb`)** is complete and integrated into `release/1.0.0`.
+Language #81 **Andalusian (`esan`)** is complete and integrated into `release/1.0.0`.
 
-- staging branch: `release/1.0.0-brabantian`
-- validated build source: `7bd19fa2bebbffd8638333e1845fb57cef653c88`
-- build run: `34634057893` — 1.21.1, 26.1.x and 26.2 all successful
-- packaged `brb` files: 27 on 1.21.1, 17 on 26.1.x, 17 on 26.2
+- staging branch: `release/1.0.0-andalusian`
+- safe refinement commit: `d807b5308b08ea9d1d83f882caa2288a35057172`
+- build run: `34635563461` — 1.21.1, 26.1.x and 26.2 all successful
+- packaged `esan` files: 27 on 1.21.1, 17 on 26.1.x, 17 on 26.2
 - strict NeoOrigins and 10 add-on audits passed
-- contextual refinements include `Human` → `Mens` and edit UI label → `Beweireke`
-- metadata run: `34634337318` — successful
-- final metadata commit: `2dc089e9c9330cb923a0128e1fdc38da53858e71`
-- PR: `#17`
-- integration commit: `7c358f40c6b55af42d9ac1d17c1f8a774e4ce05a`
-- catalog/README count: 80 locales
+- source strategy: complete Spanish semantic coverage + pinned Minecraft `es_es` ↔ `esan` corpus
+- contextual QA caught the false positional mapping `daño` → `de`; safe refinement uses isolated 1-word→1-word alignment with repeated evidence and semantic guards
+- metadata run: `34635816552` — successful
+- final metadata commit: `c9d1f7aec67e145e90559d79051516fa458a5bf2`
+- PR: `#18`
+- integration commit: `0876b310cacf29e429308c84abcdbd0b11e5b8b9`
+- catalog/README count: 81 locales
 
 ## Next work
 
-Start and finish **language #81: Andalusian (`esan`)** from the current `release/1.0.0` integration branch.
+Start and finish **language #82: East Franconian (`fra_de`)** from the current `release/1.0.0` integration branch.
 
 Low German (`nds_de`) remains selected, but its bootstrap is deferred until a translation path that actually targets Low German is available; the current Google-based bootstrap must not silently substitute Standard German.

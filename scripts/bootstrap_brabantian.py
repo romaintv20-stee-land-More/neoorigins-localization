@@ -13,6 +13,7 @@ from difflib import SequenceMatcher
 from pathlib import Path
 import json
 import re
+import urllib.error
 import urllib.request
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -20,6 +21,11 @@ ASSETS = ROOT / "src/main/resources/resourcepacks/fallback_localizations/assets"
 TOKEN_RE = re.compile(r"%(?:\d+\$)?[sdif]|§.|\\n|\{[^{}]+\}|<[^<>]+>")
 PLACEHOLDER_RE = re.compile(r"%(?:\d+\$)?[sdif]")
 WORD_RE = re.compile(r"[A-Za-zÀ-ÖØ-öø-ÿ]+(?:[-'’][A-Za-zÀ-ÖØ-öø-ÿ]+)*")
+DIALECT_MARKER_RE = re.compile(
+    r"\b(?:nie|gij|oe|oew|gullie|da|wa|mar|veur|gin|hedde|bende|kunde|unne|d'n|ut)\b",
+    re.IGNORECASE,
+)
+ALLOWED_EXTRA_LETTERS = set("ĲĳŒœ")
 
 MC_LOCALES_REF = "83af272f5a618b287781ee9ce2a48cfc8f47dd61"
 MC_LOCALES_BASE = f"https://raw.githubusercontent.com/teaSummer/minecraft-locales/{MC_LOCALES_REF}/java"
@@ -44,7 +50,6 @@ MANUAL_WORDS = {
     "voor": "veur",
     "geen": "gin",
     "kunnen": "kunne",
-    "doen": "doen",
 }
 
 # Product names and technical labels are intentionally conservative until contextual
@@ -67,6 +72,15 @@ def fetch_json(url: str):
     req = urllib.request.Request(url, headers={"User-Agent": "NeoOrigins-Brabantian-Bootstrap"})
     with urllib.request.urlopen(req, timeout=60) as response:
         return json.load(response)
+
+
+def fetch_optional_json(url: str):
+    try:
+        return fetch_json(url)
+    except urllib.error.HTTPError as exc:
+        if exc.code == 404:
+            return {}
+        raise
 
 
 def preserve_case(source: str, target: str) -> str:
@@ -94,16 +108,47 @@ def restore(text: str, tokens: list[str]):
     return text
 
 
+def has_unsupported_letters(text: str) -> bool:
+    """Reject corpus lines containing scripts/letters outside Dutch/Brabantian use.
+
+    The pinned community brb file contains a small number of accidentally mixed
+    translations from unrelated languages. Those lines must never become exact or
+    statistical mappings for NeoOrigins.
+    """
+    for char in text:
+        if not char.isalpha():
+            continue
+        if char.isascii() or "À" <= char <= "ÿ" or char in ALLOWED_EXTRA_LETTERS:
+            continue
+        return True
+    return False
+
+
+def safe_corpus_pair(source: str, target: str) -> bool:
+    if not source.strip() or not target.strip() or has_unsupported_letters(target):
+        return False
+    if sorted(PLACEHOLDER_RE.findall(source)) != sorted(PLACEHOLDER_RE.findall(target)):
+        return False
+    similarity = SequenceMatcher(None, source.casefold(), target.casefold()).ratio()
+    # Brabantian is close to Dutch. A radically unrelated line with no dialect marker
+    # is much more likely to be contamination than a useful dialect projection.
+    return similarity >= 0.22 or bool(DIALECT_MARKER_RE.search(target))
+
+
 def build_corpus_maps():
     nl = fetch_json(f"{MC_LOCALES_BASE}/nl_nl.json")
     brb = fetch_json(f"{MC_LOCALES_BASE}/brb.json")
     shared = sorted(set(nl) & set(brb))
     exact = {}
     votes: dict[str, Counter[str]] = defaultdict(Counter)
+    rejected = 0
 
     for key in shared:
         source = str(nl[key])
         target = str(brb[key])
+        if not safe_corpus_pair(source, target):
+            rejected += 1
+            continue
         if source != target:
             exact[source] = target
         src_words = WORD_RE.findall(source)
@@ -137,7 +182,8 @@ def build_corpus_maps():
     learned.update(MANUAL_WORDS)
     print(
         f"Minecraft Brabantian corpus: {len(shared)} aligned entries, "
-        f"{len(exact)} exact dialect strings, {len(learned)} learned word mappings"
+        f"{rejected} rejected contaminated/suspicious pairs, {len(exact)} exact dialect strings, "
+        f"{len(learned)} learned word mappings"
     )
     return exact, learned
 
@@ -177,7 +223,12 @@ def collect_local_dutch() -> dict[str, str]:
 
 
 def neo_dutch(ref: str, english: dict[str, str], local_dutch: dict[str, str]) -> dict[str, str]:
-    official = fetch_json(NEO_BASE.format(ref=ref, locale="nl_nl"))
+    # NeoOrigins currently has no official nl_nl payload on the pinned refs. Keep the
+    # upstream probe so a future official Dutch file automatically gains precedence,
+    # but treat a 404 as expected and use our already-complete Dutch fallback source.
+    official = fetch_optional_json(NEO_BASE.format(ref=ref, locale="nl_nl"))
+    if not official:
+        print(f"NeoOrigins {ref}: no official nl_nl; using complete local Dutch fallback source")
     merged = dict(official)
     for key, value in local_dutch.items():
         merged.setdefault(key, value)

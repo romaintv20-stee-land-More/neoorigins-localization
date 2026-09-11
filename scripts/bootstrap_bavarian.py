@@ -10,6 +10,7 @@ The result is a deterministic bootstrap, not a native-speaker review.
 from __future__ import annotations
 
 from collections import Counter, defaultdict
+from difflib import SequenceMatcher
 from pathlib import Path
 import json
 import re
@@ -155,8 +156,16 @@ def build_corpus_maps():
         target, top = counter.most_common(1)[0]
         total = sum(counter.values())
         share = top / total
-        # Require repeated evidence, except for very strong high-frequency mappings.
-        if (top >= 3 and share >= 0.67) or (top >= 8 and share >= 0.55):
+        # Prefer repeated evidence, but also admit one-off morphological spellings
+        # when the aligned German/Bavarian tokens are strongly orthographically
+        # related.  These pairs still come exclusively from Minecraft's official
+        # de_de/bar parallel corpus.
+        similarity = SequenceMatcher(None, source, target).ratio()
+        if (
+            (top >= 2 and share >= 0.60)
+            or (top >= 5 and share >= 0.50)
+            or (top == 1 and total == 1 and len(source) >= 4 and len(target) >= 3 and similarity >= 0.55)
+        ):
             learned[source] = target
 
     # Explicit Minecraft-observed forms win over the statistical dictionary.

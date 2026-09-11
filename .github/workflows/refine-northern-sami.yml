@@ -1,0 +1,175 @@
+name: Refine Northern Sami localization
+
+on:
+  push:
+    branches:
+      - release/1.0.0-northern-sami
+    paths:
+      - 'scripts/refine_northern_sami.py'
+      - '.github/workflows/refine-northern-sami.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/1.0.0-northern-sami
+
+      - name: Restrict add-on audits to Northern Sami
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          scripts = [
+              'scripts/audit_medievalorigins_upstream.py',
+              'scripts/audit_ibarnorigins_upstream.py',
+              'scripts/audit_origins_fantasy_upstream.py',
+              'scripts/audit_origins_backgrounds_upstream.py',
+              'scripts/audit_origins_more_backgrounds_upstream.py',
+              'scripts/audit_origins_backgrounds_iss_upstream.py',
+              'scripts/audit_origins_furries_upstream.py',
+              'scripts/audit_origins_classes_extended_upstream.py',
+              'scripts/audit_origins_classes_iss_upstream.py',
+              'scripts/audit_origin_architect_upstream.py',
+          ]
+          for filename in scripts:
+              path = Path(filename)
+              text = path.read_text(encoding='utf-8')
+              updated, count = re.subn(r'^LOCALES\s*=.*$', 'LOCALES = ("se_no",)', text, count=1, flags=re.M)
+              if count == 0:
+                  updated, count = re.subn(r'^DEFAULT_LOCALES\s*=.*$', 'DEFAULT_LOCALES = ("se_no",)', text, count=1, flags=re.M)
+              if count != 1:
+                  raise SystemExit(f'Could not patch locale list in {filename}')
+              path.write_text(updated, encoding='utf-8')
+          PY
+
+      - name: Refine Northern Sami localization context
+        run: python3 scripts/refine_northern_sami.py
+
+      - name: Strict audit Northern Sami NeoOrigins coverage
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref af467a3bc118f6bbc0970d68f7e03fa631d7e6f2 --output build/se-refine-mc-1.21.1 --locale se_no --fallback-namespace-glob 'neoorigins_se_common_*' --extra-namespace neoorigins_se_121 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref aa207ef14cf3b938e28b4081162701953957c1d5 --output build/se-refine-mc-26.1 --locale se_no --fallback-namespace-glob 'neoorigins_se_common_*' --extra-namespace neoorigins_26_1 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 511cadcafe3027d2a56b4448652ec9b74e2f3b07 --output build/se-refine-mc-26.2 --locale se_no --fallback-namespace-glob 'neoorigins_se_common_*' --extra-namespace neoorigins_26_2 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Strict audit Northern Sami add-on coverage
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_fantasy_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_furries_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_extended_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origin_architect_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Validate JSON localization structure
+        run: python3 scripts/validate.py
+
+      - name: Northern Sami contextual sanity
+        run: |
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+
+          root = Path('src/main/resources/resourcepacks/fallback_localizations/assets')
+          files = sorted(root.glob('**/lang/se_no.json'))
+          if len(files) != 29:
+              raise SystemExit(f'Expected 29 se_no source files, found {len(files)}')
+
+          data = {}
+          values = []
+          medieval = []
+          ibarn = []
+          for path in files:
+              obj = json.loads(path.read_text(encoding='utf-8'))
+              data.update(obj)
+              values.extend(str(v) for v in obj.values())
+              if '/medievalorigins/' in path.as_posix():
+                  medieval.extend(str(v) for v in obj.values())
+              if '/ibarnorigins/' in path.as_posix():
+                  ibarn.extend(str(v) for v in obj.values())
+
+          text = '\n'.join(values)
+          sami_chars = len(re.findall(r'[ÁáČčĐđŊŋŠšŦŧŽž]', text))
+          markers = len(re.findall(r'\b(?:ja|lea|ii|dát|don|son|mii|sii|sáhttá|geavahit|vállje|fápmu|máhttu|vahágat|vuostálasvuohta|dearvvašvuohta|spealli|ulbmil)\b', text, flags=re.I))
+          if sami_chars < 8500 or markers < 400:
+              raise SystemExit(f'Northern Sami text sanity failed: sami_chars={sami_chars}, markers={markers}')
+
+          expected = {
+              'origins.layer.class': 'Ámmát',
+              'screen.neoorigins.choose.origins.layer.class': 'Vállje iežat ámmáha',
+              'gui.neoorigins.creator.apply': 'Geavahit',
+              'gui.neoorigins.mob_creator.apply': 'Geavahit',
+              'neoorigins.night_vision.on': 'Idjaoaidnu lea álggahuvvon',
+              'key.neoorigins.toggle_night_vision': 'Idjaoaidnu ala/eret',
+              'key.neoorigins.open_creator': 'Raba álgoálgosaš ráhkadeaddji',
+              'screen.neoorigins.mob_creator': 'Mob-álgoálgosaš ráhkadeaddji',
+              'effect.ibarnorigins.grant_soul_mage_attributes': 'Addit sielu noaiddi attribuhtaid',
+              'reward.neoorigins.loot_pool.loot_table': 'Rievideami tabealla',
+          }
+          for key, wanted in expected.items():
+              if data.get(key) != wanted:
+                  raise SystemExit(f'Context assertion failed for {key}: {data.get(key)!r} != {wanted!r}')
+
+          # Every numbered NeoOrigins hotkey should use one consistent Sami label.
+          for key, value in data.items():
+              m = re.fullmatch(r'key\.neoorigins\.hotkey\.(\d+)', key)
+              if m and value != f'Čujuhus {int(m.group(1)):02d}':
+                  raise SystemExit(f'Hotkey normalization failed for {key}: {value!r}')
+
+          medieval_text = '\n'.join(medieval)
+          banned_medieval = (
+              '§l§nOverview§r', 'Unique Abilities', 'Unique Movement', 'Unique Flight',
+              'Dagger Damage', "Doesn't Sleep", 'Unarmed Bonus', 'Nether Bonuses',
+              'Ranged Bonuses', 'Gold Gear Bonuses', 'Crowd Control', 'Water-Based',
+              'Vulnerable Fire', 'Frost-Based', 'Heat Sensitive', 'Feathered wings',
+              'Weak to Undead', 'Illager Friendly', 'Physical Damage',
+              'Arcane Spell Power', 'Frost Spell Power',
+          )
+          for phrase in banned_medieval:
+              if phrase in medieval_text:
+                  raise SystemExit(f'Unrefined Medieval Origins phrase remains: {phrase!r}')
+
+          ibarn_text = '\n'.join(ibarn)
+          for phrase in ('Soul Sorcerer Attributes', 'Sand Person Attributes'):
+              if phrase in ibarn_text:
+                  raise SystemExit(f'Unrefined iBarn phrase remains: {phrase!r}')
+
+          if data.get('gui.neoorigins.creator.apply') == 'Ohcat' or data.get('gui.neoorigins.mob_creator.apply') == 'Ohcat':
+              raise SystemExit('Apply is still using the apply-for/search sense')
+          if 'Geassevišuvdna' in text or 'Geassegovva' in text:
+              raise SystemExit('Known summer/night mistranslation remains')
+
+          print(f'Northern Sami contextual sanity passed: {sami_chars} Sami-specific letters, {markers} lexical markers across {len(files)} files')
+          PY
+
+      - name: Check whitespace
+        run: git diff --check
+
+      - name: Restore temporary audit-script changes
+        if: always()
+        run: git checkout HEAD -- scripts/audit_*_upstream.py
+
+      - name: Commit Northern Sami refinement
+        if: success()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name 'se_no.json' -print0 | xargs -0 -r git add
+          if git diff --cached --quiet; then
+            echo 'No Northern Sami refinement changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Refine Northern Sami localization context'
+          git fetch origin release/1.0.0-northern-sami
+          git rebase origin/release/1.0.0-northern-sami
+          git push origin HEAD:release/1.0.0-northern-sami

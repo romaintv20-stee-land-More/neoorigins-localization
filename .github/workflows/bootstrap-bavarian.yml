@@ -1,0 +1,182 @@
+name: Bootstrap Bavarian localization
+
+on:
+  push:
+    branches:
+      - release/1.0.0-bavarian
+    paths:
+      - scripts/bootstrap_bavarian.py
+      - .github/workflows/bootstrap-bavarian.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/1.0.0-bavarian
+
+      - name: Restrict add-on audits to Bavarian
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          scripts = [
+              'scripts/audit_medievalorigins_upstream.py',
+              'scripts/audit_ibarnorigins_upstream.py',
+              'scripts/audit_origins_fantasy_upstream.py',
+              'scripts/audit_origins_backgrounds_upstream.py',
+              'scripts/audit_origins_more_backgrounds_upstream.py',
+              'scripts/audit_origins_backgrounds_iss_upstream.py',
+              'scripts/audit_origins_furries_upstream.py',
+              'scripts/audit_origins_classes_extended_upstream.py',
+              'scripts/audit_origins_classes_iss_upstream.py',
+              'scripts/audit_origin_architect_upstream.py',
+          ]
+          for filename in scripts:
+              path = Path(filename)
+              text = path.read_text(encoding='utf-8')
+              updated, count = re.subn(r'^LOCALES\s*=.*$', 'LOCALES = ("bar",)', text, count=1, flags=re.M)
+              if count == 0:
+                  updated, count = re.subn(r'^DEFAULT_LOCALES\s*=.*$', 'DEFAULT_LOCALES = ("bar",)', text, count=1, flags=re.M)
+              if count != 1:
+                  raise SystemExit(f'Could not patch locale list in {filename}')
+              path.write_text(updated, encoding='utf-8')
+          PY
+
+      - name: Discover Bavarian NeoOrigins coverage
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref af467a3bc118f6bbc0970d68f7e03fa631d7e6f2 --output build/bar-discovery-mc-1.21.1 --locale bar
+          python3 scripts/audit_neoorigins_upstream.py --ref aa207ef14cf3b938e28b4081162701953957c1d5 --output build/bar-discovery-mc-26.1 --locale bar
+          python3 scripts/audit_neoorigins_upstream.py --ref 511cadcafe3027d2a56b4448652ec9b74e2f3b07 --output build/bar-discovery-mc-26.2 --locale bar
+
+      - name: Discover Bavarian add-on coverage and English sources
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format
+          python3 scripts/audit_origins_fantasy_upstream.py
+          python3 scripts/audit_origins_backgrounds_upstream.py
+          python3 scripts/audit_origins_more_backgrounds_upstream.py
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py
+          python3 scripts/audit_origins_furries_upstream.py
+          python3 scripts/audit_origins_classes_extended_upstream.py
+          python3 scripts/audit_origins_classes_iss_upstream.py
+          python3 scripts/audit_origin_architect_upstream.py
+
+      - name: Generate Bavarian fallback files from German semantics and Minecraft corpus
+        run: python3 scripts/bootstrap_bavarian.py
+
+      - name: Prune add-on keys already translated upstream
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --prune
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --prune
+          python3 scripts/audit_origins_fantasy_upstream.py --prune
+          python3 scripts/audit_origins_backgrounds_upstream.py --prune
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --prune
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --prune
+          python3 scripts/audit_origins_furries_upstream.py --prune
+          python3 scripts/audit_origins_classes_extended_upstream.py --prune
+          python3 scripts/audit_origins_classes_iss_upstream.py --prune
+          python3 scripts/audit_origin_architect_upstream.py --prune
+
+      - name: Strict audit Bavarian NeoOrigins coverage
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref af467a3bc118f6bbc0970d68f7e03fa631d7e6f2 --output build/bar-audit-mc-1.21.1 --locale bar --fallback-namespace-glob 'neoorigins_bar_common_*' --extra-namespace neoorigins_bar_121 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref aa207ef14cf3b938e28b4081162701953957c1d5 --output build/bar-audit-mc-26.1 --locale bar --fallback-namespace-glob 'neoorigins_bar_common_*' --extra-namespace neoorigins_26_1 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 511cadcafe3027d2a56b4448652ec9b74e2f3b07 --output build/bar-audit-mc-26.2 --locale bar --fallback-namespace-glob 'neoorigins_bar_common_*' --extra-namespace neoorigins_26_2 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Strict audit Bavarian add-on coverage
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_fantasy_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_furries_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_extended_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origin_architect_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Validate JSON localization structure
+        run: python3 scripts/validate.py
+
+      - name: Sanity-check Bavarian text
+        run: |
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+          files = list(Path('src/main/resources/resourcepacks/fallback_localizations/assets').glob('**/lang/bar.json'))
+          if len(files) != 29:
+              raise SystemExit(f'Expected 29 bar localization files, found {len(files)}')
+          values = [str(v) for path in files for v in json.loads(path.read_text(encoding='utf-8')).values()]
+          text = '\n'.join(values).casefold()
+          chars = len(re.findall(r'[a-zäöüß]', text))
+          markers = len(re.findall(r'\b(?:ned|san|ko|kenna|oda|mid|vo|af|fia|üba|unta|imma|scho|no|zruck|oangebn|ois|doaf|viech|schiaß)\b', text))
+          if chars < 70000:
+              raise SystemExit(f'Bavarian Latin sanity too low: {chars}')
+          if markers < 300:
+              raise SystemExit(f'Bavarian lexical sanity too low: {markers}')
+          print(f'Bavarian sanity passed: {chars} letters, {markers} dialect markers across {len(files)} files')
+          PY
+
+      - name: Add Bavarian target packaging switch
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('build.gradle')
+          text = path.read_text(encoding='utf-8')
+          if 'includeBavarian121Translations' not in text:
+              anchor = "def includeNorthernSami121Translations = (project.findProperty('include_northern_sami_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()\n"
+              if anchor not in text:
+                  raise SystemExit('Northern Sami Gradle definition anchor not found')
+              text = text.replace(anchor, anchor + "def includeBavarian121Translations = (project.findProperty('include_bavarian_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()\n", 1)
+              anchor = "    inputs.property 'include_northern_sami_121_translations', includeNorthernSami121Translations\n"
+              if anchor not in text:
+                  raise SystemExit('Northern Sami Gradle input anchor not found')
+              text = text.replace(anchor, anchor + "    inputs.property 'include_bavarian_121_translations', includeBavarian121Translations\n", 1)
+              anchor = "    if (!includeNorthernSami121Translations) {\n        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_se_121/**'\n    }\n"
+              if anchor not in text:
+                  raise SystemExit('Northern Sami Gradle exclusion anchor not found')
+              text = text.replace(anchor, anchor + "\n    if (!includeBavarian121Translations) {\n        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_bar_121/**'\n    }\n", 1)
+              path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Check whitespace
+        run: git diff --check
+
+      - name: Restore temporary audit-script changes
+        if: always()
+        run: git checkout HEAD -- scripts/audit_*_upstream.py
+
+      - name: Upload Bavarian audit reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: bavarian-localization-audits-${{ github.sha }}
+          path: |
+            build/bar-discovery-*
+            build/bar-audit-*
+            build/*-upstream-audit
+          if-no-files-found: warn
+
+      - name: Commit validated Bavarian translations
+        if: success()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name 'bar.json' -print0 | xargs -0 -r git add
+          git add build.gradle
+          if git diff --cached --quiet; then
+            echo 'No Bavarian translation changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Add Bavarian localization fallback'
+          git fetch origin release/1.0.0-bavarian
+          git rebase origin/release/1.0.0-bavarian
+          git push origin HEAD:release/1.0.0-bavarian

@@ -1,0 +1,155 @@
+name: Refine Traditional Chinese localization
+
+on:
+  push:
+    branches:
+      - release/0.10.0-traditional-chinese
+    paths:
+      - 'src/main/resources/resourcepacks/fallback_localizations/**/zh_tw.json'
+      - 'scripts/refine_traditional_chinese.py'
+      - '.github/workflows/refine-traditional-chinese.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.10.0-traditional-chinese
+
+      - name: Install Traditional Chinese converter
+        run: python3 -m pip install --disable-pip-version-check opencc-python-reimplemented==0.1.7
+
+      - name: Restrict add-on audits to Traditional Chinese
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          scripts = [
+              'scripts/audit_medievalorigins_upstream.py',
+              'scripts/audit_ibarnorigins_upstream.py',
+              'scripts/audit_origins_fantasy_upstream.py',
+              'scripts/audit_origins_backgrounds_upstream.py',
+              'scripts/audit_origins_more_backgrounds_upstream.py',
+              'scripts/audit_origins_backgrounds_iss_upstream.py',
+              'scripts/audit_origins_furries_upstream.py',
+              'scripts/audit_origins_classes_extended_upstream.py',
+              'scripts/audit_origins_classes_iss_upstream.py',
+              'scripts/audit_origin_architect_upstream.py',
+          ]
+          for filename in scripts:
+              path = Path(filename)
+              text = path.read_text(encoding='utf-8')
+              updated, count = re.subn(r'^LOCALES\s*=.*$', 'LOCALES = ("zh_tw",)', text, count=1, flags=re.M)
+              if count == 0:
+                  updated, count = re.subn(r'^DEFAULT_LOCALES\s*=.*$', 'DEFAULT_LOCALES = ("zh_tw",)', text, count=1, flags=re.M)
+              if count != 1:
+                  raise SystemExit(f'Could not patch locale list in {filename}')
+              path.write_text(updated, encoding='utf-8')
+          PY
+
+      - name: Refine Traditional Chinese localization context
+        run: python3 scripts/refine_traditional_chinese.py
+
+      - name: Strict audit Traditional Chinese NeoOrigins coverage
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref af467a3bc118f6bbc0970d68f7e03fa631d7e6f2 --output build/zhtw-refine-mc-1.21.1 --locale zh_tw --fallback-namespace-glob 'neoorigins_zhtw_common_*' --extra-namespace neoorigins_zhtw_121 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref aa207ef14cf3b938e28b4081162701953957c1d5 --output build/zhtw-refine-mc-26.1 --locale zh_tw --fallback-namespace-glob 'neoorigins_zhtw_common_*' --extra-namespace neoorigins_26_1 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 511cadcafe3027d2a56b4448652ec9b74e2f3b07 --output build/zhtw-refine-mc-26.2 --locale zh_tw --fallback-namespace-glob 'neoorigins_zhtw_common_*' --extra-namespace neoorigins_26_2 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Strict audit Traditional Chinese add-on coverage
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_fantasy_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_furries_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_extended_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origin_architect_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Validate JSON
+        run: python3 scripts/validate.py
+
+      - name: Traditional Chinese contextual sanity
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          root = Path('src/main/resources/resourcepacks/fallback_localizations/assets')
+          files = list(root.glob('**/lang/zh_tw.json'))
+          if len(files) != 29:
+              raise SystemExit(f'Expected 29 zh_tw source files, found {len(files)}')
+
+          data = {}
+          values = []
+          for path in files:
+              obj = json.loads(path.read_text(encoding='utf-8'))
+              data.update(obj)
+              values.extend(str(value) for value in obj.values())
+          text = '\n'.join(values)
+
+          simplified_sentinels = set('个为发类权选这进应从东门见体线长变头爱马风飞鱼鸟龙云电车书画万与业')
+          leaks = sorted({char for char in text if char in simplified_sentinels})
+          if leaks:
+              raise SystemExit(f'Simplified Chinese sentinel characters remain: {leaks}')
+
+          expected = {
+              'key.category.neoorigins.neoorigins': 'NeoOrigins',
+              'origins.layer.origin': '起源',
+              'origins.layer.class': '職業',
+              'screen.neoorigins.choose_origin': '選擇你的起源',
+              'gui.neoorigins.detail.powers_header': '能力',
+              'key.neoorigins.class_skill': '職業技能',
+              'gui.neoorigins.creator.apply': '套用',
+              'gui.neoorigins.mob_creator.apply': '套用',
+              'power.ibarnorigins.sandman_shovel_damage.name': '鏟子弱點',
+              'power.ibarnorigins.wpairswim.name': '飛行',
+          }
+          for key, value in expected.items():
+              if data.get(key) != value:
+                  raise SystemExit(f'Context assertion failed for {key}: {data.get(key)!r}')
+
+          bad_phrases = (
+              '產地', '原產地', '始發地', '班級', '權力', '平視顯示器', '有功功率',
+              '通貨膨脹', '格蘭特沙人物屬性', '鏟子漏洞', '航班',
+          )
+          remaining = [phrase for phrase in bad_phrases if phrase in text]
+          if remaining:
+              raise SystemExit(f'Known out-of-context machine translations remain: {remaining}')
+
+          han = sum('\u3400' <= char <= '\u9fff' for char in text)
+          traditional_signals = sum(char in '體臺灣龍門開關選擇職業能力資訊創建個這為發類權進應後從東見線長變頭愛馬風飛魚鳥雲電車書畫萬與' for char in text)
+          if han < 30000 or traditional_signals < 1200:
+              raise SystemExit(f'Traditional Chinese text sanity failed: han={han}, signals={traditional_signals}')
+          print(f'Traditional Chinese contextual sanity passed: {han} Han chars, {traditional_signals} traditional signals across {len(files)} files')
+          PY
+
+      - name: Check whitespace
+        run: git diff --check
+
+      - name: Restore temporary audit-script changes
+        if: always()
+        run: git checkout HEAD -- scripts/audit_*_upstream.py
+
+      - name: Commit Traditional Chinese refinement
+        if: success()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name 'zh_tw.json' -print0 | xargs -0 -r git add
+          if git diff --cached --quiet; then
+            echo 'No Traditional Chinese refinement changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Refine Traditional Chinese localization context'
+          git fetch origin release/0.10.0-traditional-chinese
+          git rebase origin/release/0.10.0-traditional-chinese
+          git push origin HEAD:release/0.10.0-traditional-chinese

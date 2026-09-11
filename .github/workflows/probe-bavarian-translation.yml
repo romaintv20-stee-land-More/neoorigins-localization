@@ -1,0 +1,50 @@
+name: Probe Bavarian translation targets
+
+on:
+  push:
+    branches:
+      - release/1.0.0-bavarian
+    paths:
+      - '.github/workflows/probe-bavarian-translation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Probe Google targets and Minecraft corpus
+        run: |
+          python3 - <<'PY'
+          import json, urllib.parse, urllib.request
+
+          samples = [
+              'Choose your origin',
+              'You take less damage while wearing a helmet.',
+              'Player speed',
+              'Open Origin Creator',
+          ]
+          for target in ('bar', 'de'):
+              print(f'--- target={target} ---')
+              for text in samples:
+                  params = urllib.parse.urlencode({'client':'gtx','sl':'en','tl':target,'dt':'t','q':text})
+                  req = urllib.request.Request('https://translate.googleapis.com/translate_a/single?' + params, headers={'User-Agent':'Mozilla/5.0'})
+                  try:
+                      raw = urllib.request.urlopen(req, timeout=30).read().decode('utf-8')
+                      payload = json.loads(raw)
+                      out = ''.join(seg[0] for seg in payload[0] if isinstance(seg, list) and seg and isinstance(seg[0], str))
+                      print(text, '=>', out)
+                  except Exception as exc:
+                      print(text, '=> ERROR', type(exc).__name__, str(exc))
+          ref = '83af272f5a618b287781ee9ce2a48cfc8f47dd61'
+          base = f'https://raw.githubusercontent.com/teaSummer/minecraft-locales/{ref}/java/'
+          for locale in ('de_de','bar'):
+              with urllib.request.urlopen(base + locale + '.json', timeout=60) as r:
+                  data = json.load(r)
+              print(locale, 'entries=', len(data))
+              for key in ('menu.singleplayer','options.language','deathScreen.title','gui.done','advMode.notAllowed'):
+                  print(locale, key, '=>', data.get(key))
+          PY

@@ -11,7 +11,7 @@
     ],
     "loader": "NeoForge",
     "localization_mode": "low_priority_fallback",
-    "supported_locale_count": 78,
+    "supported_locale_count": 79,
     "builds": {
       "1.21.1": {
         "version": "0.9.0-beta+1.21.1",
@@ -226,7 +226,9 @@
           "traditional_chinese_common_glob": "neoorigins_zhtw_common_*",
           "traditional_chinese_mc_1_21_1": "neoorigins_zhtw_121",
           "northern_sami_common_glob": "neoorigins_se_common_*",
-          "northern_sami_mc_1_21_1": "neoorigins_se_121"
+          "northern_sami_mc_1_21_1": "neoorigins_se_121",
+          "bavarian_common_glob": "neoorigins_bar_common_*",
+          "bavarian_mc_1_21_1": "neoorigins_bar_121"
         },
         "note": "NeoOrigins 2.2.26 est audité séparément sur les trois cibles. neoorigins_226 est commun aux trois builds ; neoorigins_26_1 est réservé à 26.1.x ; neoorigins_26_2 est réservé à 26.2. Les trois clés reward.neoorigins.loot_pool* restent dans les fallbacks complets pour 1.21.1 et sont inoffensives sur 26.x.",
         "baseline_audit_2_2_27": {
@@ -261,7 +263,7 @@
             }
           }
         },
-        "coverage_note": "NeoOrigins 2.2.27 has the same en_us localization payload as 2.2.26 on all three targets. Historical gaps in it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz and hu_hu were recovered before language 59. All 78 currently supported locales are complete against 2.2.27 on their target builds.",
+        "coverage_note": "NeoOrigins 2.2.27 has the same en_us localization payload as 2.2.26 on all three targets. Historical gaps in it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz and hu_hu were recovered before language 59. All 79 currently supported locales are complete against 2.2.27 on their target builds.",
         "legacy_gap_recovery_completed": true
       },
       "languages": {
@@ -966,6 +968,15 @@
             "26.1.x",
             "26.2"
           ]
+        },
+        "bar": {
+          "name": "Boarisch",
+          "status": "supported",
+          "targets": [
+            "1.21.1",
+            "26.1.x",
+            "26.2"
+          ]
         }
       }
     },
@@ -1441,6 +1452,12 @@
           "name": "Davvisámegiella",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/se_no.json",
+          "fallback_keys": 401
+        },
+        "bar": {
+          "name": "Boarisch",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/bar.json",
           "fallback_keys": 401
         }
       }
@@ -1921,6 +1938,12 @@
           "name": "Davvisámegiella",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/se_no.json",
+          "fallback_keys": 69
+        },
+        "bar": {
+          "name": "Boarisch",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/bar.json",
           "fallback_keys": 69
         }
       }
@@ -2404,6 +2427,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/se_no.json",
           "fallback_keys": 240
+        },
+        "bar": {
+          "name": "Boarisch",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/bar.json",
+          "fallback_keys": 240
         }
       }
     },
@@ -2885,6 +2914,12 @@
           "name": "Davvisámegiella",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/se_no.json",
+          "fallback_keys": 65
+        },
+        "bar": {
+          "name": "Boarisch",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/bar.json",
           "fallback_keys": 65
         }
       }
@@ -3369,6 +3404,12 @@
           "name": "Davvisámegiella",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/se_no.json",
+          "fallback_keys": 39
+        },
+        "bar": {
+          "name": "Boarisch",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/bar.json",
           "fallback_keys": 39
         }
       }
@@ -3858,6 +3899,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/se_no.json",
           "fallback_keys": 77
+        },
+        "bar": {
+          "name": "Boarisch",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/bar.json",
+          "fallback_keys": 77
         }
       }
     },
@@ -4343,6 +4390,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/se_no.json",
           "fallback_keys": 117
+        },
+        "bar": {
+          "name": "Boarisch",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/bar.json",
+          "fallback_keys": 117
         }
       }
     },
@@ -4827,6 +4880,12 @@
           "name": "Davvisámegiella",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/se_no.json",
+          "fallback_keys": 124
+        },
+        "bar": {
+          "name": "Boarisch",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/bar.json",
           "fallback_keys": 124
         }
       }
@@ -5314,6 +5373,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/se_no.json",
           "fallback_keys": 99
+        },
+        "bar": {
+          "name": "Boarisch",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/bar.json",
+          "fallback_keys": 99
         }
       }
     },
@@ -5798,6 +5863,12 @@
           "name": "Davvisámegiella",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/se_no.json",
+          "fallback_keys": 22
+        },
+        "bar": {
+          "name": "Boarisch",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/bar.json",
           "fallback_keys": 22
         }
       }

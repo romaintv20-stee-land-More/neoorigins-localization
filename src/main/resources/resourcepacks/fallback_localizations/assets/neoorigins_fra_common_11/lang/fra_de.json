@@ -141,12 +141,12 @@
   "neoorigins.configuration.warden_sonic_boom": "Warden Schallknall",
   "neoorigins.configuration.warden_strength": "Warden Stärke",
   "origins.neoorigins.wraith.name": "Wraith",
-  "origins.neoorigins.wraith.description": "Ein gequälter Geist, dea durch feste Materie treibt. Durchdringt die meisten Blögge, kann aber Obsidian ned passieren. Eine körperliche Form aufrechtzuerhalten zehrt am Hunger, und Sonnenlicht versengt soin gespenstisches Fleisch.",
+  "origins.neoorigins.wraith.description": "Ein gequälter Geist, dea durch feste Materie treibt. Durchdringt die meisten Blöcke, kann aber Obsidian ned passieren. Eine körperliche Form aufrechtzuerhalten zehrt am Hunger, und Sonnenlicht versengt sein gespenstisches Fleisch.",
   "power.neoorigins.wraith_phase.name": "Gespenstische Form",
-  "power.neoorigins.wraith_phase.description": "Umschalten: durch feste Blögge gehen. Innerhalb eines Blocks frei fliegen (Springen = hoch, Schleichen = runter). Obsidian, weinender Obsidian und Grundgestein blockieren deinen Durchgang. Phasenverschiebung zehrt am Hunger.",
+  "power.neoorigins.wraith_phase.description": "Umschalten: durch feste Blöcke gehen. Innerhalb eines Blocks frei fliegen (Springen = hoch, Schleichen = runter). Obsidian, weinender Obsidian und Grundgestein blockieren deinen Durchgang. Phasenverschiebung zehrt am Hunger.",
   "power.neoorigins.wraith_water_breathing.name": "Atemlos",
   "power.neoorigins.wraith_water_breathing.description": "Muss ned atmen und kann unbegrenzt unter Wassa überleben.",
   "power.neoorigins.wraith_daylight_damage.name": "Sonnenlichtempfindlichkeit",
-  "power.neoorigins.wraith_daylight_damage.description": "De verbrennst im direkten Sonnenlicht.",
+  "power.neoorigins.wraith_daylight_damage.description": "Du verbrennst im direkten Sonnenlicht.",
   "power.neoorigins.wraith_hunger_drain.name": "Instabile Form"
 }

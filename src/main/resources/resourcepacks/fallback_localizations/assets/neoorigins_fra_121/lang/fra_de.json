@@ -3,6 +3,6 @@
   "power.neoorigins.class_cook_smoker_xp.description": "Im Räucherofen oda Ofen gegarte Nahrung erhält zusätzliche Nahrhaftigkeit.",
   "neoorigins.configuration.title": "NeoOrigins Allgemeine Konfiguration",
   "reward.neoorigins.loot_pool": "NeoOrigins: Beutepool gewähren",
-  "reward.neoorigins.loot_pool.loot_table": "Beudedabelle",
+  "reward.neoorigins.loot_pool.loot_table": "Beutetabelle",
   "reward.neoorigins.loot_pool.rolls": "Würfe"
 }

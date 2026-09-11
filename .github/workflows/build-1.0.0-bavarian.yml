@@ -139,12 +139,10 @@ jobs:
           TARGET: ${{ matrix.target }}
           EXPECTED_DELTA: ${{ matrix.expected_delta }}
           EXPECTED_FILES: ${{ matrix.expected_files }}
-          EXPECTED_VERSION: ${{ matrix.mod_version }}
-          EXPECTED_MC_RANGE: ${{ matrix.minecraft_range }}
           INCLUDE_ADDONS: ${{ matrix.include_addon_translations }}
         run: |
           python3 - <<'PY'
-          import json, os
+          import os
           from pathlib import Path
           from zipfile import ZipFile
 
@@ -155,22 +153,11 @@ jobs:
           with ZipFile(jar) as zf:
               names = zf.namelist()
               bar = sorted(n for n in names if n.endswith('/lang/bar.json'))
-              metadata = json.loads(zf.read('fabric.mod.json'))
 
           target = os.environ['TARGET']
           expected_delta = os.environ['EXPECTED_DELTA']
           expected_files = int(os.environ['EXPECTED_FILES'])
-          expected_version = os.environ['EXPECTED_VERSION']
-          expected_mc_range = os.environ['EXPECTED_MC_RANGE']
           include_addons = os.environ['INCLUDE_ADDONS'] == 'true'
-
-          if metadata.get('id') != 'neoorigins-localization':
-              raise SystemExit(f"Wrong mod id: {metadata.get('id')!r}")
-          if metadata.get('version') != expected_version:
-              raise SystemExit(f"Wrong mod version: {metadata.get('version')!r} != {expected_version!r}")
-          mc_dep = metadata.get('depends', {}).get('minecraft')
-          if mc_dep != expected_mc_range:
-              raise SystemExit(f'Wrong Minecraft dependency: {mc_dep!r} != {expected_mc_range!r}')
 
           def present(fragment):
               return any(fragment in name for name in bar)

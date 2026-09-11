@@ -6,6 +6,7 @@ on:
       - release/0.9.0-yoruba
     paths:
       - 'src/main/resources/resourcepacks/fallback_localizations/**/yo_ng.json'
+      - '.github/workflows/refine-yoruba.yml'
   workflow_dispatch:
 
 permissions:

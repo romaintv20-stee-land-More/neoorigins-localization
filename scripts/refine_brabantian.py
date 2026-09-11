@@ -19,10 +19,9 @@ OVERRIDES = {
     # Core origin name: the Dutch semantic source retained the English label.
     "origins.neoorigins.human.name": "Mens",
 
-    # Minecraft's Brabantian corpus consistently uses the infinitive-style
-    # "beweireke" in edit contexts; the automatic token projection truncated it.
+    # Minecraft's Brabantian corpus uses the infinitive-style "beweireke" in
+    # edit contexts; the automatic token projection had truncated this label.
     "gui.neoorigins.info.edit": "Beweireke",
-    "gui.neoorigins.origin_library.edit": "Beweireke",
 }
 
 DIALECT_MARKER_RE = re.compile(
@@ -31,8 +30,6 @@ DIALECT_MARKER_RE = re.compile(
 )
 MIN_DIALECT_MARKERS = 150
 
-# Patterns already observed from weak/noisy corpus alignment. These must never
-# survive the refined locale even if the bootstrap implementation changes later.
 FORBIDDEN_FRAGMENTS = (
     "Beweirek",
     "zaadige ien ut doenker",

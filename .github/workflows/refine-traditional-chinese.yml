@@ -96,7 +96,9 @@ jobs:
               values.extend(str(value) for value in obj.values())
           text = '\n'.join(values)
 
-          simplified_sentinels = set('个为发类权选这进应从东门见体线长变头爱马风飞鱼鸟龙云电车书画万与业')
+          # Avoid ambiguous characters that are valid in both writing systems;
+          # only use characters that are strong simplified-Chinese signals.
+          simplified_sentinels = set('个为发类权选这进应从东门见体线长变头爱马风飞鱼鸟龙电车书画万与业')
           leaks = sorted({char for char in text if char in simplified_sentinels})
           if leaks:
               raise SystemExit(f'Simplified Chinese sentinel characters remain: {leaks}')
@@ -110,6 +112,8 @@ jobs:
               'key.neoorigins.class_skill': '職業技能',
               'gui.neoorigins.creator.apply': '套用',
               'gui.neoorigins.mob_creator.apply': '套用',
+              'neoorigins.configuration.sun_damage.helmet_protection': '頭盔防護',
+              'neoorigins.configuration.helmet_protection': '頭盔防護',
               'power.ibarnorigins.sandman_shovel_damage.name': '鏟子弱點',
               'power.ibarnorigins.wpairswim.name': '飛行',
           }

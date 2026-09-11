@@ -1,0 +1,8 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Equipment you craft is superior — tools mine faster, weapons hit harder, armor is tougher, and everything lasts longer.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Food cooked in a smoker or furnish receives extra nutrition.",
+  "neoorigins.configuration.title": "NeoOrigins Common Configuration",
+  "reward.neoorigins.loot_pool": "NeoOrigins: Grant Loot Pool",
+  "reward.neoorigins.loot_pool.loot_table": "Loot Table",
+  "reward.neoorigins.loot_pool.rolls": "Rolls"
+}

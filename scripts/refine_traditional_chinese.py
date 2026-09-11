@@ -97,6 +97,15 @@ OVERRIDES = {
     "gui.neoorigins.debug.capabilities_header": "已啟用的能力",
     "gui.neoorigins.debug.powers_header": "已授予的能力",
 
+    # Residual context fixes identified by the deterministic diagnostic pass.
+    "origin.medievalorigins.pixie.description": "§l§n概述§r：\n§o§2+ 獨特飛行能力、古靈精怪§r\n§o§6• 極小型：22 cm / 9\"§r\n§o§c- 防禦、聲望§r\n小精靈常被視為好運的預兆，但也以狡猾、不可靠且愛惡作劇聞名。牠們天性異想天開，而且體型非常、非常小。",
+    "jei.neoorigins.orb_of_class.info": "只會重設你的職業選擇並重新開啟職業選擇器，同時保留你的主要起源。每次使用需花費 2 級經驗。使用後消耗。",
+    "emi.neoorigins.orb_of_class.info": "只會重設你的職業選擇並重新開啟職業選擇器，同時保留你的主要起源。每次使用需花費 2 級經驗。使用後消耗。",
+    "power.origins_fantasy.fae_flight.name": "妖精飛行",
+    "screen.originsmodernui.title": "選擇你的起源",
+    "originsmodernui.config.hud.position": "HUD 位置",
+    "originsmodernui.config.hud.scale": "HUD 縮放",
+
     # iBarn Origins: semantic fixes for isolated-word machine translations.
     "effect.ibarnorigins.inflation_effect": "膨脹",
     "effect.ibarnorigins.grant_soul_mage_attributes": "賦予靈魂法師屬性",

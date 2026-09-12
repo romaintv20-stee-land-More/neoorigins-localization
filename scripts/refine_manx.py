@@ -6,13 +6,16 @@ sentences creates unsafe hybrids. Google Translate has direct Manx support, so t
 pass translates the complete English semantic source to Manx while keeping the pinned
 Minecraft en_us -> gv_im corpus as the preferred source for exact whole-string matches.
 Technical tokens and placeholders are protected and validated. Network translations
-are deliberately serialized and grouped into validated batches to avoid rate limiting.
+are deliberately serialized and grouped into validated batches. The web RPC endpoint
+is used instead of the public GTX endpoint because GitHub-hosted runners can receive
+persistent HTTP 429 responses from translate.googleapis.com.
 This is automated translation assistance, not native-speaker review.
 """
 from __future__ import annotations
 
 from pathlib import Path
 from urllib.parse import urlencode
+import html as html_module
 import json
 import random
 import re
@@ -24,7 +27,8 @@ import bootstrap_manx as base
 
 ROOT = base.ROOT
 ASSETS = base.ASSETS
-GOOGLE_ENDPOINT = "https://translate.googleapis.com/translate_a/single"
+GOOGLE_RPC_ENDPOINT = "https://translate.google.com/_/TranslateWebserverUi/data/batchexecute"
+GOOGLE_MOBILE_ENDPOINT = "https://translate.google.com/m"
 CACHE_PATH = ROOT / "build/manx-google-cache.json"
 
 GOOGLE_PROTECT_RE = re.compile(
@@ -62,7 +66,7 @@ def load_cache() -> dict[str, str]:
     try:
         raw = read_json(CACHE_PATH)
     except (OSError, json.JSONDecodeError) as exc:
-        print(f"Ignoring unreadable Manx translation checkpoint: {exc}")
+        print(f"Ignoring unreadable Manx translation checkpoint: {exc}", flush=True)
         return {}
     if not isinstance(raw, dict):
         return {}
@@ -114,54 +118,161 @@ def retry_delay(exc: Exception, attempt: int) -> float:
             server_delay = float(retry_after) if retry_after else 0.0
         except ValueError:
             server_delay = 0.0
-        return max(server_delay, min(180.0, 15.0 * (2 ** attempt))) + random.uniform(0.5, 2.0)
-    return min(45.0, 2.0 * (2 ** attempt)) + random.uniform(0.25, 1.0)
+        return max(server_delay, min(90.0, 8.0 * (2 ** attempt))) + random.uniform(0.5, 1.5)
+    return min(30.0, 2.0 * (2 ** attempt)) + random.uniform(0.25, 1.0)
+
+
+def parse_rpc_response(raw: str) -> str:
+    """Extract the translated text from Google's batchexecute envelope."""
+    token_found = False
+    response_json = ""
+    opening_brackets = 0
+    closing_brackets = 0
+    for line in raw.splitlines():
+        if not token_found:
+            token_found = '"MkEWBc"' in line[:120]
+            if not token_found:
+                continue
+        in_string = False
+        escaped = False
+        for char in line:
+            if escaped:
+                escaped = False
+                continue
+            if char == "\\" and in_string:
+                escaped = True
+                continue
+            if char == '"':
+                in_string = not in_string
+                continue
+            if not in_string:
+                if char == "[":
+                    opening_brackets += 1
+                elif char == "]":
+                    closing_brackets += 1
+        response_json += line
+        if opening_brackets and opening_brackets == closing_brackets:
+            break
+
+    if not response_json:
+        raise RuntimeError("Google web RPC response did not contain MkEWBc payload")
+    envelope = json.loads(response_json)
+    payload = json.loads(envelope[0][2])
+    try:
+        translation_group = payload[1][0][0]
+        segments = translation_group[5]
+        joiner = " " if translation_group[3] else ""
+        translated = joiner.join(part[0] for part in segments if part and part[0])
+    except (IndexError, TypeError) as exc:
+        raise RuntimeError(f"Unexpected Google web RPC payload shape: {payload!r}") from exc
+    if not translated.strip():
+        raise RuntimeError("Google web RPC returned an empty translation")
+    return translated
+
+
+def google_rpc_request(masked: str) -> str:
+    inner = json.dumps([[masked, "en", "gv", True], [None]], ensure_ascii=False, separators=(",", ":"))
+    rpc_request = json.dumps(
+        [[["MkEWBc", inner, None, "generic"]]],
+        ensure_ascii=False,
+        separators=(",", ":"),
+    )
+    query = urlencode(
+        {
+            "rpcids": "MkEWBc",
+            "source-path": "/",
+            "soc-app": "1",
+            "soc-platform": "1",
+            "soc-device": "1",
+            "rt": "c",
+        }
+    )
+    request = urllib.request.Request(
+        f"{GOOGLE_RPC_ENDPOINT}?{query}",
+        data=urlencode({"f.req": rpc_request}).encode("utf-8"),
+        headers={
+            "User-Agent": (
+                "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+                "(KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36"
+            ),
+            "Accept": "*/*",
+            "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            "Origin": "https://translate.google.com",
+            "Referer": "https://translate.google.com/",
+        },
+        method="POST",
+    )
+    with urllib.request.urlopen(request, timeout=40) as response:
+        raw = response.read().decode("utf-8")
+    return parse_rpc_response(raw)
+
+
+def google_mobile_request(masked: str) -> str:
+    """Fallback to Google's mobile web page if the RPC route is unavailable."""
+    query = urlencode({"sl": "en", "tl": "gv", "q": masked})
+    request = urllib.request.Request(
+        f"{GOOGLE_MOBILE_ENDPOINT}?{query}",
+        headers={
+            "User-Agent": (
+                "Mozilla/5.0 (Linux; Android 15; Pixel 9) AppleWebKit/537.36 "
+                "(KHTML, like Gecko) Chrome/152.0.0.0 Mobile Safari/537.36"
+            ),
+            "Accept": "text/html,application/xhtml+xml",
+        },
+    )
+    with urllib.request.urlopen(request, timeout=40) as response:
+        page = response.read().decode("utf-8", errors="replace")
+    match = re.search(r'<div[^>]+class="result-container"[^>]*>(.*?)</div>', page, re.S | re.I)
+    if not match:
+        raise RuntimeError("Google mobile page did not contain result-container")
+    translated = re.sub(r"<[^>]+>", "", match.group(1))
+    translated = html_module.unescape(translated).strip()
+    if not translated:
+        raise RuntimeError("Google mobile page returned an empty translation")
+    return translated
 
 
 def google_request(masked: str) -> str:
-    params = urlencode(
-        {
-            "client": "gtx",
-            "sl": "en",
-            "tl": "gv",
-            "dt": "t",
-            "ie": "UTF-8",
-            "oe": "UTF-8",
-            "q": masked,
-        }
-    )
-    url = f"{GOOGLE_ENDPOINT}?{params}"
     last_error: Exception | None = None
-    for attempt in range(8):
+    for attempt in range(6):
         try:
-            request = urllib.request.Request(
-                url,
-                headers={
-                    "User-Agent": "Mozilla/5.0 NeoOrigins-Manx-Localization/1.0",
-                    "Accept": "application/json,text/plain,*/*",
-                },
-            )
-            with urllib.request.urlopen(request, timeout=35) as response:
-                payload = json.loads(response.read().decode("utf-8"))
-            segments = payload[0]
-            translated = "".join(segment[0] for segment in segments if segment and segment[0])
-            if not translated.strip():
-                raise RuntimeError("Google returned an empty translation")
-            # Keep request cadence intentionally low even after successful calls. This is
-            # much slower than a thread pool, but far safer for the public endpoint.
-            time.sleep(random.uniform(1.15, 1.65))
+            # Prefer the Translate web application's RPC. Unlike the GTX endpoint,
+            # this is the route used by the browser UI and accepts a whole joined batch.
+            translated = google_rpc_request(masked)
+            time.sleep(random.uniform(1.1, 1.5))
             return translated
-        except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, RuntimeError, ValueError) as exc:
+        except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, RuntimeError, ValueError, json.JSONDecodeError) as exc:
             last_error = exc
-            if attempt == 7:
+            # A second Google web route gives us a useful escape hatch when a hosted
+            # runner is specifically throttled on batchexecute.
+            try:
+                translated = google_mobile_request(masked)
+                print(
+                    f"Google web RPC unavailable ({type(exc).__name__}: {exc}); mobile web fallback succeeded.",
+                    flush=True,
+                )
+                time.sleep(random.uniform(1.25, 1.7))
+                return translated
+            except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, RuntimeError, ValueError) as mobile_exc:
+                last_error = mobile_exc
+
+            if attempt == 5:
                 break
-            delay = retry_delay(exc, attempt)
-            if isinstance(exc, urllib.error.HTTPError) and exc.code == 429:
-                print(f"Google returned HTTP 429; backing off for {delay:.1f}s (attempt {attempt + 1}/8).")
+            delay = retry_delay(last_error, attempt)
+            if isinstance(last_error, urllib.error.HTTPError) and last_error.code == 429:
+                print(
+                    f"Google web routes returned HTTP 429; backing off for {delay:.1f}s "
+                    f"(attempt {attempt + 1}/6).",
+                    flush=True,
+                )
             else:
-                print(f"Google request retry in {delay:.1f}s after {type(exc).__name__}: {exc}")
+                print(
+                    f"Google web request retry in {delay:.1f}s after "
+                    f"{type(last_error).__name__}: {last_error}",
+                    flush=True,
+                )
             time.sleep(delay)
-    raise RuntimeError(f"Google Manx request failed after retries: {last_error}")
+    raise RuntimeError(f"Google Manx web translation failed after retries: {last_error}")
 
 
 def google_translate_one(source: str) -> str:
@@ -220,16 +331,16 @@ def google_translate_batch(sources: list[str]) -> dict[str, str]:
             result[source] = translated
         return result
     except BatchValidationError as exc:
-        # Never explode a failed batch into many concurrent/unit requests. Split it in
-        # half and keep the same serialized pacing all the way down.
+        # Never explode a failed batch into concurrent calls. Split it in half while
+        # retaining serialized pacing and validation all the way down.
         midpoint = len(sources) // 2
-        print(f"Batch validation split ({len(sources)} strings): {exc}")
+        print(f"Batch validation split ({len(sources)} strings): {exc}", flush=True)
         result = google_translate_batch(sources[:midpoint])
         result.update(google_translate_batch(sources[midpoint:]))
         return result
 
 
-def make_batches(sources: list[str], max_items: int = 16, max_chars: int = 1400) -> list[list[str]]:
+def make_batches(sources: list[str], max_items: int = 20, max_chars: int = 2500) -> list[list[str]]:
     batches: list[list[str]] = []
     current: list[str] = []
     current_chars = 0
@@ -298,13 +409,15 @@ def main() -> None:
     common_en, delta_121_en, delta_261_en, delta_262_en, addons_en = build_sources()
     print(
         f"NeoOrigins Manx source split: common={len(common_en)}, "
-        f"1.21.1={len(delta_121_en)}, 26.1={len(delta_261_en)}, 26.2={len(delta_262_en)}"
+        f"1.21.1={len(delta_121_en)}, 26.1={len(delta_261_en)}, 26.2={len(delta_262_en)}",
+        flush=True,
     )
 
     exact, learned = base.build_corpus_maps()
     print(
         f"Manx refinement policy: {len(exact)} exact Minecraft corpus strings take priority; "
-        f"{len(learned)} isolated word mappings are disabled; remaining strings use direct en->gv translation."
+        f"{len(learned)} isolated word mappings are disabled; remaining strings use direct en->gv translation.",
+        flush=True,
     )
 
     source_payloads: list[dict[str, str]] = [common_en, delta_121_en, delta_261_en, delta_262_en]
@@ -335,7 +448,8 @@ def main() -> None:
         f"Manx translation pool: {len(unique_sources)} unique strings; "
         f"{len(unique_sources) - len(network_sources)} corpus/manual hits; "
         f"{cache_hits} checkpoint hits; {len(missing_network_sources)} direct translations "
-        f"in {len(batches)} serialized validated batches."
+        f"in {len(batches)} serialized validated web batches.",
+        flush=True,
     )
 
     completed_strings = cache_hits
@@ -348,7 +462,8 @@ def main() -> None:
         if batch_index % 10 == 0 or batch_index == len(batches):
             print(
                 f"Direct Manx translation progress: {completed_strings}/{len(network_sources)} strings "
-                f"({batch_index}/{len(batches)} new batches)"
+                f"({batch_index}/{len(batches)} new batches)",
+                flush=True,
             )
 
     def translated_payload(source: dict[str, str]) -> dict[str, str]:
@@ -445,7 +560,8 @@ def main() -> None:
         f"Manx full refinement passed: checked {total_values} values across 29 files; "
         f"changed {changed_values} bootstrap values; source translations changed {source_changed} values; "
         f"{marker_count} Manx lexical markers across {marked_values} values; "
-        "0 known mixed-language projection patterns."
+        "0 known mixed-language projection patterns.",
+        flush=True,
     )
 
 

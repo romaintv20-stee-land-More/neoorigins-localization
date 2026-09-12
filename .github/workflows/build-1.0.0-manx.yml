@@ -1,6 +1,11 @@
 name: Build NeoOrigins Localization 1.0.0 Manx staging
 
 on:
+  push:
+    branches:
+      - release/1.0.0-manx
+    paths:
+      - '.github/workflows/build-1.0.0-manx.yml'
   workflow_dispatch:
 
 permissions:

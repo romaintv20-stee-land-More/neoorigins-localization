@@ -1,6 +1,6 @@
 # NeoOrigins Localization — Next Chat Handoff
 
-Last updated: 2026-09-11
+Last updated: 2026-09-12
 Repository: `romaintv20-stee-land-More/neoorigins-localization`
 Reference / integration branch: `release/1.0.0`
 
@@ -58,6 +58,23 @@ The catalogue and README are at **84 locales**. There are **29 selected locales 
 
 Do not redo Gallo, Friulian, East Franconian, Andalusian, Brabantian, Bavarian, Northern Sami, or Traditional Chinese metadata.
 
+## Manx work in progress — #85 `gv_im`
+
+- staging branch: `release/1.0.0-manx`
+- bootstrap run: `34644525833` — successful
+- bootstrap translation commit: `ead920cea662391031261f9191a81af45b8f227b`
+- pinned Minecraft corpus: `teaSummer/minecraft-locales` at `83af272f5a618b287781ee9ce2a48cfc8f47dd61`
+- corpus metrics: 1,778 aligned entries, 3 rejected pairs, 118 unchanged English pairs, 1,542 exact Manx strings, 9 ambiguous exact sources, 43 reusable isolated-word mappings
+- generated layout: 16 common chunks + `neoorigins_gv_121` + shared 26.x deltas + 10 add-ons = 29 `gv_im` source files
+- contextual QA rejected the 43 isolated-word projections because they produced unsafe English/Manx hybrids such as `Aquatic Bieauid`, `the seihll from above`, `energy tappee`, and `water coirrey`
+- an exact-corpus-only refinement was also rejected because it left the locale overwhelmingly English (only 7 Manx lexical markers / 7 marked values)
+- direct English → Manx Google Translate is the chosen completion path; exact pinned Minecraft corpus matches retain priority, technical tokens/placeholders are protected, and generated output is not represented as native-speaker-reviewed
+- failed direct-translation run: `34645108619`, job `103413893793`; it attempted 2,712 individual Google requests with concurrency and eventually hit HTTP 429 on `%1$s had their soul ripped apart by %2$s`
+- rate-limit hardening commit: `46a89968c2320eb144f96c3edc1fab739f97f70f`
+- hardening removes request concurrency, groups missing strings into serialized validated batches, spaces successful requests, retries HTTP 429 with long exponential backoff, recursively subdivides only structurally invalid batches, retains placeholder/token validation, and writes a deterministic local checkpoint file
+- refinement recovery run started from that commit: `34677278844`
+- after refinement succeeds: inspect visible Manx output, pass strict 2,296/2,307/2,307 NeoOrigins audits plus all 10 add-ons, adapt the Gallo build workflow with `include_manx_121_translations`, validate JAR counts/isolation, then finalize metadata to 85 locales and integrate
+
 ## Current pinned upstream baseline
 
 NeoOrigins 2.2.27:
@@ -74,8 +91,8 @@ The 1.21.1 build also supports the established 10 add-ons; 26.x builds intention
 
 ## Next task
 
-Start and finish **language #85 — Manx (`gv_im`)** from the current `release/1.0.0` branch.
+Finish **language #85 — Manx (`gv_im`)** on `release/1.0.0-manx`; do not restart its bootstrap.
 
-Inspect the pinned `gv_im` Minecraft corpus first and choose a defensible semantic/projection strategy before generating anything. Do not assume that another Celtic language can safely stand in for Manx. Then use the full established flow: bootstrap conservatively, run strict audits, perform contextual QA/refinement, build all three targets with JAR isolation checks, finalize metadata to 85, merge, and update this handoff plus the locale plan.
+Once Manx is fully integrated, continue with **language #86 — Hawaiian (`haw_us`)** from the updated `release/1.0.0` branch.
 
 Low German (`nds_de`) remains selected but is explicitly deferred until a translation path that targets Low German rather than silently substituting Standard German is available.

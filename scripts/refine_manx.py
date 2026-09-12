@@ -6,12 +6,11 @@ sentences creates unsafe hybrids. Google Translate has direct Manx support, so t
 pass translates the complete English semantic source to Manx while keeping the pinned
 Minecraft en_us -> gv_im corpus as the preferred source for exact whole-string matches.
 Technical tokens and placeholders are protected and validated. Network translations
-are grouped into small validated batches to avoid thousands of individual requests.
+are deliberately serialized and grouped into validated batches to avoid rate limiting.
 This is automated translation assistance, not native-speaker review.
 """
 from __future__ import annotations
 
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from urllib.parse import urlencode
 import json
@@ -26,6 +25,7 @@ import bootstrap_manx as base
 ROOT = base.ROOT
 ASSETS = base.ASSETS
 GOOGLE_ENDPOINT = "https://translate.googleapis.com/translate_a/single"
+CACHE_PATH = ROOT / "build/manx-google-cache.json"
 
 GOOGLE_PROTECT_RE = re.compile(
     r"%(?:\d+\$)?[sdif]|§.|\\n|\n|\{[^{}]+\}|<[^<>]+>|"
@@ -43,6 +43,10 @@ FORBIDDEN_MIXED_PATTERNS = (
 )
 
 
+class BatchValidationError(RuntimeError):
+    """Raised when Google returns a batch that cannot be split safely."""
+
+
 def read_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -50,6 +54,35 @@ def read_json(path: Path) -> dict:
 def write_json(path: Path, data: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def load_cache() -> dict[str, str]:
+    if not CACHE_PATH.exists():
+        return {}
+    try:
+        raw = read_json(CACHE_PATH)
+    except (OSError, json.JSONDecodeError) as exc:
+        print(f"Ignoring unreadable Manx translation checkpoint: {exc}")
+        return {}
+    if not isinstance(raw, dict):
+        return {}
+    valid: dict[str, str] = {}
+    for source, translated in raw.items():
+        if not isinstance(source, str) or not isinstance(translated, str) or not translated.strip():
+            continue
+        if base.placeholder_signature(source) != base.placeholder_signature(translated):
+            continue
+        if "ZXQTK" in translated or "ZXQSEP" in translated:
+            continue
+        valid[source] = translated
+    return valid
+
+
+def save_cache(cache: dict[str, str]) -> None:
+    CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    temp = CACHE_PATH.with_suffix(".tmp")
+    temp.write_text(json.dumps(cache, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    temp.replace(CACHE_PATH)
 
 
 def protect_for_google(text: str) -> tuple[str, list[str]]:
@@ -67,11 +100,22 @@ def restore_google_tokens(text: str, tokens: list[str]) -> str:
     for index, token in enumerate(tokens):
         marker = f"ZXQTK{index:04d}QXZ"
         if marker not in text:
-            raise RuntimeError(f"Google translation lost protected token {marker}: {text!r}")
+            raise BatchValidationError(f"Google translation lost protected token {marker}: {text!r}")
         text = text.replace(marker, token)
     if re.search(r"ZXQTK\d{4}QXZ", text):
-        raise RuntimeError(f"Unexpected protected token survived restoration: {text!r}")
+        raise BatchValidationError(f"Unexpected protected token survived restoration: {text!r}")
     return text
+
+
+def retry_delay(exc: Exception, attempt: int) -> float:
+    if isinstance(exc, urllib.error.HTTPError) and exc.code == 429:
+        retry_after = exc.headers.get("Retry-After") if exc.headers else None
+        try:
+            server_delay = float(retry_after) if retry_after else 0.0
+        except ValueError:
+            server_delay = 0.0
+        return max(server_delay, min(180.0, 15.0 * (2 ** attempt))) + random.uniform(0.5, 2.0)
+    return min(45.0, 2.0 * (2 ** attempt)) + random.uniform(0.25, 1.0)
 
 
 def google_request(masked: str) -> str:
@@ -88,7 +132,7 @@ def google_request(masked: str) -> str:
     )
     url = f"{GOOGLE_ENDPOINT}?{params}"
     last_error: Exception | None = None
-    for attempt in range(5):
+    for attempt in range(8):
         try:
             request = urllib.request.Request(
                 url,
@@ -97,19 +141,27 @@ def google_request(masked: str) -> str:
                     "Accept": "application/json,text/plain,*/*",
                 },
             )
-            with urllib.request.urlopen(request, timeout=25) as response:
+            with urllib.request.urlopen(request, timeout=35) as response:
                 payload = json.loads(response.read().decode("utf-8"))
             segments = payload[0]
             translated = "".join(segment[0] for segment in segments if segment and segment[0])
             if not translated.strip():
                 raise RuntimeError("Google returned an empty translation")
+            # Keep request cadence intentionally low even after successful calls. This is
+            # much slower than a thread pool, but far safer for the public endpoint.
+            time.sleep(random.uniform(1.15, 1.65))
             return translated
-        except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError, RuntimeError, ValueError) as exc:
+        except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, RuntimeError, ValueError) as exc:
             last_error = exc
-            if attempt == 4:
+            if attempt == 7:
                 break
-            time.sleep((1.35 ** attempt) + random.random() * 0.30)
-    raise RuntimeError(f"Google Manx request failed: {last_error}")
+            delay = retry_delay(exc, attempt)
+            if isinstance(exc, urllib.error.HTTPError) and exc.code == 429:
+                print(f"Google returned HTTP 429; backing off for {delay:.1f}s (attempt {attempt + 1}/8).")
+            else:
+                print(f"Google request retry in {delay:.1f}s after {type(exc).__name__}: {exc}")
+            time.sleep(delay)
+    raise RuntimeError(f"Google Manx request failed after retries: {last_error}")
 
 
 def google_translate_one(source: str) -> str:
@@ -123,6 +175,8 @@ def google_translate_one(source: str) -> str:
 
 
 def google_translate_batch(sources: list[str]) -> dict[str, str]:
+    if not sources:
+        return {}
     if len(sources) == 1:
         return {sources[0]: google_translate_one(sources[0])}
 
@@ -138,50 +192,59 @@ def google_translate_batch(sources: list[str]) -> dict[str, str]:
         translated_joined = google_request(joined)
         matches = list(BATCH_SEPARATOR_RE.finditer(translated_joined))
         if len(matches) != len(sources) - 1:
-            raise RuntimeError(
-                f"Batch separator count mismatch: expected {len(sources) - 1}, found {len(matches)}"
+            raise BatchValidationError(
+                f"separator count mismatch: expected {len(sources) - 1}, found {len(matches)}"
             )
         translated_parts: list[str] = []
         start = 0
         for expected_index, match in enumerate(matches):
             if int(match.group(1)) != expected_index:
-                raise RuntimeError(
-                    f"Batch separator order mismatch: expected {expected_index}, got {match.group(1)}"
+                raise BatchValidationError(
+                    f"separator order mismatch: expected {expected_index}, got {match.group(1)}"
                 )
             translated_parts.append(translated_joined[start:match.start()].strip())
             start = match.end()
         translated_parts.append(translated_joined[start:].strip())
         if len(translated_parts) != len(sources):
-            raise RuntimeError("Batch split produced the wrong number of translations")
+            raise BatchValidationError("batch split produced the wrong number of translations")
 
         result: dict[str, str] = {}
         for source, translated, (_, tokens) in zip(sources, translated_parts, protected):
             translated = restore_google_tokens(translated, tokens)
             if base.placeholder_signature(source) != base.placeholder_signature(translated):
-                raise RuntimeError(
-                    f"Batch placeholder mismatch: {source!r} -> {translated!r}"
+                raise BatchValidationError(
+                    f"placeholder mismatch: {source!r} -> {translated!r}"
                 )
             if not translated.strip():
-                raise RuntimeError(f"Empty batch translation for {source!r}")
+                raise BatchValidationError(f"empty batch translation for {source!r}")
             result[source] = translated
         return result
-    except RuntimeError as exc:
-        print(f"Batch validation fallback ({len(sources)} strings): {exc}")
-        return {source: google_translate_one(source) for source in sources}
+    except BatchValidationError as exc:
+        # Never explode a failed batch into many concurrent/unit requests. Split it in
+        # half and keep the same serialized pacing all the way down.
+        midpoint = len(sources) // 2
+        print(f"Batch validation split ({len(sources)} strings): {exc}")
+        result = google_translate_batch(sources[:midpoint])
+        result.update(google_translate_batch(sources[midpoint:]))
+        return result
 
 
-def make_batches(sources: list[str], max_items: int = 8, max_chars: int = 1500) -> list[list[str]]:
+def make_batches(sources: list[str], max_items: int = 16, max_chars: int = 1400) -> list[list[str]]:
     batches: list[list[str]] = []
     current: list[str] = []
     current_chars = 0
     for source in sources:
         source_chars = len(source)
-        if current and (len(current) >= max_items or current_chars + source_chars > max_chars):
+        separator_cost = 20 if current else 0
+        if current and (
+            len(current) >= max_items
+            or current_chars + separator_cost + source_chars > max_chars
+        ):
             batches.append(current)
             current = []
             current_chars = 0
         current.append(source)
-        current_chars += source_chars
+        current_chars += separator_cost + source_chars
     if current:
         batches.append(current)
     return batches
@@ -258,27 +321,35 @@ def main() -> None:
         else:
             network_sources.append(source)
 
-    batches = make_batches(network_sources)
+    cache = load_cache()
+    cache_hits = 0
+    for source in network_sources:
+        cached = cache.get(source)
+        if cached is not None:
+            translated_by_source[source] = cached
+            cache_hits += 1
+
+    missing_network_sources = [source for source in network_sources if source not in translated_by_source]
+    batches = make_batches(missing_network_sources)
     print(
         f"Manx translation pool: {len(unique_sources)} unique strings; "
-        f"{len(translated_by_source)} corpus/manual hits; {len(network_sources)} direct translations "
-        f"in {len(batches)} validated batches."
+        f"{len(unique_sources) - len(network_sources)} corpus/manual hits; "
+        f"{cache_hits} checkpoint hits; {len(missing_network_sources)} direct translations "
+        f"in {len(batches)} serialized validated batches."
     )
 
-    with ThreadPoolExecutor(max_workers=10) as executor:
-        futures = {executor.submit(google_translate_batch, batch): batch for batch in batches}
-        completed_strings = 0
-        completed_batches = 0
-        for future in as_completed(futures):
-            batch = futures[future]
-            translated_by_source.update(future.result())
-            completed_strings += len(batch)
-            completed_batches += 1
-            if completed_batches % 50 == 0 or completed_batches == len(batches):
-                print(
-                    f"Direct Manx translation progress: {completed_strings}/{len(network_sources)} strings "
-                    f"({completed_batches}/{len(batches)} batches)"
-                )
+    completed_strings = cache_hits
+    for batch_index, batch in enumerate(batches, start=1):
+        translated_batch = google_translate_batch(batch)
+        translated_by_source.update(translated_batch)
+        cache.update(translated_batch)
+        save_cache(cache)
+        completed_strings += len(batch)
+        if batch_index % 10 == 0 or batch_index == len(batches):
+            print(
+                f"Direct Manx translation progress: {completed_strings}/{len(network_sources)} strings "
+                f"({batch_index}/{len(batches)} new batches)"
+            )
 
     def translated_payload(source: dict[str, str]) -> dict[str, str]:
         result = {}
@@ -335,8 +406,8 @@ def main() -> None:
                 source_changed += 1
 
     text = "\n".join(str(value) for data in after.values() for value in data.values())
-    if "__MANX_BATCH_LOCK__" in text:
-        raise SystemExit("Temporary Manx batch lock survived generated output")
+    if "__MANX_BATCH_LOCK__" in text or "ZXQSEP" in text or "ZXQTK" in text:
+        raise SystemExit("Temporary Manx translation marker survived generated output")
     for pattern in FORBIDDEN_MIXED_PATTERNS:
         match = pattern.search(text)
         if match:

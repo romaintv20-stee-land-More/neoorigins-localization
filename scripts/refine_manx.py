@@ -6,6 +6,11 @@ import bootstrap_manx as base
 # exactly and keep them away from external translation endpoints.
 base.MANUAL_VALUES.setdefault("", "")
 
+# Keep the established high-visibility UI term deterministic. Google sometimes
+# renders the isolated button label "Search" as "Lhig", while the project QA
+# baseline uses the direct Manx UI term "Ronsee".
+base.MANUAL_VALUES["Search"] = "Ronsee"
+
 import refine_manx_core
 
 # Google's web translator can reinterpret marker-looking ASCII identifiers such

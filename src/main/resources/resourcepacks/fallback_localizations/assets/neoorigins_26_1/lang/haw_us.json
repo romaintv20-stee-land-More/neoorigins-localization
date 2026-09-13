@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Loaʻa i nā mea hana āu e hana ai i nā hiʻohiʻona bonus - ʻoʻoleʻa, pōʻino, a i ʻole ka wikiwiki mining.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Loaʻa pālua XP mai ka kuke ʻana i ka meaʻai i loko o ka mea puhi.",
+  "neoorigins.configuration.title": "NeoOrigins Hoʻonohonoho",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "pāʻani pāʻani",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "NeoOrigins Hoʻonohonoho pāʻani",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Admin & ʻAe",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "NeoOrigins Nā hoʻonohonoho luna",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Ka Mana Mana",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "NeoOrigins Hoʻopau mana",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Nā kumu a me nā papa",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "NeoOrigins Origin & Class Toggles",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Hōʻike Mea Kūʻai",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "NeoOrigins Nā hoʻonohonoho mea kūʻai aku",
+  "neoorigins.configuration.show_cooldown_countdown": "Hōʻike i ka helu hoʻomaha",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Opacity helu hoʻomaha (%)",
+  "neoorigins.configuration.hud_ability_display": "Hiki HUD ke ano hoike",
+  "neoorigins.configuration.always_show_ability_icons": "Hōʻike mau i nā ikona hiki"
+}

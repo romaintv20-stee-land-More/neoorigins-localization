@@ -1,13 +1,6 @@
 name: Finalize Interslavic locale metadata
 
 on:
-  workflow_run:
-    workflows:
-      - Build NeoOrigins Localization 1.0.0 Interslavic staging
-    types:
-      - completed
-    branches:
-      - release/1.0.0-interslavic
   workflow_dispatch:
 
 permissions:
@@ -15,7 +8,6 @@ permissions:
 
 jobs:
   finalize:
-    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

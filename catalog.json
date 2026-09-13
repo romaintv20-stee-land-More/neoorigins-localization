@@ -11,7 +11,7 @@
     ],
     "loader": "NeoForge",
     "localization_mode": "low_priority_fallback",
-    "supported_locale_count": 86,
+    "supported_locale_count": 87,
     "builds": {
       "1.21.1": {
         "version": "0.9.0-beta+1.21.1",
@@ -242,7 +242,9 @@
           "manx_common_glob": "neoorigins_gv_common_*",
           "manx_mc_1_21_1": "neoorigins_gv_121",
           "hawaiian_common_glob": "neoorigins_haw_common_*",
-          "hawaiian_mc_1_21_1": "neoorigins_haw_121"
+          "hawaiian_mc_1_21_1": "neoorigins_haw_121",
+          "ido_common_glob": "neoorigins_io_common_*",
+          "ido_mc_1_21_1": "neoorigins_io_121"
         },
         "note": "NeoOrigins 2.2.26 est audité séparément sur les trois cibles. neoorigins_226 est commun aux trois builds ; neoorigins_26_1 est réservé à 26.1.x ; neoorigins_26_2 est réservé à 26.2. Les trois clés reward.neoorigins.loot_pool* restent dans les fallbacks complets pour 1.21.1 et sont inoffensives sur 26.x.",
         "baseline_audit_2_2_27": {
@@ -1054,6 +1056,15 @@
             "26.1.x",
             "26.2"
           ]
+        },
+        "io_en": {
+          "name": "Ido",
+          "status": "supported",
+          "targets": [
+            "1.21.1",
+            "26.1.x",
+            "26.2"
+          ]
         }
       }
     },
@@ -1577,6 +1588,12 @@
           "name": "ʻŌlelo Hawaiʻi",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/haw_us.json",
+          "fallback_keys": 401
+        },
+        "io_en": {
+          "name": "Ido",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/io_en.json",
           "fallback_keys": 401
         }
       }
@@ -2105,6 +2122,12 @@
           "name": "ʻŌlelo Hawaiʻi",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/haw_us.json",
+          "fallback_keys": 69
+        },
+        "io_en": {
+          "name": "Ido",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/io_en.json",
           "fallback_keys": 69
         }
       }
@@ -2636,6 +2659,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/haw_us.json",
           "fallback_keys": 240
+        },
+        "io_en": {
+          "name": "Ido",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/io_en.json",
+          "fallback_keys": 240
         }
       }
     },
@@ -3165,6 +3194,12 @@
           "name": "ʻŌlelo Hawaiʻi",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/haw_us.json",
+          "fallback_keys": 65
+        },
+        "io_en": {
+          "name": "Ido",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/io_en.json",
           "fallback_keys": 65
         }
       }
@@ -3697,6 +3732,12 @@
           "name": "ʻŌlelo Hawaiʻi",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/haw_us.json",
+          "fallback_keys": 39
+        },
+        "io_en": {
+          "name": "Ido",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/io_en.json",
           "fallback_keys": 39
         }
       }
@@ -4234,6 +4275,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/haw_us.json",
           "fallback_keys": 77
+        },
+        "io_en": {
+          "name": "Ido",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/io_en.json",
+          "fallback_keys": 77
         }
       }
     },
@@ -4767,6 +4814,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/haw_us.json",
           "fallback_keys": 117
+        },
+        "io_en": {
+          "name": "Ido",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/io_en.json",
+          "fallback_keys": 117
         }
       }
     },
@@ -5299,6 +5352,12 @@
           "name": "ʻŌlelo Hawaiʻi",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/haw_us.json",
+          "fallback_keys": 124
+        },
+        "io_en": {
+          "name": "Ido",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/io_en.json",
           "fallback_keys": 124
         }
       }
@@ -5834,6 +5893,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/haw_us.json",
           "fallback_keys": 99
+        },
+        "io_en": {
+          "name": "Ido",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/io_en.json",
+          "fallback_keys": 99
         }
       }
     },
@@ -6366,6 +6431,12 @@
           "name": "ʻŌlelo Hawaiʻi",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/haw_us.json",
+          "fallback_keys": 22
+        },
+        "io_en": {
+          "name": "Ido",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/io_en.json",
           "fallback_keys": 22
         }
       }

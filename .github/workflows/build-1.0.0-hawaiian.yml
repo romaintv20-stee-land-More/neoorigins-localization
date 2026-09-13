@@ -2,9 +2,6 @@ name: Build NeoOrigins Localization 1.0.0 Hawaiian staging
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - release/1.0.0-hawaiian
 
 permissions:
   contents: read

@@ -1,0 +1,178 @@
+name: Bootstrap Ido localization
+
+on:
+  push:
+    branches:
+      - release/1.0.0-ido
+    paths:
+      - scripts/bootstrap_ido.py
+      - .github/workflows/bootstrap-ido.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/1.0.0-ido
+
+      - name: Restrict add-on audits to Ido
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          scripts = [
+              'scripts/audit_medievalorigins_upstream.py',
+              'scripts/audit_ibarnorigins_upstream.py',
+              'scripts/audit_origins_fantasy_upstream.py',
+              'scripts/audit_origins_backgrounds_upstream.py',
+              'scripts/audit_origins_more_backgrounds_upstream.py',
+              'scripts/audit_origins_backgrounds_iss_upstream.py',
+              'scripts/audit_origins_furries_upstream.py',
+              'scripts/audit_origins_classes_extended_upstream.py',
+              'scripts/audit_origins_classes_iss_upstream.py',
+              'scripts/audit_origin_architect_upstream.py',
+          ]
+          for filename in scripts:
+              path = Path(filename)
+              text = path.read_text(encoding='utf-8')
+              updated, count = re.subn(r'^LOCALES\s*=.*$', 'LOCALES = ("io_en",)', text, count=1, flags=re.M)
+              if count == 0:
+                  updated, count = re.subn(r'^DEFAULT_LOCALES\s*=.*$', 'DEFAULT_LOCALES = ("io_en",)', text, count=1, flags=re.M)
+              if count != 1:
+                  raise SystemExit(f'Could not patch locale list in {filename}')
+              path.write_text(updated, encoding='utf-8')
+          PY
+
+      - name: Discover Ido NeoOrigins coverage
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref af467a3bc118f6bbc0970d68f7e03fa631d7e6f2 --output build/io-discovery-mc-1.21.1 --locale io_en
+          python3 scripts/audit_neoorigins_upstream.py --ref aa207ef14cf3b938e28b4081162701953957c1d5 --output build/io-discovery-mc-26.1 --locale io_en
+          python3 scripts/audit_neoorigins_upstream.py --ref 511cadcafe3027d2a56b4448652ec9b74e2f3b07 --output build/io-discovery-mc-26.2 --locale io_en
+
+      - name: Discover Ido add-on coverage and English sources
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format
+          python3 scripts/audit_origins_fantasy_upstream.py
+          python3 scripts/audit_origins_backgrounds_upstream.py
+          python3 scripts/audit_origins_more_backgrounds_upstream.py
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py
+          python3 scripts/audit_origins_furries_upstream.py
+          python3 scripts/audit_origins_classes_extended_upstream.py
+          python3 scripts/audit_origins_classes_iss_upstream.py
+          python3 scripts/audit_origin_architect_upstream.py
+
+      - name: Generate Ido fallback files
+        run: python3 scripts/bootstrap_ido.py
+
+      - name: Prune add-on keys already translated upstream
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --prune
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --prune
+          python3 scripts/audit_origins_fantasy_upstream.py --prune
+          python3 scripts/audit_origins_backgrounds_upstream.py --prune
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --prune
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --prune
+          python3 scripts/audit_origins_furries_upstream.py --prune
+          python3 scripts/audit_origins_classes_extended_upstream.py --prune
+          python3 scripts/audit_origins_classes_iss_upstream.py --prune
+          python3 scripts/audit_origin_architect_upstream.py --prune
+
+      - name: Strict audit Ido NeoOrigins coverage
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref af467a3bc118f6bbc0970d68f7e03fa631d7e6f2 --output build/io-audit-mc-1.21.1 --locale io_en --fallback-namespace-glob 'neoorigins_io_common_*' --extra-namespace neoorigins_io_121 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref aa207ef14cf3b938e28b4081162701953957c1d5 --output build/io-audit-mc-26.1 --locale io_en --fallback-namespace-glob 'neoorigins_io_common_*' --extra-namespace neoorigins_26_1 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 511cadcafe3027d2a56b4448652ec9b74e2f3b07 --output build/io-audit-mc-26.2 --locale io_en --fallback-namespace-glob 'neoorigins_io_common_*' --extra-namespace neoorigins_26_2 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Strict audit Ido add-on coverage
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_fantasy_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_furries_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_extended_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origin_architect_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Validate JSON localization structure
+        run: python3 scripts/validate.py
+
+      - name: Verify Ido bootstrap structure
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          files = sorted(Path('src/main/resources/resourcepacks/fallback_localizations/assets').glob('**/lang/io_en.json'))
+          if len(files) != 29:
+              raise SystemExit(f'Expected 29 io_en localization files, found {len(files)}')
+          for path in files:
+              data = json.loads(path.read_text(encoding='utf-8'))
+              if not isinstance(data, dict):
+                  raise SystemExit(f'Unexpected Ido JSON payload in {path}')
+          print(f'Ido bootstrap structure passed across {len(files)} files')
+          PY
+
+      - name: Add Ido target packaging switch
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('build.gradle')
+          text = path.read_text(encoding='utf-8')
+          if 'includeIdo121Translations' not in text:
+              anchor = "def includeHawaiian121Translations = (project.findProperty('include_hawaiian_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()\n"
+              if anchor not in text:
+                  raise SystemExit('Hawaiian Gradle definition anchor not found')
+              text = text.replace(anchor, anchor + "def includeIdo121Translations = (project.findProperty('include_ido_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()\n", 1)
+              anchor = "    inputs.property 'include_hawaiian_121_translations', includeHawaiian121Translations\n"
+              if anchor not in text:
+                  raise SystemExit('Hawaiian Gradle input anchor not found')
+              text = text.replace(anchor, anchor + "    inputs.property 'include_ido_121_translations', includeIdo121Translations\n", 1)
+              anchor = "    if (!includeHawaiian121Translations) {\n        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_haw_121/**'\n    }\n"
+              if anchor not in text:
+                  raise SystemExit('Hawaiian Gradle exclusion anchor not found')
+              text = text.replace(anchor, anchor + "\n    if (!includeIdo121Translations) {\n        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_io_121/**'\n    }\n", 1)
+              path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Check whitespace
+        run: git diff --check
+
+      - name: Restore temporary audit-script changes
+        if: always()
+        run: git checkout HEAD -- scripts/audit_*_upstream.py
+
+      - name: Upload Ido audit reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ido-localization-audits-${{ github.sha }}
+          path: |
+            build/io-discovery-*
+            build/io-audit-*
+            build/*-upstream-audit
+          if-no-files-found: warn
+
+      - name: Commit validated Ido bootstrap
+        if: success()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name 'io_en.json' -print0 | xargs -0 -r git add
+          git add build.gradle
+          if git diff --cached --quiet; then
+            echo 'No Ido bootstrap changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Add Ido localization bootstrap'
+          git fetch origin release/1.0.0-ido
+          git rebase origin/release/1.0.0-ido
+          git push origin HEAD:release/1.0.0-ido

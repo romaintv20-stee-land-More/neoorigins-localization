@@ -115,33 +115,44 @@ class InterslavicTranslator:
             value.strip() for value in self.tokenizer.batch_decode(generated, skip_special_tokens=True)
         ]
 
+    @staticmethod
+    def split_structural_affixes(piece: str) -> tuple[str, str, str]:
+        """Keep punctuation/numeric affixes outside translated natural-language spans.
+
+        This prevents protected tokens such as ``HP`` from being glued to a translated
+        neighbouring word when a source segment starts with ``) `` or another delimiter.
+        Internal punctuation/numbers remain in the natural-language core so constructs
+        such as ``heart (+2 max`` still translate coherently.
+        """
+        alpha = [index for index, char in enumerate(piece) if char.isalpha()]
+        if not alpha:
+            return piece, "", ""
+        first = alpha[0]
+        last = alpha[-1]
+        return piece[:first], piece[first:last + 1], piece[last + 1:]
+
     def structural_translate(self, source: str) -> str:
         pieces = PROTECT_RE.split(source)
         tokens = PROTECT_RE.findall(source)
         translated_pieces = list(pieces)
         translatable_indices: list[int] = []
         translatable: list[str] = []
-        whitespace: dict[int, tuple[str, str]] = {}
+        affixes: dict[int, tuple[str, str]] = {}
 
         for index, piece in enumerate(pieces):
-            if not piece.strip() or not re.search(r"[A-Za-z]", piece):
-                continue
-            match = re.fullmatch(r"(\s*)(.*?)(\s*)", piece, flags=re.S)
-            if match is None:
-                raise RuntimeError(f"Could not split structural Interslavic span: {piece!r}")
-            leading, core, trailing = match.groups()
+            prefix, core, suffix = self.split_structural_affixes(piece)
             if not core:
                 continue
             translatable_indices.append(index)
             translatable.append(core)
-            whitespace[index] = (leading, trailing)
+            affixes[index] = (prefix, suffix)
 
         outputs = self.translate_batch(translatable)
         if len(outputs) != len(translatable_indices):
             raise RuntimeError("Structural Interslavic translation returned the wrong number of spans")
         for index, translated in zip(translatable_indices, outputs):
-            leading, trailing = whitespace[index]
-            translated_pieces[index] = leading + translated.strip() + trailing
+            prefix, suffix = affixes[index]
+            translated_pieces[index] = prefix + translated.strip() + suffix
 
         output: list[str] = []
         for index, piece in enumerate(translated_pieces):

@@ -16,41 +16,42 @@ Reference / integration branch: `release/1.0.0`
 
 ## Completed integration baseline
 
-The first **86 selected locales are integrated** into `release/1.0.0`, through **#86 Hawaiian — `haw_us / ʻŌlelo Hawaiʻi`**.
+The first **87 selected locales are complete and integrated** into `release/1.0.0`, through **#87 Ido — `io_en / Ido`**.
 
-Hawaiian final references:
-- refinement run `34745528317`
-- build run `34747059029` — **27 / 17 / 17** packaged `haw_us` files
-- metadata run `34747318184`
-- PR `#23`
-- integration merge commit `27518a0ee052943a02e959e80438e6c092a463e6`
-- locale-plan advancement commit `5201cba654fe940252d00e02a2f9b419b9d82121`
+Recent integrated languages:
+- #83 Friulian — `fur_it / Furlan`
+- #84 Gallo — `go_fr / Galo`
+- #85 Manx — `gv_im / Gaelg`
+- #86 Hawaiian — `haw_us / ʻŌlelo Hawaiʻi`
+- #87 Ido — `io_en / Ido`
 
-## Ido #87 — staging complete, integration next
+The catalogue and README are at **87 locales**. There are **26 selected locales remaining** for 1.0.0. The authoritative queue is `docs/RELEASE_1_0_0_LOCALE_PLAN.md`.
+
+## Ido #87 — final references
 
 - staging branch: `release/1.0.0-ido`
-- locale code: `io_en`; native/French name: `Ido`
 - pinned Minecraft corpus: `teaSummer/minecraft-locales` at `83af272f5a618b287781ee9ce2a48cfc8f47dd61`, file `java/io_en.json`
-- generated source layout: 16 common chunks + `neoorigins_io_121` + shared 26.x deltas + 10 add-ons = **29 `io_en` source files**
-- completion policy: safe manual full values, exact whole-string matches from the pinned Minecraft Ido corpus, then direct full English → Ido translation with `Helsinki-NLP/opus-mt-en-mul` (Apache-2.0), target prefix `>>ido<<`; no isolated-word projection
-- placeholders and technical/project names are protected and validated; `Origin Architect` is intentionally preserved
-- bootstrap run `34747547429` — successful
-- initial refinement attempts exposed a protected-token spacing bug; the engine was fixed to preserve leading/trailing whitespace around translated natural-language spans
-- successful final refinement run: `34771622691`
+- generated layout: 16 common chunks + `neoorigins_io_121` + shared 26.x deltas + 10 add-ons = **29 `io_en` source files**
+- completion path: safe manual full values, exact Minecraft Ido whole-string matches, then direct English → Ido translation with `Helsinki-NLP/opus-mt-en-mul` (Apache-2.0), target prefix `>>ido<<`
+- no isolated-word projection; placeholders and technical/project names protected; `Origin Architect` intentionally preserved
+- bootstrap run: `34747547429` — successful
+- final refinement run: `34771622691` — successful
 - generated translation commit: `fc7da509b430c517fc5a5e4d05e8c7d0751162af`
 - strict JSON, key, placeholder, upstream-overlap and protected-token gates passed across all 29 files
 - build trigger commit: `e37817e620f047ee0cbc3c7b7445f2977f92c3ce`
-- successful build run: `34772475271`
-- build inspection gates passed:
+- build run: `34772475271` — successful
+- JAR inspection results:
   - 1.21.1: **27** `io_en` files, delta `neoorigins_io_121`, 10 add-ons present
   - 26.1.x: **17** `io_en` files, delta `neoorigins_26_1`, no 1.21.1 add-ons
   - 26.2: **17** `io_en` files, delta `neoorigins_26_2`, no 1.21.1 add-ons
-- metadata trigger commit: `c49041f7546410951be1c888a5213787441bc3d1`
 - metadata run: `34777236473` — successful
 - final metadata commit: `dddc9c896bc232044d50e5750d36d466c6e3bc96`
-- metadata final state: **87 supported locales**, `io_en` across all 11 projects, native catalog name `Ido`, README French label `Ido`
-- Ido fallback namespaces: `ido_common_glob = neoorigins_io_common_*`; `ido_mc_1_21_1 = neoorigins_io_121`
-- build workflow was restored to manual-only after successful validation
+- metadata final state: 87 supported locales, `io_en` across all 11 projects, native/French name `Ido`
+- fallback namespaces: `ido_common_glob = neoorigins_io_common_*`; `ido_mc_1_21_1 = neoorigins_io_121`
+- build workflow restored to manual-only after validation
+- integration PR: `#24`
+- integration merge commit: `d97d72b298950982fd10f32fd2354dcb210ec4b0`
+- locale-plan advancement commit: `500ad7a498c6328e22f0a32e8168165a3c6e2c0d`
 - Ido remains machine-generated; no native-speaker review is claimed
 - public build version remains `0.9.0-beta`
 
@@ -61,10 +62,15 @@ NeoOrigins 2.2.27:
 - 26.1.x: `aa207ef14cf3b938e28b4081162701953957c1d5` — 2,307 English keys
 - 26.2: `511cadcafe3027d2a56b4448652ec9b74e2f3b07` — 2,307 English keys
 
+Pinned Minecraft locale corpus:
+- repository: `teaSummer/minecraft-locales`
+- ref: `83af272f5a618b287781ee9ce2a48cfc8f47dd61`
+- Java locale files: `java/<locale>.json`
+
 The 1.21.1 build supports the established 10 add-ons; 26.x builds intentionally package NeoOrigins translations only.
 
 ## Next task
 
-Integrate **#87 Ido (`io_en`)** into `release/1.0.0` via PR after the completed QA/build/metadata state above. Then advance the locale plan and this handoff to **#88 Interslavic (`isv`)** and start that locale from the new integration baseline.
+Start and finish **language #88 — Interslavic (`isv`)** from the current `release/1.0.0` integration branch. First inspect the pinned Minecraft `isv` corpus and verify a reliable full-string automatic-translation path before generating anything. Keep exact corpus matches ahead of direct full-string translation and preserve all technical tokens/placeholders.
 
 Low German (`nds_de`) remains selected but is explicitly deferred until a translation path that genuinely targets Low German is available.

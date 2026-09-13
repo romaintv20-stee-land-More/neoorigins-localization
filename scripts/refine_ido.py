@@ -110,16 +110,30 @@ class IdoTranslator:
     def structural_translate(self, source: str) -> str:
         pieces = PROTECT_RE.split(source)
         tokens = PROTECT_RE.findall(source)
-        translated_pieces: list[str] = []
+        translated_pieces = list(pieces)
         translatable_indices: list[int] = []
         translatable: list[str] = []
+        whitespace: dict[int, tuple[str, str]] = {}
+
         for index, piece in enumerate(pieces):
-            translated_pieces.append(piece)
-            if piece.strip() and re.search(r"[A-Za-z]", piece):
-                translatable_indices.append(index)
-                translatable.append(piece)
-        for index, translated in zip(translatable_indices, self.translate_batch(translatable)):
-            translated_pieces[index] = translated
+            if not piece.strip() or not re.search(r"[A-Za-z]", piece):
+                continue
+            match = re.fullmatch(r"(\s*)(.*?)(\s*)", piece, flags=re.S)
+            if match is None:
+                raise RuntimeError(f"Could not split structural Ido span: {piece!r}")
+            leading, core, trailing = match.groups()
+            if not core:
+                continue
+            translatable_indices.append(index)
+            translatable.append(core)
+            whitespace[index] = (leading, trailing)
+
+        outputs = self.translate_batch(translatable)
+        if len(outputs) != len(translatable_indices):
+            raise RuntimeError("Structural Ido translation returned the wrong number of spans")
+        for index, translated in zip(translatable_indices, outputs):
+            leading, trailing = whitespace[index]
+            translated_pieces[index] = leading + translated.strip() + trailing
 
         output: list[str] = []
         for index, piece in enumerate(translated_pieces):

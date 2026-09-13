@@ -2,6 +2,11 @@ name: Build NeoOrigins Localization 1.0.0 Ido staging
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - release/1.0.0-ido
+    paths:
+      - 'src/**/io_en.json'
 
 permissions:
   contents: read

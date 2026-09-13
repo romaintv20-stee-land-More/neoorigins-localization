@@ -7,6 +7,7 @@ on:
       - release/1.0.0-ido
     paths:
       - 'src/**/io_en.json'
+      - '.github/workflows/build-1.0.0-ido.yml'
 
 permissions:
   contents: read

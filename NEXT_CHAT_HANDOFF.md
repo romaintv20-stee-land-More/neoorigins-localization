@@ -1,6 +1,6 @@
 # NeoOrigins Localization — Next Chat Handoff
 
-Last updated: 2026-09-13
+Last updated: 2026-09-14
 Repository: `romaintv20-stee-land-More/neoorigins-localization`
 Reference / integration branch: `release/1.0.0`
 
@@ -16,51 +16,34 @@ Reference / integration branch: `release/1.0.0`
 
 ## Completed integration baseline
 
-The first **87 selected locales are complete and integrated** into `release/1.0.0`, through **#87 Ido — `io_en / Ido`**.
+The first **88 selected locales are complete and integrated** into `release/1.0.0`, through **#88 Interslavic — `isv / Medžuslovjansky`**.
 
 Recent integrated languages:
-- #83 Friulian — `fur_it / Furlan`
 - #84 Gallo — `go_fr / Galo`
 - #85 Manx — `gv_im / Gaelg`
 - #86 Hawaiian — `haw_us / ʻŌlelo Hawaiʻi`
 - #87 Ido — `io_en / Ido`
+- #88 Interslavic — `isv / Medžuslovjansky`
 
-The catalogue and README are at **87 locales**. There are **26 selected locales remaining** for 1.0.0. The authoritative queue is `docs/RELEASE_1_0_0_LOCALE_PLAN.md`.
+The catalogue and README are at **88 locales**. There are **25 selected locales remaining** for 1.0.0. The authoritative queue is `docs/RELEASE_1_0_0_LOCALE_PLAN.md`.
 
-## Ido #87 — final references
-
-- staging branch: `release/1.0.0-ido`
-- bootstrap run: `34747547429` — successful
-- final refinement run: `34771622691` — successful
-- generated translation commit: `fc7da509b430c517fc5a5e4d05e8c7d0751162af`
-- build run: `34772475271` — successful, **27 / 17 / 17** `io_en` files
-- metadata run: `34777236473` — successful
-- final metadata commit: `dddc9c896bc232044d50e5750d36d466c6e3bc96`
-- integration PR: `#24`
-- integration merge commit: `d97d72b298950982fd10f32fd2354dcb210ec4b0`
-- locale-plan advancement commit: `500ad7a498c6328e22f0a32e8168165a3c6e2c0d`
-- Ido remains machine-generated; no native-speaker review is claimed
-
-## Interslavic #88 — current staging state
+## Interslavic #88 — final references
 
 - staging branch: `release/1.0.0-interslavic`
-- locale: `isv`; native metadata name prepared as `Medžuslovjansky`; French README name prepared as `Interslave`
 - pinned Minecraft corpus: `teaSummer/minecraft-locales` at `83af272f5a618b287781ee9ce2a48cfc8f47dd61`, file `java/isv.json`
-- corpus metrics observed in refinement log: **8,556 aligned entries**, **11 rejected pairs**, **1,947 unchanged English pairs**, **6,152 exact Interslavic strings**, **86 ambiguous exact sources**
-- bootstrap strategy: English semantic source, safe manual full values, exact whole-string Minecraft corpus matches only; no isolated-word projection
 - bootstrap run: `34777502902` — successful
-- generated bootstrap commit: `27176400b337d814a51e9bfda4b1a24f7980578e`
 - bootstrap structure: **29 `isv` source files** = 16 common chunks + `neoorigins_isv_121` + two 26.x deltas + 10 add-ons
 - refinement model: `salavat/nllb-200-distilled-600M-finetuned-isv_v2`, direct `eng_Latn` → `isv_Latn`
-- refinement pool: **2,734 unique source strings**; **33 manual/corpus hits**; **2,701 direct full-string NLLB translations**
-- first refinement run `34777652053` failed before committing translations because the model glued protected token `HP` to the following translated word (`HPIz`)
-- structural fallback was corrected in commit `ac43305102fd1a359976a60be230dbedb1921b0c` to preserve punctuation/numeric affixes around protected tokens while translating only natural-language cores
-- corrected refinement run: `34777854565` — currently running; do not treat it as successful until completed and logs/checks are inspected
-- build workflow already prepared: `.github/workflows/build-1.0.0-interslavic.yml`; it will trigger only when refined `isv.json` files are pushed and asserts **27 / 17 / 17**, correct deltas and 26.x add-on isolation
-- metadata finalizer prepared: `scripts/finalize_interslavic_metadata.py`; target count **88**, 11 project entries, fallback namespaces `interslavic_common_glob = neoorigins_isv_common_*` and `interslavic_mc_1_21_1 = neoorigins_isv_121`
-- successful build workflow is configured to run metadata finalization only after all three matrix builds pass
-- standalone metadata workflow remains manual-only as a fallback
-- Interslavic remains machine-generated; do not claim native-speaker review
+- final refinement run: `34777854565` — successful
+- generated translation commit: `f7a79133060eaf4058d4f29ea2aa669839e3ec6f`
+- strict JSON, source-key, placeholder, upstream-overlap and protected-token gates passed; no isolated-word projection
+- build run: `34893764953` — successful, packaged **27 / 17 / 17** `isv` files with correct add-on/version-delta isolation
+- final staging metadata commit: `cd7805cec57dee509680e055980cfeb72418a586`
+- metadata: 88 supported locales, `isv` across all 11 projects, `interslavic_common_glob = neoorigins_isv_common_*`, `interslavic_mc_1_21_1 = neoorigins_isv_121`
+- integration PR: `#25`
+- integration merge commit: `b4efe78fe46513a582ce36403cf746625b6dcecb`
+- locale-plan advancement commit: `a78979ae8814f87118822ec1bac49a594d2ab31c`
+- Interslavic remains machine-generated; no native-speaker review is claimed
 
 ## Current pinned upstream baseline
 
@@ -78,6 +61,6 @@ The 1.21.1 build supports the established 10 add-ons; 26.x builds intentionally 
 
 ## Next task
 
-Continue corrected Interslavic refinement run `34777854565`. If it fails, inspect the exact translation/QA error and fix automatically. If green, inspect representative `isv` output quality and leakage, verify the automatic **27 / 17 / 17** build plus metadata finalization, restore staging workflows to manual-only where appropriate, finalize this handoff, create/merge the PR into `release/1.0.0`, advance the locale plan to **#89 Kabyle (`kab_kab`)**, and continue.
+Start and finish **#89 Kabyle (`kab_kab`)** from the current `release/1.0.0` branch. Inspect the pinned `java/kab_kab.json` corpus first. English remains the semantic source. Prefer safe manual full values and exact whole-string Minecraft corpus matches, then direct full-string English → Kabyle translation for the remaining strings with a model that genuinely targets Kabyle. Preserve placeholders and technical/project tokens, run strict audits, then validate **27 / 17 / 17** packaging, metadata, PR, and integration.
 
 Low German (`nds_de`) remains selected but explicitly deferred until a translation path that genuinely targets Low German is available.

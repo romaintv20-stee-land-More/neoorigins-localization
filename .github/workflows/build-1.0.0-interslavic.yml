@@ -6,6 +6,7 @@ on:
       - release/1.0.0-interslavic
     paths:
       - 'src/**/isv.json'
+      - '.github/workflows/build-1.0.0-interslavic.yml'
   workflow_dispatch:
 
 permissions:

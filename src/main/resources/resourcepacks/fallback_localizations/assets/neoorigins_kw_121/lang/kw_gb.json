@@ -1,8 +1,8 @@
 {
-  "power.neoorigins.class_blacksmith_quality.description": "Tabiki ne demek, biz sizi arabada bekliyor olurlar... ...Buçmelerini geri dönmektedir.",
-  "power.neoorigins.class_cook_smoker_xp.description": "Bazı iklim modelleri zor anlaşılan.",
-  "neoorigins.configuration.title": "NeoOrigins Furvyans",
-  "reward.neoorigins.loot_pool": "NeoOrigins: Grontya Poth",
-  "reward.neoorigins.loot_pool.loot_table": "Toulys an Tabl",
-  "reward.neoorigins.loot_pool.rolls": "Rolow"
+  "power.neoorigins.class_blacksmith_quality.description": "Towlennow hwath yw gorrewlys — towlennow mynyster, armow hwath kaletoc'h, arvor yw dowrgleudh, ha pep tra a bara hirrach.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Bwydh kowkek yn smyker orth furnys avel nyth eghen.",
+  "neoorigins.configuration.title": "NeoOrigins Common Configuration",
+  "reward.neoorigins.loot_pool": "NeoOrigins: Grant Loot Pol",
+  "reward.neoorigins.loot_pool.loot_table": "Tablow loot",
+  "reward.neoorigins.loot_pool.rolls": "Rollow"
 }

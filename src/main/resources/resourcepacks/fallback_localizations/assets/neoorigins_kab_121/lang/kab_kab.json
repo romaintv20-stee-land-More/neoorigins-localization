@@ -1,8 +1,8 @@
 {
-  "power.neoorigins.class_blacksmith_quality.description": "Ayen i kkun-ixeddmen, tebɣam aț-țesɛum lbabuṛat-iw ițɛicin, tesseɣlaḥem, tessawaḍ, tezmert aṭas, kullec i t-id-iɛedda.",
-  "power.neoorigins.class_cook_smoker_xp.description": "Lqut i tețwaɣeḍ di dexxan neɣ di tmes, tețțawi-d lqut nniḍen.",
-  "neoorigins.configuration.title": "Leḥsab n NeoOrigins",
-  "reward.neoorigins.loot_pool": "NeoOrigins : Feṛqen a d-yefk lḥukkam n lqaɛa",
-  "reward.neoorigins.loot_pool.loot_table": "Tabledd ițwagezli",
-  "reward.neoorigins.loot_pool.rolls": "Aẓẓal"
+  "power.neoorigins.class_blacksmith_quality.description": "Timsal i d-teffɣeḍ tesɛan azal ameqqran  timsal i d-teffɣeḍ s tɣawla, timsal i d-teffɣen s waṭas, taɛrabt d tameqqrant, yerna kullec yeṭṭef ugar n lweqt.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Ayen i d-yeččan deg tkefki neɣ deg tkefki, yettunefk-as-d azal n tezmert i yugaren.",
+  "neoorigins.configuration.title": "NeoOrigins Common Configuration",
+  "reward.neoorigins.loot_pool": "NeoOrigins: Grant Loot Pool",
+  "reward.neoorigins.loot_pool.loot_table": "Aɣmis n uḍebsi",
+  "reward.neoorigins.loot_pool.rolls": "Isekkilen"
 }

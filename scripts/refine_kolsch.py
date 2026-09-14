@@ -22,11 +22,13 @@ MODEL_ID = "Helsinki-NLP/opus-mt-tc-bible-big-deu_eng_fra_por_spa-gmw"
 TARGET_TOKEN = ">>ksh<<"
 PROTECT_RE = re.compile(
     r"%(?:\d+\$)?[sdif]|§.|\\n|\n|\{[^{}]+\}|<[^<>]+>|"
-    r"\b(?:NeoOrigins|Origin Architect|HUD|JSON|XP|HP|NeoForge|Minecraft|CurseForge)\b"
+    r"\b(?:NeoOrigins|Origin Architect|HUD|JSON|XP|HP|NeoForge|Minecraft|CurseForge)\b",
+    re.IGNORECASE,
 )
 SUSPICIOUS_UNKNOWN_RE = re.compile(r"(?:^|[\s>+\-•])\?[A-Za-zÀ-ÖØ-öø-ÿĀ-žƀ-ɏ]", re.MULTILINE)
 FOREIGN_SCRIPT_RE = re.compile(r"[\u0370-\u052f\u0590-\u08ff\u0900-\u0fff\u3000-\u9fff]")
 BAD_DECORATION_RE = re.compile(r"[♫■]|±(?=\s*[A-Za-z])")
+TECHNICAL_CASEFOLD = {"neoorigins", "origin architect", "hud", "json", "xp", "hp", "neoforge", "minecraft", "curseforge"}
 
 
 def read_json(path: Path) -> dict[str, str]:
@@ -39,7 +41,10 @@ def write_json(path: Path, data: dict[str, str]) -> None:
 
 
 def protected_signature(text: str) -> list[str]:
-    return PROTECT_RE.findall(text)
+    out = []
+    for token in PROTECT_RE.findall(text):
+        out.append(token.casefold() if token.casefold() in TECHNICAL_CASEFOLD else token)
+    return out
 
 
 def sanitize_output(source: str, translated: str) -> str:
@@ -150,13 +155,15 @@ def main() -> None:
     translated: dict[str, str] = {}
     direct = []
     for source in unique:
-        if source in base.MANUAL_VALUES:
+        if source == "[%s]":
+            translated[source] = source
+        elif source in base.MANUAL_VALUES:
             translated[source] = base.MANUAL_VALUES[source]
         elif source in exact:
             translated[source] = exact[source]
         else:
             direct.append(source)
-    print(f"Kölsch refinement pool: {len(unique)} unique; {len(unique)-len(direct)} corpus/manual; {len(direct)} direct OPUS", flush=True)
+    print(f"Kölsch refinement pool: {len(unique)} unique; {len(unique)-len(direct)} corpus/manual/preserved; {len(direct)} direct OPUS", flush=True)
 
     mt = KolschTranslator()
     for start in range(0, len(direct), 16):
@@ -211,6 +218,8 @@ def main() -> None:
         raise SystemExit(f"Too many English values survived: only {source_changed} source values changed")
     if seen.get("key.categories.originsmodernui") != "Origin Architect":
         raise SystemExit("Origin Architect was not preserved")
+    if seen.get("gui.neoorigins.power.key_tag") != "[%s]":
+        raise SystemExit("Kölsch placeholder-only key tag changed")
     red = exact.get("Red")
     random = seen.get("button.neoorigins.random")
     if red and random and random.casefold() == red.casefold():

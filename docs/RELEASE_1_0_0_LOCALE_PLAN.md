@@ -1,43 +1,42 @@
 # NeoOrigins Localization — 1.0.0 locale plan
 
-Last updated: 2026-09-13
+Last updated: 2026-09-14
 
 ## Selection rule
 
 For 1.0.0, keep one useful locale per language when regional variants do not provide a meaningfully distinct localization. Keep genuinely distinct languages/dialects and meaningful standardized variants. Exclude joke/gadget locales, fictional/fantasy languages, historical language forms, and redundant regional/script variants when an already-supported locale sufficiently covers them.
 
-The first **87 selected locales are complete and integrated**, through Ido (`io_en`). Traditional Chinese (`zh_tw`) is language #77, Northern Sami (`se_no`) #78, Bavarian (`bar`) #79, Brabantian (`brb`) #80, Andalusian (`esan`) #81, East Franconian (`fra_de`) #82, Friulian (`fur_it`) #83, Gallo (`go_fr`) #84, Manx (`gv_im`) #85, Hawaiian (`haw_us`) #86, and Ido (`io_en`) #87.
+The first **88 selected locales are complete and integrated**, through Interslavic (`isv`). Traditional Chinese (`zh_tw`) is language #77, Northern Sami (`se_no`) #78, Bavarian (`bar`) #79, Brabantian (`brb`) #80, Andalusian (`esan`) #81, East Franconian (`fra_de`) #82, Friulian (`fur_it`) #83, Gallo (`go_fr`) #84, Manx (`gv_im`) #85, Hawaiian (`haw_us`) #86, Ido (`io_en`) #87, and Interslavic (`isv`) #88.
 
 ## Remaining selected locales
 
-There are **26** selected locales remaining for 1.0.0:
+There are **25** selected locales remaining for 1.0.0:
 
-1. `isv` — Interslavic
-2. `kab_kab` — Kabyle
-3. `ksh` — Kölsch
-4. `kw_gb` — Cornish
-5. `li_li` — Limburgish
-6. `lmo` — Lombard
-7. `mi_nz` — Māori
-8. `moh_ca` — Mohawk
-9. `nah` — Nahuatl
-10. `nds_de` — Low German
-11. `nuk` — Nuu-chah-nulth
-12. `oj_ca` — Ojibwe
-13. `ovd` — Elfdalian
-14. `pls` — Ngiiwa
-15. `pt_pt` — European Portuguese
-16. `ry_ua` — Rusyn
-17. `sah_sah` — Yakut
-18. `scn` — Sicilian
-19. `swg` — Swabian
-20. `sxu` — Upper Saxon
-21. `szl` — Silesian
-22. `tok` — Toki Pona
-23. `tzo_mx` — Tzotzil
-24. `vec_it` — Venetian
-25. `vro` — Võro
-26. `yi_de` — Yiddish
+1. `kab_kab` — Kabyle
+2. `ksh` — Kölsch
+3. `kw_gb` — Cornish
+4. `li_li` — Limburgish
+5. `lmo` — Lombard
+6. `mi_nz` — Māori
+7. `moh_ca` — Mohawk
+8. `nah` — Nahuatl
+9. `nds_de` — Low German
+10. `nuk` — Nuu-chah-nulth
+11. `oj_ca` — Ojibwe
+12. `ovd` — Elfdalian
+13. `pls` — Ngiiwa
+14. `pt_pt` — European Portuguese
+15. `ry_ua` — Rusyn
+16. `sah_sah` — Yakut
+17. `scn` — Sicilian
+18. `swg` — Swabian
+19. `sxu` — Upper Saxon
+20. `szl` — Silesian
+21. `tok` — Toki Pona
+22. `tzo_mx` — Tzotzil
+23. `vec_it` — Venetian
+24. `vro` — Võro
+25. `yi_de` — Yiddish
 
 ## Explicitly not selected from the remaining Minecraft locale inventory
 
@@ -47,29 +46,28 @@ English regional/joke variants and special-purpose locales are excluded. Histori
 
 ## Latest completed work
 
-Language #87 **Ido (`io_en`)** is complete and integrated into `release/1.0.0`.
+Language #88 **Interslavic (`isv`)** is complete and integrated into `release/1.0.0`.
 
-- staging branch: `release/1.0.0-ido`
-- successful bootstrap run: `34747547429`
-- generated source layout: 16 common NeoOrigins chunks + `neoorigins_io_121` + shared 26.x deltas + 10 add-ons = 29 `io_en` source files
-- source strategy: safe manual full values, exact matches from the pinned Minecraft `en_us` ↔ `io_en` corpus, then direct English → Ido translation with `Helsinki-NLP/opus-mt-en-mul` and target prefix `>>ido<<`
+- staging branch: `release/1.0.0-interslavic`
+- successful bootstrap run: `34777502902`
+- generated source layout: 16 common NeoOrigins chunks + `neoorigins_isv_121` + shared 26.x deltas + 10 add-ons = 29 `isv` source files
+- source strategy: safe manual full values, exact whole-string matches from the pinned Minecraft `en_us` ↔ `isv` corpus, then direct English → Interslavic full-string translation with `salavat/nllb-200-distilled-600M-finetuned-isv_v2` (`eng_Latn` → `isv_Latn`)
 - no isolated-word projection; technical/project tokens and placeholders were protected
-- successful final refinement run: `34771622691`
-- generated translation commit: `fc7da509b430c517fc5a5e4d05e8c7d0751162af`
+- successful final refinement run: `34777854565`
+- generated translation commit: `f7a79133060eaf4058d4f29ea2aa669839e3ec6f`
 - strict JSON, placeholder, source-key, upstream-overlap and protected-token gates passed across all 29 files
-- Ido is machine-generated and is not described as native-speaker-reviewed
-- successful build run: `34772475271`
-- packaged `io_en` inspection gates: **27** files on 1.21.1, **17** on 26.1.x, **17** on 26.2, with add-on and version-delta isolation verified
-- metadata run: `34777236473` — successful
-- final staging metadata commit: `dddc9c896bc232044d50e5750d36d466c6e3bc96`
-- metadata final state: 87 supported locales, `io_en` present across all 11 projects, native/French name `Ido`, fallback namespaces `ido_common_glob = neoorigins_io_common_*` and `ido_mc_1_21_1 = neoorigins_io_121`
-- PR: `#24`
-- integration merge commit: `d97d72b298950982fd10f32fd2354dcb210ec4b0`
-- catalog/README count: 87 locales
+- Interslavic is machine-generated and is not described as native-speaker-reviewed
+- successful build run: `34893764953`
+- packaged `isv` inspection gates: **27** files on 1.21.1, **17** on 26.1.x, **17** on 26.2, with add-on and version-delta isolation verified
+- final staging metadata commit: `cd7805cec57dee509680e055980cfeb72418a586`
+- metadata final state: 88 supported locales, `isv` present across all 11 projects, native name `Medžuslovjansky`, French README name `Interslave`, fallback namespaces `interslavic_common_glob = neoorigins_isv_common_*` and `interslavic_mc_1_21_1 = neoorigins_isv_121`
+- PR: `#25`
+- integration merge commit: `b4efe78fe46513a582ce36403cf746625b6dcecb`
+- catalog/README count: 88 locales
 - public build metadata remains `0.9.0-beta`
 
 ## Next work
 
-Start and finish **language #88: Interslavic (`isv`)** from the current `release/1.0.0` integration branch. First inspect the pinned Minecraft `isv` corpus and determine a reliable full-string completion path before generating the locale.
+Start and finish **language #89: Kabyle (`kab_kab`)** from the current `release/1.0.0` integration branch. Use English as the semantic source, inspect the pinned Minecraft `kab_kab` corpus first, and use only a translation path that genuinely targets Kabyle for remaining full strings.
 
 Low German (`nds_de`) remains selected, but its bootstrap is deferred until a translation path that actually targets Low German is available; do not silently substitute Standard German.

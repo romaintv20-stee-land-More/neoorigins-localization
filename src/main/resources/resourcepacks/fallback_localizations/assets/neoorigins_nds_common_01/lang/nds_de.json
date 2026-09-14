@@ -28,7 +28,7 @@
   "gui.neoorigins.hint.scroll": "Roll för mehr",
   "gui.neoorigins.hint.select": "En Ursprung utsöken, wenn Du de Enkelheiten ankieken wullt",
   "gui.neoorigins.detail.powers_header": "Stroom",
-  "gui.neoorigins.power.key_tag": "%s]",
+  "gui.neoorigins.power.key_tag": "[%s]",
   "gui.neoorigins.power.key_tag.toggle": "[%s] utmaken",
   "gui.neoorigins.sort.label": "Grupp",
   "gui.neoorigins.sort.manual": "Standaard",

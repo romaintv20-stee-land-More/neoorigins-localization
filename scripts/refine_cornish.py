@@ -2,7 +2,7 @@
 """Refine Cornish (`kw_gb`) fallbacks with direct English -> Cornish MT.
 
 Exact whole-string Minecraft corpus matches win first. Remaining complete strings
-are translated with Helsinki-NLP/opus-mt-en-cel using the required `>>cor<<`
+are translated with Helsinki-NLP/opus-mt-en-CELTIC using the required `>>kw<<`
 sentence prefix. No pivot and no isolated-word projection are used.
 """
 from __future__ import annotations
@@ -18,13 +18,16 @@ import bootstrap_cornish as base
 
 ROOT = base.ROOT
 ASSETS = base.ASSETS
-MODEL_ID = "Helsinki-NLP/opus-mt-en-cel"
-TARGET_TOKEN = ">>cor<<"
+MODEL_ID = "Helsinki-NLP/opus-mt-en-CELTIC"
+TARGET_TOKEN = ">>kw<<"
 PROTECT_RE = re.compile(
     r"%(?:\d+\$)?[sdif]|§.|\\n|\n|\{[^{}]+\}|<[^<>]+>|"
     r"\b(?:NeoOrigins|Origin Architect|HUD|JSON|XP|HP|NeoForge|Minecraft|CurseForge)\b"
 )
 SUSPICIOUS_RE = re.compile(r"(?:^|[\s>+\-•])\?[A-Za-zÀ-ÖØ-öø-ÿĀ-žƀ-ɏ]", re.MULTILINE)
+# Turkish-specific letters appeared in the previous low-quality eng-cel output and
+# are not part of the Cornish orthographies used by the pinned corpus.
+CONTAMINATION_RE = re.compile(r"[ĞğİıŞş]")
 
 
 def read_json(path: Path) -> dict[str, str]:
@@ -41,11 +44,7 @@ def protected_signature(text: str) -> list[str]:
 
 
 def sanitize_output(source: str, translated: str) -> str:
-    """Remove only formatting/placeholders hallucinated by MT.
-
-    Real placeholders and section formatting are never removed from sources that
-    contain them; structural translation preserves those source tokens verbatim.
-    """
+    """Remove only formatting/placeholders hallucinated by MT."""
     if not base.placeholder_signature(source):
         translated = base.PLACEHOLDER_RE.sub("", translated)
     if "§" not in source:
@@ -114,7 +113,9 @@ class Translator:
         for i, piece in enumerate(pieces):
             prefix, core, suffix = self.affixes(piece)
             if core:
-                indexes.append(i); cores.append(core); affix[i] = (prefix, suffix)
+                indexes.append(i)
+                cores.append(core)
+                affix[i] = (prefix, suffix)
         translated = self.batch(cores)
         if len(translated) != len(indexes):
             raise RuntimeError("Cornish structural translation span mismatch")
@@ -124,8 +125,20 @@ class Translator:
         result = []
         for i, piece in enumerate(out):
             result.append(piece)
-            if i < len(tokens): result.append(tokens[i])
+            if i < len(tokens):
+                result.append(tokens[i])
         return "".join(result)
+
+
+def valid_output(source: str, value: str) -> bool:
+    return (
+        bool(value.strip())
+        and base.placeholder_signature(source) == base.placeholder_signature(value)
+        and protected_signature(source) == protected_signature(value)
+        and not SUSPICIOUS_RE.search(value)
+        and not CONTAMINATION_RE.search(value)
+        and TARGET_TOKEN not in value
+    )
 
 
 def main():
@@ -140,57 +153,73 @@ def main():
     translated: dict[str, str] = {}
     direct = []
     for source in unique:
-        if source in base.MANUAL_VALUES: translated[source] = base.MANUAL_VALUES[source]
-        elif source in exact: translated[source] = exact[source]
-        else: direct.append(source)
+        if source in base.MANUAL_VALUES:
+            translated[source] = base.MANUAL_VALUES[source]
+        elif source in exact:
+            translated[source] = exact[source]
+        else:
+            direct.append(source)
     print(f"Cornish refinement pool: {len(unique)} unique; {len(unique)-len(direct)} corpus/manual; {len(direct)} direct OPUS", flush=True)
 
     mt = Translator()
     for start in range(0, len(direct), 16):
-        batch = direct[start:start+16]
+        batch = direct[start:start + 16]
         outputs = mt.batch(batch)
-        if len(outputs) != len(batch): raise SystemExit("Cornish OPUS batch size mismatch")
+        if len(outputs) != len(batch):
+            raise SystemExit("Cornish OPUS batch size mismatch")
         for source, value in zip(batch, outputs):
             value = sanitize_output(source, value)
-            ok = bool(value.strip())
-            ok &= base.placeholder_signature(source) == base.placeholder_signature(value)
-            ok &= protected_signature(source) == protected_signature(value)
-            if not ok: value = sanitize_output(source, mt.structural(source))
-            if not value.strip(): raise SystemExit(f"Empty Cornish translation for {source!r}")
-            if base.placeholder_signature(source) != base.placeholder_signature(value): raise SystemExit(f"Cornish placeholder mismatch: {source!r} -> {value!r}")
-            if protected_signature(source) != protected_signature(value): raise SystemExit(f"Cornish protected-token mismatch: {source!r} -> {value!r}")
-            if SUSPICIOUS_RE.search(value): raise SystemExit(f"Suspicious Cornish output: {source!r} -> {value!r}")
+            if not valid_output(source, value):
+                value = sanitize_output(source, mt.structural(source))
+            if not valid_output(source, value):
+                raise SystemExit(f"Invalid/contaminated Cornish translation: {source!r} -> {value!r}")
             translated[source] = value
-        done = min(start+len(batch), len(direct))
-        if done % 160 == 0 or done == len(direct): print(f"Direct Cornish translation progress: {done}/{len(direct)}", flush=True)
+        done = min(start + len(batch), len(direct))
+        if done % 160 == 0 or done == len(direct):
+            print(f"Direct Cornish translation progress: {done}/{len(direct)}", flush=True)
 
-    def payload(src): return {k: translated[str(v)] for k, v in src.items()}
+    def payload(src):
+        return {k: translated[str(v)] for k, v in src.items()}
+
     common_kw = payload(common)
-    for path in ASSETS.glob("neoorigins_kw_common_*/lang/kw_gb.json"): path.unlink()
+    for path in ASSETS.glob("neoorigins_kw_common_*/lang/kw_gb.json"):
+        path.unlink()
     items = list(common_kw.items())
-    for i in range((len(items)+149)//150):
+    for i in range((len(items) + 149) // 150):
         write_json(ASSETS / f"neoorigins_kw_common_{i+1:02d}/lang/kw_gb.json", dict(items[i*150:(i+1)*150]))
     write_json(ASSETS / "neoorigins_kw_121/lang/kw_gb.json", payload(d121))
     write_json(ASSETS / "neoorigins_26_1/lang/kw_gb.json", payload(d261))
     write_json(ASSETS / "neoorigins_26_2/lang/kw_gb.json", payload(d262))
-    for ns, src in addons.items(): write_json(ASSETS / ns / "lang/kw_gb.json", payload(src))
+    for ns, src in addons.items():
+        write_json(ASSETS / ns / "lang/kw_gb.json", payload(src))
 
     after_files = sorted(ASSETS.glob("**/lang/kw_gb.json"))
-    if len(after_files) != 29: raise SystemExit(f"Expected 29 Cornish files after refinement, found {len(after_files)}")
+    if len(after_files) != 29:
+        raise SystemExit(f"Expected 29 Cornish files after refinement, found {len(after_files)}")
     after = {path: read_json(path) for path in after_files}
-    changed = total = 0; seen = {}
+    changed = total = 0
+    seen = {}
     for path, data in after.items():
-        if set(before[path]) != set(data): raise SystemExit(f"Cornish key set changed unexpectedly: {path}")
+        if set(before[path]) != set(data):
+            raise SystemExit(f"Cornish key set changed unexpectedly: {path}")
         for key, value in data.items():
-            total += 1; seen[key] = str(value); changed += before[path][key] != value
+            total += 1
+            seen[key] = str(value)
+            changed += before[path][key] != value
     source_changed = sum(1 for p in payloads for v in p.values() if translated[str(v)] != str(v))
     text = "\n".join(str(v) for data in after.values() for v in data.values())
-    if TARGET_TOKEN in text or SUSPICIOUS_RE.search(text): raise SystemExit("Cornish target marker/artifact survived output")
-    if source_changed < 2500: raise SystemExit(f"Too many English values survived Cornish MT: {source_changed} changed")
-    if seen.get("key.categories.originsmodernui") != "Origin Architect": raise SystemExit("Origin Architect was not preserved")
-    red = exact.get("Red"); random = seen.get("button.neoorigins.random")
-    if red and random and red.casefold() == random.casefold(): raise SystemExit(f"Cornish semantic smoke failed: Random == Red ({random!r})")
-    if seen.get("neoorigins.night_vision.on") == seen.get("neoorigins.night_vision.off"): raise SystemExit("Cornish night-vision on/off labels are identical")
+    if TARGET_TOKEN in text or SUSPICIOUS_RE.search(text) or CONTAMINATION_RE.search(text):
+        raise SystemExit("Cornish target marker/artifact/foreign-script contamination survived output")
+    if source_changed < 2500:
+        raise SystemExit(f"Too many English values survived Cornish MT: {source_changed} changed")
+    if seen.get("key.categories.originsmodernui") != "Origin Architect":
+        raise SystemExit("Origin Architect was not preserved")
+    red = exact.get("Red")
+    random = seen.get("button.neoorigins.random")
+    if red and random and red.casefold() == random.casefold():
+        raise SystemExit(f"Cornish semantic smoke failed: Random == Red ({random!r})")
+    if seen.get("neoorigins.night_vision.on") == seen.get("neoorigins.night_vision.off"):
+        raise SystemExit("Cornish night-vision on/off labels are identical")
     print(f"Cornish refinement passed: {total} values / 29 files; {changed} bootstrap changes; {source_changed} source values changed", flush=True)
 
 

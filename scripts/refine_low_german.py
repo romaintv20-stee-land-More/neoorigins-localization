@@ -5,11 +5,16 @@ import json,re,torch
 from transformers import AutoModelForSeq2SeqLM,AutoTokenizer
 import bootstrap_low_german as base
 ROOT=base.ROOT;ASSETS=base.ASSETS;MODEL_ID="Helsinki-NLP/opus-mt-en-mul";TARGET_TOKEN=">>nds<<"
-PROTECT_RE=re.compile(r"%(?:\d+\$)?[sdif]|§.|\\n|\n|\{[^{}]+\}|<[^<>]+>|\b(?:NeoOrigins|Origin Architect|HUD|JSON|XP|HP|NeoForge|Minecraft|CurseForge)\b")
+PROTECT_RE=re.compile(r"%(?:\d+\$)?[sdif]|§.|\\n|\n|\{[^{}]+\}|<[^<>]+>|\b(?:NeoOrigins|Origin Architect|HUD|JSON|XP|HP|NeoForge|Minecraft|CurseForge)\b",re.IGNORECASE)
 SUSPICIOUS_RE=re.compile(r"(?:^|[\s>+\-•])\?[A-Za-zÀ-ÖØ-öø-ÿĀ-žƀ-ɏ]",re.MULTILINE)
+TECHNICAL_CASEFOLD={"neoorigins","origin architect","hud","json","xp","hp","neoforge","minecraft","curseforge"}
 def rj(p):return json.loads(Path(p).read_text(encoding="utf-8"))
 def wj(p,d):p=Path(p);p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(d,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-def ps(t):return PROTECT_RE.findall(t)
+def ps(t):
+ out=[]
+ for token in PROTECT_RE.findall(t):
+  out.append(token.casefold() if token.casefold() in TECHNICAL_CASEFOLD else token)
+ return out
 def sanitize(s,v):
  if not base.placeholder_signature(s):v=base.PLACEHOLDER_RE.sub("",v)
  if "§" not in s:v=v.replace("§","")

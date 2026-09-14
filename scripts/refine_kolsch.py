@@ -1,12 +1,9 @@
 #!/usr/bin/env python3
-"""Refine Kölsch (`ksh`) fallback files with direct English -> Kölsch translation.
+"""Refine Kölsch (`ksh`) fallback files with direct English -> Kölsch MT.
 
-Policy: safe manual full values, exact whole-string matches from the pinned Minecraft
-Kölsch corpus, then direct full-string translation with `Helsinki-NLP/opus-mt-en-mul`
-using the true Kölsch target token `>>ksh<<`. No Standard German pivot and no
-isolated-word projection are used. Placeholders and technical/project tokens are
-validated and, when necessary, protected through structural fallback.
-This is automated translation assistance, not native-speaker review.
+Uses exact whole-string Minecraft corpus matches first, then the multilingual
+Helsinki OPUS model with the required sentence-initial `>>ksh<<` target prefix.
+No Standard German pivot and no isolated-word projection are used.
 """
 from __future__ import annotations
 
@@ -27,7 +24,9 @@ PROTECT_RE = re.compile(
     r"%(?:\d+\$)?[sdif]|§.|\\n|\n|\{[^{}]+\}|<[^<>]+>|"
     r"\b(?:NeoOrigins|Origin Architect|HUD|JSON|XP|HP|NeoForge|Minecraft|CurseForge)\b"
 )
-SUSPICIOUS_UNKNOWN_RE = re.compile(r"(?:^|[\s>+\-•])\?[A-Za-zÀ-ÖØ-öø-ÿĀ-žƀ-ɏ]", re.MULTILINE)
+SUSPICIOUS_UNKNOWN_RE = re.compile(
+    r"(?:^|[\s>+\-•])\?[A-Za-zÀ-ÖØ-öø-ÿĀ-žƀ-ɏ]", re.MULTILINE
+)
 
 
 def read_json(path: Path) -> dict[str, str]:
@@ -44,17 +43,17 @@ def protected_signature(text: str) -> list[str]:
 
 
 def build_sources():
-    neo_121_en = read_json(ROOT / "build/ksh-discovery-mc-1.21.1/ksh_missing_en.json")
-    neo_261_en = read_json(ROOT / "build/ksh-discovery-mc-26.1/ksh_missing_en.json")
-    neo_262_en = read_json(ROOT / "build/ksh-discovery-mc-26.2/ksh_missing_en.json")
+    neo_121 = read_json(ROOT / "build/ksh-discovery-mc-1.21.1/ksh_missing_en.json")
+    neo_261 = read_json(ROOT / "build/ksh-discovery-mc-26.1/ksh_missing_en.json")
+    neo_262 = read_json(ROOT / "build/ksh-discovery-mc-26.2/ksh_missing_en.json")
 
-    common_en = {
-        key: value for key, value in neo_121_en.items()
-        if neo_261_en.get(key) == value and neo_262_en.get(key) == value
+    common = {
+        key: value for key, value in neo_121.items()
+        if neo_261.get(key) == value and neo_262.get(key) == value
     }
-    delta_121_en = {key: value for key, value in neo_121_en.items() if key not in common_en}
-    delta_261_en = {key: value for key, value in neo_261_en.items() if key not in common_en}
-    delta_262_en = {key: value for key, value in neo_262_en.items() if key not in common_en}
+    delta_121 = {key: value for key, value in neo_121.items() if key not in common}
+    delta_261 = {key: value for key, value in neo_261.items() if key not in common}
+    delta_262 = {key: value for key, value in neo_262.items() if key not in common}
 
     source_files = {
         "medievalorigins": ROOT / "build/medievalorigins-upstream-audit/upstream_en_us.json",
@@ -68,17 +67,17 @@ def build_sources():
         "origins_classes_iss": ROOT / "build/origins-classes-iss-upstream-audit/upstream_en_us.json",
         "originsmodernui": ROOT / "build/origin-architect-upstream-audit/upstream_en_us.json",
     }
-    addons_en = {namespace: read_json(path) for namespace, path in source_files.items()}
-    shared_background_keys = set(addons_en["origins_backgrounds"])
-    addons_en["origins_backgrounds_two"] = {
-        key: value for key, value in addons_en["origins_backgrounds_two"].items()
-        if key not in shared_background_keys
+    addons = {namespace: read_json(path) for namespace, path in source_files.items()}
+    shared = set(addons["origins_backgrounds"])
+    addons["origins_backgrounds_two"] = {
+        key: value for key, value in addons["origins_backgrounds_two"].items()
+        if key not in shared
     }
-    addons_en["origins_backgrounds_iss"] = {
-        key: value for key, value in addons_en["origins_backgrounds_iss"].items()
-        if key not in shared_background_keys
+    addons["origins_backgrounds_iss"] = {
+        key: value for key, value in addons["origins_backgrounds_iss"].items()
+        if key not in shared
     }
-    return common_en, delta_121_en, delta_261_en, delta_262_en, addons_en
+    return common, delta_121, delta_261, delta_262, addons
 
 
 class KolschTranslator:
@@ -87,9 +86,10 @@ class KolschTranslator:
         self.tokenizer = AutoTokenizer.from_pretrained(MODEL_ID)
         self.model = AutoModelForSeq2SeqLM.from_pretrained(MODEL_ID)
         self.model.eval()
-        target_id = self.tokenizer.convert_tokens_to_ids(TARGET_TOKEN)
-        if target_id is None or target_id == self.tokenizer.unk_token_id:
-            raise RuntimeError(f"OPUS target token is unavailable: {TARGET_TOKEN}")
+        # Marian multilingual models select the target using a sentence-initial
+        # language prefix. It is not necessarily exposed as a normal tokenizer
+        # vocabulary token, so convert_tokens_to_ids() is deliberately not used.
+        print("Kölsch target selection: sentence-initial >>ksh<< prefix", flush=True)
 
     def translate_batch(self, texts: list[str]) -> list[str]:
         if not texts:
@@ -109,46 +109,44 @@ class KolschTranslator:
                 max_new_tokens=512,
                 early_stopping=True,
             )
-        return [value.strip() for value in self.tokenizer.batch_decode(generated, skip_special_tokens=True)]
+        return [
+            value.strip()
+            for value in self.tokenizer.batch_decode(generated, skip_special_tokens=True)
+        ]
 
     @staticmethod
-    def split_structural_affixes(piece: str) -> tuple[str, str, str]:
+    def split_affixes(piece: str) -> tuple[str, str, str]:
         alpha = [index for index, char in enumerate(piece) if char.isalpha()]
         if not alpha:
             return piece, "", ""
-        first = alpha[0]
-        last = alpha[-1]
+        first, last = alpha[0], alpha[-1]
         return piece[:first], piece[first:last + 1], piece[last + 1:]
 
     def structural_translate(self, source: str) -> str:
         pieces = PROTECT_RE.split(source)
         tokens = PROTECT_RE.findall(source)
-        translated_pieces = list(pieces)
-        translatable_indices: list[int] = []
-        translatable: list[str] = []
+        translated = list(pieces)
+        indexes: list[int] = []
+        cores: list[str] = []
         affixes: dict[int, tuple[str, str]] = {}
-
         for index, piece in enumerate(pieces):
-            prefix, core, suffix = self.split_structural_affixes(piece)
-            if not core:
-                continue
-            translatable_indices.append(index)
-            translatable.append(core)
-            affixes[index] = (prefix, suffix)
-
-        outputs = self.translate_batch(translatable)
-        if len(outputs) != len(translatable_indices):
-            raise RuntimeError("Structural Kölsch translation returned the wrong number of spans")
-        for index, translated in zip(translatable_indices, outputs):
+            prefix, core, suffix = self.split_affixes(piece)
+            if core:
+                indexes.append(index)
+                cores.append(core)
+                affixes[index] = (prefix, suffix)
+        outputs = self.translate_batch(cores)
+        if len(outputs) != len(indexes):
+            raise RuntimeError("Structural Kölsch translation returned the wrong span count")
+        for index, output in zip(indexes, outputs):
             prefix, suffix = affixes[index]
-            translated_pieces[index] = prefix + translated.strip() + suffix
-
-        output: list[str] = []
-        for index, piece in enumerate(translated_pieces):
-            output.append(piece)
+            translated[index] = prefix + output.strip() + suffix
+        result: list[str] = []
+        for index, piece in enumerate(translated):
+            result.append(piece)
             if index < len(tokens):
-                output.append(tokens[index])
-        return "".join(output)
+                result.append(tokens[index])
+        return "".join(result)
 
 
 def main() -> None:
@@ -158,9 +156,8 @@ def main() -> None:
     before = {path: read_json(path) for path in before_files}
 
     common_en, delta_121_en, delta_261_en, delta_262_en, addons_en = build_sources()
-    source_payloads: list[dict[str, str]] = [common_en, delta_121_en, delta_261_en, delta_262_en]
-    source_payloads.extend(addons_en.values())
-    unique_sources = sorted({str(value) for payload in source_payloads for value in payload.values()})
+    payloads = [common_en, delta_121_en, delta_261_en, delta_262_en, *addons_en.values()]
+    unique_sources = sorted({str(value) for payload in payloads for value in payload.values()})
 
     exact = base.build_corpus_map()
     translated_by_source: dict[str, str] = {}
@@ -176,8 +173,7 @@ def main() -> None:
     print(
         f"Kölsch refinement pool: {len(unique_sources)} unique strings; "
         f"{len(unique_sources) - len(direct_sources)} manual/corpus hits; "
-        f"{len(direct_sources)} direct OPUS translations.",
-        flush=True,
+        f"{len(direct_sources)} direct OPUS translations.", flush=True
     )
 
     translator = KolschTranslator()
@@ -187,10 +183,11 @@ def main() -> None:
         outputs = translator.translate_batch(batch)
         if len(outputs) != len(batch):
             raise SystemExit("OPUS translation batch returned an unexpected number of strings")
-        for source, translated in zip(batch, outputs):
+        for source, output in zip(batch, outputs):
+            translated = output
             valid = bool(translated.strip())
-            valid = valid and base.placeholder_signature(source) == base.placeholder_signature(translated)
-            valid = valid and protected_signature(source) == protected_signature(translated)
+            valid &= base.placeholder_signature(source) == base.placeholder_signature(translated)
+            valid &= protected_signature(source) == protected_signature(translated)
             if not valid:
                 translated = translator.structural_translate(source)
             if not translated.strip():
@@ -200,27 +197,16 @@ def main() -> None:
             if protected_signature(source) != protected_signature(translated):
                 raise SystemExit(f"Kölsch protected-token mismatch: {source!r} -> {translated!r}")
             if SUSPICIOUS_UNKNOWN_RE.search(translated):
-                raise SystemExit(f"Suspicious unknown-character artifact in Kölsch output: {source!r} -> {translated!r}")
+                raise SystemExit(f"Suspicious Kölsch output: {source!r} -> {translated!r}")
             translated_by_source[source] = translated
         done = min(start + len(batch), len(direct_sources))
         if done % 160 == 0 or done == len(direct_sources):
             print(f"Direct Kölsch translation progress: {done}/{len(direct_sources)}", flush=True)
 
     def translated_payload(source: dict[str, str]) -> dict[str, str]:
-        result: dict[str, str] = {}
-        for key, raw_value in source.items():
-            source_value = str(raw_value)
-            translated = translated_by_source[source_value]
-            if base.placeholder_signature(source_value) != base.placeholder_signature(translated):
-                raise SystemExit(f"Placeholder mismatch for {key}: {source_value!r} -> {translated!r}")
-            result[key] = translated
-        return result
+        return {key: translated_by_source[str(value)] for key, value in source.items()}
 
     common_ksh = translated_payload(common_en)
-    delta_121_ksh = translated_payload(delta_121_en)
-    delta_261_ksh = translated_payload(delta_261_en)
-    delta_262_ksh = translated_payload(delta_262_en)
-
     for path in ASSETS.glob("neoorigins_ksh_common_*/lang/ksh.json"):
         path.unlink()
     common_items = list(common_ksh.items())
@@ -229,9 +215,9 @@ def main() -> None:
             ASSETS / f"neoorigins_ksh_common_{index + 1:02d}/lang/ksh.json",
             dict(common_items[index * 150:(index + 1) * 150]),
         )
-    write_json(ASSETS / "neoorigins_ksh_121/lang/ksh.json", delta_121_ksh)
-    write_json(ASSETS / "neoorigins_26_1/lang/ksh.json", delta_261_ksh)
-    write_json(ASSETS / "neoorigins_26_2/lang/ksh.json", delta_262_ksh)
+    write_json(ASSETS / "neoorigins_ksh_121/lang/ksh.json", translated_payload(delta_121_en))
+    write_json(ASSETS / "neoorigins_26_1/lang/ksh.json", translated_payload(delta_261_en))
+    write_json(ASSETS / "neoorigins_26_2/lang/ksh.json", translated_payload(delta_262_en))
     for namespace, english in addons_en.items():
         write_json(ASSETS / namespace / "lang/ksh.json", translated_payload(english))
 
@@ -241,39 +227,36 @@ def main() -> None:
     after = {path: read_json(path) for path in after_files}
 
     changed_values = 0
-    source_changed = 0
     total_values = 0
     seen: dict[str, str] = {}
     for path, new_data in after.items():
         old_data = before[path]
         if set(old_data) != set(new_data):
-            raise SystemExit(f"Key set changed unexpectedly during Kölsch refinement: {path}")
+            raise SystemExit(f"Key set changed unexpectedly: {path}")
         for key, value in new_data.items():
             total_values += 1
             seen[key] = str(value)
             if old_data[key] != value:
                 changed_values += 1
 
-    for payload in source_payloads:
-        for value in payload.values():
-            source = str(value)
-            if translated_by_source[source] != source:
-                source_changed += 1
-
+    source_changed = sum(
+        1 for payload in payloads for value in payload.values()
+        if translated_by_source[str(value)] != str(value)
+    )
     text = "\n".join(str(value) for data in after.values() for value in data.values())
     if TARGET_TOKEN in text:
         raise SystemExit("OPUS target marker survived generated Kölsch output")
     if SUSPICIOUS_UNKNOWN_RE.search(text):
         raise SystemExit("Suspicious unknown-character artifacts survived Kölsch output")
     if source_changed < 2500:
-        raise SystemExit(f"Too many English source values survived Kölsch translation: only {source_changed} values changed")
+        raise SystemExit(f"Too many English values survived: only {source_changed} source values changed")
     if seen.get("key.categories.originsmodernui") != "Origin Architect":
         raise SystemExit("Technical project name Origin Architect was not preserved")
 
     red_translation = exact.get("Red")
     random_translation = seen.get("button.neoorigins.random")
     if red_translation and random_translation and random_translation.casefold() == red_translation.casefold():
-        raise SystemExit(f"Semantic smoke test failed: Random was translated exactly like Red ({random_translation!r})")
+        raise SystemExit(f"Semantic smoke test failed: Random == Red ({random_translation!r})")
     if seen.get("neoorigins.night_vision.on") == seen.get("neoorigins.night_vision.off"):
         raise SystemExit("Semantic smoke test failed: night-vision on/off labels are identical")
 

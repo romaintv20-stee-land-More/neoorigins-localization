@@ -42,6 +42,18 @@ def protected_signature(text: str) -> list[str]:
     return PROTECT_RE.findall(text)
 
 
+def sanitize_output(source: str, translated: str) -> str:
+    """Remove model-invented Minecraft section signs when none exist in source.
+
+    Real section formatting is still protected structurally whenever the source
+    contains it. Only bare hallucinated `§` characters are removed here, keeping
+    the following translated character intact.
+    """
+    if "§" not in source and "§" in translated:
+        translated = translated.replace("§", "")
+    return translated.strip()
+
+
 def build_sources():
     neo_121 = read_json(ROOT / "build/ksh-discovery-mc-1.21.1/ksh_missing_en.json")
     neo_261 = read_json(ROOT / "build/ksh-discovery-mc-26.1/ksh_missing_en.json")
@@ -86,9 +98,6 @@ class KolschTranslator:
         self.tokenizer = AutoTokenizer.from_pretrained(MODEL_ID)
         self.model = AutoModelForSeq2SeqLM.from_pretrained(MODEL_ID)
         self.model.eval()
-        # Marian multilingual models select the target using a sentence-initial
-        # language prefix. It is not necessarily exposed as a normal tokenizer
-        # vocabulary token, so convert_tokens_to_ids() is deliberately not used.
         print("Kölsch target selection: sentence-initial >>ksh<< prefix", flush=True)
 
     def translate_batch(self, texts: list[str]) -> list[str]:
@@ -140,7 +149,7 @@ class KolschTranslator:
             raise RuntimeError("Structural Kölsch translation returned the wrong span count")
         for index, output in zip(indexes, outputs):
             prefix, suffix = affixes[index]
-            translated[index] = prefix + output.strip() + suffix
+            translated[index] = prefix + sanitize_output(source, output) + suffix
         result: list[str] = []
         for index, piece in enumerate(translated):
             result.append(piece)
@@ -184,12 +193,12 @@ def main() -> None:
         if len(outputs) != len(batch):
             raise SystemExit("OPUS translation batch returned an unexpected number of strings")
         for source, output in zip(batch, outputs):
-            translated = output
+            translated = sanitize_output(source, output)
             valid = bool(translated.strip())
             valid &= base.placeholder_signature(source) == base.placeholder_signature(translated)
             valid &= protected_signature(source) == protected_signature(translated)
             if not valid:
-                translated = translator.structural_translate(source)
+                translated = sanitize_output(source, translator.structural_translate(source))
             if not translated.strip():
                 raise SystemExit(f"Empty Kölsch translation for {source!r}")
             if base.placeholder_signature(source) != base.placeholder_signature(translated):

@@ -2,10 +2,10 @@
 """Refine Kabyle (`kab_kab`) fallback files with full English -> Kabyle translation.
 
 Policy: safe manual full values, exact whole-string matches from the pinned Minecraft
-Kabyle corpus, then direct full-string translation with Helsinki-NLP/opus-mt-en-mul
-(target token `>>kab<<`). No isolated-word projection is used. Placeholders and
-technical/project tokens are validated and, when necessary, protected through
-structural fallback. This is automated translation assistance, not native review.
+Kabyle corpus, then direct full-string translation with NLLB-200 (`eng_Latn` ->
+`kab_Latn`). No isolated-word projection is used. Placeholders and technical/project
+tokens are validated and, when necessary, protected through structural fallback.
+This is automated translation assistance, not native review.
 """
 from __future__ import annotations
 
@@ -20,12 +20,14 @@ import bootstrap_kabyle as base
 
 ROOT = base.ROOT
 ASSETS = base.ASSETS
-MODEL_ID = "Helsinki-NLP/opus-mt-en-mul"
-TARGET_PREFIX = ">>kab<< "
+MODEL_ID = "facebook/nllb-200-distilled-600M"
+SOURCE_LANG = "eng_Latn"
+TARGET_LANG = "kab_Latn"
 PROTECT_RE = re.compile(
     r"%(?:\d+\$)?[sdif]|§.|\\n|\n|\{[^{}]+\}|<[^<>]+>|"
     r"\b(?:NeoOrigins|Origin Architect|HUD|JSON|XP|HP|NeoForge|Minecraft|CurseForge)\b"
 )
+SUSPICIOUS_UNKNOWN_RE = re.compile(r"(?:^|[\s>+\-•])\?[A-Za-zÀ-ÖØ-öø-ÿĀ-žƀ-ɏ]", re.MULTILINE)
 
 
 def read_json(path: Path) -> dict[str, str]:
@@ -81,16 +83,19 @@ def build_sources():
 
 class KabyleTranslator:
     def __init__(self) -> None:
-        print(f"Loading Kabyle-capable OPUS model: {MODEL_ID}", flush=True)
-        self.tokenizer = AutoTokenizer.from_pretrained(MODEL_ID)
+        print(f"Loading Kabyle-capable NLLB model: {MODEL_ID} ({SOURCE_LANG} -> {TARGET_LANG})", flush=True)
+        self.tokenizer = AutoTokenizer.from_pretrained(MODEL_ID, src_lang=SOURCE_LANG)
         self.model = AutoModelForSeq2SeqLM.from_pretrained(MODEL_ID)
         self.model.eval()
+        self.target_id = self.tokenizer.convert_tokens_to_ids(TARGET_LANG)
+        if self.target_id is None or self.target_id == self.tokenizer.unk_token_id:
+            raise RuntimeError(f"NLLB target language token is unavailable: {TARGET_LANG}")
 
     def translate_batch(self, texts: list[str]) -> list[str]:
         if not texts:
             return []
         encoded = self.tokenizer(
-            [TARGET_PREFIX + text for text in texts],
+            texts,
             return_tensors="pt",
             padding=True,
             truncation=True,
@@ -99,6 +104,7 @@ class KabyleTranslator:
         with torch.inference_mode():
             generated = self.model.generate(
                 **encoded,
+                forced_bos_token_id=self.target_id,
                 num_beams=4,
                 max_new_tokens=512,
                 early_stopping=True,
@@ -173,7 +179,7 @@ def main() -> None:
     print(
         f"Kabyle refinement pool: {len(unique_sources)} unique strings; "
         f"{len(unique_sources) - len(direct_sources)} manual/corpus hits; "
-        f"{len(direct_sources)} direct OPUS translations.",
+        f"{len(direct_sources)} direct NLLB translations.",
         flush=True,
     )
 
@@ -183,7 +189,7 @@ def main() -> None:
         batch = direct_sources[start:start + batch_size]
         outputs = translator.translate_batch(batch)
         if len(outputs) != len(batch):
-            raise SystemExit("OPUS translation batch returned an unexpected number of strings")
+            raise SystemExit("NLLB translation batch returned an unexpected number of strings")
         for source, translated in zip(batch, outputs):
             valid = bool(translated.strip())
             valid = valid and base.placeholder_signature(source) == base.placeholder_signature(translated)
@@ -196,6 +202,8 @@ def main() -> None:
                 raise SystemExit(f"Kabyle placeholder mismatch: {source!r} -> {translated!r}")
             if protected_signature(source) != protected_signature(translated):
                 raise SystemExit(f"Kabyle protected-token mismatch: {source!r} -> {translated!r}")
+            if SUSPICIOUS_UNKNOWN_RE.search(translated):
+                raise SystemExit(f"Suspicious unknown-character artifact in Kabyle output: {source!r} -> {translated!r}")
             translated_by_source[source] = translated
         done = min(start + len(batch), len(direct_sources))
         if done % 160 == 0 or done == len(direct_sources):
@@ -256,8 +264,12 @@ def main() -> None:
                 source_changed += 1
 
     text = "\n".join(str(value) for data in after.values() for value in data.values())
-    if ">>kab<<" in text:
-        raise SystemExit("OPUS Kabyle target token survived generated output")
+    if TARGET_LANG in text or ">>kab<<" in text:
+        raise SystemExit("Translation target marker survived generated output")
+    if "unit-format" in text:
+        raise SystemExit("Known model artifact 'unit-format' survived Kabyle output")
+    if SUSPICIOUS_UNKNOWN_RE.search(text):
+        raise SystemExit("Suspicious unknown-character artifacts survived Kabyle output")
     if source_changed < 2500:
         raise SystemExit(
             f"Too many English source values survived full Kabyle translation: only {source_changed} values changed"
@@ -265,10 +277,19 @@ def main() -> None:
     if seen.get("key.categories.originsmodernui") != "Origin Architect":
         raise SystemExit("Technical project name Origin Architect was not preserved")
 
+    red_translation = exact.get("Red")
+    random_translation = seen.get("button.neoorigins.random")
+    if red_translation and random_translation and random_translation.casefold() == red_translation.casefold():
+        raise SystemExit(
+            f"Semantic smoke test failed: Random was translated exactly like Red ({random_translation!r})"
+        )
+    if seen.get("neoorigins.night_vision.on") == seen.get("neoorigins.night_vision.off"):
+        raise SystemExit("Semantic smoke test failed: night-vision on/off labels are identical")
+
     print(
-        f"Kabyle full refinement passed: checked {total_values} values across 29 files; "
-        f"changed {changed_values} bootstrap values; source translations changed {source_changed} values; "
-        "no isolated-word projection pipeline.",
+        f"Kabyle NLLB refinement passed: checked {total_values} values across 29 files; "
+        f"changed {changed_values} prior values; source translations changed {source_changed} values; "
+        "semantic smoke tests and structural gates passed; no isolated-word projection pipeline.",
         flush=True,
     )
 

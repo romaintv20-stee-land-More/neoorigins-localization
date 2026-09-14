@@ -8,14 +8,16 @@ from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 import bootstrap_lombard as base
 
 ROOT=base.ROOT; ASSETS=base.ASSETS
-MODEL_ID="Helsinki-NLP/opus-mt-en-ROMANCE"; TARGET_TOKEN=">>lmo<<"
-PROTECT_RE=re.compile(r"%(?:\d+\$)?[sdif]|§.|\\n|\n|\{[^{}]+\}|<[^<>]+>|\b(?:NeoOrigins|Origin Architect|HUD|JSON|XP|HP|NeoForge|Minecraft|CurseForge)\b")
+MODEL_ID="Helsinki-NLP/opus-mt-en-roa"; TARGET_TOKEN=">>lmo<<"
+PROTECT_RE=re.compile(r"%(?:\d+\$)?[sdif]|§.|\\n|\n|\{[^{}]+\}|<[^<>]+>|\b(?:NeoOrigins|Origin Architect|HUD|JSON|XP|HP|NeoForge|Minecraft|CurseForge)\b",re.IGNORECASE)
 SUSPICIOUS_RE=re.compile(r"(?:^|[\s>+\-•])\?[A-Za-zÀ-ÖØ-öø-ÿĀ-žƀ-ɏ]",re.MULTILINE)
+TECHNICAL_CASEFOLD={"neoorigins","origin architect","hud","json","xp","hp","neoforge","minecraft","curseforge"}
 
 def read_json(path:Path): return json.loads(path.read_text(encoding="utf-8"))
 def write_json(path:Path,data:dict):
     path.parent.mkdir(parents=True,exist_ok=True); path.write_text(json.dumps(data,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-def protected_signature(text:str): return PROTECT_RE.findall(text)
+def protected_signature(text:str):
+    return [token.casefold() if token.casefold() in TECHNICAL_CASEFOLD else token for token in PROTECT_RE.findall(text)]
 def sanitize(source:str,value:str):
     if not base.placeholder_signature(source): value=base.PLACEHOLDER_RE.sub("",value)
     if "§" not in source: value=value.replace("§","")
@@ -34,7 +36,7 @@ class Translator:
     def batch(self,texts:list[str]):
         if not texts:return []
         enc=self.tok([f"{TARGET_TOKEN} {text}" for text in texts],return_tensors="pt",padding=True,truncation=True,max_length=512)
-        with torch.inference_mode(): gen=self.model.generate(**enc,num_beams=2,max_new_tokens=512,early_stopping=True)
+        with torch.inference_mode(): gen=self.model.generate(**enc,num_beams=4,max_new_tokens=512,early_stopping=True)
         return [x.strip() for x in self.tok.batch_decode(gen,skip_special_tokens=True)]
     @staticmethod
     def affixes(piece:str):

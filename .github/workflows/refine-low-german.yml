@@ -1,0 +1,123 @@
+name: Refine Low German localization
+on:
+  push:
+    branches: [release/1.0.0-low-german]
+    paths: [scripts/refine_low_german.py, .github/workflows/refine-low-german.yml]
+  workflow_dispatch:
+permissions: {contents: write}
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with: {ref: release/1.0.0-low-german}
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with: {python-version: '3.12'}
+      - name: Install Low German runtime
+        run: |
+          python -m pip install --upgrade pip
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+          pip install 'transformers<5' sentencepiece sacremoses
+      - name: Restrict add-on audits to Low German
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          files=['scripts/audit_medievalorigins_upstream.py','scripts/audit_ibarnorigins_upstream.py','scripts/audit_origins_fantasy_upstream.py','scripts/audit_origins_backgrounds_upstream.py','scripts/audit_origins_more_backgrounds_upstream.py','scripts/audit_origins_backgrounds_iss_upstream.py','scripts/audit_origins_furries_upstream.py','scripts/audit_origins_classes_extended_upstream.py','scripts/audit_origins_classes_iss_upstream.py','scripts/audit_origin_architect_upstream.py']
+          for f in files:
+              p=Path(f);t=p.read_text(encoding='utf-8');u,n=re.subn(r'^LOCALES\s*=.*$','LOCALES = ("nds_de",)',t,count=1,flags=re.M)
+              if n==0:u,n=re.subn(r'^DEFAULT_LOCALES\s*=.*$','DEFAULT_LOCALES = ("nds_de",)',t,count=1,flags=re.M)
+              if n!=1:raise SystemExit(f'Could not patch {f}')
+              p.write_text(u,encoding='utf-8')
+          PY
+      - name: Discover Low German coverage
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref af467a3bc118f6bbc0970d68f7e03fa631d7e6f2 --output build/nds-discovery-mc-1.21.1 --locale nds_de
+          python3 scripts/audit_neoorigins_upstream.py --ref aa207ef14cf3b938e28b4081162701953957c1d5 --output build/nds-discovery-mc-26.1 --locale nds_de
+          python3 scripts/audit_neoorigins_upstream.py --ref 511cadcafe3027d2a56b4448652ec9b74e2f3b07 --output build/nds-discovery-mc-26.2 --locale nds_de
+      - name: Discover add-on English sources
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format
+          python3 scripts/audit_origins_fantasy_upstream.py
+          python3 scripts/audit_origins_backgrounds_upstream.py
+          python3 scripts/audit_origins_more_backgrounds_upstream.py
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py
+          python3 scripts/audit_origins_furries_upstream.py
+          python3 scripts/audit_origins_classes_extended_upstream.py
+          python3 scripts/audit_origins_classes_iss_upstream.py
+          python3 scripts/audit_origin_architect_upstream.py
+      - name: Refine Low German fallback files
+        run: python3 scripts/refine_low_german.py
+      - name: Prune upstream overlaps
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --prune
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --prune
+          python3 scripts/audit_origins_fantasy_upstream.py --prune
+          python3 scripts/audit_origins_backgrounds_upstream.py --prune
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --prune
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --prune
+          python3 scripts/audit_origins_furries_upstream.py --prune
+          python3 scripts/audit_origins_classes_extended_upstream.py --prune
+          python3 scripts/audit_origins_classes_iss_upstream.py --prune
+          python3 scripts/audit_origin_architect_upstream.py --prune
+      - name: Strict audit Low German NeoOrigins
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref af467a3bc118f6bbc0970d68f7e03fa631d7e6f2 --output build/nds-audit-mc-1.21.1 --locale nds_de --fallback-namespace-glob 'neoorigins_nds_common_*' --extra-namespace neoorigins_nds_121 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref aa207ef14cf3b938e28b4081162701953957c1d5 --output build/nds-audit-mc-26.1 --locale nds_de --fallback-namespace-glob 'neoorigins_nds_common_*' --extra-namespace neoorigins_26_1 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 511cadcafe3027d2a56b4448652ec9b74e2f3b07 --output build/nds-audit-mc-26.2 --locale nds_de --fallback-namespace-glob 'neoorigins_nds_common_*' --extra-namespace neoorigins_26_2 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+      - name: Strict audit Low German add-ons
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_fantasy_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_furries_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_extended_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origin_architect_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+      - name: Validate localization JSON
+        run: python3 scripts/validate.py
+      - name: Verify Low German structure
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          files=sorted(Path('src/main/resources/resourcepacks/fallback_localizations/assets').glob('**/lang/nds_de.json'))
+          if len(files)!=29:raise SystemExit(f'Expected 29 nds_de files, found {len(files)}')
+          for p in files:
+              d=json.loads(p.read_text(encoding='utf-8'))
+              if any('>>nds<<' in str(v) for v in d.values()):raise SystemExit(f'OPUS marker survived in {p}')
+          print('Low German refinement structure passed: 29 files')
+          PY
+      - name: Check whitespace
+        run: git diff --check
+      - name: Restore audit scripts
+        if: always()
+        run: git checkout HEAD -- scripts/audit_*_upstream.py
+      - name: Upload Low German reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: low-german-refinement-audits-${{ github.sha }}
+          path: |
+            build/nds-discovery-*
+            build/nds-audit-*
+            build/*-upstream-audit
+          if-no-files-found: warn
+      - name: Commit validated Low German refinement
+        if: success()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name 'nds_de.json' -print0 | xargs -0 -r git add
+          if git diff --cached --quiet;then echo 'No Low German refinement changes.';exit 0;fi
+          git commit -m 'Refine Low German localization'
+          git fetch origin release/1.0.0-low-german
+          git rebase origin/release/1.0.0-low-german
+          git push origin HEAD:release/1.0.0-low-german

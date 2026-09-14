@@ -6,7 +6,7 @@ from transformers import AutoModelForSeq2SeqLM,AutoTokenizer
 import bootstrap_mohawk as base
 
 ROOT=base.ROOT;ASSETS=base.ASSETS
-MODEL_ID="spikes12/nllb-600m-distilled-english-mohawk"
+MODEL_ID="spikes12/NLLB-Distilled-600m-Mohawk"
 PROTECT_RE=re.compile(r"%(?:\d+\$)?[sdif]|§.|\\n|\n|\{[^{}]+\}|<[^<>]+>|\b(?:NeoOrigins|Origin Architect|HUD|JSON|XP|HP|NeoForge|Minecraft|CurseForge)\b",re.IGNORECASE)
 SUSPICIOUS_RE=re.compile(r"(?:^|[\s>+\-•])\?[A-Za-zÀ-ÖØ-öø-ÿĀ-žƀ-ɏ]",re.MULTILINE)
 TECHNICAL_CASEFOLD={"neoorigins","origin architect","hud","json","xp","hp","neoforge","minecraft","curseforge"}

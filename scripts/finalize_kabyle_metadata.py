@@ -19,27 +19,36 @@ def write_json(path: Path, data) -> None:
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
-def add_kabyle_catalog_entries(data: dict) -> int:
-    added = 0
+def ensure_kabyle_catalog_entries(data: dict) -> int:
+    ensured = 0
 
     def visit(node):
-        nonlocal added
+        nonlocal ensured
         if isinstance(node, dict):
-            if "isv" in node and LOCALE not in node and isinstance(node["isv"], dict):
+            if "isv" in node and isinstance(node["isv"], dict):
                 template = copy.deepcopy(node["isv"])
                 if template.get("status") == "supported" and ("targets" in template or "file" in template):
-                    template["name"] = NATIVE_NAME
+                    if LOCALE not in node:
+                        node[LOCALE] = template
+
+                    entry = node[LOCALE]
+                    if not isinstance(entry, dict):
+                        raise SystemExit("Existing Kabyle catalog entry is not a JSON object")
+
+                    entry["name"] = NATIVE_NAME
                     if "file" in template:
-                        template["file"] = template["file"].replace("/isv.json", f"/{LOCALE}.json")
-                        source = ROOT / template["file"]
+                        expected_file = template["file"].replace("/isv.json", f"/{LOCALE}.json")
+                        entry["file"] = expected_file
+                        source = ROOT / expected_file
                         if not source.is_file():
                             raise SystemExit(f"Missing Kabyle source file for catalog metadata: {source}")
                         payload = load_json(source)
                         if not isinstance(payload, dict):
                             raise SystemExit(f"Expected JSON object in {source}")
-                        template["fallback_keys"] = len(payload)
-                    node[LOCALE] = template
-                    added += 1
+                        entry["fallback_keys"] = len(payload)
+
+                    ensured += 1
+
             for value in list(node.values()):
                 visit(value)
         elif isinstance(node, list):
@@ -47,7 +56,7 @@ def add_kabyle_catalog_entries(data: dict) -> int:
                 visit(value)
 
     visit(data)
-    return added
+    return ensured
 
 
 def finalize_catalog_json() -> None:
@@ -60,9 +69,9 @@ def finalize_catalog_json() -> None:
     namespaces["kabyle_common_glob"] = "neoorigins_kab_common_*"
     namespaces["kabyle_mc_1_21_1"] = "neoorigins_kab_121"
 
-    added = add_kabyle_catalog_entries(data)
-    if added != 11:
-        raise SystemExit(f"Expected to add Kabyle metadata to 11 projects, added {added}")
+    ensured = ensure_kabyle_catalog_entries(data)
+    if ensured != 11:
+        raise SystemExit(f"Expected Kabyle metadata in 11 projects, ensured {ensured}")
 
     write_json(path, data)
 
@@ -72,16 +81,22 @@ def finalize_catalog_md() -> None:
     text = path.read_text(encoding="utf-8")
     marker = "Medžuslovjansky (`isv`)"
     new_locale = f"{NATIVE_NAME} (`{LOCALE}`)"
-    changed = 0
-    lines = []
-    for line in text.splitlines():
-        if line.startswith("|") and marker in line and new_locale not in line:
-            line = line.replace(f"{marker} |", f"{marker} · {new_locale} |")
-            changed += 1
-        lines.append(line)
-    if changed != 11:
-        raise SystemExit(f"Expected 11 CATALOG.md rows to gain Kabyle, changed {changed}")
-    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    present = sum(1 for line in text.splitlines() if line.startswith("|") and new_locale in line)
+    if present == 0:
+        changed = 0
+        lines = []
+        for line in text.splitlines():
+            if line.startswith("|") and marker in line:
+                line = line.replace(f"{marker} |", f"{marker} · {new_locale} |")
+                changed += 1
+            lines.append(line)
+        if changed != 11:
+            raise SystemExit(f"Expected 11 CATALOG.md rows to gain Kabyle, changed {changed}")
+        text = "\n".join(lines) + "\n"
+    elif present != 11:
+        raise SystemExit(f"Expected Kabyle in 11 CATALOG.md rows, found {present}")
+
+    path.write_text(text, encoding="utf-8")
 
 
 def finalize_readme() -> None:

@@ -1,0 +1,23 @@
+name: Chain Kabyle refinement to staging build
+
+on:
+  workflow_run:
+    workflows:
+      - Refine Kabyle localization
+    branches:
+      - release/1.0.0-kabyle
+    types:
+      - completed
+
+permissions:
+  actions: write
+
+jobs:
+  trigger-build:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch Kabyle staging build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run build-1.0.0-kabyle.yml --repo '${{ github.repository }}' --ref release/1.0.0-kabyle

@@ -44,10 +44,11 @@ def main():
  if len(before_files)!=29:raise SystemExit(f"Expected 29 Low German files, found {len(before_files)}")
  before={p:rj(p) for p in before_files};common,d1,d2,d3,addons=sources();payloads=[common,d1,d2,d3,*addons.values()];unique=sorted({str(v) for p in payloads for v in p.values()});exact=base.build_corpus_map();tr={};direct=[]
  for s in unique:
-  if s in base.MANUAL_VALUES:tr[s]=base.MANUAL_VALUES[s]
+  if s=="[%s]":tr[s]=s
+  elif s in base.MANUAL_VALUES:tr[s]=base.MANUAL_VALUES[s]
   elif s in exact:tr[s]=exact[s]
   else:direct.append(s)
- print(f"Low German pool: {len(unique)} unique; {len(unique)-len(direct)} corpus/manual; {len(direct)} direct OPUS",flush=True);mt=MT()
+ print(f"Low German pool: {len(unique)} unique; {len(unique)-len(direct)} corpus/manual/preserved; {len(direct)} direct OPUS",flush=True);mt=MT()
  for start in range(0,len(direct),24):
   batch=direct[start:start+24];vals=mt.batch(batch)
   for s,v in zip(batch,vals):
@@ -67,6 +68,7 @@ def main():
   for k,v in d.items():total+=1;seen[k]=str(v);changed+=before[p][k]!=v
  changed_src=sum(1 for p in payloads for v in p.values() if tr[str(v)]!=str(v));text="\n".join(str(v) for d in after.values() for v in d.values())
  if TARGET_TOKEN in text or changed_src<2500 or seen.get("key.categories.originsmodernui")!="Origin Architect":raise SystemExit("Low German final gate failed")
+ if seen.get("gui.neoorigins.power.key_tag")!="[%s]":raise SystemExit("Low German placeholder-only key tag changed")
  red=exact.get("Red");random=seen.get("button.neoorigins.random")
  if red and random and red.casefold()==random.casefold():raise SystemExit("Random translated as Red")
  if seen.get("neoorigins.night_vision.on")==seen.get("neoorigins.night_vision.off"):raise SystemExit("Night vision labels identical")

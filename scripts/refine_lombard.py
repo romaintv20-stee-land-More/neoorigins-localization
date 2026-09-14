@@ -62,10 +62,11 @@ def main():
     if len(before_files)!=29: raise SystemExit(f"Expected 29 Lombard files before refinement, found {len(before_files)}")
     before={p:read_json(p) for p in before_files}; common,d121,d261,d262,addons=build_sources(); payloads=[common,d121,d261,d262,*addons.values()]; unique=sorted({str(v) for p in payloads for v in p.values()}); exact=base.build_corpus_map(); translated={}; direct=[]
     for source in unique:
-        if source in base.MANUAL_VALUES: translated[source]=base.MANUAL_VALUES[source]
+        if source == "": translated[source]=""
+        elif source in base.MANUAL_VALUES: translated[source]=base.MANUAL_VALUES[source]
         elif source in exact: translated[source]=exact[source]
         else: direct.append(source)
-    print(f"Lombard refinement pool: {len(unique)} unique; {len(unique)-len(direct)} corpus/manual; {len(direct)} direct OPUS",flush=True)
+    print(f"Lombard refinement pool: {len(unique)} unique; {len(unique)-len(direct)} corpus/manual/preserved; {len(direct)} direct OPUS",flush=True)
     mt=Translator()
     for start in range(0,len(direct),24):
         batch=direct[start:start+24]; outputs=mt.batch(batch)

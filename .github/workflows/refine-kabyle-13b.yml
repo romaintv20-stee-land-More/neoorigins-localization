@@ -35,7 +35,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install torch --index-url https://download.pytorch.org/whl/cpu
-          pip install 'transformers<5' sentencepiece sacremoses
+          pip install 'transformers<5' sentencepiece sacremoses protobuf
 
       - name: Select Kabyle-specific 1.3B model and safe CPU batch
         run: |
@@ -45,6 +45,10 @@ jobs:
           text = p.read_text(encoding='utf-8')
           text = text.replace('MODEL_ID = "facebook/nllb-200-distilled-600M"', 'MODEL_ID = "mimech011/nllb-200-kabyle-1.3B"')
           text = text.replace('batch_size = 16', 'batch_size = 4')
+          text = text.replace(
+              'self.tokenizer = AutoTokenizer.from_pretrained(MODEL_ID, src_lang=SOURCE_LANG)',
+              'self.tokenizer = AutoTokenizer.from_pretrained("facebook/nllb-200-distilled-1.3B", src_lang=SOURCE_LANG)'
+          )
           p.write_text(text, encoding='utf-8')
           PY
 
@@ -114,7 +118,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install torch --index-url https://download.pytorch.org/whl/cpu
-          pip install 'transformers<5' sentencepiece sacremoses
+          pip install 'transformers<5' sentencepiece sacremoses protobuf
 
       - name: Restrict add-on audits to Kabyle
         run: |

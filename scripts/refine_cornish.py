@@ -40,6 +40,19 @@ def protected_signature(text: str) -> list[str]:
     return PROTECT_RE.findall(text)
 
 
+def sanitize_output(source: str, translated: str) -> str:
+    """Remove only formatting/placeholders hallucinated by MT.
+
+    Real placeholders and section formatting are never removed from sources that
+    contain them; structural translation preserves those source tokens verbatim.
+    """
+    if not base.placeholder_signature(source):
+        translated = base.PLACEHOLDER_RE.sub("", translated)
+    if "§" not in source:
+        translated = translated.replace("§", "")
+    return re.sub(r"[ \t]{2,}", " ", translated).strip()
+
+
 def build_sources():
     n121 = read_json(ROOT / "build/kw-discovery-mc-1.21.1/kw_gb_missing_en.json")
     n261 = read_json(ROOT / "build/kw-discovery-mc-26.1/kw_gb_missing_en.json")
@@ -105,9 +118,9 @@ class Translator:
         translated = self.batch(cores)
         if len(translated) != len(indexes):
             raise RuntimeError("Cornish structural translation span mismatch")
-        for i, value in zip(indexes, translated):
+        for i, core, value in zip(indexes, cores, translated):
             prefix, suffix = affix[i]
-            out[i] = prefix + value.strip() + suffix
+            out[i] = prefix + sanitize_output(core, value) + suffix
         result = []
         for i, piece in enumerate(out):
             result.append(piece)
@@ -138,10 +151,11 @@ def main():
         outputs = mt.batch(batch)
         if len(outputs) != len(batch): raise SystemExit("Cornish OPUS batch size mismatch")
         for source, value in zip(batch, outputs):
+            value = sanitize_output(source, value)
             ok = bool(value.strip())
             ok &= base.placeholder_signature(source) == base.placeholder_signature(value)
             ok &= protected_signature(source) == protected_signature(value)
-            if not ok: value = mt.structural(source)
+            if not ok: value = sanitize_output(source, mt.structural(source))
             if not value.strip(): raise SystemExit(f"Empty Cornish translation for {source!r}")
             if base.placeholder_signature(source) != base.placeholder_signature(value): raise SystemExit(f"Cornish placeholder mismatch: {source!r} -> {value!r}")
             if protected_signature(source) != protected_signature(value): raise SystemExit(f"Cornish protected-token mismatch: {source!r} -> {value!r}")

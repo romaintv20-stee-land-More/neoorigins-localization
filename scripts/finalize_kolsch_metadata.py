@@ -119,7 +119,7 @@ def finalize_readme() -> None:
 
     text = text.replace("Les quatre-vingt-neuf langues sont disponibles", "Les quatre-vingt-dix langues sont disponibles")
 
-    if "Pour le kölsch :" not in text.casefold():
+    if "pour le kölsch :" not in text.casefold():
         kabyle_block = "Pour le kabyle :\n\n- **1.21.1 : 2 296/2 296 clés** couvertes ;\n- **26.1.x : 2 307/2 307 clés** couvertes ;\n- **26.2 : 2 307/2 307 clés** couvertes."
         if kabyle_block not in text:
             raise SystemExit("Could not locate the Kabyle coverage block")

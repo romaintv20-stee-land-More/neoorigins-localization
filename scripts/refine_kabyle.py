@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
-"""Refine Kabyle (`kab_kab`) fallback files with full English -> Kabyle translation.
+"""Refine Kabyle (`kab_kab`) fallback files with direct English -> Kabyle NLLB.
 
-Policy: safe manual full values, exact whole-string matches from the pinned Minecraft
-Kabyle corpus, then direct full-string translation with NLLB-200 (`eng_Latn` ->
-`kab_Latn`). No isolated-word projection is used. Placeholders and technical/project
-tokens are validated and, when necessary, protected through structural fallback.
+The expensive NLLB pool can be split into deterministic shards. Each shard keeps
+beam search at 4 and performs the same placeholder/protected-token validation as
+the original monolithic refinement. A merge pass requires exact shard coverage,
+reconstructs all 29 locale files, and runs semantic/structural smoke gates.
 This is automated translation assistance, not native review.
 """
 from __future__ import annotations
 
+import argparse
 from pathlib import Path
 import json
 import re
@@ -81,6 +82,34 @@ def build_sources():
     return common_en, delta_121_en, delta_261_en, delta_262_en, addons_en
 
 
+def build_pool():
+    common_en, delta_121_en, delta_261_en, delta_262_en, addons_en = build_sources()
+    source_payloads: list[dict[str, str]] = [common_en, delta_121_en, delta_261_en, delta_262_en]
+    source_payloads.extend(addons_en.values())
+    unique_sources = sorted({str(value) for payload in source_payloads for value in payload.values()})
+    exact = base.build_corpus_map()
+    translated_by_source: dict[str, str] = {}
+    direct_sources: list[str] = []
+    for source in unique_sources:
+        if source in base.MANUAL_VALUES:
+            translated_by_source[source] = base.MANUAL_VALUES[source]
+        elif source in exact:
+            translated_by_source[source] = exact[source]
+        else:
+            direct_sources.append(source)
+    return (
+        common_en,
+        delta_121_en,
+        delta_261_en,
+        delta_262_en,
+        addons_en,
+        source_payloads,
+        exact,
+        translated_by_source,
+        direct_sources,
+    )
+
+
 class KabyleTranslator:
     def __init__(self) -> None:
         print(f"Loading Kabyle-capable NLLB model: {MODEL_ID} ({SOURCE_LANG} -> {TARGET_LANG})", flush=True)
@@ -109,43 +138,35 @@ class KabyleTranslator:
                 max_new_tokens=512,
                 early_stopping=True,
             )
-        return [
-            value.strip() for value in self.tokenizer.batch_decode(generated, skip_special_tokens=True)
-        ]
+        return [value.strip() for value in self.tokenizer.batch_decode(generated, skip_special_tokens=True)]
 
     @staticmethod
     def split_structural_affixes(piece: str) -> tuple[str, str, str]:
-        """Keep punctuation/numeric affixes outside translated natural-language spans."""
         alpha = [index for index, char in enumerate(piece) if char.isalpha()]
         if not alpha:
             return piece, "", ""
-        first = alpha[0]
-        last = alpha[-1]
-        return piece[:first], piece[first:last + 1], piece[last + 1:]
+        return piece[:alpha[0]], piece[alpha[0]:alpha[-1] + 1], piece[alpha[-1] + 1:]
 
     def structural_translate(self, source: str) -> str:
         pieces = PROTECT_RE.split(source)
         tokens = PROTECT_RE.findall(source)
         translated_pieces = list(pieces)
-        translatable_indices: list[int] = []
-        translatable: list[str] = []
+        indices: list[int] = []
+        cores: list[str] = []
         affixes: dict[int, tuple[str, str]] = {}
-
         for index, piece in enumerate(pieces):
             prefix, core, suffix = self.split_structural_affixes(piece)
             if not core:
                 continue
-            translatable_indices.append(index)
-            translatable.append(core)
+            indices.append(index)
+            cores.append(core)
             affixes[index] = (prefix, suffix)
-
-        outputs = self.translate_batch(translatable)
-        if len(outputs) != len(translatable_indices):
+        outputs = self.translate_batch(cores)
+        if len(outputs) != len(indices):
             raise RuntimeError("Structural Kabyle translation returned the wrong number of spans")
-        for index, translated in zip(translatable_indices, outputs):
+        for index, translated in zip(indices, outputs):
             prefix, suffix = affixes[index]
             translated_pieces[index] = prefix + translated.strip() + suffix
-
         output: list[str] = []
         for index, piece in enumerate(translated_pieces):
             output.append(piece)
@@ -154,36 +175,20 @@ class KabyleTranslator:
         return "".join(output)
 
 
-def main() -> None:
-    before_files = sorted(ASSETS.glob("**/lang/kab_kab.json"))
-    if len(before_files) != 29:
-        raise SystemExit(f"Expected 29 Kabyle files before refinement, found {len(before_files)}")
-    before = {path: read_json(path) for path in before_files}
+def validate_pair(source: str, translated: str) -> None:
+    if not translated.strip():
+        raise SystemExit(f"Empty Kabyle translation for {source!r}")
+    if base.placeholder_signature(source) != base.placeholder_signature(translated):
+        raise SystemExit(f"Kabyle placeholder mismatch: {source!r} -> {translated!r}")
+    if protected_signature(source) != protected_signature(translated):
+        raise SystemExit(f"Kabyle protected-token mismatch: {source!r} -> {translated!r}")
+    if SUSPICIOUS_UNKNOWN_RE.search(translated):
+        raise SystemExit(f"Suspicious unknown-character artifact in Kabyle output: {source!r} -> {translated!r}")
 
-    common_en, delta_121_en, delta_261_en, delta_262_en, addons_en = build_sources()
-    source_payloads: list[dict[str, str]] = [common_en, delta_121_en, delta_261_en, delta_262_en]
-    source_payloads.extend(addons_en.values())
-    unique_sources = sorted({str(value) for payload in source_payloads for value in payload.values()})
 
-    exact = base.build_corpus_map()
-    translated_by_source: dict[str, str] = {}
-    direct_sources: list[str] = []
-    for source in unique_sources:
-        if source in base.MANUAL_VALUES:
-            translated_by_source[source] = base.MANUAL_VALUES[source]
-        elif source in exact:
-            translated_by_source[source] = exact[source]
-        else:
-            direct_sources.append(source)
-
-    print(
-        f"Kabyle refinement pool: {len(unique_sources)} unique strings; "
-        f"{len(unique_sources) - len(direct_sources)} manual/corpus hits; "
-        f"{len(direct_sources)} direct NLLB translations.",
-        flush=True,
-    )
-
+def translate_direct_sources(direct_sources: list[str]) -> dict[str, str]:
     translator = KabyleTranslator()
+    translated_by_source: dict[str, str] = {}
     batch_size = 16
     for start in range(0, len(direct_sources), batch_size):
         batch = direct_sources[start:start + batch_size]
@@ -196,26 +201,92 @@ def main() -> None:
             valid = valid and protected_signature(source) == protected_signature(translated)
             if not valid:
                 translated = translator.structural_translate(source)
-            if not translated.strip():
-                raise SystemExit(f"Empty Kabyle translation for {source!r}")
-            if base.placeholder_signature(source) != base.placeholder_signature(translated):
-                raise SystemExit(f"Kabyle placeholder mismatch: {source!r} -> {translated!r}")
-            if protected_signature(source) != protected_signature(translated):
-                raise SystemExit(f"Kabyle protected-token mismatch: {source!r} -> {translated!r}")
-            if SUSPICIOUS_UNKNOWN_RE.search(translated):
-                raise SystemExit(f"Suspicious unknown-character artifact in Kabyle output: {source!r} -> {translated!r}")
+            validate_pair(source, translated)
             translated_by_source[source] = translated
         done = min(start + len(batch), len(direct_sources))
         if done % 160 == 0 or done == len(direct_sources):
             print(f"Direct Kabyle translation progress: {done}/{len(direct_sources)}", flush=True)
+    return translated_by_source
+
+
+def write_shard(shard_index: int, shard_count: int, output: Path) -> None:
+    if shard_count < 1 or not 0 <= shard_index < shard_count:
+        raise SystemExit(f"Invalid shard {shard_index}/{shard_count}")
+    *_, direct_sources = build_pool()
+    shard_sources = direct_sources[shard_index::shard_count]
+    print(
+        f"Kabyle shard {shard_index + 1}/{shard_count}: "
+        f"{len(shard_sources)} of {len(direct_sources)} direct NLLB strings.",
+        flush=True,
+    )
+    translated = translate_direct_sources(shard_sources)
+    if set(translated) != set(shard_sources):
+        raise SystemExit("Kabyle shard output coverage mismatch")
+    write_json(output, {key: translated[key] for key in sorted(translated)})
+    print(f"Kabyle shard {shard_index + 1}/{shard_count} passed and wrote {output}", flush=True)
+
+
+def collect_shards(directory: Path, expected_sources: list[str]) -> dict[str, str]:
+    files = sorted(directory.glob("*.json"))
+    if not files:
+        raise SystemExit(f"No Kabyle shard files found under {directory}")
+    combined: dict[str, str] = {}
+    for path in files:
+        payload = read_json(path)
+        for source, translated in payload.items():
+            if source in combined and combined[source] != translated:
+                raise SystemExit(f"Conflicting Kabyle shard translations for {source!r}")
+            combined[source] = translated
+    expected = set(expected_sources)
+    actual = set(combined)
+    if actual != expected:
+        missing = sorted(expected - actual)
+        extra = sorted(actual - expected)
+        raise SystemExit(
+            f"Kabyle shard coverage mismatch: missing={len(missing)} extra={len(extra)}; "
+            f"sample_missing={missing[:3]!r} sample_extra={extra[:3]!r}"
+        )
+    for source, translated in combined.items():
+        validate_pair(source, translated)
+    print(f"Merged {len(files)} Kabyle shard files covering {len(combined)} direct translations.", flush=True)
+    return combined
+
+
+def apply_and_validate(shard_translations: dict[str, str] | None = None) -> None:
+    before_files = sorted(ASSETS.glob("**/lang/kab_kab.json"))
+    if len(before_files) != 29:
+        raise SystemExit(f"Expected 29 Kabyle files before refinement, found {len(before_files)}")
+    before = {path: read_json(path) for path in before_files}
+
+    (
+        common_en,
+        delta_121_en,
+        delta_261_en,
+        delta_262_en,
+        addons_en,
+        source_payloads,
+        exact,
+        translated_by_source,
+        direct_sources,
+    ) = build_pool()
+
+    print(
+        f"Kabyle refinement pool: {len(translated_by_source) + len(direct_sources)} unique strings; "
+        f"{len(translated_by_source)} manual/corpus hits; {len(direct_sources)} direct NLLB translations.",
+        flush=True,
+    )
+    if shard_translations is None:
+        shard_translations = translate_direct_sources(direct_sources)
+    if set(shard_translations) != set(direct_sources):
+        raise SystemExit("Direct Kabyle translation map does not exactly cover the required source pool")
+    translated_by_source.update(shard_translations)
 
     def translated_payload(source: dict[str, str]) -> dict[str, str]:
         result: dict[str, str] = {}
         for key, raw_value in source.items():
             source_value = str(raw_value)
             translated = translated_by_source[source_value]
-            if base.placeholder_signature(source_value) != base.placeholder_signature(translated):
-                raise SystemExit(f"Placeholder mismatch for {key}: {source_value!r} -> {translated!r}")
+            validate_pair(source_value, translated)
             result[key] = translated
         return result
 
@@ -292,6 +363,31 @@ def main() -> None:
         "semantic smoke tests and structural gates passed; no isolated-word projection pipeline.",
         flush=True,
     )
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--shard-index", type=int)
+    parser.add_argument("--shard-count", type=int)
+    parser.add_argument("--shard-output", type=Path)
+    parser.add_argument("--merge-shards", type=Path)
+    args = parser.parse_args()
+
+    shard_args = (args.shard_index, args.shard_count, args.shard_output)
+    if any(value is not None for value in shard_args):
+        if not all(value is not None for value in shard_args):
+            raise SystemExit("--shard-index, --shard-count and --shard-output must be provided together")
+        if args.merge_shards is not None:
+            raise SystemExit("Shard translation and shard merge modes are mutually exclusive")
+        write_shard(args.shard_index, args.shard_count, args.shard_output)
+        return
+
+    if args.merge_shards is not None:
+        *_, direct_sources = build_pool()
+        apply_and_validate(collect_shards(args.merge_shards, direct_sources))
+        return
+
+    apply_and_validate()
 
 
 if __name__ == "__main__":

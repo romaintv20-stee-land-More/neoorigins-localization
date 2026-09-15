@@ -16,6 +16,7 @@ ROOT = base.ROOT
 ASSETS = base.ASSETS
 MODEL_ID = "facebook/nllb-200-distilled-1.3B"
 SOURCE_LANG = "eng_Latn"
+DUTCH_LANG = "nld_Latn"
 TARGET_LANG = "lim_Latn"
 BATCH_SIZE = 8
 
@@ -33,6 +34,11 @@ ENGLISH_LEAK = {
 }
 ALLOWED_UNCHANGED = set(base.MANUAL_VALUES) | {
     "NeoOrigins", "Minecraft", "NeoForge", "CurseForge", "HUD", "JSON", "XP", "HP",
+}
+MANUAL_REPAIRS = {
+    "Channel potent life energies for a short duration. While active, spread seeds onto stepped-on farmland and pulse healing and cleansing energy to nearby allies.":
+        "Kanaliseer krachtige levensenergie veur 'n korte tied. Zolang dit actief is, verspreid zaod euver akkerlaand wao se euver löps en sjik golven van genezende en zuuverende energie nao bondgenote in de buurt.",
+    "- Arcane Wand \n- 16 Arcane Runes": "- Arkaanse staf \n- 16 Arkaanse rune",
 }
 
 
@@ -67,12 +73,9 @@ def excessive_repetition(source: str, target: str) -> bool:
     if len(tw) < 4:
         return False
     tc = Counter(tw)
-    # A translated function word may naturally occur more often than its English
-    # counterpart, so only flag truly dominant single-token collapse.
     for word, count in tc.items():
         if len(word) >= 2 and count >= 5 and count / len(tw) >= 0.32:
             return True
-    # Exact immediately duplicated phrases are strong model-collapse evidence.
     for size in (2, 3, 4):
         if len(tw) >= size * 2:
             for i in range(len(tw) - size * 2 + 1):
@@ -97,7 +100,6 @@ def semantic_reasons(source: str, target: str) -> list[str]:
     if SUSPICIOUS_RE.search(target):
         reasons.append("artifact")
 
-    # Ignore strings made only from placeholders/formatting. They are not English prose.
     translatable_source = PROTECT_RE.sub("", source)
     if (source not in ALLOWED_UNCHANGED and len(words(translatable_source)) >= 2
             and source.casefold() == target.casefold()):
@@ -156,9 +158,25 @@ def current_targets(common, d121, d261, d262, addons):
     return locations
 
 
+def dutch_references(suspects):
+    """Return key-matched Dutch reference text for English sources that still need repair."""
+    dutch_by_key = {}
+    for path in sorted(ASSETS.glob("**/lang/nl_nl.json")):
+        payload = read_json(path)
+        if isinstance(payload, dict):
+            for key, value in payload.items():
+                dutch_by_key.setdefault(key, str(value))
+    refs = {}
+    for _label, key, source, _target, _reasons in suspects:
+        ref = dutch_by_key.get(key)
+        if ref and ref.casefold() != source.casefold():
+            refs.setdefault(source, ref)
+    return refs
+
+
 class Translator:
     def __init__(self):
-        print(f"Loading semantic repair model {MODEL_ID}: {SOURCE_LANG}->{TARGET_LANG}", flush=True)
+        print(f"Loading semantic repair model {MODEL_ID}: *->{TARGET_LANG}", flush=True)
         self.tok = AutoTokenizer.from_pretrained(MODEL_ID, src_lang=SOURCE_LANG)
         self.model = AutoModelForSeq2SeqLM.from_pretrained(MODEL_ID)
         self.model.eval()
@@ -166,9 +184,10 @@ class Translator:
         if self.target_id is None or self.target_id == self.tok.unk_token_id:
             raise RuntimeError(f"Missing NLLB target {TARGET_LANG}")
 
-    def batch(self, texts: list[str]) -> list[str]:
+    def batch(self, texts: list[str], source_lang: str = SOURCE_LANG) -> list[str]:
         if not texts:
             return []
+        self.tok.src_lang = source_lang
         out = []
         for start in range(0, len(texts), BATCH_SIZE):
             part = texts[start:start+BATCH_SIZE]
@@ -176,7 +195,7 @@ class Translator:
             with torch.inference_mode():
                 gen = self.model.generate(**enc, forced_bos_token_id=self.target_id, num_beams=3, max_new_tokens=512, early_stopping=True)
             out.extend(x.strip() for x in self.tok.batch_decode(gen, skip_special_tokens=True))
-            print(f"1.3B candidate batch: {min(start + len(part), len(texts))}/{len(texts)}", flush=True)
+            print(f"1.3B {source_lang} batch: {min(start + len(part), len(texts))}/{len(texts)}", flush=True)
         return out
 
     @staticmethod
@@ -188,6 +207,7 @@ class Translator:
         return piece[:a], piece[a:b+1], piece[b+1:]
 
     def structural(self, source: str) -> str:
+        self.tok.src_lang = SOURCE_LANG
         pieces = PROTECT_RE.split(source)
         tokens = PROTECT_RE.findall(source)
         out = list(pieces)
@@ -196,7 +216,7 @@ class Translator:
             pre, core, suf = self.affixes(piece)
             if core:
                 indexes.append(i); cores.append(core); aff[i] = (pre, suf)
-        vals = self.batch(cores)
+        vals = self.batch(cores, SOURCE_LANG)
         for i, core, val in zip(indexes, cores, vals):
             pre, suf = aff[i]; out[i] = pre + sanitize(core, val) + suf
         result = []
@@ -251,13 +271,13 @@ def main():
             if not reasons:
                 chosen[source] = value
 
-    outputs = mt.batch(unique_sources)
+    outputs = mt.batch(unique_sources, SOURCE_LANG)
     consider(unique_sources, unique_sources, outputs, "direct")
     print(f"Direct pass accepted {len(chosen)}/{len(unique_sources)}", flush=True)
 
     pending = [s for s in unique_sources if s not in chosen and not s.endswith((".", "!", "?"))]
     prompts = [s + "." for s in pending]
-    consider(pending, prompts, mt.batch(prompts), "punct")
+    consider(pending, prompts, mt.batch(prompts, SOURCE_LANG), "punct")
     print(f"Punctuation pass accepted {len(chosen)}/{len(unique_sources)}", flush=True)
 
     pending_short = [s for s in unique_sources if s not in chosen and 2 <= len(words(s)) <= 6]
@@ -266,15 +286,41 @@ def main():
         if not current:
             break
         prompts = [prefix + s for s in current]
-        consider(current, prompts, mt.batch(prompts), "context")
+        consider(current, prompts, mt.batch(prompts, SOURCE_LANG), "context")
         print(f"{prefix.strip()} pass accepted {len(chosen)}/{len(unique_sources)}", flush=True)
 
+    # Structural English repair preserves formatting tokens and line breaks.
     for source in [s for s in unique_sources if s not in chosen]:
         value = sanitize(source, mt.structural(source))
         reasons = semantic_reasons(source, value)
         notes[source].append((value, reasons))
         if not reasons:
             chosen[source] = value
+
+    # Direct English remains the primary path. For stubborn unchanged short labels,
+    # use the repository's existing Dutch localization only as a close-language
+    # reference, then translate that reference to Limburgish with the same 1.3B model.
+    refs = dutch_references(suspects)
+    pending_ref = [s for s in unique_sources if s not in chosen and s in refs]
+    if pending_ref:
+        ref_texts = [refs[s] for s in pending_ref]
+        ref_outputs = mt.batch(ref_texts, DUTCH_LANG)
+        for source, ref, raw in zip(pending_ref, ref_texts, ref_outputs):
+            value = sanitize(source, raw)
+            reasons = semantic_reasons(source, value)
+            notes[source].append((f"[nl:{ref}] -> {value}", reasons))
+            if not reasons:
+                chosen[source] = value
+        print(f"Dutch-reference rescue accepted {len(chosen)}/{len(unique_sources)}", flush=True)
+
+    # Small curated repairs are reserved for formatting/truncation cases that NLLB
+    # cannot safely recover while preserving every token.
+    for source, value in MANUAL_REPAIRS.items():
+        if source not in chosen and source in notes:
+            reasons = semantic_reasons(source, value)
+            notes[source].append((value, reasons))
+            if not reasons:
+                chosen[source] = value
 
     unresolved = [s for s in unique_sources if s not in chosen]
     if unresolved:

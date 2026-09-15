@@ -8,7 +8,7 @@
   "origin.origins_furries.dog.description": "Iqjan d imeddukal imeɣlalen yerna fessusen i uselmed.",
   "origin.origins_furries.dog.name": "Aqjun",
   "origin.origins_furries.komodo.description": "Idrakunen n Komodu ḥemmlen azɣal, kerhen asemmiḍ.",
-  "origin.origins_furries.komodo.name": "Komodo Dragon",
+  "origin.origins_furries.komodo.name": "Ajenwi n Komodo",
   "origin.origins_furries.otter.description": "Imsuṭṭaḍen n waman, Iɛudren d imcewwlen igerrzen.",
   "origin.origins_furries.otter.name": "Awṭar",
   "origin.origins_furries.raccoon.description": "Iɣerdayen wwin-d isem n Trash Panda.",
@@ -73,7 +73,7 @@
   "power.origins_furries.poison_immune.description": "Ur kent-yettawi ara ssem.",
   "power.origins_furries.poison_immune.name": "Ammesten mgal ssem",
   "power.origins_furries.raccoon_jump.description": "Tzemreḍ ad tneggzeḍ snat n tikkal ugar n wemdan, ɣas akken meẓẓiyeḍ.",
-  "power.origins_furries.raccoon_jump.name": "Raccoon Jump",
+  "power.origins_furries.raccoon_jump.name": "Tazzla n uferḍis",
   "power.origins_furries.safe_bush.description": "Ur k-ttḍurrun ara yiberriyen.",
   "power.origins_furries.safe_bush.name": "Iẓuran n tɣellist",
   "power.origins_furries.safe_magma.description": "Iḥedran n magma ur k-ḍurren ara.",
@@ -115,5 +115,5 @@
   "power.origins_furries.water_vision.description": "Tzemreḍ ad twaliḍ ddaw waman.",
   "power.origins_furries.water_vision.name": "Tamuɣli n waman",
   "power.origins_furries.munch_grass.description": "Ma telluẓeḍ, tzemreḍ ad teččeḍ leḥcic am wulli-nniḍen.",
-  "power.origins_furries.munch_grass.name": "Munch Grass"
+  "power.origins_furries.munch_grass.name": "Aẓekkun"
 }

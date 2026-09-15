@@ -16,10 +16,23 @@ import refine_kabyle as rk
 MODEL_ID = "facebook/nllb-200-distilled-1.3B"
 SOURCE_LANG = "eng_Latn"
 TARGET_LANG = "kab_Latn"
-# Unicode-aware: this keeps Kabyle letters such as ḥ, ṛ and ẓ inside words.
 WORD_RE = re.compile(r"[^\W\d_]+(?:['’-][^\W\d_]+)?", re.UNICODE)
-SENTENCE_RE = re.compile(r"(?<=[.!?])\s+")
+CLAUSE_SPLIT_RE = re.compile(r"(\s+[—–]\s+|(?<=[.!?])\s+|;\s+)")
 UNKNOWN_RE = re.compile(r"(?:^|[\s>+\-•])\?[^\W\d_]", re.MULTILINE | re.UNICODE)
+
+# Keep project names and Minecraft-specific item/effect names stable when the
+# generic fallback repairs a damaged prose string. This is safer than letting a
+# general MT model collapse a whole list of distinct game items into one noun.
+EXTRA_PROTECTED = [
+    "Medieval Origins", "Instant Health", "Efficiency I", "wither skeletons",
+    "crying obsidian", "cobbled deepslate", "deepslate iron ore", "raw iron blocks",
+    "iron ingots", "raw iron", "iron nuggets", "iron ore", "cobblestone", "granite",
+    "diorite", "andesite", "tuff", "deepslate", "basalt", "blackstone", "stone",
+    "Obsidian", "bedrock", "Regeneration", "Poison",
+]
+_EXTRA = "|".join(re.escape(value) for value in sorted(EXTRA_PROTECTED, key=len, reverse=True))
+REPAIR_PROTECT_RE = re.compile(rf"(?:{rk.PROTECT_RE.pattern}|{_EXTRA})", re.IGNORECASE)
+
 ENGLISH = {
     "a", "an", "the", "and", "or", "but", "your", "you", "yours", "with",
     "without", "while", "when", "where", "who", "which", "that", "this",
@@ -34,6 +47,8 @@ KNOWN_BAD = {
     "A master of death who commands undead minions — wither skeletons and archers fight at your side, but your own life force is bound to theirs.",
     "A warper of gravitational fields who bends space itself. Pull enemies into a crushing singularity or blast them away — but your own body is untethered from the earth.",
     "Toggle: walk through solid blocks. While inside a block, fly freely (jump = up, shift = down). Obsidian, crying obsidian, and bedrock block your passage. Phasing drains hunger.",
+    "Medieval Origins: Tertiary Active",
+    "NeoOrigins: Grant Loot Pool",
 }
 
 
@@ -50,24 +65,41 @@ def words(text: str) -> list[str]:
 
 
 def semantic_words(text: str) -> list[str]:
-    # Formatting codes, placeholders and protected project tokens must not count
-    # as prose repetition/leakage, but rk.validate_pair still verifies them exactly.
-    return words(rk.PROTECT_RE.sub(" ", text))
+    return words(REPAIR_PROTECT_RE.sub(" ", text))
+
+
+def repetition_collapse(source_words: list[str], target_words: list[str]) -> bool:
+    if len(target_words) < 8:
+        return False
+    # Three identical words in a row is a model loop regardless of source wording.
+    for index in range(len(target_words) - 2):
+        if target_words[index] == target_words[index + 1] == target_words[index + 2]:
+            return True
+
+    source_counts = Counter(word for word in source_words if len(word) >= 4)
+    target_counts = Counter(word for word in target_words if len(word) >= 4)
+    if not target_counts:
+        return False
+    _, target_count = target_counts.most_common(1)[0]
+    source_count = source_counts.most_common(1)[0][1] if source_counts else 0
+    source_ratio = source_count / max(1, len(source_words))
+    target_ratio = target_count / len(target_words)
+
+    # A repeated material name is legitimate when the English source itself
+    # repeats that material. Flag only a large increase beyond source repetition.
+    return (
+        target_count >= 6
+        and target_count >= source_count + 5
+        and target_ratio >= max(0.28, source_ratio + 0.18)
+    )
 
 
 def issue(source: str, translated: str) -> str | None:
     sw, tw = semantic_words(source), semantic_words(translated)
     if len(sw) >= 4 and sw == tw:
         return "unchanged English"
-    if len(tw) >= 8:
-        for index in range(len(tw) - 2):
-            if tw[index] == tw[index + 1] == tw[index + 2]:
-                return "repetition collapse"
-        counts = Counter(word for word in tw if len(word) >= 4)
-        if counts:
-            _, count = counts.most_common(1)[0]
-            if count >= 6 and count / len(tw) >= 0.20:
-                return "repetition collapse"
+    if repetition_collapse(sw, tw):
+        return "repetition collapse"
     english_hits = sum(word in ENGLISH for word in tw)
     if len(tw) >= 5 and english_hits >= 3 and english_hits / len(tw) >= 0.12:
         return "English grammar leakage"
@@ -95,28 +127,42 @@ class GenericKabyle:
             raise SystemExit(f"Missing target token {TARGET_LANG}")
 
     def batch(self, texts: list[str]) -> list[str]:
+        if not texts:
+            return []
         encoded = self.tokenizer(texts, return_tensors="pt", padding=True, truncation=True, max_length=512)
         with torch.inference_mode():
             generated = self.model.generate(
-                **encoded, forced_bos_token_id=self.target_id,
-                num_beams=4, max_new_tokens=512, early_stopping=True,
+                **encoded,
+                forced_bos_token_id=self.target_id,
+                num_beams=4,
+                max_new_tokens=512,
+                early_stopping=True,
             )
         return [text.strip() for text in self.tokenizer.batch_decode(generated, skip_special_tokens=True)]
 
-    def piece(self, text: str) -> str:
-        alpha = [i for i, char in enumerate(text) if char.isalpha()]
-        if not alpha:
+    def translate_text_piece(self, text: str) -> str:
+        if not any(char.isalpha() for char in text):
             return text
-        prefix, core, suffix = text[:alpha[0]], text[alpha[0]:alpha[-1] + 1], text[alpha[-1] + 1:]
-        clauses = [part for part in SENTENCE_RE.split(core) if part]
-        return prefix + " ".join(self.batch(clauses)) + suffix
+        split = CLAUSE_SPLIT_RE.split(text)
+        clause_indices = [index for index in range(0, len(split), 2) if split[index].strip()]
+        clauses = [split[index].strip() for index in clause_indices]
+        outputs = self.batch(clauses)
+        for index, output in zip(clause_indices, outputs):
+            original = split[index]
+            prefix = original[: len(original) - len(original.lstrip())]
+            suffix = original[len(original.rstrip()):]
+            terminal = original.rstrip()[-1:] if original.rstrip()[-1:] in ".!?" else ""
+            if terminal and not output.endswith(terminal):
+                output += terminal
+            split[index] = prefix + output + suffix
+        return "".join(split)
 
     def translate(self, source: str) -> str:
-        pieces = rk.PROTECT_RE.split(source)
-        tokens = rk.PROTECT_RE.findall(source)
+        pieces = REPAIR_PROTECT_RE.split(source)
+        tokens = REPAIR_PROTECT_RE.findall(source)
         out: list[str] = []
         for index, piece in enumerate(pieces):
-            out.append(self.piece(piece))
+            out.append(self.translate_text_piece(piece))
             if index < len(tokens):
                 out.append(tokens[index])
         translated = "".join(out)

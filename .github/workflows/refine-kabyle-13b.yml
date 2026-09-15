@@ -163,6 +163,9 @@ jobs:
           path: build/kabyle-13b-shards
           merge-multiple: true
 
+      - name: Repair semantic outliers with generic 1.3B fallback
+        run: python3 scripts/repair_kabyle_13b_shards.py build/kabyle-13b-shards
+
       - name: Merge shards and rebuild fallback files
         run: python3 scripts/refine_kabyle.py --merge-shards build/kabyle-13b-shards
 
@@ -215,6 +218,7 @@ jobs:
           if not seen.get('button.neoorigins.random','').strip(): raise SystemExit('Random label is empty')
           text='\n'.join(map(str,seen.values()))
           if 'kab_Latn' in text or '>>kab<<' in text: raise SystemExit('Target marker survived')
+          if 'ablaḍ ablaḍ ablaḍ' in text.casefold(): raise SystemExit('Known Kabyle repetition collapse survived')
           print(f'Kabyle 1.3B structure passed: 29 files, {total} values')
           PY
 

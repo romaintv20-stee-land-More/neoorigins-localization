@@ -149,7 +149,11 @@ jobs:
           jar = jars[0]
           with ZipFile(jar) as zf:
               names = zf.namelist()
-              li_files = sorted(n for n in names if n.endswith('/lang/li_li.json'))
+              li_files = sorted(
+                  n for n in names
+                  if n.startswith('resourcepacks/fallback_localizations/')
+                  and n.endswith('/lang/li_li.json')
+              )
               prefix = 'resourcepacks/background_orb_localizations/assets/neoorigins/lang/'
               bg_files = sorted(n for n in names if n.startswith(prefix) and n.endswith('.json'))
               bg_meta = 'resourcepacks/background_orb_localizations/pack.mcmeta' in names
@@ -165,8 +169,8 @@ jobs:
 
           expected_li = int(os.environ['EXPECTED_LI_FILES'])
           if len(li_files) != expected_li:
-              raise SystemExit(f'{os.environ["TARGET"]}: expected {expected_li} li_li files, got {len(li_files)}')
-          print(f'{os.environ["TARGET"]}: stable JAR OK; li_li={len(li_files)}; background_locales={len(bg_files)}; jar={jar.name}')
+              raise SystemExit(f'{os.environ["TARGET"]}: expected {expected_li} fallback li_li files, got {len(li_files)}')
+          print(f'{os.environ["TARGET"]}: stable JAR OK; fallback_li_li={len(li_files)}; background_locales={len(bg_files)}; jar={jar.name}')
           PY
 
       - name: Upload stable JAR

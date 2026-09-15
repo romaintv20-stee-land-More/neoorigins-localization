@@ -2,10 +2,10 @@
 """Guarded Kabyle refinement using a specialized 1.3B model with generic 1.3B fallback.
 
 Primary translations come from mimech011/nllb-200-kabyle-1.3B. Outputs that
-show structural corruption, pathological repetition, or substantial untranslated
-English residue are regenerated clause-by-clause with the generic NLLB 1.3B
-model. Placeholders and protected technical names are preserved. This remains
-automated translation assistance, not native-speaker review.
+show structural corruption, pathological repetition, substantial untranslated
+English residue, or dropped sentences are regenerated clause-by-clause with the
+generic NLLB 1.3B model. Placeholders and protected technical names are
+preserved. This remains automated translation assistance, not native review.
 """
 from __future__ import annotations
 
@@ -27,7 +27,6 @@ TOKENIZER_MODEL = "facebook/nllb-200-distilled-1.3B"
 GENERIC_MODEL = "facebook/nllb-200-distilled-1.3B"
 BATCH_SIZE = 4
 WORD_RE = re.compile(r"[A-Za-zÀ-ÖØ-öø-ÿĀ-žƀ-ɏ]+(?:['’][A-Za-zÀ-ÖØ-öø-ÿĀ-žƀ-ɏ]+)?")
-CLAUSE_SPLIT_RE = re.compile(r"(?<=[.!?])\s+|\s+([—–;])\s+")
 ENGLISH_CUES = {
     "the", "and", "you", "your", "with", "while", "other", "still", "into",
     "but", "from", "for", "through", "when", "cannot", "can", "walk", "own",
@@ -41,6 +40,10 @@ def words(text: str) -> list[str]:
 
 def compact_words(text: str) -> str:
     return " ".join(words(text))
+
+
+def sentence_count(text: str) -> int:
+    return len(re.findall(r"[.!?](?=\s|$)", text))
 
 
 def structural_ok(source: str, translated: str) -> bool:
@@ -70,7 +73,6 @@ def untranslated_residue(source: str, translated: str) -> bool:
     if compact_words(source) == compact_words(translated):
         return True
 
-    source_compact = compact_words(source)
     target_compact = compact_words(translated)
     source_segments = [
         part.strip(" —–;\t\n")
@@ -89,8 +91,17 @@ def untranslated_residue(source: str, translated: str) -> bool:
     return len(cues) >= 3 and overlap >= 0.35
 
 
+def dropped_sentences(source: str, translated: str) -> bool:
+    source_sentences = sentence_count(source)
+    return source_sentences >= 2 and sentence_count(translated) < source_sentences
+
+
 def semantic_suspect(source: str, translated: str) -> bool:
-    return pathological_repetition(source, translated) or untranslated_residue(source, translated)
+    return (
+        pathological_repetition(source, translated)
+        or untranslated_residue(source, translated)
+        or dropped_sentences(source, translated)
+    )
 
 
 class Translator:
@@ -161,7 +172,7 @@ class Translator:
 
 
 def split_clauses(source: str) -> list[tuple[str, bool]]:
-    """Return (text, translatable) pieces while preserving sentence/clause separators."""
+    """Return translatable clauses while preserving source separators exactly."""
     pieces: list[tuple[str, bool]] = []
     cursor = 0
     for match in re.finditer(r"(?<=[.!?])\s+|\s+[—–;]\s+", source):
@@ -196,6 +207,8 @@ def final_validate(source: str, translated: str) -> None:
         raise SystemExit(f"Kabyle repetition gate failed: {source!r} -> {translated!r}")
     if untranslated_residue(source, translated):
         raise SystemExit(f"Kabyle English-residue gate failed: {source!r} -> {translated!r}")
+    if dropped_sentences(source, translated):
+        raise SystemExit(f"Kabyle sentence-completeness gate failed: {source!r} -> {translated!r}")
 
 
 def translate_direct_sources(direct_sources: list[str]) -> dict[str, str]:

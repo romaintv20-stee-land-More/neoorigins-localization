@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Ibenkan i d-tesnulfuḍ ad d-remsen imyerren n uzegrir  taẓayt, lmeḥna neɣ arured n unadi.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Yettaɣ XP s snat n tikkal s usewwi n wučči deg umsiyef.",
+  "neoorigins.configuration.title": "Tawila n NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Urar",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "Iɣewwaren n wurar n NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Anedbal & Tisirag",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "Iɣewwaren n unedbal n NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Asenfal n tnezmart",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "Asefsex n tnezmart n NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Aɣbalu d tneɣrit",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "Taneɣruft n uɣbalu d tneɣrit n NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Askan n umsaɣ",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "Iɣewwaren n umsaɣ n NeoOrigins",
+  "neoorigins.configuration.show_cooldown_countdown": "Sken amḍan arurmid n usemmiḍ",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Tiḍullest n usiḍen n usemmiḍ (%)",
+  "neoorigins.configuration.hud_ability_display": "Askar n uskan HUD n tzemmar",
+  "neoorigins.configuration.always_show_ability_icons": "Sken yal tikelt tignitin n tezmert"
+}

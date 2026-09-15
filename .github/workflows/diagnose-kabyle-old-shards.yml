@@ -1,0 +1,96 @@
+name: Diagnose Kabyle old shard source drift
+
+on:
+  push:
+    branches: [release/1.0.0-kabyle]
+    paths: ['.github/workflows/diagnose-kabyle-old-shards.yml']
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: release/1.0.0-kabyle
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Restrict add-on audits to Kabyle
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          files=['scripts/audit_medievalorigins_upstream.py','scripts/audit_ibarnorigins_upstream.py','scripts/audit_origins_fantasy_upstream.py','scripts/audit_origins_backgrounds_upstream.py','scripts/audit_origins_more_backgrounds_upstream.py','scripts/audit_origins_backgrounds_iss_upstream.py','scripts/audit_origins_furries_upstream.py','scripts/audit_origins_classes_extended_upstream.py','scripts/audit_origins_classes_iss_upstream.py','scripts/audit_origin_architect_upstream.py']
+          for filename in files:
+              p=Path(filename); text=p.read_text(encoding='utf-8')
+              updated,n=re.subn(r'^LOCALES\s*=.*$', 'LOCALES = ("kab_kab",)', text, count=1, flags=re.M)
+              if n==0: updated,n=re.subn(r'^DEFAULT_LOCALES\s*=.*$', 'DEFAULT_LOCALES = ("kab_kab",)', text, count=1, flags=re.M)
+              if n!=1: raise SystemExit(f'Could not patch {filename}')
+              p.write_text(updated,encoding='utf-8')
+          PY
+      - name: Discover current source coverage
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref af467a3bc118f6bbc0970d68f7e03fa631d7e6f2 --output build/kab-discovery-mc-1.21.1 --locale kab_kab
+          python3 scripts/audit_neoorigins_upstream.py --ref aa207ef14cf3b938e28b4081162701953957c1d5 --output build/kab-discovery-mc-26.1 --locale kab_kab
+          python3 scripts/audit_neoorigins_upstream.py --ref 511cadcafe3027d2a56b4448652ec9b74e2f3b07 --output build/kab-discovery-mc-26.2 --locale kab_kab
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format
+          python3 scripts/audit_origins_fantasy_upstream.py
+          python3 scripts/audit_origins_backgrounds_upstream.py
+          python3 scripts/audit_origins_more_backgrounds_upstream.py
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py
+          python3 scripts/audit_origins_furries_upstream.py
+          python3 scripts/audit_origins_classes_extended_upstream.py
+          python3 scripts/audit_origins_classes_iss_upstream.py
+          python3 scripts/audit_origin_architect_upstream.py
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: kabyle-13b-shard-*-0adbafc165870ebfd4ce743e4c20ae968c2e2a1c
+          path: build/old-kabyle-shards
+          merge-multiple: true
+          run-id: 34910016127
+          github-token: ${{ github.token }}
+      - name: Classify current sources absent from old shards
+        run: |
+          python3 - <<'PY'
+          import json
+          from collections import defaultdict
+          from pathlib import Path
+          import sys
+          sys.path.insert(0,'scripts')
+          import refine_kabyle as r
+
+          old={}
+          for p in sorted(Path('build/old-kabyle-shards').glob('*.json')):
+              old.update(json.loads(p.read_text(encoding='utf-8')))
+          common,d121,d261,d262,addons,payloads,exact,translated,direct=r.build_pool()
+          missing=set(direct)-set(old)
+          extra=set(old)-set(direct)
+          print(f'CURRENT_DIRECT={len(direct)} OLD_UNION={len(old)} MISSING={len(missing)} EXTRA={len(extra)}')
+          groups=[('neo_common',common),('neo_121',d121),('neo_261',d261),('neo_262',d262),*addons.items()]
+          owners=defaultdict(set)
+          examples=defaultdict(list)
+          for name,payload in groups:
+              for key,value in payload.items():
+                  value=str(value)
+                  if value in missing:
+                      owners[value].add(name)
+                      if len(examples[name])<8:
+                          examples[name].append((key,value))
+          counts=defaultdict(int)
+          for source,names in owners.items():
+              for name in names: counts[name]+=1
+          print('MISSING_BY_GROUP')
+          for name,count in sorted(counts.items(), key=lambda x:(-x[1],x[0])):
+              print(f'  {name}: {count}')
+              for key,value in examples[name]: print(f'    {key}: {value!r}')
+          print('FIRST_30_MISSING')
+          for source in sorted(missing)[:30]: print(repr(source))
+          print('FIRST_10_EXTRA')
+          for source in sorted(extra)[:10]: print(repr(source))
+          PY

@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-"""Strict semantic QA + targeted batched 1.3B repair for Limburgish (`li_li`).
-
-Keeps existing translations when they pass semantic/structural checks and only
-retranslates suspicious values. English remains the direct source; no language pivot
-or isolated-word projection is used. Candidate generation is batched for CPU CI.
-"""
+"""Strict semantic QA + targeted batched 1.3B repair for Limburgish (`li_li`)."""
 from __future__ import annotations
 
 from collections import Counter
@@ -15,7 +10,6 @@ import unicodedata
 
 import torch
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
-
 import bootstrap_limburgish as base
 
 ROOT = base.ROOT
@@ -68,14 +62,18 @@ def sanitize(source: str, value: str) -> str:
 
 
 def excessive_repetition(source: str, target: str) -> bool:
-    sw, tw = words(source), words(target)
+    """Detect generation collapse without comparing vocabulary across languages."""
+    tw = words(target)
     if len(tw) < 4:
         return False
-    sc, tc = Counter(sw), Counter(tw)
+    tc = Counter(tw)
+    # A translated function word may naturally occur more often than its English
+    # counterpart, so only flag truly dominant single-token collapse.
     for word, count in tc.items():
-        if count >= 3 and count >= sc.get(word, 0) + 2:
+        if len(word) >= 2 and count >= 5 and count / len(tw) >= 0.32:
             return True
-    for size in (2, 3):
+    # Exact immediately duplicated phrases are strong model-collapse evidence.
+    for size in (2, 3, 4):
         if len(tw) >= size * 2:
             for i in range(len(tw) - size * 2 + 1):
                 if tw[i:i+size] == tw[i+size:i+size*2]:
@@ -98,8 +96,13 @@ def semantic_reasons(source: str, target: str) -> list[str]:
         reasons.append("model-marker")
     if SUSPICIOUS_RE.search(target):
         reasons.append("artifact")
-    if source not in ALLOWED_UNCHANGED and len(sw) >= 2 and source.casefold() == target.casefold():
+
+    # Ignore strings made only from placeholders/formatting. They are not English prose.
+    translatable_source = PROTECT_RE.sub("", source)
+    if (source not in ALLOWED_UNCHANGED and len(words(translatable_source)) >= 2
+            and source.casefold() == target.casefold()):
         reasons.append("unchanged-english")
+
     if len(sw) >= 5 and len(tw) >= 4:
         leak = [w for w in tw if w in ENGLISH_LEAK]
         source_leak = {w for w in sw if w in ENGLISH_LEAK}
@@ -173,8 +176,7 @@ class Translator:
             with torch.inference_mode():
                 gen = self.model.generate(**enc, forced_bos_token_id=self.target_id, num_beams=3, max_new_tokens=512, early_stopping=True)
             out.extend(x.strip() for x in self.tok.batch_decode(gen, skip_special_tokens=True))
-            done = min(start + len(part), len(texts))
-            print(f"1.3B candidate batch: {done}/{len(texts)}", flush=True)
+            print(f"1.3B candidate batch: {min(start + len(part), len(texts))}/{len(texts)}", flush=True)
         return out
 
     @staticmethod
@@ -249,18 +251,15 @@ def main():
             if not reasons:
                 chosen[source] = value
 
-    # Pass 1: direct translation for every suspect, batched.
     outputs = mt.batch(unique_sources)
     consider(unique_sources, unique_sources, outputs, "direct")
     print(f"Direct pass accepted {len(chosen)}/{len(unique_sources)}", flush=True)
 
-    # Pass 2: punctuation can improve short/title translations.
     pending = [s for s in unique_sources if s not in chosen and not s.endswith((".", "!", "?"))]
     prompts = [s + "." for s in pending]
     consider(pending, prompts, mt.batch(prompts), "punct")
     print(f"Punctuation pass accepted {len(chosen)}/{len(unique_sources)}", flush=True)
 
-    # Pass 3: title context, only for unresolved short labels.
     pending_short = [s for s in unique_sources if s not in chosen and 2 <= len(words(s)) <= 6]
     for prefix in ("Ability name: ", "Effect name: ", "Class name: "):
         current = [s for s in pending_short if s not in chosen]
@@ -270,7 +269,6 @@ def main():
         consider(current, prompts, mt.batch(prompts), "context")
         print(f"{prefix.strip()} pass accepted {len(chosen)}/{len(unique_sources)}", flush=True)
 
-    # Pass 4: structural fallback only for the small unresolved tail.
     for source in [s for s in unique_sources if s not in chosen]:
         value = sanitize(source, mt.structural(source))
         reasons = semantic_reasons(source, value)

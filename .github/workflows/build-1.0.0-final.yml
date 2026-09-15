@@ -101,15 +101,17 @@ jobs:
       - name: Apply final packaging patch
         run: python3 scripts/patch_release_1_0_0_build.py
 
-      - name: Validate localization JSON
-        run: python3 scripts/validate.py
-
       - name: Audit latest Backgrounds add-ons
         if: matrix.expect_background_pack == 'true'
         run: |
           python3 scripts/audit_background_orb_upstream.py
-          python3 scripts/audit_origins_backgrounds_upstream.py --file-id 8875601 --filename Origins-Backgrounds-1.21.1-NeoOrigins-1.0.3.jar --fail-on-overlap --fail-on-missing --fail-on-placeholders
-          python3 scripts/audit_origins_more_backgrounds_upstream.py --file-id 8875590 --filename Origins-More-Backgrounds-1.21.1-NeoOrigins-1.0.4.jar --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_upstream.py --file-id 8875601 --filename Origins-Backgrounds-1.21.1-NeoOrigins-1.0.3.jar --fail-on-overlap --fail-on-missing --fail-on-placeholders --annotate-missing
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --file-id 8875590 --filename Origins-More-Backgrounds-1.21.1-NeoOrigins-1.0.4.jar --fail-on-overlap --fail-on-missing --fail-on-placeholders --annotate-missing
+
+      - name: Validate localization JSON
+        run: |
+          python3 scripts/validate.py > validation.log 2>&1 || { tail -n 120 validation.log; exit 1; }
+          tail -n 20 validation.log
 
       - name: Build stable target
         run: |

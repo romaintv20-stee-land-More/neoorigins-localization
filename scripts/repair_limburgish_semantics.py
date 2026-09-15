@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Strict semantic QA + targeted 1.3B repair for Limburgish (`li_li`).
+"""Strict semantic QA + targeted batched 1.3B repair for Limburgish (`li_li`).
 
-Keeps existing branch translations when they pass semantic/structural checks and only
+Keeps existing translations when they pass semantic/structural checks and only
 retranslates suspicious values. English remains the direct source; no language pivot
-or isolated-word projection is used.
+or isolated-word projection is used. Candidate generation is batched for CPU CI.
 """
 from __future__ import annotations
 
@@ -23,6 +23,7 @@ ASSETS = base.ASSETS
 MODEL_ID = "facebook/nllb-200-distilled-1.3B"
 SOURCE_LANG = "eng_Latn"
 TARGET_LANG = "lim_Latn"
+BATCH_SIZE = 8
 
 PROTECT_RE = re.compile(
     r"%(?:\d+\$)?[sdif]|§.|\\n|\n|\{[^{}]+\}|<[^<>]+>|"
@@ -87,10 +88,8 @@ def semantic_reasons(source: str, target: str) -> list[str]:
     source = str(source).strip()
     target = str(target).strip()
     sw, tw = words(source), words(target)
-
     if not target:
-        reasons.append("empty")
-        return reasons
+        return ["empty"]
     if base.placeholder_signature(source) != base.placeholder_signature(target):
         reasons.append("placeholder")
     if protected_signature(source) != protected_signature(target):
@@ -99,24 +98,17 @@ def semantic_reasons(source: str, target: str) -> list[str]:
         reasons.append("model-marker")
     if SUSPICIOUS_RE.search(target):
         reasons.append("artifact")
-
     if source not in ALLOWED_UNCHANGED and len(sw) >= 2 and source.casefold() == target.casefold():
         reasons.append("unchanged-english")
-
-    # Catch English prose leaking through while avoiding short names/technical labels.
     if len(sw) >= 5 and len(tw) >= 4:
         leak = [w for w in tw if w in ENGLISH_LEAK]
         source_leak = {w for w in sw if w in ENGLISH_LEAK}
         if len(leak) >= 2 and len(set(leak) & source_leak) >= 2:
             reasons.append("english-grammar-leak")
-
     if excessive_repetition(source, target):
         reasons.append("repetition")
-
-    # Limburgish and English are both compact Germanic languages: only flag severe loss.
     if len(sw) >= 9 and (len(tw) < max(3, int(len(sw) * 0.38)) or len(target) < len(source) * 0.30):
         reasons.append("severe-truncation")
-
     return reasons
 
 
@@ -128,18 +120,12 @@ def build_sources():
     d121 = {k: v for k, v in n121.items() if k not in common}
     d261 = {k: v for k, v in n261.items() if k not in common}
     d262 = {k: v for k, v in n262.items() if k not in common}
-
     folders = {
-        "medievalorigins": "medievalorigins-upstream-audit",
-        "ibarnorigins": "ibarnorigins-upstream-audit",
-        "origins_fantasy": "origins-fantasy-upstream-audit",
-        "origins_backgrounds": "origins-backgrounds-upstream-audit",
-        "origins_backgrounds_two": "origins-more-backgrounds-upstream-audit",
-        "origins_backgrounds_iss": "origins-backgrounds-iss-upstream-audit",
-        "origins_furries": "origins-furries-upstream-audit",
-        "origins_classes_ex": "origins-classes-extended-upstream-audit",
-        "origins_classes_iss": "origins-classes-iss-upstream-audit",
-        "originsmodernui": "origin-architect-upstream-audit",
+        "medievalorigins": "medievalorigins-upstream-audit", "ibarnorigins": "ibarnorigins-upstream-audit",
+        "origins_fantasy": "origins-fantasy-upstream-audit", "origins_backgrounds": "origins-backgrounds-upstream-audit",
+        "origins_backgrounds_two": "origins-more-backgrounds-upstream-audit", "origins_backgrounds_iss": "origins-backgrounds-iss-upstream-audit",
+        "origins_furries": "origins-furries-upstream-audit", "origins_classes_ex": "origins-classes-extended-upstream-audit",
+        "origins_classes_iss": "origins-classes-iss-upstream-audit", "originsmodernui": "origin-architect-upstream-audit",
     }
     addons = {ns: read_json(ROOT / f"build/{folder}/upstream_en_us.json") for ns, folder in folders.items()}
     shared = set(addons["origins_backgrounds"])
@@ -155,7 +141,6 @@ def current_targets(common, d121, d261, d262, addons):
         raise SystemExit(f"Expected 16 Limburgish common shards, found {len(common_paths)}")
     for path in common_paths:
         merged_common.update(read_json(path))
-
     locations = [
         ("common", common, merged_common, common_paths),
         ("1.21.1", d121, read_json(ASSETS / "neoorigins_li_121/lang/li_li.json"), [ASSETS / "neoorigins_li_121/lang/li_li.json"]),
@@ -181,16 +166,16 @@ class Translator:
     def batch(self, texts: list[str]) -> list[str]:
         if not texts:
             return []
-        enc = self.tok(texts, return_tensors="pt", padding=True, truncation=True, max_length=512)
-        with torch.inference_mode():
-            gen = self.model.generate(
-                **enc,
-                forced_bos_token_id=self.target_id,
-                num_beams=3,
-                max_new_tokens=512,
-                early_stopping=True,
-            )
-        return [x.strip() for x in self.tok.batch_decode(gen, skip_special_tokens=True)]
+        out = []
+        for start in range(0, len(texts), BATCH_SIZE):
+            part = texts[start:start+BATCH_SIZE]
+            enc = self.tok(part, return_tensors="pt", padding=True, truncation=True, max_length=512)
+            with torch.inference_mode():
+                gen = self.model.generate(**enc, forced_bos_token_id=self.target_id, num_beams=3, max_new_tokens=512, early_stopping=True)
+            out.extend(x.strip() for x in self.tok.batch_decode(gen, skip_special_tokens=True))
+            done = min(start + len(part), len(texts))
+            print(f"1.3B candidate batch: {done}/{len(texts)}", flush=True)
+        return out
 
     @staticmethod
     def affixes(piece: str):
@@ -208,52 +193,23 @@ class Translator:
         for i, piece in enumerate(pieces):
             pre, core, suf = self.affixes(piece)
             if core:
-                indexes.append(i)
-                cores.append(core)
-                aff[i] = (pre, suf)
+                indexes.append(i); cores.append(core); aff[i] = (pre, suf)
         vals = self.batch(cores)
         for i, core, val in zip(indexes, cores, vals):
-            pre, suf = aff[i]
-            out[i] = pre + sanitize(core, val) + suf
+            pre, suf = aff[i]; out[i] = pre + sanitize(core, val) + suf
         result = []
         for i, piece in enumerate(out):
             result.append(piece)
-            if i < len(tokens):
-                result.append(tokens[i])
+            if i < len(tokens): result.append(tokens[i])
         return "".join(result)
-
-    def candidates(self, source: str) -> list[str]:
-        prompts = [source]
-        if not source.endswith(('.', '!', '?')):
-            prompts.append(source + ".")
-        if 2 <= len(words(source)) <= 6:
-            prompts.extend([
-                f"Ability name: {source}",
-                f"Effect name: {source}",
-                f"Class name: {source}",
-            ])
-        raw = self.batch(prompts)
-        candidates = []
-        for prompt, value in zip(prompts, raw):
-            value = sanitize(source, value)
-            if prompt != source and prompt.endswith(".") and not source.endswith(".") and value.endswith("."):
-                value = value[:-1].rstrip()
-            if ":" in prompt and ":" in value:
-                value = value.split(":", 1)[1].strip()
-            candidates.append(value)
-        candidates.append(sanitize(source, self.structural(source)))
-        # Preserve order while removing duplicates.
-        return list(dict.fromkeys(candidates))
 
 
 def main():
     files = sorted(ASSETS.glob("**/lang/li_li.json"))
     if len(files) != 29:
         raise SystemExit(f"Expected 29 Limburgish files, found {len(files)}")
-
     common, d121, d261, d262, addons = build_sources()
     locations = current_targets(common, d121, d261, d262, addons)
-
     suspects = []
     total = 0
     for label, source_payload, target_payload, _paths in locations:
@@ -267,51 +223,77 @@ def main():
             reasons = semantic_reasons(str(source), target)
             if reasons:
                 suspects.append((label, key, str(source), target, reasons))
-
     print(f"Limburgish semantic scan: {total} values; {len(suspects)} suspects", flush=True)
     for label, key, source, target, reasons in suspects[:30]:
         print(f"SUSPECT [{label}] {key}: {reasons} :: {source!r} -> {target!r}", flush=True)
-
     if not suspects:
         print("Limburgish semantic repair: nothing to change", flush=True)
         return
 
-    mt = Translator()
-    unresolved = []
-    repairs: dict[tuple[str, str], str] = {}
     unique_sources = list(dict.fromkeys(source for _, _, source, _, _ in suspects))
-    cache = {}
-    for index, source in enumerate(unique_sources, 1):
-        chosen = None
-        candidate_notes = []
-        for candidate in mt.candidates(source):
-            reasons = semantic_reasons(source, candidate)
-            candidate_notes.append((candidate, reasons))
-            if not reasons:
-                chosen = candidate
-                break
-        if chosen is None:
-            unresolved.append((source, candidate_notes))
-        else:
-            cache[source] = chosen
-        if index % 25 == 0 or index == len(unique_sources):
-            print(f"Limburgish semantic repair progress: {index}/{len(unique_sources)}", flush=True)
+    mt = Translator()
+    chosen: dict[str, str] = {}
+    notes: dict[str, list[tuple[str, list[str]]]] = {s: [] for s in unique_sources}
 
+    def consider(sources: list[str], prompts: list[str], outputs: list[str], kind: str):
+        for source, prompt, raw in zip(sources, prompts, outputs):
+            if source in chosen:
+                continue
+            value = sanitize(source, raw)
+            if kind == "punct" and not source.endswith((".", "!", "?")) and value.endswith("."):
+                value = value[:-1].rstrip()
+            if kind == "context" and ":" in prompt and ":" in value:
+                value = value.split(":", 1)[1].strip()
+            reasons = semantic_reasons(source, value)
+            notes[source].append((value, reasons))
+            if not reasons:
+                chosen[source] = value
+
+    # Pass 1: direct translation for every suspect, batched.
+    outputs = mt.batch(unique_sources)
+    consider(unique_sources, unique_sources, outputs, "direct")
+    print(f"Direct pass accepted {len(chosen)}/{len(unique_sources)}", flush=True)
+
+    # Pass 2: punctuation can improve short/title translations.
+    pending = [s for s in unique_sources if s not in chosen and not s.endswith((".", "!", "?"))]
+    prompts = [s + "." for s in pending]
+    consider(pending, prompts, mt.batch(prompts), "punct")
+    print(f"Punctuation pass accepted {len(chosen)}/{len(unique_sources)}", flush=True)
+
+    # Pass 3: title context, only for unresolved short labels.
+    pending_short = [s for s in unique_sources if s not in chosen and 2 <= len(words(s)) <= 6]
+    for prefix in ("Ability name: ", "Effect name: ", "Class name: "):
+        current = [s for s in pending_short if s not in chosen]
+        if not current:
+            break
+        prompts = [prefix + s for s in current]
+        consider(current, prompts, mt.batch(prompts), "context")
+        print(f"{prefix.strip()} pass accepted {len(chosen)}/{len(unique_sources)}", flush=True)
+
+    # Pass 4: structural fallback only for the small unresolved tail.
+    for source in [s for s in unique_sources if s not in chosen]:
+        value = sanitize(source, mt.structural(source))
+        reasons = semantic_reasons(source, value)
+        notes[source].append((value, reasons))
+        if not reasons:
+            chosen[source] = value
+
+    unresolved = [s for s in unique_sources if s not in chosen]
     if unresolved:
         print(f"UNRESOLVED LIMBURGISH: {len(unresolved)}", flush=True)
-        for source, notes in unresolved:
-            rendered = " | ".join(f"{candidate!r} => {reasons}" for candidate, reasons in notes)
+        for source in unresolved:
+            rendered = " | ".join(f"{candidate!r} => {reasons}" for candidate, reasons in notes[source])
             print(f"UNRESOLVED LIMBURGISH {source!r}: {rendered}", flush=True)
         raise SystemExit(f"Limburgish semantic QA still has {len(unresolved)} unresolved source strings")
 
+    repairs: dict[tuple[str, str], str] = {}
     changed = 0
     for label, key, source, old_target, _reasons in suspects:
-        new_target = cache[source]
+        new_target = chosen[source]
         if new_target != old_target:
             repairs[(label, key)] = new_target
             changed += 1
 
-    # Write repaired values back to their original fallback files.
     common_target = {}
     common_paths = sorted(ASSETS.glob("neoorigins_li_common_*/lang/li_li.json"))
     for path in common_paths:
@@ -320,24 +302,18 @@ def main():
         if label == "common":
             common_target[key] = value
         elif label == "1.21.1":
-            path = ASSETS / "neoorigins_li_121/lang/li_li.json"
-            data = read_json(path); data[key] = value; write_json(path, data)
+            path = ASSETS / "neoorigins_li_121/lang/li_li.json"; data = read_json(path); data[key] = value; write_json(path, data)
         elif label == "26.1":
-            path = ASSETS / "neoorigins_26_1/lang/li_li.json"
-            data = read_json(path); data[key] = value; write_json(path, data)
+            path = ASSETS / "neoorigins_26_1/lang/li_li.json"; data = read_json(path); data[key] = value; write_json(path, data)
         elif label == "26.2":
-            path = ASSETS / "neoorigins_26_2/lang/li_li.json"
-            data = read_json(path); data[key] = value; write_json(path, data)
+            path = ASSETS / "neoorigins_26_2/lang/li_li.json"; data = read_json(path); data[key] = value; write_json(path, data)
         else:
-            path = ASSETS / label / "lang/li_li.json"
-            data = read_json(path); data[key] = value; write_json(path, data)
-
+            path = ASSETS / label / "lang/li_li.json"; data = read_json(path); data[key] = value; write_json(path, data)
     if any(label == "common" for label, _key in repairs):
         items = list(common_target.items())
         for i, path in enumerate(common_paths):
             write_json(path, dict(items[i*150:(i+1)*150]))
 
-    # Re-scan after writes; no suspect may survive.
     common, d121, d261, d262, addons = build_sources()
     remaining = []
     for label, source_payload, target_payload, _paths in current_targets(common, d121, d261, d262, addons):
@@ -350,7 +326,6 @@ def main():
         for item in remaining[:20]:
             print(f"POST-REPAIR SUSPECT: {item}", flush=True)
         raise SystemExit(f"Post-repair Limburgish semantic QA failed for {len(remaining)} values")
-
     print(f"Limburgish semantic repair passed: {total} values; {len(suspects)} suspects; {changed} changed", flush=True)
 
 

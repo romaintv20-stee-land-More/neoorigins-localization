@@ -271,16 +271,25 @@ class KolschTranslator:
 def build_existing_candidates(
     before: dict[Path, dict[str, str]], payloads: list[dict[str, str]]
 ) -> dict[str, Counter[str]]:
-    """Align current branch translations by key and collect reusable clean values."""
+    """Reuse only unambiguous key-aligned clean branch translations."""
     existing_by_key: dict[str, list[str]] = defaultdict(list)
     for data in before.values():
         for key, value in data.items():
             existing_by_key[key].append(str(value))
 
+    # The same localization key can occur in different namespaces. Reuse is safe
+    # only when every source payload that uses that key agrees on the English text.
+    sources_by_key: dict[str, set[str]] = defaultdict(set)
+    for source_payload in payloads:
+        for key, source_value in source_payload.items():
+            sources_by_key[key].add(str(source_value))
+
     candidates: dict[str, Counter[str]] = defaultdict(Counter)
     for source_payload in payloads:
         for key, source_value in source_payload.items():
             source = str(source_value)
+            if len(sources_by_key[key]) != 1:
+                continue
             for value in existing_by_key.get(key, []):
                 if valid_output(source, value) and semantic_issue(source, value) is None:
                     candidates[source][value] += 1

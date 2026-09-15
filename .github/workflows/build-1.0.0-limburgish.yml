@@ -24,9 +24,10 @@ jobs:
             source_variant: mc1_21_1
             include_addon_translations: 'true'
             include_121_batch_translations: 'true'
+            include_limburgish_121_translations: 'true'
             include_26_1_translations: 'false'
             include_26_2_translations: 'false'
-            expected_delta: neoorigins_121_batch1
+            expected_delta: neoorigins_li_121
             expected_files: '27'
             mod_version: 1.0.0-beta+1.21.1
           - target: mc-26.1.x
@@ -41,6 +42,7 @@ jobs:
             source_variant: mc26_1
             include_addon_translations: 'false'
             include_121_batch_translations: 'false'
+            include_limburgish_121_translations: 'false'
             include_26_1_translations: 'true'
             include_26_2_translations: 'false'
             expected_delta: neoorigins_26_1
@@ -58,6 +60,7 @@ jobs:
             source_variant: mc26_1
             include_addon_translations: 'false'
             include_121_batch_translations: 'false'
+            include_limburgish_121_translations: 'false'
             include_26_1_translations: 'false'
             include_26_2_translations: 'true'
             expected_delta: neoorigins_26_2
@@ -66,7 +69,6 @@ jobs:
 
     name: Build ${{ matrix.target }}
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -85,6 +87,9 @@ jobs:
           gradle-version: ${{ matrix.gradle }}
           cache-disabled: true
 
+      - name: Install dedicated Limburgish packaging selector
+        run: python3 scripts/patch_limburgish_build.py
+
       - name: Validate localization JSON
         run: python3 scripts/validate.py
 
@@ -98,6 +103,7 @@ jobs:
             "-Pinclude_addon_translations=${{ matrix.include_addon_translations }}" \
             "-Pinclude_121_batch_translations=${{ matrix.include_121_batch_translations }}" \
             "-Pinclude_turkish_split_translations=true" \
+            "-Pinclude_limburgish_121_translations=${{ matrix.include_limburgish_121_translations }}" \
             "-Pinclude_26_1_translations=${{ matrix.include_26_1_translations }}" \
             "-Pinclude_26_2_translations=${{ matrix.include_26_2_translations }}" \
             "-Pminecraft_version=${{ matrix.minecraft }}" \
@@ -123,49 +129,38 @@ jobs:
               raise SystemExit(f'Expected exactly one runtime JAR, found {[p.name for p in jars]}')
           jar = jars[0]
           with ZipFile(jar) as zf:
-              names = zf.namelist()
-              locale_files = sorted(n for n in names if n.endswith('/lang/li_li.json'))
+              locale_files = sorted(n for n in zf.namelist() if n.endswith('/lang/li_li.json'))
 
           target = os.environ['TARGET']
           expected_delta = os.environ['EXPECTED_DELTA']
           expected_files = int(os.environ['EXPECTED_FILES'])
           include_addons = os.environ['INCLUDE_ADDONS'] == 'true'
+          def present(fragment): return any(fragment in n for n in locale_files)
 
-          def present(fragment):
-              return any(fragment in name for name in locale_files)
-
-          missing_common = [
-              f'neoorigins_li_common_{index:02d}/lang/li_li.json'
-              for index in range(1, 17)
-              if not present(f'neoorigins_li_common_{index:02d}/lang/li_li.json')
-          ]
+          missing_common = [f'neoorigins_li_common_{i:02d}/lang/li_li.json' for i in range(1, 17)
+                            if not present(f'neoorigins_li_common_{i:02d}/lang/li_li.json')]
           if missing_common:
               raise SystemExit(f'Missing Limburgish common entries: {missing_common}')
           if not present(f'{expected_delta}/lang/li_li.json'):
               raise SystemExit(f'Missing expected Limburgish delta: {expected_delta}')
 
-          addon_namespaces = [
-              'medievalorigins', 'ibarnorigins', 'origins_fantasy',
-              'origins_backgrounds', 'origins_backgrounds_two',
-              'origins_backgrounds_iss', 'origins_furries',
-              'origins_classes_ex', 'origins_classes_iss', 'originsmodernui',
-          ]
-          addon_entries = [f'{ns}/lang/li_li.json' for ns in addon_namespaces]
+          addons = ['medievalorigins','ibarnorigins','origins_fantasy','origins_backgrounds',
+                    'origins_backgrounds_two','origins_backgrounds_iss','origins_furries',
+                    'origins_classes_ex','origins_classes_iss','originsmodernui']
+          addon_entries = [f'{ns}/lang/li_li.json' for ns in addons]
           if include_addons:
-              missing_addons = [entry for entry in addon_entries if not present(entry)]
-              if missing_addons:
-                  raise SystemExit(f'Missing Limburgish add-on entries: {missing_addons}')
+              missing = [e for e in addon_entries if not present(e)]
+              if missing: raise SystemExit(f'Missing Limburgish add-ons: {missing}')
               if present('neoorigins_26_1/lang/li_li.json') or present('neoorigins_26_2/lang/li_li.json'):
                   raise SystemExit('1.21.1 JAR contains a 26.x Limburgish delta')
           else:
-              wrongly_included = [entry for entry in addon_entries if present(entry)]
-              if wrongly_included:
-                  raise SystemExit(f'26.x JAR contains Limburgish add-ons: {wrongly_included}')
-              if present('neoorigins_121_batch1/lang/li_li.json'):
+              wrong = [e for e in addon_entries if present(e)]
+              if wrong: raise SystemExit(f'26.x JAR contains Limburgish add-ons: {wrong}')
+              if present('neoorigins_li_121/lang/li_li.json'):
                   raise SystemExit('26.x JAR contains the Limburgish 1.21.1 delta')
-              other_delta = 'neoorigins_26_2' if expected_delta == 'neoorigins_26_1' else 'neoorigins_26_1'
-              if present(f'{other_delta}/lang/li_li.json'):
-                  raise SystemExit(f'{target} JAR contains wrong Limburgish delta {other_delta}')
+              other = 'neoorigins_26_2' if expected_delta == 'neoorigins_26_1' else 'neoorigins_26_1'
+              if present(f'{other}/lang/li_li.json'):
+                  raise SystemExit(f'{target} JAR contains wrong Limburgish delta {other}')
 
           if len(locale_files) != expected_files:
               raise SystemExit(f'{target}: expected {expected_files} li_li files, got {len(locale_files)}: {locale_files}')
@@ -195,49 +190,50 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Finalize Limburgish metadata
-        run: python scripts/finalize_limburgish_metadata.py
+      - name: Install validated Limburgish packaging selector
+        run: python3 scripts/patch_limburgish_build.py
 
-      - name: Validate metadata and JSON
+      - name: Finalize Limburgish metadata
+        run: python3 scripts/finalize_limburgish_metadata.py
+
+      - name: Validate metadata, packaging and JSON
         run: |
-          python scripts/validate.py
-          python - <<'PY'
+          python3 scripts/validate.py
+          git diff --check
+          python3 - <<'PY'
           import json
           from pathlib import Path
-
           catalog = json.loads(Path('catalog.json').read_text(encoding='utf-8'))
           assert catalog['project']['supported_locale_count'] == 91
-
           def count_locale(node):
               if isinstance(node, dict):
                   here = 1 if 'li_li' in node and isinstance(node['li_li'], dict) and node['li_li'].get('status') == 'supported' else 0
                   return here + sum(count_locale(v) for v in node.values())
-              if isinstance(node, list):
-                  return sum(count_locale(v) for v in node)
+              if isinstance(node, list): return sum(count_locale(v) for v in node)
               return 0
-
           assert count_locale(catalog) == 11
           neo = next(p for p in catalog['supported_projects'] if p['id'] == 'neoorigins')
           ns = neo['compatibility']['fallback_namespaces']
           assert ns['limburgish_common_glob'] == 'neoorigins_li_common_*'
-          assert ns['limburgish_mc_1_21_1'] == 'neoorigins_121_batch1'
-          readme = Path('README.md').read_text(encoding='utf-8')
-          catalogue = Path('CATALOG.md').read_text(encoding='utf-8')
-          assert 'Limbourgeois (`li_li`)' in readme
-          assert 'Limburgs (`li_li`)' in catalogue
-          print('Limburgish metadata audit: locale 91; li_li across 11 projects; namespaces OK')
+          assert ns['limburgish_mc_1_21_1'] == 'neoorigins_li_121'
+          gradle = Path('build.gradle').read_text(encoding='utf-8')
+          assert "include_limburgish_121_translations" in gradle
+          assert "neoorigins_li_121/**" in gradle
+          assert 'Limbourgeois (`li_li`)' in Path('README.md').read_text(encoding='utf-8')
+          assert 'Limburgs (`li_li`)' in Path('CATALOG.md').read_text(encoding='utf-8')
+          print('Limburgish metadata audit: locale 91; li_li across 11 projects; dedicated namespace OK')
           PY
 
-      - name: Commit validated metadata
+      - name: Commit validated packaging and metadata
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add README.md CATALOG.md catalog.json
+          git add build.gradle README.md CATALOG.md catalog.json
           if git diff --cached --quiet; then
-            echo 'No Limburgish metadata changes to commit.'
+            echo 'No Limburgish packaging/metadata changes to commit.'
             exit 0
           fi
-          git commit -m 'Finalize Limburgish locale 91 metadata'
+          git commit -m 'Finalize Limburgish locale 91 packaging and metadata'
           git fetch origin release/1.0.0-limburgish
           git rebase origin/release/1.0.0-limburgish
           git push origin HEAD:release/1.0.0-limburgish

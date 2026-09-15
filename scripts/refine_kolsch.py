@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 """Refine Kölsch (`ksh`) fallbacks with direct English -> Kölsch MT.
 
-Exact whole-string Minecraft corpus matches win first. Remaining whole strings use
-Helsinki's 2024 TC+Bible West-Germanic model with the explicit `>>ksh<<` target.
-No Standard German pivot and no isolated-word projection are used.
-This pass also rejects obvious semantic failures such as unchanged multi-word English,
+Exact whole-string Minecraft corpus matches win first. Existing clean Kölsch outputs
+are reused so reruns only spend inference on unresolved strings. Remaining whole
+strings use Helsinki's 2024 TC+Bible West-Germanic model with the explicit `>>ksh<<`
+target. No Standard German pivot and no isolated-word projection are used.
+This pass rejects obvious semantic failures such as unchanged multi-word English,
 English grammar leakage, repetition collapse, and severe truncation.
 """
 from __future__ import annotations
 
-from collections import Counter
+from collections import Counter, defaultdict
 from pathlib import Path
 import json
 import re
@@ -210,13 +211,40 @@ class KolschTranslator:
                 result.append(tokens[piece_index])
         return "".join(result)
 
+    def contextual_title_candidates(self, source: str) -> list[str]:
+        """Translate stubborn title-like labels in sentence context, still en->ksh directly."""
+        wrappers = [
+            f"Power name: {source}",
+            f"Ability name: {source}",
+            f"Effect name: {source}",
+            f"Class name: {source}",
+            f"Game title: {source}",
+        ]
+        outputs = self.translate_batch(wrappers)
+        candidates: list[str] = []
+        for output in outputs:
+            output = output.strip()
+            if ":" not in output:
+                continue
+            candidate = output.rsplit(":", 1)[1].strip()
+            candidate = candidate.strip('"“”')
+            if candidate.endswith(".") and not source.rstrip().endswith("."):
+                candidate = candidate[:-1].rstrip()
+            if candidate:
+                candidates.append(candidate)
+
+        # Capitalization can make short labels look like proper names to Marian.
+        # A lowercase retry often translates the phrase instead of copying it.
+        lowered = source.casefold()
+        if lowered != source:
+            candidates.extend(self.translate_batch([lowered, lowered + "."]))
+        return [sanitize_output(source, candidate).rstrip(".") for candidate in candidates]
+
     def semantic_retry(self, source: str, first: str) -> tuple[str, str | None]:
         candidates = [first]
         candidates.append(sanitize_output(source, self.structural_translate(source)))
         candidates.append(sanitize_output(source, self.clause_translate(source)))
 
-        # Short title-like strings sometimes stay English. A terminal period gives
-        # the direct MT model sentence context without introducing a pivot language.
         stripped = source.rstrip()
         if stripped and stripped[-1:] not in ".!?" and len(semantic_words(source)) >= 2:
             punctuated = self.translate_batch([source + "."])[0]
@@ -224,6 +252,7 @@ class KolschTranslator:
             if punctuated.endswith("."):
                 punctuated = punctuated[:-1].rstrip()
             candidates.append(punctuated)
+            candidates.extend(self.contextual_title_candidates(source))
 
         seen: set[str] = set()
         last_issue: str | None = None
@@ -239,6 +268,25 @@ class KolschTranslator:
         return first, last_issue or semantic_issue(source, first) or "no valid semantic retry"
 
 
+def build_existing_candidates(
+    before: dict[Path, dict[str, str]], payloads: list[dict[str, str]]
+) -> dict[str, Counter[str]]:
+    """Align current branch translations by key and collect reusable clean values."""
+    existing_by_key: dict[str, list[str]] = defaultdict(list)
+    for data in before.values():
+        for key, value in data.items():
+            existing_by_key[key].append(str(value))
+
+    candidates: dict[str, Counter[str]] = defaultdict(Counter)
+    for source_payload in payloads:
+        for key, source_value in source_payload.items():
+            source = str(source_value)
+            for value in existing_by_key.get(key, []):
+                if valid_output(source, value) and semantic_issue(source, value) is None:
+                    candidates[source][value] += 1
+    return candidates
+
+
 def main() -> None:
     before_files = sorted(ASSETS.glob("**/lang/ksh.json"))
     if len(before_files) != 29:
@@ -248,8 +296,10 @@ def main() -> None:
     payloads = [common_en, d121_en, d261_en, d262_en, *addons_en.values()]
     unique = sorted({str(v) for payload in payloads for v in payload.values()})
     exact = base.build_corpus_map()
+    existing = build_existing_candidates(before, payloads)
     translated: dict[str, str] = {}
     direct = []
+    reused = 0
     for source in unique:
         if source == "[%s]":
             translated[source] = source
@@ -257,9 +307,17 @@ def main() -> None:
             translated[source] = base.MANUAL_VALUES[source]
         elif source in exact:
             translated[source] = exact[source]
+        elif source in existing and existing[source]:
+            translated[source] = existing[source].most_common(1)[0][0]
+            reused += 1
         else:
             direct.append(source)
-    print(f"Kölsch refinement pool: {len(unique)} unique; {len(unique)-len(direct)} corpus/manual/preserved; {len(direct)} direct OPUS", flush=True)
+    print(
+        f"Kölsch refinement pool: {len(unique)} unique; "
+        f"{len(unique)-len(direct)} corpus/manual/preserved/reused; {reused} clean branch values reused; "
+        f"{len(direct)} direct OPUS",
+        flush=True,
+    )
 
     mt = KolschTranslator()
     semantic_failures: list[tuple[str, str, str]] = []
@@ -283,12 +341,12 @@ def main() -> None:
                     semantic_failures.append((source, value, remaining))
             translated[source] = value
         done = min(start + len(batch), len(direct))
-        if done % 160 == 0 or done == len(direct):
+        if done % 32 == 0 or done == len(direct):
             print(f"Direct Kölsch translation progress: {done}/{len(direct)}", flush=True)
 
     print(f"Kölsch semantic retries: {semantic_retries}; unresolved: {len(semantic_failures)}", flush=True)
     if semantic_failures:
-        for source, value, reason in semantic_failures[:30]:
+        for source, value, reason in semantic_failures:
             print(f"UNRESOLVED KÖLSCH [{reason}] {source!r} -> {value!r}", flush=True)
         raise SystemExit(f"Kölsch semantic QA left {len(semantic_failures)} unresolved translations")
 
@@ -344,7 +402,11 @@ def main() -> None:
         raise SystemExit(f"Kölsch semantic smoke failed: Random == Red ({random!r})")
     if seen.get("neoorigins.night_vision.on") == seen.get("neoorigins.night_vision.off"):
         raise SystemExit("Kölsch night-vision on/off labels are identical")
-    print(f"Kölsch refinement passed: {total} values / 29 files; {changed} bootstrap changes; {source_changed} source values changed; semantic retries={semantic_retries}", flush=True)
+    print(
+        f"Kölsch refinement passed: {total} values / 29 files; {changed} branch changes; "
+        f"{source_changed} source values changed; reused={reused}; semantic retries={semantic_retries}",
+        flush=True,
+    )
 
 
 if __name__ == "__main__":

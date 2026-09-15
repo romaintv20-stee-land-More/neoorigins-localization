@@ -1,0 +1,44 @@
+name: Smoke Cornish en-ine direct model
+
+on:
+  push:
+    branches: [release/1.0.0-cornish]
+    paths: [.github/workflows/smoke-cornish-en-ine.yml]
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install translation runtime
+        run: |
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+          pip install 'transformers<5' sentencepiece sacremoses
+      - name: Translate representative Cornish strings
+        run: |
+          python3 - <<'PY'
+          import torch
+          from transformers import AutoModelForSeq2SeqLM,AutoTokenizer
+          model_id='Helsinki-NLP/opus-mt-en-ine'
+          target='>>cor<<'
+          tok=AutoTokenizer.from_pretrained(model_id)
+          model=AutoModelForSeq2SeqLM.from_pretrained(model_id);model.eval()
+          tests=[
+            'Grant Soul Sorcerer Attributes',
+            'Homing Wither Skull',
+            'The primordial soul flame burning within you instills fear in all but the bravest Piglins.',
+            'You cannot wear armor higher than iron armor.',
+            "Soul Sorcerers' soul fireball ability. Fires a soul fireball on effect resolution.",
+            'Choose your origin',
+          ]
+          for source in tests:
+              enc=tok([f'{target} {source}'],return_tensors='pt',padding=True)
+              with torch.inference_mode():out=model.generate(**enc,num_beams=4,max_new_tokens=256,early_stopping=True)
+              value=tok.batch_decode(out,skip_special_tokens=True)[0].strip()
+              print(f'SOURCE: {source}\nEN_INE_COR: {value}\n---',flush=True)
+          PY

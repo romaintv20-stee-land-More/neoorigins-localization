@@ -14,7 +14,7 @@
     "supported_locale_count": 91,
     "builds": {
       "1.21.1": {
-        "version": "0.9.0-beta+1.21.1",
+        "version": "1.0.0+1.21.1",
         "java": 21,
         "in_game_tested": false,
         "included_projects": [
@@ -37,7 +37,7 @@
           "26.1.1",
           "26.1.2"
         ],
-        "version": "0.9.0-beta+26.1",
+        "version": "1.0.0+26.1",
         "java": 25,
         "in_game_tested": false,
         "included_projects": [
@@ -45,7 +45,7 @@
         ]
       },
       "26.2": {
-        "version": "0.9.0-beta+26.2",
+        "version": "1.0.0+26.2",
         "java": 25,
         "in_game_tested": false,
         "included_projects": [
@@ -2797,16 +2797,18 @@
       },
       "compatibility": {
         "method": "NeoForge mod in mods/",
-        "version": "1.0.2 / Minecraft 1.21.1",
+        "version": "1.0.3 / Minecraft 1.21.1",
         "minecraft": [
           "1.21.1"
         ],
         "in_game_validation": "pending",
-        "note": "Audité contre le JAR CurseForge 8397335 ; aucune traduction officielle parmi les cinquante-sept langues ciblées ; absent des builds 26.x."
+        "note": "Audité contre le JAR CurseForge 8875601 ; 65 clés du namespace origins_backgrounds + 4 clés contextuelles Orb of Background dans le namespace neoorigins ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 65,
-        "fallback_keys_per_locale": 65
+        "fallback_keys_per_locale": 65,
+        "contextual_keys_per_locale": 4,
+        "effective_coverage_per_locale": 69
       },
       "languages": {
         "fr_fr": {
@@ -3357,18 +3359,19 @@
       },
       "compatibility": {
         "method": "NeoForge mod in mods/",
-        "version": "1.0.2 / Minecraft 1.21.1",
+        "version": "1.0.4 / Minecraft 1.21.1",
         "minecraft": [
           "1.21.1"
         ],
         "in_game_validation": "pending",
-        "note": "Audité contre le JAR CurseForge 8650744 ; 39 clés propres et 5 clés partagées réutilisées depuis origins_backgrounds ; absent des builds 26.x."
+        "note": "Audité contre le JAR CurseForge 8875590 ; 44 clés propres/partagées inchangées + les 4 mêmes clés contextuelles Orb of Background ; absent des builds 26.x."
       },
       "coverage": {
         "source_keys": 44,
         "primary_fallback_keys_per_locale": 39,
         "shared_keys_reused": 5,
-        "effective_coverage_per_locale": 44
+        "effective_coverage_per_locale": 48,
+        "contextual_keys_per_locale": 4
       },
       "languages": {
         "fr_fr": {

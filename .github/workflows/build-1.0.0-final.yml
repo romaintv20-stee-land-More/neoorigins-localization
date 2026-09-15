@@ -1,0 +1,234 @@
+name: Build NeoOrigins Localization 1.0.0 final
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [release/1.0.0-final]
+    paths:
+      - localization/background_orb_translations.json
+      - scripts/audit_background_orb_upstream.py
+      - scripts/patch_release_1_0_0_build.py
+      - scripts/finalize_release_1_0_0.py
+      - scripts/audit_origins_backgrounds_upstream.py
+      - scripts/audit_origins_more_backgrounds_upstream.py
+      - src/mc1_21_1/java/fr/rtv20/neooriginslocalization/NeoOriginsLocalization.java
+      - .github/workflows/build-1.0.0-final.yml
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: mc-1.21.1
+            java: '21'
+            gradle: '8.14.3'
+            minecraft: '1.21.1'
+            minecraft_range: '[1.21.1]'
+            neoforge: '21.1.248'
+            loader_range: '[1,)'
+            parchment: 'true'
+            pack_format: '34'
+            source_variant: mc1_21_1
+            include_addon_translations: 'true'
+            include_121_batch_translations: 'true'
+            include_limburgish_121_translations: 'true'
+            include_26_1_translations: 'false'
+            include_26_2_translations: 'false'
+            expected_li_files: '27'
+            expect_background_pack: 'true'
+            mod_version: 1.0.0+1.21.1
+          - target: mc-26.1.x
+            java: '25'
+            gradle: '9.4.1'
+            minecraft: '26.1.2'
+            minecraft_range: '[26.1,26.2)'
+            neoforge: '26.1.2.29-beta'
+            loader_range: '[4,)'
+            parchment: 'false'
+            pack_format: '84'
+            source_variant: mc26_1
+            include_addon_translations: 'false'
+            include_121_batch_translations: 'false'
+            include_limburgish_121_translations: 'false'
+            include_26_1_translations: 'true'
+            include_26_2_translations: 'false'
+            expected_li_files: '17'
+            expect_background_pack: 'false'
+            mod_version: 1.0.0+26.1
+          - target: mc-26.2
+            java: '25'
+            gradle: '9.4.1'
+            minecraft: '26.2'
+            minecraft_range: '[26.2,26.3)'
+            neoforge: '26.2.0.3-beta'
+            loader_range: '[4,)'
+            parchment: 'false'
+            pack_format: '84'
+            source_variant: mc26_1
+            include_addon_translations: 'false'
+            include_121_batch_translations: 'false'
+            include_limburgish_121_translations: 'false'
+            include_26_1_translations: 'false'
+            include_26_2_translations: 'true'
+            expected_li_files: '17'
+            expect_background_pack: 'false'
+            mod_version: 1.0.0+26.2
+
+    name: Build ${{ matrix.target }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout final branch
+        uses: actions/checkout@v7
+        with:
+          ref: release/1.0.0-final
+
+      - name: Set up Java ${{ matrix.java }}
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+
+      - name: Set up Gradle ${{ matrix.gradle }}
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          gradle-version: ${{ matrix.gradle }}
+          cache-disabled: true
+
+      - name: Apply final packaging patch
+        run: python3 scripts/patch_release_1_0_0_build.py
+
+      - name: Audit latest Backgrounds add-ons
+        if: matrix.expect_background_pack == 'true'
+        run: |
+          python3 scripts/audit_background_orb_upstream.py
+          python3 scripts/audit_origins_backgrounds_upstream.py --file-id 8875601 --filename Origins-Backgrounds-1.21.1-NeoOrigins-1.0.3.jar --fail-on-overlap --fail-on-missing --fail-on-placeholders --annotate-missing
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --file-id 8875590 --filename Origins-More-Backgrounds-1.21.1-NeoOrigins-1.0.4.jar --fail-on-overlap --fail-on-missing --fail-on-placeholders --annotate-missing
+
+      - name: Validate localization JSON
+        run: |
+          python3 scripts/validate.py > validation.log 2>&1 || { tail -n 120 validation.log; exit 1; }
+          tail -n 20 validation.log
+
+      - name: Build stable target
+        run: |
+          gradle build --stacktrace \
+            "-Pjava_version=${{ matrix.java }}" \
+            "-Puse_parchment=${{ matrix.parchment }}" \
+            "-Presource_pack_format=${{ matrix.pack_format }}" \
+            "-Psource_variant=${{ matrix.source_variant }}" \
+            "-Pinclude_addon_translations=${{ matrix.include_addon_translations }}" \
+            "-Pinclude_121_batch_translations=${{ matrix.include_121_batch_translations }}" \
+            "-Pinclude_turkish_split_translations=true" \
+            "-Pinclude_limburgish_121_translations=${{ matrix.include_limburgish_121_translations }}" \
+            "-Pinclude_26_1_translations=${{ matrix.include_26_1_translations }}" \
+            "-Pinclude_26_2_translations=${{ matrix.include_26_2_translations }}" \
+            "-Pminecraft_version=${{ matrix.minecraft }}" \
+            "-Pminecraft_version_range=${{ matrix.minecraft_range }}" \
+            "-Pneo_version=${{ matrix.neoforge }}" \
+            "-Ploader_version_range=${{ matrix.loader_range }}" \
+            "-Pmod_version=${{ matrix.mod_version }}"
+
+      - name: Inspect stable JAR
+        env:
+          TARGET: ${{ matrix.target }}
+          EXPECTED_LI_FILES: ${{ matrix.expected_li_files }}
+          EXPECT_BACKGROUND_PACK: ${{ matrix.expect_background_pack }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          from zipfile import ZipFile
+
+          jars = [p for p in Path('build/libs').glob('*.jar') if not p.name.endswith('-sources.jar')]
+          if len(jars) != 1:
+              raise SystemExit(f'Expected one runtime JAR, found {[p.name for p in jars]}')
+          jar = jars[0]
+          with ZipFile(jar) as zf:
+              names = zf.namelist()
+              li_files = sorted(
+                  n for n in names
+                  if n.startswith('resourcepacks/fallback_localizations/')
+                  and n.endswith('/lang/li_li.json')
+              )
+              prefix = 'resourcepacks/background_orb_localizations/assets/neoorigins/lang/'
+              bg_files = sorted(n for n in names if n.startswith(prefix) and n.endswith('.json'))
+              bg_meta = 'resourcepacks/background_orb_localizations/pack.mcmeta' in names
+              if os.environ['EXPECT_BACKGROUND_PACK'] == 'true':
+                  if not bg_meta or len(bg_files) != 91:
+                      raise SystemExit(f'1.21.1 contextual pack invalid: meta={bg_meta}, locales={len(bg_files)}')
+                  for name in bg_files:
+                      data = json.loads(zf.read(name).decode('utf-8'))
+                      if len(data) != 4:
+                          raise SystemExit(f'{name}: expected 4 contextual keys, got {len(data)}')
+              elif bg_meta or bg_files:
+                  raise SystemExit(f'{os.environ["TARGET"]} unexpectedly contains Background Orb pack')
+
+          expected_li = int(os.environ['EXPECTED_LI_FILES'])
+          if len(li_files) != expected_li:
+              raise SystemExit(f'{os.environ["TARGET"]}: expected {expected_li} fallback li_li files, got {len(li_files)}')
+          print(f'{os.environ["TARGET"]}: stable JAR OK; fallback_li_li={len(li_files)}; background_locales={len(bg_files)}; jar={jar.name}')
+          PY
+
+      - name: Upload stable JAR
+        uses: actions/upload-artifact@v7
+        with:
+          name: neoorigins-localization-1.0.0-${{ matrix.target }}-${{ github.sha }}
+          path: build/libs/*.jar
+          if-no-files-found: error
+
+  release-audit:
+    name: Audit 1.0.0 release metadata
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout final branch
+        uses: actions/checkout@v7
+        with:
+          ref: release/1.0.0-final
+          fetch-depth: 0
+
+      - name: Apply validated packaging patch
+        run: python3 scripts/patch_release_1_0_0_build.py
+
+      - name: Finalize stable metadata
+        run: python3 scripts/finalize_release_1_0_0.py
+
+      - name: Validate release metadata
+        run: |
+          python3 scripts/validate.py
+          git diff --check
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          catalog = json.loads(Path('catalog.json').read_text(encoding='utf-8'))
+          assert catalog['project']['supported_locale_count'] == 91
+          assert catalog['project']['builds']['1.21.1']['version'] == '1.0.0+1.21.1'
+          assert catalog['project']['builds']['26.1.x']['version'] == '1.0.0+26.1'
+          assert catalog['project']['builds']['26.2']['version'] == '1.0.0+26.2'
+          projects = {p['id']: p for p in catalog['supported_projects']}
+          assert projects['origins_backgrounds']['compatibility']['version'].startswith('1.0.3')
+          assert projects['origins_backgrounds_two']['compatibility']['version'].startswith('1.0.4')
+          table = json.loads(Path('localization/background_orb_translations.json').read_text(encoding='utf-8'))
+          assert len(table) == 91 and all(len(v) == 4 for v in table.values())
+          assert 'mod_version=1.0.0' in Path('gradle.properties').read_text(encoding='utf-8')
+          assert 'La **1.0.0** prend en charge' in Path('README.md').read_text(encoding='utf-8')
+          print('1.0.0 release metadata audit passed: 91 locales; Backgrounds 1.0.3/1.0.4')
+          PY
+
+      - name: Commit validated 1.0.0 metadata
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add build.gradle gradle.properties README.md CATALOG.md catalog.json
+          if git diff --cached --quiet; then
+            echo 'No stable release metadata changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Finalize NeoOrigins Localization 1.0.0'
+          git fetch origin release/1.0.0-final
+          git rebase origin/release/1.0.0-final
+          git push origin HEAD:release/1.0.0-final

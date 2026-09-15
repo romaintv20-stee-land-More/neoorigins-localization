@@ -144,6 +144,28 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
 sourceSets.main.resources.srcDir generateModMetadata
 neoForge.ideSyncTask generateModMetadata
 
+def backgroundOrbTranslationsFile = file("localization/background_orb_translations.json")
+def generatedBackgroundOrbResources = layout.buildDirectory.dir("generated/backgroundOrbResources")
+def generateBackgroundOrbTranslations = tasks.register("generateBackgroundOrbTranslations") {
+    inputs.file backgroundOrbTranslationsFile
+    inputs.property 'resource_pack_format', targetResourcePackFormat
+    outputs.dir generatedBackgroundOrbResources
+    doLast {
+        def outputDir = generatedBackgroundOrbResources.get().asFile
+        outputDir.deleteDir()
+        def packDir = new File(outputDir, "resourcepacks/background_orb_localizations")
+        def langDir = new File(packDir, "assets/neoorigins/lang")
+        langDir.mkdirs()
+        def packMeta = [pack: [pack_format: Integer.parseInt(targetResourcePackFormat), description: "NeoOrigins Localization - contextual Background Orb translations"]]
+        new File(packDir, "pack.mcmeta").text = groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(packMeta)) + "\n"
+        def translations = new groovy.json.JsonSlurper().parse(backgroundOrbTranslationsFile)
+        translations.each { locale, values ->
+            new File(langDir, "${locale}.json").text = groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(values)) + "\n"
+        }
+    }
+}
+sourceSets.main.resources.srcDir generateBackgroundOrbTranslations
+
 tasks.named('processResources', ProcessResources) {
     inputs.property 'resource_pack_format', targetResourcePackFormat
     inputs.property 'include_addon_translations', includeAddonTranslations
@@ -242,6 +264,7 @@ tasks.named('processResources', ProcessResources) {
         exclude 'resourcepacks/fallback_localizations/assets/origins_classes_ex/**'
         exclude 'resourcepacks/fallback_localizations/assets/origins_classes_iss/**'
         exclude 'resourcepacks/fallback_localizations/assets/originsmodernui/**'
+        exclude 'resourcepacks/background_orb_localizations/**'
     }
 
     if (!include121BatchTranslations) {

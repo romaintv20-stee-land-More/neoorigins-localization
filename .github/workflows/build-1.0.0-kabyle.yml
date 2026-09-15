@@ -1,4 +1,5 @@
 name: Build NeoOrigins Localization 1.0.0 Kabyle staging
+# Manual retrigger after generated Kabyle localization commit.
 
 on:
   push:

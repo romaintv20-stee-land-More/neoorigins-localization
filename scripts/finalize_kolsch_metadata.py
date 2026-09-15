@@ -70,7 +70,7 @@ def finalize_catalog_json() -> None:
     neo = next(project for project in data["supported_projects"] if project["id"] == "neoorigins")
     namespaces = neo["compatibility"]["fallback_namespaces"]
     namespaces["kolsch_common_glob"] = "neoorigins_ksh_common_*"
-    namespaces["kolsch_mc_1_21_1"] = "neoorigins_ksh_121"
+    namespaces["kolsch_mc_1_21_1"] = "neoorigins_121_batch1"
 
     ensured = ensure_kolsch_catalog_entries(data)
     if ensured != 11:

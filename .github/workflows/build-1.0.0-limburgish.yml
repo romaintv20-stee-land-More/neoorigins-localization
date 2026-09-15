@@ -2,6 +2,10 @@ name: Build NeoOrigins Localization 1.0.0 Limburgish staging
 
 on:
   workflow_dispatch:
+  push:
+    branches: [release/1.0.0-limburgish]
+    paths:
+      - .github/workflows/build-1.0.0-limburgish.yml
 
 permissions:
   contents: write

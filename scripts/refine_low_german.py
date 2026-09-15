@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Refine Low German (`nds_de`) with direct English -> Low German OPUS.
+"""Refine Low German (`nds_de`) with guarded direct English -> Low German OPUS.
 
-Uses the Germanic-target OPUS model with an explicit `>>nds<<` target. Multi-
-sentence strings are translated sentence by sentence to prevent semantic
-truncation. This is automated translation assistance, not native review.
+The Germanic base OPUS model is the primary translator. If its output fails
+structural/repetition guards, the larger West-Germanic OPUS model is used only
+for that source. Multi-sentence strings are translated sentence by sentence to
+prevent semantic truncation. Automated assistance only; no native review claim.
 """
 from __future__ import annotations
 
@@ -19,7 +20,8 @@ import bootstrap_low_german as base
 
 ROOT = base.ROOT
 ASSETS = base.ASSETS
-MODEL_ID = "Helsinki-NLP/opus-mt-tc-base-gmw-gmw"
+PRIMARY_MODEL_ID = "Helsinki-NLP/opus-mt-tc-base-gmw-gmw"
+FALLBACK_MODEL_ID = "Helsinki-NLP/opus-mt-tc-bible-big-deu_eng_fra_por_spa-gmw"
 TARGET_TOKEN = ">>nds<<"
 PROTECT_RE = re.compile(
     r"%(?:\d+\$)?[sdif]|§.|\\n|\n|\{[^{}]+\}|<[^<>]+>|"
@@ -60,6 +62,10 @@ def sanitize(source, value):
     return re.sub(r"[ \t]{2,}", " ", value).strip()
 
 
+def sentence_count(text: str) -> int:
+    return len(re.findall(r"[.!?](?=\s|$)", text))
+
+
 def pathological_repetition(source: str, value: str) -> bool:
     words = [w.casefold() for w in WORD_RE.findall(value)]
     if len(words) < 10:
@@ -98,11 +104,12 @@ def sources():
 
 
 class MT:
-    def __init__(self):
-        self.t = AutoTokenizer.from_pretrained(MODEL_ID)
-        self.m = AutoModelForSeq2SeqLM.from_pretrained(MODEL_ID)
+    def __init__(self, model_id: str):
+        self.model_id = model_id
+        self.t = AutoTokenizer.from_pretrained(model_id)
+        self.m = AutoModelForSeq2SeqLM.from_pretrained(model_id)
         self.m.eval()
-        print(f"Low German direct model: {MODEL_ID}; target={TARGET_TOKEN}", flush=True)
+        print(f"Low German direct model loaded: {model_id}; target={TARGET_TOKEN}", flush=True)
 
     def batch(self, texts):
         if not texts:
@@ -139,7 +146,6 @@ class MT:
         return "".join(result)
 
     def sentence_complete(self, source: str) -> str:
-        # Preserve separators exactly while translating each complete sentence independently.
         matches = list(re.finditer(r"(?<=[.!?])\s+", source))
         if not matches:
             return self.batch([source])[0]
@@ -164,7 +170,16 @@ def safe_pair(source: str, value: str) -> bool:
         and not FOREIGN_SCRIPT_RE.search(value)
         and TARGET_TOKEN not in value
         and not pathological_repetition(source, value)
+        and (sentence_count(source) < 2 or sentence_count(value) >= sentence_count(source))
     )
+
+
+def translate_one(mt: MT, source: str) -> str:
+    value = mt.sentence_complete(source) if sentence_count(source) >= 2 else mt.batch([source])[0]
+    value = sanitize(source, value)
+    if not safe_pair(source, value):
+        value = sanitize(source, mt.structural(source))
+    return value
 
 
 def main():
@@ -191,24 +206,33 @@ def main():
         f"Low German pool: {len(unique)} unique; {len(unique) - len(direct)} corpus/manual/preserved; "
         f"{len(direct)} direct OPUS", flush=True
     )
-    mt = MT()
+    primary = MT(PRIMARY_MODEL_ID)
+    fallback: MT | None = None
+    fallback_count = 0
     batch_size = 24
     for start in range(0, len(direct), batch_size):
         batch = direct[start:start + batch_size]
-        # Multi-sentence strings are translated independently to prevent dropped clauses.
-        singles = [s for s in batch if len(re.findall(r"[.!?](?=\s|$)", s)) < 2]
-        singles_values = dict(zip(singles, mt.batch(singles)))
+        singles = [s for s in batch if sentence_count(s) < 2]
+        singles_values = dict(zip(singles, primary.batch(singles)))
         for source in batch:
-            value = mt.sentence_complete(source) if source not in singles_values else singles_values[source]
+            value = primary.sentence_complete(source) if source not in singles_values else singles_values[source]
             value = sanitize(source, value)
             if not safe_pair(source, value):
-                value = sanitize(source, mt.structural(source))
+                value = sanitize(source, primary.structural(source))
             if not safe_pair(source, value):
-                raise SystemExit(f"Unsafe Low German translation: {source!r}->{value!r}")
+                if fallback is None:
+                    fallback = MT(FALLBACK_MODEL_ID)
+                value = translate_one(fallback, source)
+                fallback_count += 1
+            if not safe_pair(source, value):
+                raise SystemExit(f"Unsafe Low German translation after fallback: {source!r}->{value!r}")
             translated[source] = value
         done = min(start + len(batch), len(direct))
         if done % 240 == 0 or done == len(direct):
-            print(f"Direct Low German progress: {done}/{len(direct)}", flush=True)
+            print(
+                f"Direct Low German progress: {done}/{len(direct)}; fallback={fallback_count}",
+                flush=True,
+            )
 
     def payload(source_map):
         return {key: translated[str(value)] for key, value in source_map.items()}
@@ -245,8 +269,8 @@ def main():
     if seen.get("neoorigins.night_vision.on") == seen.get("neoorigins.night_vision.off"):
         raise SystemExit("Night vision labels identical")
     print(
-        f"Low German dedicated OPUS refinement passed: {total} values; {changed} bootstrap changes; "
-        f"{changed_src} sources changed", flush=True
+        f"Low German guarded OPUS refinement passed: {total} values; {changed} bootstrap changes; "
+        f"{changed_src} sources changed; fallback sources={fallback_count}", flush=True
     )
 
 

@@ -11,9 +11,8 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 PACK_ROOT = ROOT / "src/main/resources/resourcepacks/fallback_localizations/assets"
-LOCALES = ("fr_fr", "de_de", "es_es", "pt_br", "nl_nl", "it_it", "pl_pl", "ru_ru", "tr_tr", "zh_cn", "cs_cz", "hu_hu", "ja_jp", "ko_kr", "uk_ua", "id_id", "sv_se")
-DEFAULT_FILE_ID = "8397335"
-DEFAULT_FILENAME = "Origins-Backgrounds-1.21.1-NeoOrigins-1.0.2.jar"
+DEFAULT_FILE_ID = "8875601"
+DEFAULT_FILENAME = "Origins-Backgrounds-1.21.1-NeoOrigins-1.0.3.jar"
 DEFAULT_NAMESPACE = "origins_backgrounds"
 PLACEHOLDER_RE = re.compile(r"%(?:\d+\$)?[sd]")
 
@@ -107,10 +106,14 @@ def main():
         en = read_locale(jar, namespace, "en_us")
         if not en:
             raise SystemExit("Origins Backgrounds audit failed: upstream en_us.json is missing")
-        official_locales = {locale: read_locale(jar, namespace, locale) for locale in LOCALES}
+
+        pack_lang = PACK_ROOT / namespace / "lang"
+        locales = sorted(path.stem for path in pack_lang.glob("*.json") if path.stem != "en_us")
+        if not locales:
+            raise SystemExit(f"Origins Backgrounds audit failed: no fallback locales found in {pack_lang}")
+        official_locales = {locale: read_locale(jar, namespace, locale) for locale in locales}
 
     (out_dir / "upstream_en_us.json").write_text(json.dumps(en, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    pack_lang = PACK_ROOT / namespace / "lang"
     report = {
         "upstream": "Origins: Backgrounds for NeoOrigins",
         "curseforge_project_id": 1578568,
@@ -119,12 +122,14 @@ def main():
         "namespace": namespace,
         "source_url": source_url,
         "english_keys": len(en),
+        "locale_count": len(locales),
         "locales": {},
     }
     any_overlap = any_missing = any_placeholder_error = False
     annotation_keys = set()
+    missing_sources = {}
 
-    for locale in LOCALES:
+    for locale in locales:
         official = official_locales[locale]
         path = pack_lang / f"{locale}.json"
         fallback = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
@@ -145,6 +150,9 @@ def main():
             overlap = []
             stale = sorted(set(fallback) - set(en))
             missing = sorted(set(missing_upstream) - set(fallback))
+
+        for key in missing:
+            missing_sources[key] = en.get(key, "")
 
         any_overlap |= bool(overlap)
         any_missing |= bool(missing)
@@ -174,13 +182,18 @@ def main():
     (out_dir / "report.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"Origins: Backgrounds for NeoOrigins audit ({args.filename}, CurseForge file {args.file_id})")
     print(f"Namespace: {namespace}")
-    print(f"English: {len(en)} keys")
+    print(f"English: {len(en)} keys | fallback locales: {len(locales)}")
     for locale, stats in report["locales"].items():
         print(
             f"{locale}: official={stats['official_keys']} | missing-upstream={stats['missing_upstream_keys']} | "
             f"fallback={stats['fallback_keys']} | overlap={stats['fallback_overlap_with_official']} | "
             f"not-yet-translated={stats['missing_not_yet_in_fallback']} | placeholders={stats['placeholder_errors']}"
         )
+
+    if missing_sources:
+        print("Missing English source keys:")
+        for key, value in sorted(missing_sources.items()):
+            print(f"  {key} = {value}")
 
     failures = []
     if args.fail_on_overlap and any_overlap:

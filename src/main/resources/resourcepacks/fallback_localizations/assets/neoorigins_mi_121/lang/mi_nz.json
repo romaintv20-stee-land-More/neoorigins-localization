@@ -1,8 +1,8 @@
 {
-  "power.neoorigins.class_blacksmith_quality.description": "He pai ake ngā taputapu e hanga ana e koe He tere ake ngā taputapu, he uaua ake ngā patu, he uaua ake te whakangungu, ā, he roa ake te roa o te wā.",
-  "power.neoorigins.class_cook_smoker_xp.description": "Ko te kai e tunu ana i roto i te kaihanga kai, i te oumu rānei, he nui ake te kai.",
-  "neoorigins.configuration.title": "Ko te Whakataurite Pānui o te NeoOrigins",
-  "reward.neoorigins.loot_pool": "NeoOrigins: Ko Grant Loot Pool",
-  "reward.neoorigins.loot_pool.loot_table": "Te Papamahi Kaihanga",
-  "reward.neoorigins.loot_pool.rolls": "Ngā rōrahi"
+  "power.neoorigins.class_blacksmith_quality.description": "He pai ake ngā taputapu e hangaia ana e koe  he tere ake te keri o ngā taputapu, he kaha ake te patu o ngā patu, he kaha ake te whakangungu, ā, he roa ake te roa o ngā mea katoa.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Ko te kai i tunua i roto i te paowa, i te oumu rānei, ka whiwhi kai anō.",
+  "neoorigins.configuration.title": "NeoOrigins Whakarōpūtanga noa",
+  "reward.neoorigins.loot_pool": "NeoOrigins: Grant Loot Pool",
+  "reward.neoorigins.loot_pool.loot_table": "Te Ripanga taonga",
+  "reward.neoorigins.loot_pool.rolls": "Ngā huruhuru"
 }

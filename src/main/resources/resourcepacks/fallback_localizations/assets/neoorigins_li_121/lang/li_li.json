@@ -2,7 +2,7 @@
   "power.neoorigins.class_blacksmith_quality.description": "De apparatuur die geer bouw is beter Werktuigen minse sneller, wapens slaon harder, rust is sterker, en alles duurt langer.",
   "power.neoorigins.class_cook_smoker_xp.description": "E kos die in 'n roker of oond gekookt is, kriegt extra voeding.",
   "neoorigins.configuration.title": "De gebruuklike opstelling van NeoOrigins",
-  "reward.neoorigins.loot_pool": "NeoOrigins: Grant Loot Pool",
-  "reward.neoorigins.loot_pool.loot_table": "Loot Table",
+  "reward.neoorigins.loot_pool": "NeoOrigins: Lodepool toekennen",
+  "reward.neoorigins.loot_pool.loot_table": "Lottetafel",
   "reward.neoorigins.loot_pool.rolls": "Rollen"
 }

@@ -49,8 +49,14 @@ def words(text: str) -> list[str]:
     return [word.casefold() for word in WORD_RE.findall(text)]
 
 
+def semantic_words(text: str) -> list[str]:
+    # Formatting codes, placeholders and protected project tokens must not count
+    # as prose repetition/leakage, but rk.validate_pair still verifies them exactly.
+    return words(rk.PROTECT_RE.sub(" ", text))
+
+
 def issue(source: str, translated: str) -> str | None:
-    sw, tw = words(source), words(translated)
+    sw, tw = semantic_words(source), semantic_words(translated)
     if len(sw) >= 4 and sw == tw:
         return "unchanged English"
     if len(tw) >= 8:

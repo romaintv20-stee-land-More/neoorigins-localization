@@ -6,6 +6,7 @@ on:
     paths:
       - scripts/refine_limburgish.py
       - scripts/repair_limburgish_semantics.py
+      - scripts/prefill_limburgish_from_dutch_reference.py
       - .github/workflows/refine-limburgish.yml
   workflow_dispatch:
 
@@ -60,6 +61,8 @@ jobs:
           python3 scripts/audit_origins_classes_extended_upstream.py
           python3 scripts/audit_origins_classes_iss_upstream.py
           python3 scripts/audit_origin_architect_upstream.py
+      - name: Prefill stubborn Limburgish labels from Dutch references
+        run: python3 scripts/prefill_limburgish_from_dutch_reference.py
       - name: Repair Limburgish semantic outliers
         run: python3 scripts/repair_limburgish_semantics.py
       - name: Prune add-on keys already translated upstream

@@ -21,8 +21,8 @@ CLAUSE_SPLIT_RE = re.compile(r"(\s+[—–]\s+|(?<=[.!?])\s+|;\s+)")
 UNKNOWN_RE = re.compile(r"(?:^|[\s>+\-•])\?[^\W\d_]", re.MULTILINE | re.UNICODE)
 
 # Keep project names and Minecraft-specific item/effect names stable when the
-# generic fallback repairs a damaged prose string. This is safer than letting a
-# general MT model collapse a whole list of distinct game items into one noun.
+# generic fallback repairs damaged prose. This is safer than letting a general
+# MT model collapse a whole list of distinct game items into one noun.
 EXTRA_PROTECTED = [
     "Medieval Origins", "Instant Health", "Efficiency I", "wither skeletons",
     "crying obsidian", "cobbled deepslate", "deepslate iron ore", "raw iron blocks",
@@ -51,9 +51,7 @@ KNOWN_BAD = {
     "NeoOrigins: Grant Loot Pool",
 }
 
-# The generic NLLB model leaves this short FTB Quests reward label unchanged.
-# Use an attested Kabyle rendering instead of accepting English UI text:
-# efk = give/grant, agraw = group, taɣawsa = object/thing.
+# The generic model leaves this short FTB Quests reward label unchanged.
 MANUAL_REPAIRS = {
     "NeoOrigins: Grant Loot Pool": "NeoOrigins: Efk agraw n tɣawsiwin",
 }
@@ -99,8 +97,10 @@ def repetition_collapse(source_words: list[str], target_words: list[str]) -> boo
 
 def issue(source: str, translated: str) -> str | None:
     sw, tw = semantic_words(source), semantic_words(translated)
-    if len(sw) >= 4 and sw == tw:
-        return "unchanged English"
+    # Short labels are common in Origins packs. The previous >=4 threshold let
+    # 2-3 word English titles such as "Soul Burning" pass as finished Kabyle.
+    if len(sw) >= 2 and sw == tw:
+        return "unchanged English title/prose"
     if repetition_collapse(sw, tw):
         return "repetition collapse"
     english_hits = sum(word in ENGLISH for word in tw)
@@ -172,6 +172,59 @@ class GenericKabyle:
         rk.validate_pair(source, translated)
         return translated
 
+    def title_candidates(self, source: str) -> list[str]:
+        """Generate direct English->Kabyle retries for stubborn short UI labels."""
+        candidates: list[str] = []
+
+        # Lowercase/title punctuation can stop NLLB from treating a power name as
+        # an untranslated proper noun.
+        semantic = semantic_words(source)
+        if len(semantic) >= 2:
+            raw_inputs = [source + ".", source.casefold(), source.casefold() + "."]
+            for output in self.batch(raw_inputs):
+                candidate = output.strip()
+                if candidate.endswith(".") and not source.rstrip().endswith("."):
+                    candidate = candidate[:-1].rstrip()
+                candidates.append(candidate)
+
+        # Give the label explicit semantic context, still using direct en->kab MT.
+        wrappers = [
+            f"Power name: {source}",
+            f"Ability name: {source}",
+            f"Effect name: {source}",
+            f"Class name: {source}",
+        ]
+        for output in self.batch(wrappers):
+            if ":" not in output:
+                continue
+            candidate = output.rsplit(":", 1)[1].strip().strip('"“”')
+            if candidate.endswith(".") and not source.rstrip().endswith("."):
+                candidate = candidate[:-1].rstrip()
+            if candidate:
+                candidates.append(candidate)
+        return candidates
+
+    def repair(self, source: str) -> tuple[str, str | None]:
+        first = self.translate(source)
+        candidates = [first]
+        if issue(source, first) == "unchanged English title/prose" and len(semantic_words(source)) <= 8:
+            candidates.extend(self.title_candidates(source))
+
+        seen: set[str] = set()
+        last_reason: str | None = None
+        for candidate in candidates:
+            if candidate in seen:
+                continue
+            seen.add(candidate)
+            try:
+                rk.validate_pair(source, candidate)
+            except Exception:
+                continue
+            last_reason = issue(source, candidate)
+            if last_reason is None:
+                return candidate, None
+        return first, last_reason or issue(source, first) or "no valid semantic retry"
+
 
 def main() -> None:
     parser = argparse.ArgumentParser()
@@ -192,21 +245,31 @@ def main() -> None:
 
     total = sum(len(payload) for payload in payloads.values())
     print(f"Kabyle strict semantic scan: {total} strings, {len(suspects)} suspects.", flush=True)
+    failures: list[tuple[str, str, str]] = []
     if suspects:
         translator = GenericKabyle()
         for index, (path, source, old, reason) in enumerate(suspects, 1):
             new = MANUAL_REPAIRS.get(source)
+            remaining: str | None = None
             if new is None:
-                new = translator.translate(source)
+                new, remaining = translator.repair(source)
             else:
                 rk.validate_pair(source, new)
-            remaining = issue(source, new)
+                remaining = issue(source, new)
+
             if remaining:
-                raise SystemExit(f"Kabyle fallback still fails ({remaining}; was {reason}): {source!r} -> {new!r}")
+                failures.append((source, new, remaining))
+                print(f"UNRESOLVED KABYLE [{remaining}] {source!r} -> {new!r}", flush=True)
+                continue
             if new == old:
-                raise SystemExit(f"Kabyle repair made no change for suspect: {source!r}")
+                failures.append((source, new, "repair made no change"))
+                print(f"UNRESOLVED KABYLE [repair made no change] {source!r}", flush=True)
+                continue
             payloads[path][source] = new
             print(f"Repaired Kabyle outlier {index}/{len(suspects)}: {reason}: {source[:90]!r}", flush=True)
+
+        if failures:
+            raise SystemExit(f"Kabyle semantic QA left {len(failures)} unresolved translations")
         for path, payload in payloads.items():
             write_json(path, payload)
 
@@ -218,7 +281,7 @@ def main() -> None:
             if reason:
                 remaining.append((source, reason))
     if remaining:
-        raise SystemExit(f"Kabyle strict semantic scan left {len(remaining)} suspects; samples={remaining[:5]!r}")
+        raise SystemExit(f"Kabyle strict semantic scan left {len(remaining)} suspects; samples={remaining[:10]!r}")
     print("Kabyle strict semantic repair passed.", flush=True)
 
 

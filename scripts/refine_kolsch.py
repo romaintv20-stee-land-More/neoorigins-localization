@@ -4,9 +4,12 @@
 Exact whole-string Minecraft corpus matches win first. Remaining whole strings use
 Helsinki's 2024 TC+Bible West-Germanic model with the explicit `>>ksh<<` target.
 No Standard German pivot and no isolated-word projection are used.
+This pass also rejects obvious semantic failures such as unchanged multi-word English,
+English grammar leakage, repetition collapse, and severe truncation.
 """
 from __future__ import annotations
 
+from collections import Counter
 from pathlib import Path
 import json
 import re
@@ -25,10 +28,18 @@ PROTECT_RE = re.compile(
     r"\b(?:NeoOrigins|Origin Architect|HUD|JSON|XP|HP|NeoForge|Minecraft|CurseForge)\b",
     re.IGNORECASE,
 )
-SUSPICIOUS_UNKNOWN_RE = re.compile(r"(?:^|[\s>+\-•])\?[A-Za-zÀ-ÖØ-öø-ÿĀ-žƀ-ɏ]", re.MULTILINE)
+SUSPICIOUS_UNKNOWN_RE = re.compile(r"(?:^|[\s>+\-•])\?[^\W\d_]", re.MULTILINE | re.UNICODE)
 FOREIGN_SCRIPT_RE = re.compile(r"[\u0370-\u052f\u0590-\u08ff\u0900-\u0fff\u3000-\u9fff]")
 BAD_DECORATION_RE = re.compile(r"[♫■]|±(?=\s*[A-Za-z])")
+WORD_RE = re.compile(r"[^\W\d_]+(?:['’-][^\W\d_]+)?", re.UNICODE)
+CLAUSE_SPLIT_RE = re.compile(r"(\s+[—–]\s+|(?<=[.!?])\s+|;\s+)")
 TECHNICAL_CASEFOLD = {"neoorigins", "origin architect", "hud", "json", "xp", "hp", "neoforge", "minecraft", "curseforge"}
+ENGLISH_SIGNAL_WORDS = {
+    "the", "and", "or", "but", "your", "you", "yours", "with", "without",
+    "while", "when", "where", "who", "which", "that", "this", "these",
+    "those", "into", "through", "from", "for", "of", "other", "still",
+    "cannot", "will", "were", "being", "been", "their", "them", "they",
+}
 
 
 def read_json(path: Path) -> dict[str, str]:
@@ -47,6 +58,10 @@ def protected_signature(text: str) -> list[str]:
     return out
 
 
+def semantic_words(text: str) -> list[str]:
+    return [word.casefold() for word in WORD_RE.findall(PROTECT_RE.sub(" ", text))]
+
+
 def sanitize_output(source: str, translated: str) -> str:
     if "§" not in source:
         translated = translated.replace("§", "")
@@ -63,6 +78,40 @@ def valid_output(source: str, value: str) -> bool:
         and not FOREIGN_SCRIPT_RE.search(value)
         and not BAD_DECORATION_RE.search(value)
     )
+
+
+def semantic_issue(source: str, value: str) -> str | None:
+    sw = semantic_words(source)
+    tw = semantic_words(value)
+    if len(sw) >= 2 and sw == tw:
+        return "unchanged multi-word English"
+
+    if len(tw) >= 8:
+        for i in range(len(tw) - 2):
+            if tw[i] == tw[i + 1] == tw[i + 2]:
+                return "repetition collapse"
+        sc = Counter(word for word in sw if len(word) >= 4)
+        tc = Counter(word for word in tw if len(word) >= 4)
+        if tc:
+            _, target_count = tc.most_common(1)[0]
+            source_count = sc.most_common(1)[0][1] if sc else 0
+            if target_count >= 6 and target_count >= source_count + 5 and target_count / len(tw) >= 0.28:
+                return "repetition collapse"
+
+    hits = sum(word in ENGLISH_SIGNAL_WORDS for word in tw)
+    if len(tw) >= 5 and hits >= 3 and hits / len(tw) >= 0.16:
+        return "English grammar leakage"
+
+    source_signals = [word for word in sw if word in ENGLISH_SIGNAL_WORDS]
+    if len(source_signals) >= 4:
+        target_words = set(tw)
+        overlap = sum(word in target_words for word in source_signals)
+        if overlap >= 4 and overlap / len(source_signals) >= 0.50:
+            return "large English prose overlap"
+
+    if len(sw) >= 18 and len(tw) <= max(4, int(len(sw) * 0.32)):
+        return "severe truncation"
+    return None
 
 
 def build_sources():
@@ -142,6 +191,53 @@ class KolschTranslator:
                 result.append(tokens[i])
         return "".join(result)
 
+    def clause_translate(self, source: str) -> str:
+        pieces = PROTECT_RE.split(source)
+        tokens = PROTECT_RE.findall(source)
+        result: list[str] = []
+        for piece_index, piece in enumerate(pieces):
+            split = CLAUSE_SPLIT_RE.split(piece)
+            clause_indexes = [i for i in range(0, len(split), 2) if any(ch.isalpha() for ch in split[i])]
+            cores = [split[i].strip() for i in clause_indexes]
+            outputs = self.translate_batch(cores)
+            for i, output in zip(clause_indexes, outputs):
+                original = split[i]
+                prefix = original[:len(original) - len(original.lstrip())]
+                suffix = original[len(original.rstrip()):]
+                split[i] = prefix + sanitize_output(source, output) + suffix
+            result.append("".join(split))
+            if piece_index < len(tokens):
+                result.append(tokens[piece_index])
+        return "".join(result)
+
+    def semantic_retry(self, source: str, first: str) -> tuple[str, str | None]:
+        candidates = [first]
+        candidates.append(sanitize_output(source, self.structural_translate(source)))
+        candidates.append(sanitize_output(source, self.clause_translate(source)))
+
+        # Short title-like strings sometimes stay English. A terminal period gives
+        # the direct MT model sentence context without introducing a pivot language.
+        stripped = source.rstrip()
+        if stripped and stripped[-1:] not in ".!?" and len(semantic_words(source)) >= 2:
+            punctuated = self.translate_batch([source + "."])[0]
+            punctuated = sanitize_output(source, punctuated)
+            if punctuated.endswith("."):
+                punctuated = punctuated[:-1].rstrip()
+            candidates.append(punctuated)
+
+        seen: set[str] = set()
+        last_issue: str | None = None
+        for candidate in candidates:
+            if candidate in seen:
+                continue
+            seen.add(candidate)
+            if not valid_output(source, candidate):
+                continue
+            last_issue = semantic_issue(source, candidate)
+            if last_issue is None:
+                return candidate, None
+        return first, last_issue or semantic_issue(source, first) or "no valid semantic retry"
+
 
 def main() -> None:
     before_files = sorted(ASSETS.glob("**/lang/ksh.json"))
@@ -166,6 +262,8 @@ def main() -> None:
     print(f"Kölsch refinement pool: {len(unique)} unique; {len(unique)-len(direct)} corpus/manual/preserved; {len(direct)} direct OPUS", flush=True)
 
     mt = KolschTranslator()
+    semantic_failures: list[tuple[str, str, str]] = []
+    semantic_retries = 0
     for start in range(0, len(direct), 16):
         batch = direct[start:start + 16]
         outputs = mt.translate_batch(batch)
@@ -177,10 +275,22 @@ def main() -> None:
                 value = sanitize_output(source, mt.structural_translate(source))
             if not valid_output(source, value):
                 raise SystemExit(f"Invalid/contaminated Kölsch translation: {source!r} -> {value!r}")
+            reason = semantic_issue(source, value)
+            if reason:
+                semantic_retries += 1
+                value, remaining = mt.semantic_retry(source, value)
+                if remaining:
+                    semantic_failures.append((source, value, remaining))
             translated[source] = value
         done = min(start + len(batch), len(direct))
         if done % 160 == 0 or done == len(direct):
             print(f"Direct Kölsch translation progress: {done}/{len(direct)}", flush=True)
+
+    print(f"Kölsch semantic retries: {semantic_retries}; unresolved: {len(semantic_failures)}", flush=True)
+    if semantic_failures:
+        for source, value, reason in semantic_failures[:30]:
+            print(f"UNRESOLVED KÖLSCH [{reason}] {source!r} -> {value!r}", flush=True)
+        raise SystemExit(f"Kölsch semantic QA left {len(semantic_failures)} unresolved translations")
 
     def payload(src):
         return {k: translated[str(v)] for k, v in src.items()}
@@ -203,6 +313,7 @@ def main() -> None:
     after = {path: read_json(path) for path in after_files}
     total = changed = 0
     seen = {}
+    final_semantic_failures: list[tuple[str, str, str]] = []
     for path, data in after.items():
         if set(before[path]) != set(data):
             raise SystemExit(f"Kölsch key set changed unexpectedly: {path}")
@@ -211,6 +322,13 @@ def main() -> None:
             seen[key] = str(value)
             changed += before[path][key] != value
     source_changed = sum(1 for p in payloads for v in p.values() if translated[str(v)] != str(v))
+    for source in unique:
+        value = translated[source]
+        reason = semantic_issue(source, value)
+        if reason:
+            final_semantic_failures.append((source, value, reason))
+    if final_semantic_failures:
+        raise SystemExit(f"Kölsch final semantic QA left {len(final_semantic_failures)} suspect unique values: {final_semantic_failures[:10]!r}")
     text = "\n".join(str(v) for data in after.values() for v in data.values())
     if TARGET_TOKEN in text or SUSPICIOUS_UNKNOWN_RE.search(text) or FOREIGN_SCRIPT_RE.search(text) or BAD_DECORATION_RE.search(text):
         raise SystemExit("Kölsch target marker/artifact/foreign-script contamination survived output")
@@ -226,7 +344,7 @@ def main() -> None:
         raise SystemExit(f"Kölsch semantic smoke failed: Random == Red ({random!r})")
     if seen.get("neoorigins.night_vision.on") == seen.get("neoorigins.night_vision.off"):
         raise SystemExit("Kölsch night-vision on/off labels are identical")
-    print(f"Kölsch refinement passed: {total} values / 29 files; {changed} bootstrap changes; {source_changed} source values changed", flush=True)
+    print(f"Kölsch refinement passed: {total} values / 29 files; {changed} bootstrap changes; {source_changed} source values changed; semantic retries={semantic_retries}", flush=True)
 
 
 if __name__ == "__main__":

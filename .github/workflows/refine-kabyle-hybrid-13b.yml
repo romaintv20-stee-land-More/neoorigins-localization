@@ -12,10 +12,6 @@ on:
 permissions:
   contents: write
 
-env:
-  KAB_PREPARE: |
-    true
-
 jobs:
   translate-shards:
     name: Hybrid Kabyle shard ${{ matrix.shard }}
@@ -28,7 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
-          ref: release/1.0.0-kabyle
+          ref: ${{ github.sha }}
 
       - uses: actions/setup-python@v6
         with:
@@ -95,7 +91,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
-          ref: release/1.0.0-kabyle
+          ref: ${{ github.sha }}
           fetch-depth: 0
 
       - uses: actions/setup-python@v6

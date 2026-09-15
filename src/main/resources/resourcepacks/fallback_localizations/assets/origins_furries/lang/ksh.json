@@ -37,7 +37,7 @@
   "power.origins_furries.fish_bonus.description": "Fische wääde ävver vöör di Zitt jejründt.",
   "power.origins_furries.fish_bonus.name": "Fische ernähme",
   "power.origins_furries.mutton.description": "Mutton woch ävver vöör di Zitt zösamme.",
-  "power.origins_furries.mutton.name": "Mutton Diet",
+  "power.origins_furries.mutton.name": "Mutton-Diät",
   "power.origins_furries.fish_nutrition.description": "Fische wääde ävver vöör di Zitt jejründt.",
   "power.origins_furries.fish_nutrition.name": "Nohßte Fische",
   "power.origins_furries.flee.description": "Do krijje öt 10 Sekunn spiidr, wenn öt kapott jemaad weed.",
@@ -109,11 +109,11 @@
   "power.origins_furries.sweeter_berries.description": "Süss Beeren sin ävver nüüßer för di.",
   "power.origins_furries.sweeter_berries.name": "Süütere Bersche",
   "power.origins_furries.trash_regen.description": "Di kriije Regeneration van öt Rotte Vleesch.",
-  "power.origins_furries.trash_regen.name": "Yummy Trash",
+  "power.origins_furries.trash_regen.name": "Jommije Dreck",
   "power.origins_furries.water_breathing.description": "Do kann mo sisch ävver ongerscheedlich aavhalde.",
   "power.origins_furries.water_breathing.name": "Stärk Lunge",
   "power.origins_furries.water_vision.description": "Do kann mo sisch ävver öns ungerwassere.",
   "power.origins_furries.water_vision.name": "Wasservisiun",
   "power.origins_furries.munch_grass.description": "Wann hungrig, kanns du Gras wie andere Schafe eßße.",
-  "power.origins_furries.munch_grass.name": "Munch Grass"
+  "power.origins_furries.munch_grass.name": "Münch Grass"
 }

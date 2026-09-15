@@ -10,6 +10,15 @@ import repair_limburgish_semantics as repair
 
 ASSETS = repair.ASSETS
 
+FINAL_MANUAL_REPAIRS = {
+    "Monster Tamer": "Monstertemmer",
+    "Qi Cultivator": "Qi-kweker",
+    "Illager Killer": "Illager-doder",
+    "Rage Top.": "Maximum woede.",
+    "Rage Top": "Maximum woede",
+    "Apex Armor": "Toppantser",
+}
+
 
 def main() -> None:
     common, d121, d261, d262, addons = repair.build_sources()
@@ -42,9 +51,14 @@ def main() -> None:
             else:
                 print(f"REFERENCE REJECTED {source!r}: nl={ref!r} -> {value!r} => {reasons}")
 
-    for source, value in repair.MANUAL_REPAIRS.items():
-        if not repair.semantic_reasons(source, value):
+    curated = dict(repair.MANUAL_REPAIRS)
+    curated.update(FINAL_MANUAL_REPAIRS)
+    for source, value in curated.items():
+        reasons = repair.semantic_reasons(source, value)
+        if not reasons:
             chosen[source] = value
+        else:
+            raise SystemExit(f"Invalid curated Limburgish repair {source!r} -> {value!r}: {reasons}")
 
     if not chosen:
         print("Limburgish Dutch-reference prefill: no safe changes")

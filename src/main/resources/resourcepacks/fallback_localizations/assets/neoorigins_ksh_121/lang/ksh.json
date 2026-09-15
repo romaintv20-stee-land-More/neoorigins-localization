@@ -1,8 +1,8 @@
 {
-  "power.neoorigins.class_blacksmith_quality.description": "Equipment you hardware is superior — tools my rapid, arms happened plus for, armature is difficile, and all dure long.",
-  "power.neoorigins.class_cook_smoker_xp.description": "♫ Food cooked in a fumer or forn receptions extra nutrition.",
+  "power.neoorigins.class_blacksmith_quality.description": "Equipemente di Handwerke övverställe — Werkzeuge Mine schneller, Waffen schlagen härter, Rüstung ist härter, und alles hält länger.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Ääd, die in enem Räucher- oder Ofenkooche jekoovt wääde, kriijt öt zosätzlich näährt.",
   "neoorigins.configuration.title": "NeoOrigins Common Configuration",
   "reward.neoorigins.loot_pool": "NeoOrigins: Grant Loot Pool",
-  "reward.neoorigins.loot_pool.loot_table": "Loot Table",
-  "reward.neoorigins.loot_pool.rolls": "unit-format"
+  "reward.neoorigins.loot_pool.loot_table": "Loot Tabelle",
+  "reward.neoorigins.loot_pool.rolls": "Rolls"
 }

@@ -5,6 +5,7 @@ on:
     branches: [release/1.0.0-limburgish]
     paths:
       - scripts/refine_limburgish.py
+      - scripts/repair_limburgish_semantics.py
       - .github/workflows/refine-limburgish.yml
   workflow_dispatch:
 
@@ -59,8 +60,8 @@ jobs:
           python3 scripts/audit_origins_classes_extended_upstream.py
           python3 scripts/audit_origins_classes_iss_upstream.py
           python3 scripts/audit_origin_architect_upstream.py
-      - name: Refine Limburgish fallback files
-        run: python3 scripts/refine_limburgish.py
+      - name: Repair Limburgish semantic outliers
+        run: python3 scripts/repair_limburgish_semantics.py
       - name: Prune add-on keys already translated upstream
         run: |
           python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --prune
@@ -123,8 +124,8 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name 'li_li.json' -print0 | xargs -0 -r git add
-          if git diff --cached --quiet; then echo 'No Limburgish refinement changes to commit.'; exit 0; fi
-          git commit -m 'Refine Limburgish localization'
+          if git diff --cached --quiet; then echo 'No Limburgish semantic changes to commit.'; exit 0; fi
+          git commit -m 'Repair Limburgish semantic outliers'
           git fetch origin release/1.0.0-limburgish
           git rebase origin/release/1.0.0-limburgish
           git push origin HEAD:release/1.0.0-limburgish

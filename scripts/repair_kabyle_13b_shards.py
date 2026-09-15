@@ -51,6 +51,13 @@ KNOWN_BAD = {
     "NeoOrigins: Grant Loot Pool",
 }
 
+# The generic NLLB model leaves this short FTB Quests reward label unchanged.
+# Use an attested Kabyle rendering instead of accepting English UI text:
+# efk = give/grant, agraw = group, taɣawsa = object/thing.
+MANUAL_REPAIRS = {
+    "NeoOrigins: Grant Loot Pool": "NeoOrigins: Efk agraw n tɣawsiwin",
+}
+
 
 def read_json(path: Path) -> dict[str, str]:
     return json.loads(path.read_text(encoding="utf-8"))
@@ -71,7 +78,6 @@ def semantic_words(text: str) -> list[str]:
 def repetition_collapse(source_words: list[str], target_words: list[str]) -> bool:
     if len(target_words) < 8:
         return False
-    # Three identical words in a row is a model loop regardless of source wording.
     for index in range(len(target_words) - 2):
         if target_words[index] == target_words[index + 1] == target_words[index + 2]:
             return True
@@ -84,9 +90,6 @@ def repetition_collapse(source_words: list[str], target_words: list[str]) -> boo
     source_count = source_counts.most_common(1)[0][1] if source_counts else 0
     source_ratio = source_count / max(1, len(source_words))
     target_ratio = target_count / len(target_words)
-
-    # A repeated material name is legitimate when the English source itself
-    # repeats that material. Flag only a large increase beyond source repetition.
     return (
         target_count >= 6
         and target_count >= source_count + 5
@@ -192,7 +195,11 @@ def main() -> None:
     if suspects:
         translator = GenericKabyle()
         for index, (path, source, old, reason) in enumerate(suspects, 1):
-            new = translator.translate(source)
+            new = MANUAL_REPAIRS.get(source)
+            if new is None:
+                new = translator.translate(source)
+            else:
+                rk.validate_pair(source, new)
             remaining = issue(source, new)
             if remaining:
                 raise SystemExit(f"Kabyle fallback still fails ({remaining}; was {reason}): {source!r} -> {new!r}")

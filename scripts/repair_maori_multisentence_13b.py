@@ -17,6 +17,7 @@ import refine_maori_13b as core
 
 ASSETS = core.ASSETS
 SENTENCE_BOUNDARY_RE = re.compile(r"(?<=[.!?])\s+")
+COMMON_LABEL = "__common__"
 
 
 def sentence_count(text: str) -> int:
@@ -25,15 +26,21 @@ def sentence_count(text: str) -> int:
 
 def build_candidates():
     common, d121, d261, d262, addons, payloads, exact, translated, direct = core.build_pool()
-    source_maps = [common, d121, d261, d262, *addons.values()]
+    named_maps = [
+        (COMMON_LABEL, common),
+        ("neoorigins_mi_121", d121),
+        ("neoorigins_26_1", d261),
+        ("neoorigins_26_2", d262),
+        *addons.items(),
+    ]
     direct_set = set(direct)
     candidates = sorted({
         str(raw)
-        for source_map in source_maps
+        for _, source_map in named_maps
         for raw in source_map.values()
         if str(raw) in direct_set and sentence_count(str(raw)) >= 2
     })
-    return source_maps, candidates
+    return named_maps, candidates
 
 
 def safe_batch(mt: core.Translator, sources: list[str]) -> list[str]:
@@ -125,57 +132,70 @@ def collect_shards(directory: Path, candidates: list[str]) -> dict[str, str]:
     return combined
 
 
+def build_exact_occurrences(named_maps, data_by_path):
+    common_paths = [
+        path for path in data_by_path
+        if path.parent.parent.name.startswith("neoorigins_mi_common_")
+    ]
+    occurrences: dict[str, list[tuple[Path, str]]] = defaultdict(list)
+    for namespace, source_map in named_maps:
+        if namespace == COMMON_LABEL:
+            for key, raw in source_map.items():
+                locations = [path for path in common_paths if key in data_by_path[path]]
+                if len(locations) != 1:
+                    raise SystemExit(
+                        f"Expected one Māori common location for {key}, found {len(locations)}"
+                    )
+                occurrences[str(raw)].append((locations[0], key))
+            continue
+
+        path = ASSETS / namespace / "lang/mi_nz.json"
+        if path not in data_by_path:
+            raise SystemExit(f"Missing Māori namespace file for repair: {path}")
+        for key, raw in source_map.items():
+            if key not in data_by_path[path]:
+                raise SystemExit(f"Māori key {key} missing from expected namespace {namespace}")
+            occurrences[str(raw)].append((path, key))
+    return occurrences
+
+
 def apply_repairs(repairs: dict[str, str]) -> None:
     files = sorted(ASSETS.glob("**/lang/mi_nz.json"))
     if len(files) != 29:
         raise SystemExit(f"Expected 29 Māori files, found {len(files)}")
     data_by_path = {path: core.read_json(path) for path in files}
-    key_locations: dict[str, list[Path]] = defaultdict(list)
-    for path, data in data_by_path.items():
-        for key in data:
-            key_locations[key].append(path)
 
-    source_maps, candidates = build_candidates()
+    named_maps, candidates = build_candidates()
     if set(repairs) != set(candidates):
         raise SystemExit("Māori repair map does not exactly cover multi-sentence direct pool")
-    source_to_keys: dict[str, set[str]] = defaultdict(set)
-    for source_map in source_maps:
-        for key, raw in source_map.items():
-            source_to_keys[str(raw)].add(key)
+    occurrences = build_exact_occurrences(named_maps, data_by_path)
 
     touched_keys = 0
     touched_files: set[Path] = set()
     for source, value in repairs.items():
         core.validate_pair(source, value)
-        for key in source_to_keys[source]:
-            locations = key_locations.get(key, [])
-            if not locations:
-                raise SystemExit(f"Māori repair key not found in fallback files: {key}")
-            for path in locations:
-                if key in data_by_path[path]:
-                    data_by_path[path][key] = value
-                    touched_files.add(path)
-                    touched_keys += 1
+        exact_occurrences = occurrences.get(source, [])
+        if not exact_occurrences:
+            raise SystemExit(f"No exact Māori occurrence found for repaired source: {source!r}")
+        for path, key in exact_occurrences:
+            data_by_path[path][key] = value
+            touched_files.add(path)
+            touched_keys += 1
 
     for path in touched_files:
         core.write_json(path, data_by_path[path])
 
     after = {path: core.read_json(path) for path in files}
     for source, value in repairs.items():
-        found = False
-        for key in source_to_keys[source]:
-            for path in key_locations.get(key, []):
-                if after[path].get(key) == value:
-                    found = True
-                    break
-            if found:
-                break
-        if not found:
-            raise SystemExit(f"Māori repaired source missing after write: {source!r}")
+        for path, key in occurrences[source]:
+            if after[path].get(key) != value:
+                raise SystemExit(
+                    f"Māori repaired value missing at exact occurrence {path}:{key}"
+                )
 
     print(
         f"Māori sentence-complete repair passed: {len(repairs)} source strings; "
-        f"{touched_keys} key occurrences across {len(touched_files)} files",
+        f"{touched_keys} exact key occurrences across {len(touched_files)} files",
         flush=True,
     )
 

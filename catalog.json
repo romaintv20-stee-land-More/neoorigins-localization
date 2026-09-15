@@ -11,7 +11,7 @@
     ],
     "loader": "NeoForge",
     "localization_mode": "low_priority_fallback",
-    "supported_locale_count": 88,
+    "supported_locale_count": 89,
     "builds": {
       "1.21.1": {
         "version": "0.9.0-beta+1.21.1",
@@ -246,7 +246,9 @@
           "ido_common_glob": "neoorigins_io_common_*",
           "ido_mc_1_21_1": "neoorigins_io_121",
           "interslavic_common_glob": "neoorigins_isv_common_*",
-          "interslavic_mc_1_21_1": "neoorigins_isv_121"
+          "interslavic_mc_1_21_1": "neoorigins_isv_121",
+          "kabyle_common_glob": "neoorigins_kab_common_*",
+          "kabyle_mc_1_21_1": "neoorigins_kab_121"
         },
         "note": "NeoOrigins 2.2.26 est audité séparément sur les trois cibles. neoorigins_226 est commun aux trois builds ; neoorigins_26_1 est réservé à 26.1.x ; neoorigins_26_2 est réservé à 26.2. Les trois clés reward.neoorigins.loot_pool* restent dans les fallbacks complets pour 1.21.1 et sont inoffensives sur 26.x.",
         "baseline_audit_2_2_27": {
@@ -1076,6 +1078,15 @@
             "26.1.x",
             "26.2"
           ]
+        },
+        "kab_kab": {
+          "name": "Taqbaylit",
+          "status": "supported",
+          "targets": [
+            "1.21.1",
+            "26.1.x",
+            "26.2"
+          ]
         }
       }
     },
@@ -1611,6 +1622,12 @@
           "name": "Medžuslovjansky",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/isv.json",
+          "fallback_keys": 401
+        },
+        "kab_kab": {
+          "name": "Taqbaylit",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/kab_kab.json",
           "fallback_keys": 401
         }
       }
@@ -2151,6 +2168,12 @@
           "name": "Medžuslovjansky",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/isv.json",
+          "fallback_keys": 69
+        },
+        "kab_kab": {
+          "name": "Taqbaylit",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/kab_kab.json",
           "fallback_keys": 69
         }
       }
@@ -2694,6 +2717,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/isv.json",
           "fallback_keys": 240
+        },
+        "kab_kab": {
+          "name": "Taqbaylit",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/kab_kab.json",
+          "fallback_keys": 240
         }
       }
     },
@@ -3235,6 +3264,12 @@
           "name": "Medžuslovjansky",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/isv.json",
+          "fallback_keys": 65
+        },
+        "kab_kab": {
+          "name": "Taqbaylit",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/kab_kab.json",
           "fallback_keys": 65
         }
       }
@@ -3779,6 +3814,12 @@
           "name": "Medžuslovjansky",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/isv.json",
+          "fallback_keys": 39
+        },
+        "kab_kab": {
+          "name": "Taqbaylit",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/kab_kab.json",
           "fallback_keys": 39
         }
       }
@@ -4328,6 +4369,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/isv.json",
           "fallback_keys": 77
+        },
+        "kab_kab": {
+          "name": "Taqbaylit",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/kab_kab.json",
+          "fallback_keys": 77
         }
       }
     },
@@ -4873,6 +4920,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/isv.json",
           "fallback_keys": 117
+        },
+        "kab_kab": {
+          "name": "Taqbaylit",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/kab_kab.json",
+          "fallback_keys": 117
         }
       }
     },
@@ -5417,6 +5470,12 @@
           "name": "Medžuslovjansky",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/isv.json",
+          "fallback_keys": 124
+        },
+        "kab_kab": {
+          "name": "Taqbaylit",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/kab_kab.json",
           "fallback_keys": 124
         }
       }
@@ -5964,6 +6023,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/isv.json",
           "fallback_keys": 99
+        },
+        "kab_kab": {
+          "name": "Taqbaylit",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/kab_kab.json",
+          "fallback_keys": 99
         }
       }
     },
@@ -6508,6 +6573,12 @@
           "name": "Medžuslovjansky",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/isv.json",
+          "fallback_keys": 22
+        },
+        "kab_kab": {
+          "name": "Taqbaylit",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/kab_kab.json",
           "fallback_keys": 22
         }
       }

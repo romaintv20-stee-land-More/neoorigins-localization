@@ -1,21 +1,12 @@
 #!/usr/bin/env python3
-"""Repair rare semantic failures in specialized Kabyle 1.3B shard output.
-
-The specialized English->Kabyle model is the primary translator. This pass only
-retranslates outputs that show clear degeneration (repetition, unchanged English,
-English prose leakage, severe truncation, or malformed unknown-token artifacts),
-using the generic NLLB 1.3B Kabyle target. Multi-sentence/problematic strings are
-translated sentence-by-sentence so the fallback cannot silently drop later clauses.
-Placeholders and protected technical tokens are preserved exactly. This is
-automated translation assistance, not native-speaker review.
-"""
+"""Repair high-confidence semantic failures in specialized Kabyle 1.3B shards."""
 from __future__ import annotations
 
 import argparse
+from collections import Counter
 import json
 from pathlib import Path
 import re
-from collections import Counter
 
 import torch
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
@@ -25,19 +16,18 @@ import refine_kabyle as rk
 MODEL_ID = "facebook/nllb-200-distilled-1.3B"
 SOURCE_LANG = "eng_Latn"
 TARGET_LANG = "kab_Latn"
-WORD_RE = re.compile(r"[A-Za-zÀ-ÖØ-öø-ÿĀ-žƀ-ɏ']+")
+# Unicode-aware: this keeps Kabyle letters such as ḥ, ṛ and ẓ inside words.
+WORD_RE = re.compile(r"[^\W\d_]+(?:['’-][^\W\d_]+)?", re.UNICODE)
 SENTENCE_RE = re.compile(r"(?<=[.!?])\s+")
-SUSPICIOUS_UNKNOWN_RE = re.compile(
-    r"(?:^|[\s>+\-•])\?[A-Za-zÀ-ÖØ-öø-ÿĀ-žƀ-ɏ]", re.MULTILINE
-)
-ENGLISH_FUNCTION_WORDS = {
+UNKNOWN_RE = re.compile(r"(?:^|[\s>+\-•])\?[^\W\d_]", re.MULTILINE | re.UNICODE)
+ENGLISH = {
     "a", "an", "the", "and", "or", "but", "your", "you", "yours", "with",
     "without", "while", "when", "where", "who", "which", "that", "this",
     "these", "those", "into", "through", "from", "for", "of", "to", "in",
     "on", "at", "by", "other", "still", "can", "cannot", "will", "not",
     "is", "are", "was", "were", "be", "being", "been", "it", "its",
 }
-KNOWN_BAD_SOURCES = {
+KNOWN_BAD = {
     "Can eat cobblestone, stone, granite, diorite, andesite, tuff, deepslate, cobbled deepslate, basalt, and blackstone for modest nutrition. Won't go down on a full stomach.",
     "Spawn with an Efficiency I stone pickaxe.",
     "Immune to Regeneration, Instant Health, and Poison. Other potion effects still apply.",
@@ -56,69 +46,36 @@ def write_json(path: Path, data: dict[str, str]) -> None:
 
 
 def words(text: str) -> list[str]:
-    return [w.casefold() for w in WORD_RE.findall(text)]
+    return [word.casefold() for word in WORD_RE.findall(text)]
 
 
-def repetition_collapse(text: str) -> bool:
-    ws = words(text)
-    if len(ws) < 8:
-        return False
-    for i in range(len(ws) - 2):
-        if ws[i] == ws[i + 1] == ws[i + 2]:
-            return True
-    counts = Counter(w for w in ws if len(w) >= 4)
-    if not counts:
-        return False
-    _, top = counts.most_common(1)[0]
-    return top >= 6 and top / len(ws) >= 0.20
-
-
-def english_leakage(text: str) -> bool:
-    ws = words(text)
-    if len(ws) < 5:
-        return False
-    hits = sum(w in ENGLISH_FUNCTION_WORDS for w in ws)
-    return hits >= 3 and hits / len(ws) >= 0.12
-
-
-def source_english_overlap(source: str, translated: str) -> bool:
-    source_signals = [w for w in words(source) if w in ENGLISH_FUNCTION_WORDS]
-    if len(source_signals) < 4:
-        return False
-    translated_words = set(words(translated))
-    overlap = sum(1 for w in source_signals if w in translated_words)
-    return overlap >= 4 and overlap / len(source_signals) >= 0.50
-
-
-def severe_length_collapse(source: str, translated: str) -> bool:
-    source_words = words(source)
-    translated_words = words(translated)
-    return (
-        len(source_words) >= 18
-        and len(translated_words) <= max(4, int(len(source_words) * 0.32))
-    )
-
-
-def malformed_unknown_artifact(text: str) -> bool:
-    return bool(SUSPICIOUS_UNKNOWN_RE.search(text))
-
-
-def suspicious(source: str, translated: str) -> bool:
-    if source in KNOWN_BAD_SOURCES:
-        return True
-    if repetition_collapse(translated):
-        return True
-    sw = words(source)
-    tw = words(translated)
+def issue(source: str, translated: str) -> str | None:
+    sw, tw = words(source), words(translated)
     if len(sw) >= 4 and sw == tw:
-        return True
-    if english_leakage(translated) or source_english_overlap(source, translated):
-        return True
-    if severe_length_collapse(source, translated):
-        return True
-    if malformed_unknown_artifact(translated):
-        return True
-    return False
+        return "unchanged English"
+    if len(tw) >= 8:
+        for index in range(len(tw) - 2):
+            if tw[index] == tw[index + 1] == tw[index + 2]:
+                return "repetition collapse"
+        counts = Counter(word for word in tw if len(word) >= 4)
+        if counts:
+            _, count = counts.most_common(1)[0]
+            if count >= 6 and count / len(tw) >= 0.20:
+                return "repetition collapse"
+    english_hits = sum(word in ENGLISH for word in tw)
+    if len(tw) >= 5 and english_hits >= 3 and english_hits / len(tw) >= 0.12:
+        return "English grammar leakage"
+    source_signals = [word for word in sw if word in ENGLISH]
+    if len(source_signals) >= 4:
+        target = set(tw)
+        overlap = sum(word in target for word in source_signals)
+        if overlap >= 4 and overlap / len(source_signals) >= 0.50:
+            return "large English prose overlap"
+    if len(sw) >= 18 and len(tw) <= max(4, int(len(sw) * 0.32)):
+        return "severe truncation"
+    if UNKNOWN_RE.search(translated):
+        return "unknown-token artifact"
+    return None
 
 
 class GenericKabyle:
@@ -132,109 +89,78 @@ class GenericKabyle:
             raise SystemExit(f"Missing target token {TARGET_LANG}")
 
     def batch(self, texts: list[str]) -> list[str]:
-        if not texts:
-            return []
         encoded = self.tokenizer(texts, return_tensors="pt", padding=True, truncation=True, max_length=512)
         with torch.inference_mode():
             generated = self.model.generate(
-                **encoded,
-                forced_bos_token_id=self.target_id,
-                num_beams=4,
-                max_new_tokens=512,
-                early_stopping=True,
+                **encoded, forced_bos_token_id=self.target_id,
+                num_beams=4, max_new_tokens=512, early_stopping=True,
             )
-        return [x.strip() for x in self.tokenizer.batch_decode(generated, skip_special_tokens=True)]
+        return [text.strip() for text in self.tokenizer.batch_decode(generated, skip_special_tokens=True)]
 
-    def translate_piece(self, piece: str) -> str:
-        alpha = [i for i, ch in enumerate(piece) if ch.isalpha()]
+    def piece(self, text: str) -> str:
+        alpha = [i for i, char in enumerate(text) if char.isalpha()]
         if not alpha:
-            return piece
-        prefix = piece[:alpha[0]]
-        core = piece[alpha[0]:alpha[-1] + 1]
-        suffix = piece[alpha[-1] + 1:]
-        clauses = [c for c in SENTENCE_RE.split(core) if c]
-        outputs = self.batch(clauses)
-        if len(outputs) != len(clauses):
-            raise SystemExit("Generic Kabyle fallback returned wrong clause count")
-        return prefix + " ".join(outputs) + suffix
+            return text
+        prefix, core, suffix = text[:alpha[0]], text[alpha[0]:alpha[-1] + 1], text[alpha[-1] + 1:]
+        clauses = [part for part in SENTENCE_RE.split(core) if part]
+        return prefix + " ".join(self.batch(clauses)) + suffix
 
-    def structural(self, source: str) -> str:
+    def translate(self, source: str) -> str:
         pieces = rk.PROTECT_RE.split(source)
         tokens = rk.PROTECT_RE.findall(source)
         out: list[str] = []
-        for i, piece in enumerate(pieces):
-            out.append(self.translate_piece(piece))
-            if i < len(tokens):
-                out.append(tokens[i])
-        return "".join(out)
-
-
-def validate_repaired(source: str, translated: str) -> None:
-    rk.validate_pair(source, translated)
-    if repetition_collapse(translated):
-        raise SystemExit(f"Kabyle fallback still collapsed into repetition: {source!r} -> {translated!r}")
-    if english_leakage(translated) or source_english_overlap(source, translated):
-        raise SystemExit(f"Kabyle fallback still contains excessive English prose: {source!r} -> {translated!r}")
-    if len(words(source)) >= 4 and words(source) == words(translated):
-        raise SystemExit(f"Kabyle fallback remained unchanged English: {source!r}")
-    if severe_length_collapse(source, translated):
-        raise SystemExit(f"Kabyle fallback is severely truncated: {source!r} -> {translated!r}")
-    if malformed_unknown_artifact(translated):
-        raise SystemExit(f"Kabyle fallback contains malformed unknown-token artifact: {source!r} -> {translated!r}")
+        for index, piece in enumerate(pieces):
+            out.append(self.piece(piece))
+            if index < len(tokens):
+                out.append(tokens[index])
+        translated = "".join(out)
+        rk.validate_pair(source, translated)
+        return translated
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("directory", type=Path)
-    args = parser.parse_args()
-    files = sorted(args.directory.glob("*.json"))
+    directory = parser.parse_args().directory
+    files = sorted(directory.glob("*.json"))
     if not files:
-        raise SystemExit(f"No shard JSON files in {args.directory}")
+        raise SystemExit(f"No shard JSON files in {directory}")
 
-    payloads = {p: read_json(p) for p in files}
-    suspects: list[tuple[Path, str, str]] = []
+    payloads = {path: read_json(path) for path in files}
+    suspects: list[tuple[Path, str, str, str]] = []
     for path, payload in payloads.items():
         for source, translated in payload.items():
-            if suspicious(source, translated):
-                suspects.append((path, source, translated))
+            rk.validate_pair(source, translated)
+            reason = issue(source, translated)
+            if source in KNOWN_BAD or reason:
+                suspects.append((path, source, translated, reason or "known bad source"))
 
     total = sum(len(payload) for payload in payloads.values())
-    print(f"Kabyle strict semantic repair scan: {total} shard strings, {len(suspects)} suspect outputs.", flush=True)
-    if not suspects:
-        return
+    print(f"Kabyle strict semantic scan: {total} strings, {len(suspects)} suspects.", flush=True)
+    if suspects:
+        translator = GenericKabyle()
+        for index, (path, source, old, reason) in enumerate(suspects, 1):
+            new = translator.translate(source)
+            remaining = issue(source, new)
+            if remaining:
+                raise SystemExit(f"Kabyle fallback still fails ({remaining}; was {reason}): {source!r} -> {new!r}")
+            if new == old:
+                raise SystemExit(f"Kabyle repair made no change for suspect: {source!r}")
+            payloads[path][source] = new
+            print(f"Repaired Kabyle outlier {index}/{len(suspects)}: {reason}: {source[:90]!r}", flush=True)
+        for path, payload in payloads.items():
+            write_json(path, payload)
 
-    translator = GenericKabyle()
-    repaired = 0
-    for path, source, old in suspects:
-        new = translator.structural(source)
-        validate_repaired(source, new)
-        if new == old:
-            raise SystemExit(f"Kabyle semantic fallback made no change for suspect source: {source!r}")
-        payloads[path][source] = new
-        repaired += 1
-        print(f"Repaired Kabyle semantic outlier {repaired}/{len(suspects)}: {source[:90]!r}", flush=True)
-
-    for path, payload in payloads.items():
-        write_json(path, payload)
-
-    remaining: list[str] = []
+    remaining = []
     for payload in payloads.values():
         for source, translated in payload.items():
-            sw = words(source)
-            tw = words(translated)
-            if repetition_collapse(translated) or english_leakage(translated):
-                remaining.append(source)
-            elif source_english_overlap(source, translated):
-                remaining.append(source)
-            elif len(sw) >= 4 and sw == tw:
-                remaining.append(source)
-            elif severe_length_collapse(source, translated):
-                remaining.append(source)
-            elif malformed_unknown_artifact(translated):
-                remaining.append(source)
+            rk.validate_pair(source, translated)
+            reason = issue(source, translated)
+            if reason:
+                remaining.append((source, reason))
     if remaining:
-        raise SystemExit(f"Kabyle strict semantic repair left {len(remaining)} suspect outputs; samples={remaining[:5]!r}")
-    print(f"Kabyle strict semantic repair passed: repaired {repaired} outliers and final shard scan is clean.", flush=True)
+        raise SystemExit(f"Kabyle strict semantic scan left {len(remaining)} suspects; samples={remaining[:5]!r}")
+    print("Kabyle strict semantic repair passed.", flush=True)
 
 
 if __name__ == "__main__":

@@ -70,7 +70,7 @@ def finalize_catalog_json() -> None:
     neo = next(project for project in data["supported_projects"] if project["id"] == "neoorigins")
     namespaces = neo["compatibility"]["fallback_namespaces"]
     namespaces["limburgish_common_glob"] = "neoorigins_li_common_*"
-    namespaces["limburgish_mc_1_21_1"] = "neoorigins_121_batch1"
+    namespaces["limburgish_mc_1_21_1"] = "neoorigins_li_121"
 
     ensured = ensure_limburgish_catalog_entries(data)
     if ensured != 11:

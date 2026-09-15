@@ -26,8 +26,13 @@ SOURCE_LANG = "eng_Latn"
 TARGET_LANG = "kab_Latn"
 PROTECT_RE = re.compile(
     r"%(?:\d+\$)?[sdif]|§.|\\n|\n|\{[^{}]+\}|<[^<>]+>|"
-    r"\b(?:NeoOrigins|Origin Architect|HUD|JSON|XP|HP|NeoForge|Minecraft|CurseForge)\b"
+    r"\b(?:NeoOrigins|Origin Architect|HUD|JSON|XP|HP|NeoForge|Minecraft|CurseForge)\b",
+    re.IGNORECASE,
 )
+TECHNICAL_CASEFOLD = {
+    "neoorigins", "origin architect", "hud", "json", "xp", "hp",
+    "neoforge", "minecraft", "curseforge",
+}
 SUSPICIOUS_UNKNOWN_RE = re.compile(r"(?:^|[\s>+\-•])\?[A-Za-zÀ-ÖØ-öø-ÿĀ-žƀ-ɏ]", re.MULTILINE)
 
 
@@ -41,7 +46,10 @@ def write_json(path: Path, data: dict[str, str]) -> None:
 
 
 def protected_signature(text: str) -> list[str]:
-    return PROTECT_RE.findall(text)
+    return [
+        token.casefold() if token.casefold() in TECHNICAL_CASEFOLD else token
+        for token in PROTECT_RE.findall(text)
+    ]
 
 
 def build_sources():
@@ -91,7 +99,9 @@ def build_pool():
     translated_by_source: dict[str, str] = {}
     direct_sources: list[str] = []
     for source in unique_sources:
-        if source in base.MANUAL_VALUES:
+        if source == "":
+            translated_by_source[source] = ""
+        elif source in base.MANUAL_VALUES:
             translated_by_source[source] = base.MANUAL_VALUES[source]
         elif source in exact:
             translated_by_source[source] = exact[source]
@@ -176,6 +186,8 @@ class KabyleTranslator:
 
 
 def validate_pair(source: str, translated: str) -> None:
+    if source == "" and translated == "":
+        return
     if not translated.strip():
         raise SystemExit(f"Empty Kabyle translation for {source!r}")
     if base.placeholder_signature(source) != base.placeholder_signature(translated):

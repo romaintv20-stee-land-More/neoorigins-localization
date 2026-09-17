@@ -4,9 +4,9 @@
 
 | Cible | Version du mod | Java | Contenu inclus | Validation en jeu |
 |---|---|---:|---|---|
-| 1.21.1 | `0.8.0-beta+1.21.1` | 21 | neoorigins, medievalorigins, ibarnorigins, origins_fantasy, origins_backgrounds, origins_backgrounds_two, origins_backgrounds_iss, origins_furries, origins_classes_ex, origins_classes_iss, originsmodernui | Non |
-| 26.1.x | `0.8.0-beta+26.1` | 25 | neoorigins | Non |
-| 26.2 | `0.8.0-beta+26.2` | 25 | neoorigins | Non |
+| 1.21.1 | `1.1.0+1.21.1` | 21 | neoorigins, medievalorigins, ibarnorigins, origins_fantasy, origins_backgrounds, origins_backgrounds_two, origins_backgrounds_iss, origins_furries, origins_classes_ex, origins_classes_iss, originsmodernui, pathfinder_origins | Non |
+| 26.1.x | `1.1.0+26.1` | 25 | neoorigins | Non |
+| 26.2 | `1.1.0+26.2` | 25 | neoorigins | Non |
 
 ## Projets et langues
 
@@ -23,9 +23,11 @@
 | [Origins: Classes Extended for NeoOrigins](https://www.curseforge.com/minecraft/mc-mods/origins-classes-extended-for-neoorigins) | DraconicArcher | 1.21.1 | Français (`fr_fr`) · Deutsch (`de_de`) · Español (`es_es`) · Português (Brasil) (`pt_br`) · Nederlands (`nl_nl`) · Italiano (`it_it`) · Polski (`pl_pl`) · Русский (`ru_ru`) · Türkçe (`tr_tr`) · 简体中文 (`zh_cn`) · Čeština (`cs_cz`) · Magyar (`hu_hu`) |
 | [Origins: Classes ISS for NeoOrigins](https://www.curseforge.com/minecraft/mc-mods/origins-classes-iss-for-neoorigins) | DraconicArcher | 1.21.1 | Français (`fr_fr`) · Deutsch (`de_de`) · Español (`es_es`) · Português (Brasil) (`pt_br`) · Nederlands (`nl_nl`) · Italiano (`it_it`) · Polski (`pl_pl`) · Русский (`ru_ru`) · Türkçe (`tr_tr`) · 简体中文 (`zh_cn`) · Čeština (`cs_cz`) · Magyar (`hu_hu`) |
 | [Origin Architect (NeoOrigins Addon)](https://www.curseforge.com/minecraft/mc-mods/origin-architect) | reotpak | 1.21.1 | Français (`fr_fr`) · Deutsch (`de_de`) · Español (`es_es`) · Português (Brasil) (`pt_br`) · Nederlands (`nl_nl`) · Italiano (`it_it`) · Polski (`pl_pl`) · Русский (`ru_ru`) · Türkçe (`tr_tr`) · 简体中文 (`zh_cn`) · Čeština (`cs_cz`) · Magyar (`hu_hu`) |
+| [Pathfinder Origins](https://modrinth.com/datapack/pathfinder-origins) | Rabenwacht | 0.4.0 / Minecraft 1.21-1.21.1 | Français (`fr_fr`) · Deutsch (`de_de`) · Español (`es_es`) · Português (Brasil) (`pt_br`) · Nederlands (`nl_nl`) · Italiano (`it_it`) · Polski (`pl_pl`) · Русский (`ru_ru`) · Türkçe (`tr_tr`) · 简体中文 (`zh_cn`) · Čeština (`cs_cz`) · Magyar (`hu_hu`) |
 
 ## Notes
 
+- Pathfinder Origins est épinglé sur **0.4.0** (Modrinth `AePOxNR3`, projet `mRfkB5cb`). Son namespace est `pathfinder_origins` et l'audit couvre **406/406 chaînes** dans chacune des 12 langues ciblées.
 - Les douze langues ciblées sont : `fr_fr`, `de_de`, `es_es`, `pt_br`, `nl_nl`, `it_it`, `pl_pl`, `ru_ru`, `tr_tr`, `zh_cn`, `cs_cz` et `hu_hu`.
 - La couverture NeoOrigins est épinglée sur **2.2.26** : `860ecdb24e723983e93004ea8ceb5de90ccf0d70` (1.21.1), `3c1c7365507679c836d3c14af5d4dd0654652e87` (26.1.x) et `65864716a5a796fa1c51ec3e8a6d9640abebb4ca` (26.2).
 - Les builds 26.x n'embarquent actuellement que les traductions NeoOrigins.

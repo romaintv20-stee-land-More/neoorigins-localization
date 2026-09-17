@@ -1,10 +1,10 @@
-# Plan de test 0.8.0 Beta
+# Plan de test 1.1.0
 
 ## Matrice de validation
 
 | Cible | Java | Référence NeoOrigins 2.2.26 | Contenu du build | État automatisé |
 |---|---:|---|---|---|
-| Minecraft 1.21.1 | 21 | `860ecdb24e723983e93004ea8ceb5de90ccf0d70` | NeoOrigins + tous les add-ons 1.21.1 pris en charge | CI, audits et build validés |
+| Minecraft 1.21.1 | 21 | `860ecdb24e723983e93004ea8ceb5de90ccf0d70` | NeoOrigins + tous les add-ons 1.21.1 pris en charge | À revalider pour 1.1.0 |
 | Minecraft 26.1 / 26.1.1 / 26.1.2 | 25 | `3c1c7365507679c836d3c14af5d4dd0654652e87` | NeoOrigins uniquement + delta 26.1 | CI, audit et build validés |
 | Minecraft 26.2 | 25 | `65864716a5a796fa1c51ec3e8a6d9640abebb4ca` | NeoOrigins uniquement + delta 26.2 | CI, audit et build validés |
 
@@ -12,9 +12,9 @@ La couverture garantie de cette version est basée sur NeoOrigins **2.2.26**. Le
 
 ## Langues
 
-Les trois builds doivent proposer NeoOrigins dans les onze locales suivantes :
+Les trois builds doivent proposer NeoOrigins dans les douze locales suivantes :
 
-`fr_fr`, `de_de`, `es_es`, `pt_br`, `nl_nl`, `it_it`, `pl_pl`, `ru_ru`, `tr_tr`, `zh_cn`, `cs_cz`.
+`fr_fr`, `de_de`, `es_es`, `pt_br`, `nl_nl`, `it_it`, `pl_pl`, `ru_ru`, `tr_tr`, `zh_cn`, `cs_cz`, `hu_hu`.
 
 Pour chaque langue contrôlée en jeu, vérifier au minimum :
 
@@ -62,6 +62,7 @@ Tous les projets ci-dessous doivent être absents des builds 26.x et audités un
 | Origins: Classes Extended for NeoOrigins | 1.0.1 | 124/124 |
 | Origins: Classes ISS for NeoOrigins | 1.0.1 | 99/99 |
 | Origin Architect | 3.0.1 / `f58a6261292942d4123c46ff221fbdade138a329` | 22/22 |
+| Pathfinder Origins | 0.4.0 / Modrinth `AePOxNR3` | 406/406 dans les 12 langues |
 
 ### Tests en jeu conseillés
 
@@ -73,6 +74,7 @@ Tous les projets ci-dessous doivent être absents des builds 26.x et audités un
 - **Classes Extended** : contrôler au moins deux classes et plusieurs pouvoirs.
 - **Classes ISS** : contrôler au moins deux classes, avec Iron's Spells 'n Spellbooks installé.
 - **Origin Architect** : contrôler l'écran de sélection, le profil et les réglages HUD.
+- **Pathfinder Origins** : avec NeoOrigins et Iron's Spells 'n Spellbooks, contrôler une race, un héritage, une classe, un background et une divinité ; vérifier aussi une description longue.
 
 ## Priorité du fallback
 
@@ -102,7 +104,8 @@ Le JAR doit inclure les namespaces suivants :
 - `origins_furries/**` ;
 - `origins_classes_ex/**` ;
 - `origins_classes_iss/**` ;
-- `originsmodernui/**`.
+- `originsmodernui/**`;
+- `pathfinder_origins/**`.
 
 Les deltas `neoorigins_26_1/**` et `neoorigins_26_2/**` doivent être absents.
 
@@ -148,9 +151,9 @@ Un serveur ne doit pas avoir besoin d'installer NeoOrigins Localization pour qu'
 
 Chaque cible doit passer :
 
-1. l'audit NeoOrigins de toutes les onze langues ;
+1. l'audit NeoOrigins de toutes les douze langues ;
 2. `python3 scripts/validate.py` ;
 3. la compilation avec la version Java correspondante ;
 4. la génération et l'upload du JAR.
 
-Sur Minecraft 1.21.1, la CI doit en plus réussir les audits dédiés de **tous les add-ons pris en charge** : Medieval Origins Revival, ibarn, Origins Fantasy, Backgrounds, More Backgrounds, Backgrounds ISS, Furries, Classes Extended, Classes ISS et Origin Architect, avec zéro overlap officiel, zéro clé nécessaire manquante et zéro erreur de placeholder.
+Sur Minecraft 1.21.1, la CI doit en plus réussir les audits dédiés de tous les add-ons pris en charge, y compris Pathfinder Origins 0.4.0 avec zéro chaîne manquante, zéro clé obsolète et zéro erreur de placeholder.

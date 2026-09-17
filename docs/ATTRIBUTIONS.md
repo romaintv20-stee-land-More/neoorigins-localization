@@ -153,4 +153,18 @@ La notice MIT du projet amont doit être conservée lorsque des portions substan
 - Priorité amont : si une traduction officielle apparaît ensuite pour une langue ciblée, elle doit garder la priorité et les clés correspondantes de notre fallback doivent être retirées.
 - Le mod original reste requis pour utiliser ces traductions ; l'intégration est limitée au build Minecraft 1.21.1.
 
+## Pathfinder Origins
+
+- Projet : Pathfinder Origins
+- Auteur : Rabenwacht
+- Modrinth : https://modrinth.com/datapack/pathfinder-origins
+- Project ID Modrinth : `mRfkB5cb`
+- Version ciblée : `0.4.0` (version ID `AePOxNR3`) pour Minecraft 1.21-1.21.1
+- Namespace : `pathfinder_origins`
+- Licence amont : MIT
+- Dépendances amont : NeoOrigins et Iron's Spells 'n Spellbooks.
+- Utilisation ici : traductions complémentaires des champs `name` et `description` du datapack/mod. NeoOrigins interprète les chaînes primitives de ces champs comme des composants traduisibles ; l'audit 0.4.0 détecte 406 chaînes uniques.
+- Modifications : traduction et adaptation linguistique uniquement.
+- Limite de redistribution : le datapack/mod original reste requis ; NeoOrigins Localization ne redistribue pas les données de gameplay, textures, modèles ou code de Pathfinder Origins.
+
 Aucune attribution ne signifie que les auteurs amont approuvent ou sponsorisent NeoOrigins Localization au-delà des autorisations explicitement mentionnées ci-dessus.

@@ -14,7 +14,7 @@
     "supported_locale_count": 91,
     "builds": {
       "1.21.1": {
-        "version": "1.0.0+1.21.1",
+        "version": "1.1.0+1.21.1",
         "java": 21,
         "in_game_tested": false,
         "included_projects": [
@@ -28,7 +28,8 @@
           "origins_furries",
           "origins_classes_ex",
           "origins_classes_iss",
-          "originsmodernui"
+          "originsmodernui",
+          "pathfinder_origins"
         ]
       },
       "26.1.x": {
@@ -37,7 +38,7 @@
           "26.1.1",
           "26.1.2"
         ],
-        "version": "1.0.0+26.1",
+        "version": "1.1.0+26.1",
         "java": 25,
         "in_game_tested": false,
         "included_projects": [
@@ -45,7 +46,7 @@
         ]
       },
       "26.2": {
-        "version": "1.0.0+26.2",
+        "version": "1.1.0+26.2",
         "java": 25,
         "in_game_tested": false,
         "included_projects": [
@@ -6725,6 +6726,96 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/li_li.json",
           "fallback_keys": 22
+        }
+      }
+    },
+    {
+      "id": "pathfinder_origins",
+      "name": "Pathfinder Origins",
+      "author": "Rabenwacht",
+      "namespace": "pathfinder_origins",
+      "modrinth": "https://modrinth.com/datapack/pathfinder-origins",
+      "license": {
+        "code_and_content": "MIT",
+        "attribution_required": true
+      },
+      "compatibility": {
+        "method": "NeoOrigins originpacks import / NeoForge mod",
+        "version": "0.4.0 / Minecraft 1.21-1.21.1",
+        "minecraft": [
+          "1.21.1"
+        ],
+        "modrinth_project_id": "mRfkB5cb",
+        "modrinth_version_id": "AePOxNR3",
+        "in_game_validation": "pending",
+        "integration_status": "supported",
+        "note": "Pathfinder Origins 0.4.0 stores display text directly in name/description fields; NeoOrigins resolves primitive strings as translatable components. Pathfinder fallback coverage is currently 406/406 strings in 12 locales; the existing NeoOrigins Localization 1.0.0 coverage remains available in 91 locales."
+      },
+      "coverage": {
+        "source_keys": 406,
+        "source_occurrences": 503,
+        "fallback_keys_per_locale": 406
+      },
+      "languages": {
+        "fr_fr": {
+          "name": "Français",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/pathfinder_origins/lang/fr_fr.json"
+        },
+        "de_de": {
+          "name": "Deutsch",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/pathfinder_origins/lang/de_de.json"
+        },
+        "es_es": {
+          "name": "Español",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/pathfinder_origins/lang/es_es.json"
+        },
+        "pt_br": {
+          "name": "Português (Brasil)",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/pathfinder_origins/lang/pt_br.json"
+        },
+        "nl_nl": {
+          "name": "Nederlands",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/pathfinder_origins/lang/nl_nl.json"
+        },
+        "it_it": {
+          "name": "Italiano",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/pathfinder_origins/lang/it_it.json"
+        },
+        "pl_pl": {
+          "name": "Polski",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/pathfinder_origins/lang/pl_pl.json"
+        },
+        "ru_ru": {
+          "name": "Русский",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/pathfinder_origins/lang/ru_ru.json"
+        },
+        "tr_tr": {
+          "name": "Türkçe",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/pathfinder_origins/lang/tr_tr.json"
+        },
+        "zh_cn": {
+          "name": "简体中文",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/pathfinder_origins/lang/zh_cn.json"
+        },
+        "cs_cz": {
+          "name": "Čeština",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/pathfinder_origins/lang/cs_cz.json"
+        },
+        "hu_hu": {
+          "name": "Magyar",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/pathfinder_origins/lang/hu_hu.json"
         }
       }
     }

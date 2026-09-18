@@ -12,9 +12,9 @@ La couverture garantie de cette version est basée sur NeoOrigins **2.2.27**. Le
 
 ## Langues
 
-Les trois builds doivent conserver les **91 locales** de NeoOrigins Localization 1.0.0. Pathfinder Origins est actuellement couvert dans 12 locales :
+Les trois builds doivent conserver les **92 locales** de NeoOrigins Localization. Pathfinder Origins est actuellement couvert dans 13 locales :
 
-`fr_fr`, `de_de`, `es_es`, `pt_br`, `nl_nl`, `it_it`, `pl_pl`, `ru_ru`, `tr_tr`, `zh_cn`, `cs_cz`, `hu_hu`.
+`fr_fr`, `de_de`, `es_es`, `pt_br`, `nl_nl`, `it_it`, `pl_pl`, `ru_ru`, `tr_tr`, `zh_cn`, `cs_cz`, `hu_hu`, `nds_de`.
 
 Pour chaque langue contrôlée en jeu, vérifier au minimum :
 
@@ -71,7 +71,7 @@ Tous les projets ci-dessous doivent être absents des builds 26.x et audités un
 | Origins: Classes Extended for NeoOrigins | 1.0.1 | 124/124 |
 | Origins: Classes ISS for NeoOrigins | 1.0.1 | 99/99 |
 | Origin Architect | 3.0.1 / `f58a6261292942d4123c46ff221fbdade138a329` | 22/22 |
-| Pathfinder Origins | 0.4.0 / Modrinth `AePOxNR3` | 406/406 dans les 12 langues |
+| Pathfinder Origins | 0.4.0 / Modrinth `AePOxNR3` | 406/406 dans les 13 langues |
 
 ### Tests en jeu conseillés
 
@@ -160,7 +160,7 @@ Un serveur ne doit pas avoir besoin d'installer NeoOrigins Localization pour qu'
 
 Chaque cible doit passer :
 
-1. l'audit NeoOrigins des locales couvertes par la CI, sans réduire les 91 locales empaquetées ;
+1. l'audit NeoOrigins des locales couvertes par la CI, sans réduire les 92 locales empaquetées ;
 2. `python3 scripts/validate.py` ;
 3. la compilation avec la version Java correspondante ;
 4. la génération et l'upload du JAR.

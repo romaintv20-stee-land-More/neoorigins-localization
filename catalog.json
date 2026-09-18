@@ -11,7 +11,7 @@
     ],
     "loader": "NeoForge",
     "localization_mode": "low_priority_fallback",
-    "supported_locale_count": 91,
+    "supported_locale_count": 92,
     "builds": {
       "1.21.1": {
         "version": "1.1.0+1.21.1",
@@ -288,7 +288,7 @@
             }
           }
         },
-        "coverage_note": "NeoOrigins 2.2.27 has the same en_us localization payload as 2.2.26 on all three targets. Historical gaps in it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz and hu_hu were recovered before language 59. All 85 currently supported locales are complete against 2.2.27 on their target builds.",
+        "coverage_note": "NeoOrigins 2.2.27 has the same en_us localization payload as 2.2.26 on all three targets. Historical gaps in it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz and hu_hu were recovered before language 59. All 92 currently supported locales are complete against 2.2.27 on their target builds.",
         "legacy_gap_recovery_completed": true
       },
       "languages": {
@@ -1110,6 +1110,15 @@
             "26.1.x",
             "26.2"
           ]
+        },
+        "nds_de": {
+          "name": "Plattdüütsch",
+          "status": "supported",
+          "targets": [
+            "1.21.1",
+            "26.1.x",
+            "26.2"
+          ]
         }
       }
     },
@@ -1663,6 +1672,12 @@
           "name": "Limburgs",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/li_li.json",
+          "fallback_keys": 401
+        },
+        "nds_de": {
+          "name": "Plattdüütsch",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/nds_de.json",
           "fallback_keys": 401
         }
       }
@@ -2221,6 +2236,12 @@
           "name": "Limburgs",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/li_li.json",
+          "fallback_keys": 69
+        },
+        "nds_de": {
+          "name": "Plattdüütsch",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/nds_de.json",
           "fallback_keys": 69
         }
       }
@@ -2781,6 +2802,12 @@
           "name": "Limburgs",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/li_li.json",
+          "fallback_keys": 240
+        },
+        "nds_de": {
+          "name": "Plattdüütsch",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/nds_de.json",
           "fallback_keys": 240
         }
       }
@@ -3343,6 +3370,12 @@
           "name": "Limburgs",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/li_li.json",
+          "fallback_keys": 65
+        },
+        "nds_de": {
+          "name": "Plattdüütsch",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/nds_de.json",
           "fallback_keys": 65
         }
       }
@@ -3907,6 +3940,11 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/li_li.json",
           "fallback_keys": 39
+        },
+        "nds_de": {
+          "name": "Plattdüütsch",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/nds_de.json"
         }
       }
     },
@@ -4473,6 +4511,11 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/li_li.json",
           "fallback_keys": 77
+        },
+        "nds_de": {
+          "name": "Plattdüütsch",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/nds_de.json"
         }
       }
     },
@@ -5036,6 +5079,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/li_li.json",
           "fallback_keys": 117
+        },
+        "nds_de": {
+          "name": "Plattdüütsch",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/nds_de.json",
+          "fallback_keys": 117
         }
       }
     },
@@ -5598,6 +5647,12 @@
           "name": "Limburgs",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/li_li.json",
+          "fallback_keys": 124
+        },
+        "nds_de": {
+          "name": "Plattdüütsch",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/nds_de.json",
           "fallback_keys": 124
         }
       }
@@ -6163,6 +6218,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/li_li.json",
           "fallback_keys": 99
+        },
+        "nds_de": {
+          "name": "Plattdüütsch",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/nds_de.json",
+          "fallback_keys": 99
         }
       }
     },
@@ -6726,6 +6787,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/li_li.json",
           "fallback_keys": 22
+        },
+        "nds_de": {
+          "name": "Plattdüütsch",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/nds_de.json",
+          "fallback_keys": 22
         }
       }
     },
@@ -6749,7 +6816,7 @@
         "modrinth_version_id": "AePOxNR3",
         "in_game_validation": "pending",
         "integration_status": "supported",
-        "note": "Pathfinder Origins 0.4.0 stores display text directly in name/description fields; NeoOrigins resolves primitive strings as translatable components. Pathfinder fallback coverage is currently 406/406 strings in 12 locales; the existing NeoOrigins Localization 1.0.0 coverage remains available in 91 locales."
+        "note": "Pathfinder Origins 0.4.0 stores display text directly in name/description fields; NeoOrigins resolves primitive strings as translatable components. Pathfinder fallback coverage is currently 406/406 strings in 13 locales; the complete NeoOrigins Localization coverage is available in 92 locales."
       },
       "coverage": {
         "source_keys": 406,
@@ -6816,6 +6883,12 @@
           "name": "Magyar",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/pathfinder_origins/lang/hu_hu.json"
+        },
+        "nds_de": {
+          "name": "Plattdüütsch",
+          "status": "supported",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/pathfinder_origins/lang/nds_de.json",
+          "fallback_keys": 406
         }
       }
     }

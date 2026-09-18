@@ -26,7 +26,7 @@ jobs:
             upstream_ref: 'af467a3bc118f6bbc0970d68f7e03fa631d7e6f2'
             mod_version: '1.1.0+1.21.1'
             audit_addons: true
-            audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz hu_hu ja_jp ko_kr uk_ua'
+            audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz hu_hu ja_jp ko_kr uk_ua nds_de'
             audit_extra_namespace: 'neoorigins_121_batch1'
             audit_226_namespace: 'neoorigins_226'
             audit_26_1_namespace: ''
@@ -55,7 +55,7 @@ jobs:
             upstream_ref: 'aa207ef14cf3b938e28b4081162701953957c1d5'
             mod_version: '1.1.0+26.1'
             audit_addons: false
-            audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz hu_hu ja_jp ko_kr uk_ua'
+            audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz hu_hu ja_jp ko_kr uk_ua nds_de'
             audit_extra_namespace: ''
             audit_226_namespace: 'neoorigins_226'
             audit_26_1_namespace: 'neoorigins_26_1'
@@ -84,7 +84,7 @@ jobs:
             upstream_ref: '511cadcafe3027d2a56b4448652ec9b74e2f3b07'
             mod_version: '1.1.0+26.2'
             audit_addons: false
-            audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz hu_hu ja_jp ko_kr uk_ua'
+            audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz hu_hu ja_jp ko_kr uk_ua nds_de'
             audit_extra_namespace: 'neoorigins_26_2'
             audit_226_namespace: 'neoorigins_226'
             audit_26_1_namespace: ''
@@ -144,6 +144,10 @@ jobs:
           fi
           if [ -n "${{ matrix.audit_hungarian_namespace_glob }}" ]; then
             EXTRA_ARGS+=(--fallback-namespace-glob "${{ matrix.audit_hungarian_namespace_glob }}")
+          fi
+          EXTRA_ARGS+=(--fallback-namespace-glob "neoorigins_nds_common_*")
+          if [ "${{ matrix.source_variant }}" = "mc1_21_1" ]; then
+            EXTRA_ARGS+=(--extra-namespace "neoorigins_nds_121")
           fi
           python3 scripts/audit_neoorigins_upstream.py \
             --ref "${{ matrix.upstream_ref }}" \
@@ -427,6 +431,42 @@ jobs:
               ! grep -Eq '(^|/)assets/neoorigins_26_1/lang/sv_se\.json$' build/jar-contents-sv-${{ matrix.target }}.txt
             fi
             echo "Swedish 26.x payload packaging verified for ${{ matrix.target }}."
+          fi
+
+      - name: Verify packaged Low German localizations
+        run: |
+          JAR=$(find build/libs -type f -name '*.jar' ! -name '*-sources.jar' | head -n 1)
+          test -n "$JAR"
+          jar tf "$JAR" > build/jar-contents-nds-${{ matrix.target }}.txt
+          NDS_COUNT=$(grep -cE '(^|/)lang/nds_de\.json$' build/jar-contents-nds-${{ matrix.target }}.txt || true)
+
+          if [ "${{ matrix.include_addon_translations }}" = "true" ]; then
+            EXPECTED_NDS_COUNT=29
+          else
+            EXPECTED_NDS_COUNT=17
+          fi
+          echo "Low German localization files in ${{ matrix.target }}: $NDS_COUNT (expected $EXPECTED_NDS_COUNT)"
+          test "$NDS_COUNT" -eq "$EXPECTED_NDS_COUNT"
+
+          for index in $(seq -w 1 16); do
+            grep -Eq "(^|/)assets/neoorigins_nds_common_${index}/lang/nds_de\.json$" build/jar-contents-nds-${{ matrix.target }}.txt
+          done
+
+          if [ "${{ matrix.include_addon_translations }}" = "true" ]; then
+            grep -Eq '(^|/)assets/neoorigins_nds_121/lang/nds_de\.json$' build/jar-contents-nds-${{ matrix.target }}.txt
+            for ns in medievalorigins ibarnorigins origins_fantasy origins_backgrounds origins_backgrounds_two origins_backgrounds_iss origins_furries origins_classes_ex origins_classes_iss originsmodernui pathfinder_origins; do
+              grep -Eq "(^|/)assets/$ns/lang/nds_de.json$" build/jar-contents-nds-${{ matrix.target }}.txt
+            done
+            grep -Eq '(^|/)resourcepacks/background_orb_localizations/assets/neoorigins/lang/nds_de\.json$' build/jar-contents-nds-${{ matrix.target }}.txt
+            ! grep -Eq '(^|/)assets/neoorigins_26_(1|2)/lang/nds_de\.json$' build/jar-contents-nds-${{ matrix.target }}.txt
+          else
+            ! grep -Eq '(^|/)assets/(medievalorigins|ibarnorigins|origins_fantasy|origins_backgrounds|origins_backgrounds_two|origins_backgrounds_iss|origins_furries|origins_classes_ex|origins_classes_iss|originsmodernui|pathfinder_origins)/' build/jar-contents-nds-${{ matrix.target }}.txt
+            ! grep -Eq '(^|/)assets/neoorigins_nds_121/lang/nds_de\.json$' build/jar-contents-nds-${{ matrix.target }}.txt
+            if [ "${{ matrix.target }}" = "mc-26.1.x" ]; then
+              grep -Eq '(^|/)assets/neoorigins_26_1/lang/nds_de\.json$' build/jar-contents-nds-${{ matrix.target }}.txt
+            else
+              grep -Eq '(^|/)assets/neoorigins_26_2/lang/nds_de\.json$' build/jar-contents-nds-${{ matrix.target }}.txt
+            fi
           fi
 
       - name: Upload JAR

@@ -65,8 +65,8 @@ def main():
         missing = sorted(set(expected_locales) - set(table))
         extra = sorted(set(table) - set(expected_locales))
         raise SystemExit(f"Background Orb locale mismatch: missing={missing}, extra={extra}")
-    if len(table) != 91:
-        raise SystemExit(f"Expected 91 Background Orb locales, found {len(table)}")
+    if len(table) != 92:
+        raise SystemExit(f"Expected 92 Background Orb locales, found {len(table)}")
 
     upstream = None
     for file_id, filename in JARS:

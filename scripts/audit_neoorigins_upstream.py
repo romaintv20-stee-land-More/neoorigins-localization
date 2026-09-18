@@ -12,7 +12,7 @@ PACK = ROOT / "src/main/resources/resourcepacks/fallback_localizations"
 PACK_ASSETS = PACK / "assets"
 PACK_LANG = PACK_ASSETS / "neoorigins/lang"
 DEFAULT_REF = "v2.2.27"
-DEFAULT_LOCALES = ("fr_fr", "nl_nl", "es_es", "de_de", "pt_br")
+DEFAULT_LOCALES = ("fr_fr", "nl_nl", "es_es", "de_de", "pt_br", "nds_de")
 BASE = "https://raw.githubusercontent.com/CyberDay1/NeoOrigins/{ref}/src/main/resources/assets/neoorigins/lang/{locale}.json"
 PLACEHOLDER_RE = re.compile(r"%(?:\d+\$)?[sd]")
 

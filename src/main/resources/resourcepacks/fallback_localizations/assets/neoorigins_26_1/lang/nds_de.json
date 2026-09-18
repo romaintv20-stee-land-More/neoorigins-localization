@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Bestenlist för Dien Baaskeerl: Duer, Schaad oder Minengauheit.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Dubbelt XP vun' t Köken vun Eten in' n Rook versöcht.",
+  "neoorigins.configuration.title": "NeoOrigins instellen",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Speel",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "NeoOrigins Speel- Instellen",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Plegerverlöven",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "NeoOrigins Pleger- Instellen",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Stroom- Instellen",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "NeoOrigins sien Stroomkuntrull- Instellen",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Oorden un Klassen",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "NeoOrigins Oorsprung un Klass wesseln",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Clientkieker",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "NeoOrigins- Client instellen",
+  "neoorigins.configuration.show_cooldown_countdown": "Aftellen wiesen",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Daallaad- Deckstärk (%)",
+  "neoorigins.configuration.hud_ability_display": "Könen- HUD- Wiesbedrief",
+  "neoorigins.configuration.always_show_ability_icons": "Jümmers de Lüttbiller wiesen"
+}

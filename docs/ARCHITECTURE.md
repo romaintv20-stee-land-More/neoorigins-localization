@@ -32,7 +32,7 @@ Le fichier `catalog.json` décrit les projets et langues réellement supportés.
 
 Une locale volumineuse peut être répartie dans plusieurs namespaces de fallback lorsque cela facilite les ajouts et la maintenance. L'audit recompose alors ces fichiers avant de comparer la couverture aux clés anglaises amont.
 
-La 0.8.0 utilise notamment :
+La 1.1.0 utilise notamment :
 
 - `neoorigins_tr_*` pour la localisation turque fractionnée ;
 - `neoorigins_cs_*` pour la localisation tchèque fractionnée ;
@@ -43,7 +43,7 @@ La 0.8.0 utilise notamment :
 
 Les propriétés Gradle d'empaquetage déterminent quels namespaces sont inclus dans chaque JAR. Les add-ons compatibles uniquement avec Minecraft 1.21.1 sont explicitement exclus des builds 26.x. Les deltas 26.1 et 26.2 sont mutuellement exclus afin de ne jamais injecter des clés spécifiques à une autre cible.
 
-La branche 0.8.0 audite NeoOrigins contre des références **2.2.26 épinglées** plutôt que contre des branches mouvantes :
+La branche 1.1.0 audite NeoOrigins contre des références **2.2.26 épinglées** plutôt que contre des branches mouvantes :
 
 - Minecraft 1.21.1 : `860ecdb24e723983e93004ea8ceb5de90ccf0d70` ;
 - Minecraft 26.1.x : `3c1c7365507679c836d3c14af5d4dd0654652e87` ;

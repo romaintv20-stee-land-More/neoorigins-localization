@@ -351,7 +351,7 @@ jobs:
           ID_COUNT=$(grep -cE '(^|/)lang/id_id\.json$' build/jar-contents-id-${{ matrix.target }}.txt || true)
 
           if [ "${{ matrix.include_addon_translations }}" = "true" ]; then
-            EXPECTED_ID_COUNT=27
+            EXPECTED_ID_COUNT=28
           else
             EXPECTED_ID_COUNT=17
           fi
@@ -394,7 +394,7 @@ jobs:
           SV_COUNT=$(grep -cE '(^|/)lang/sv_se\.json$' build/jar-contents-sv-${{ matrix.target }}.txt || true)
 
           if [ "${{ matrix.include_addon_translations }}" = "true" ]; then
-            EXPECTED_SV_COUNT=27
+            EXPECTED_SV_COUNT=28
           else
             EXPECTED_SV_COUNT=17
           fi

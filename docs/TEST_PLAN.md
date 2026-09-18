@@ -2,17 +2,17 @@
 
 ## Matrice de validation
 
-| Cible | Java | Référence NeoOrigins 2.2.26 | Contenu du build | État automatisé |
+| Cible | Java | Référence NeoOrigins 2.2.27 | Contenu du build | État automatisé |
 |---|---:|---|---|---|
 | Minecraft 1.21.1 | 21 | `860ecdb24e723983e93004ea8ceb5de90ccf0d70` | NeoOrigins + tous les add-ons 1.21.1 pris en charge | CI, audit et build validés |
 | Minecraft 26.1 / 26.1.1 / 26.1.2 | 25 | `3c1c7365507679c836d3c14af5d4dd0654652e87` | NeoOrigins uniquement + delta 26.1 | CI, audit et build validés |
 | Minecraft 26.2 | 25 | `65864716a5a796fa1c51ec3e8a6d9640abebb4ca` | NeoOrigins uniquement + delta 26.2 | CI, audit et build validés |
 
-La couverture garantie de cette version est basée sur NeoOrigins **2.2.26**. Le mod n'est pas verrouillé par une dépendance dure sur cette version ; une future version peut charger, mais devra être réauditée pour garantir une couverture complète.
+La couverture garantie de cette version est basée sur NeoOrigins **2.2.27**. Le mod n'est pas verrouillé par une dépendance dure sur cette version ; une future version peut charger, mais devra être réauditée pour garantir une couverture complète.
 
 ## Langues
 
-Les trois builds doivent proposer NeoOrigins dans les douze locales suivantes :
+Les trois builds doivent conserver les **91 locales** de NeoOrigins Localization 1.0.0. Pathfinder Origins est actuellement couvert dans 12 locales :
 
 `fr_fr`, `de_de`, `es_es`, `pt_br`, `nl_nl`, `it_it`, `pl_pl`, `ru_ru`, `tr_tr`, `zh_cn`, `cs_cz`, `hu_hu`.
 
@@ -160,7 +160,7 @@ Un serveur ne doit pas avoir besoin d'installer NeoOrigins Localization pour qu'
 
 Chaque cible doit passer :
 
-1. l'audit NeoOrigins de toutes les douze langues ;
+1. l'audit NeoOrigins des locales couvertes par la CI, sans réduire les 91 locales empaquetées ;
 2. `python3 scripts/validate.py` ;
 3. la compilation avec la version Java correspondante ;
 4. la génération et l'upload du JAR.

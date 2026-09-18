@@ -105,11 +105,11 @@ python scripts/audit_pathfinder_origins_upstream.py --fail-on-missing --fail-on-
 
 Lorsqu'un projet amont ajoute une traduction officielle, les clés devenues inutiles doivent être retirées de notre fallback.
 
-## Validation des JAR 0.8.0 (base de référence)
+## Validation des JAR 1.1.0
 
-L'inspection des JAR 0.8.0 construits avec la référence NeoOrigins 2.2.26 a confirmé les points ci-dessous. La 1.1.0 ajoute Pathfinder Origins ; les JAR 1.1.0 doivent être revalidés après intégration de cette nouvelle couverture :
+L'inspection des JAR 1.1.0 construits par la CI avec la référence NeoOrigins 2.2.26 a confirmé les points ci-dessous :
 
-- **1.21.1** : 35 fichiers `cs_cz` et **33 fichiers `hu_hu`** empaquetés, couvrant NeoOrigins, Medieval Origins et tous les add-ons listés ;
+- **1.21.1** : 36 fichiers `cs_cz` et **34 fichiers `hu_hu`** empaquetés, couvrant NeoOrigins, Medieval Origins et tous les add-ons listés, dont Pathfinder Origins ;
 - **26.1.x** : 21 fichiers `cs_cz` et **20 fichiers `hu_hu`**, uniquement les namespaces NeoOrigins communs + `neoorigins_226` + `neoorigins_26_1` ;
 - **26.2** : 21 fichiers `cs_cz` et **20 fichiers `hu_hu`**, uniquement les namespaces NeoOrigins communs + `neoorigins_226` + `neoorigins_26_2` ;
 - aucun namespace d'add-on 1.21.1 n'est présent dans les JAR 26.x ;

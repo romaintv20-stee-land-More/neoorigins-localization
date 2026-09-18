@@ -4,7 +4,7 @@
 
 | Cible | Java | Référence NeoOrigins 2.2.26 | Contenu du build | État automatisé |
 |---|---:|---|---|---|
-| Minecraft 1.21.1 | 21 | `860ecdb24e723983e93004ea8ceb5de90ccf0d70` | NeoOrigins + tous les add-ons 1.21.1 pris en charge | À revalider pour 1.1.0 |
+| Minecraft 1.21.1 | 21 | `860ecdb24e723983e93004ea8ceb5de90ccf0d70` | NeoOrigins + tous les add-ons 1.21.1 pris en charge | CI, audit et build validés |
 | Minecraft 26.1 / 26.1.1 / 26.1.2 | 25 | `3c1c7365507679c836d3c14af5d4dd0654652e87` | NeoOrigins uniquement + delta 26.1 | CI, audit et build validés |
 | Minecraft 26.2 | 25 | `65864716a5a796fa1c51ec3e8a6d9640abebb4ca` | NeoOrigins uniquement + delta 26.2 | CI, audit et build validés |
 

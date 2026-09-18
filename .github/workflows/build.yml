@@ -23,7 +23,7 @@ jobs:
             parchment: 'true'
             pack_format: '34'
             source_variant: 'mc1_21_1'
-            upstream_ref: '860ecdb24e723983e93004ea8ceb5de90ccf0d70'
+            upstream_ref: 'af467a3bc118f6bbc0970d68f7e03fa631d7e6f2'
             mod_version: '1.1.0+1.21.1'
             audit_addons: true
             audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz hu_hu ja_jp ko_kr uk_ua'
@@ -52,11 +52,11 @@ jobs:
             parchment: 'false'
             pack_format: '84'
             source_variant: 'mc26_1'
-            upstream_ref: '3c1c7365507679c836d3c14af5d4dd0654652e87'
+            upstream_ref: 'aa207ef14cf3b938e28b4081162701953957c1d5'
             mod_version: '1.1.0+26.1'
             audit_addons: false
             audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz hu_hu ja_jp ko_kr uk_ua'
-            audit_extra_namespace: 'neoorigins_121_batch1'
+            audit_extra_namespace: ''
             audit_226_namespace: 'neoorigins_226'
             audit_26_1_namespace: 'neoorigins_26_1'
             audit_namespace_glob: 'neoorigins_tr_*'
@@ -65,7 +65,7 @@ jobs:
             audit_indonesian_extra_namespace: 'neoorigins_26_1'
             audit_swedish_extra_namespace: 'neoorigins_26_1'
             include_addon_translations: false
-            include_121_batch_translations: true
+            include_121_batch_translations: false
             include_turkish_split_translations: true
             include_indonesian_121_translations: false
             include_swedish_121_translations: false
@@ -81,7 +81,7 @@ jobs:
             parchment: 'false'
             pack_format: '84'
             source_variant: 'mc26_1'
-            upstream_ref: '65864716a5a796fa1c51ec3e8a6d9640abebb4ca'
+            upstream_ref: '511cadcafe3027d2a56b4448652ec9b74e2f3b07'
             mod_version: '1.1.0+26.2'
             audit_addons: false
             audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz hu_hu ja_jp ko_kr uk_ua'

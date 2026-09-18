@@ -6,21 +6,21 @@ Mod client NeoForge fournissant des **traductions complémentaires en priorité 
 
 | Cible | Version | Java | Langues | Contenu empaqueté |
 |---|---|---:|---:|---|
-| Minecraft 1.21.1 | `0.8.0-beta+1.21.1` | 21 | 12 | NeoOrigins + Medieval Origins Revival + ibarn's quartet origins addon + Origins Fantasy + Origins: Backgrounds + Origins: More Backgrounds + Origins: Backgrounds ISS + Origins Furries + Origins: Classes Extended + Origins: Classes ISS + Origin Architect |
-| Minecraft 26.1 / 26.1.1 / 26.1.2 | `0.8.0-beta+26.1` | 25 | 12 | NeoOrigins uniquement + delta 26.1 |
-| Minecraft 26.2 | `0.8.0-beta+26.2` | 25 | 12 | NeoOrigins uniquement + delta 26.2 |
+| Minecraft 1.21.1 | `1.1.0+1.21.1` | 21 | 12 | NeoOrigins + Medieval Origins Revival + ibarn's quartet origins addon + Origins Fantasy + Origins: Backgrounds + Origins: More Backgrounds + Origins: Backgrounds ISS + Origins Furries + Origins: Classes Extended + Origins: Classes ISS + Origin Architect + Pathfinder Origins |
+| Minecraft 26.1 / 26.1.1 / 26.1.2 | `1.1.0+26.1` | 25 | 12 | NeoOrigins uniquement + delta 26.1 |
+| Minecraft 26.2 | `1.1.0+26.2` | 25 | 12 | NeoOrigins uniquement + delta 26.2 |
 
 Les builds 26.x n'embarquent aucune traduction des add-ons 1.21.1. La CI construit et audite séparément les trois cibles.
 
 ## Langues
 
-La **0.8.0 Beta** prend en charge : Français (`fr_fr`), Allemand (`de_de`), Espagnol (`es_es`), Portugais brésilien (`pt_br`), Néerlandais (`nl_nl`), Italien (`it_it`), Polonais (`pl_pl`), Russe (`ru_ru`), Turc (`tr_tr`), Chinois simplifié (`zh_cn`), **Tchèque (`cs_cz`)** et **Hongrois (`hu_hu`)**.
+La **1.1.0** prend en charge : Français (`fr_fr`), Allemand (`de_de`), Espagnol (`es_es`), Portugais brésilien (`pt_br`), Néerlandais (`nl_nl`), Italien (`it_it`), Polonais (`pl_pl`), Russe (`ru_ru`), Turc (`tr_tr`), Chinois simplifié (`zh_cn`), **Tchèque (`cs_cz`)** et **Hongrois (`hu_hu`)**.
 
 Les douze langues sont disponibles sur les trois builds pour NeoOrigins. Les traductions d'add-ons sont empaquetées uniquement sur Minecraft 1.21.1 lorsqu'une version compatible de l'add-on est réellement disponible.
 
 ## Référence NeoOrigins
 
-La couverture de la 0.8.0 est auditée contre **NeoOrigins 2.2.26** :
+La couverture de la 1.1.0 reste auditée contre **NeoOrigins 2.2.26** :
 
 - 1.21.1 : commit `860ecdb24e723983e93004ea8ceb5de90ccf0d70` ;
 - 26.1.x : commit `3c1c7365507679c836d3c14af5d4dd0654652e87` ;
@@ -58,6 +58,7 @@ Sur 26.x, trois anciennes clés de récompense restent dans les fichiers de fall
 | Origins: Classes Extended for NeoOrigins | 1.0.1 | 124/124 · 124/124 | 124/124 |
 | Origins: Classes ISS for NeoOrigins | 1.0.1 | 99/99 · 99/99 | 99/99 |
 | Origin Architect | 3.0.1 | 22/22 · 22/22 | 22/22 |
+| Pathfinder Origins | 0.4.0 / `AePOxNR3` | 406/406 · 406/406 | 406/406 |
 
 Les intégrations DraconicArcher sont réalisées avec son autorisation explicite pour redistribuer les **chaînes de localisation traduites**. Aucun code, texture, modèle ou autre asset de gameplay de ces add-ons n'est redistribué ; les mods originaux restent requis.
 
@@ -99,15 +100,16 @@ python scripts/audit_origins_furries_upstream.py --fail-on-overlap --fail-on-mis
 python scripts/audit_origins_classes_extended_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
 python scripts/audit_origins_classes_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
 python scripts/audit_origin_architect_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+python scripts/audit_pathfinder_origins_upstream.py --fail-on-missing --fail-on-stale --fail-on-placeholders
 ```
 
 Lorsqu'un projet amont ajoute une traduction officielle, les clés devenues inutiles doivent être retirées de notre fallback.
 
-## Validation des JAR 0.8.0
+## Validation des JAR 1.1.0
 
-L'inspection des JAR construits avec la référence NeoOrigins 2.2.26 a confirmé :
+L'inspection des JAR 1.1.0 construits par la CI avec la référence NeoOrigins 2.2.26 a confirmé les points ci-dessous :
 
-- **1.21.1** : 35 fichiers `cs_cz` et **33 fichiers `hu_hu`** empaquetés, couvrant NeoOrigins, Medieval Origins et tous les add-ons listés ;
+- **1.21.1** : 36 fichiers `cs_cz` et **34 fichiers `hu_hu`** empaquetés, couvrant NeoOrigins, Medieval Origins et tous les add-ons listés, dont Pathfinder Origins ;
 - **26.1.x** : 21 fichiers `cs_cz` et **20 fichiers `hu_hu`**, uniquement les namespaces NeoOrigins communs + `neoorigins_226` + `neoorigins_26_1` ;
 - **26.2** : 21 fichiers `cs_cz` et **20 fichiers `hu_hu`**, uniquement les namespaces NeoOrigins communs + `neoorigins_226` + `neoorigins_26_2` ;
 - aucun namespace d'add-on 1.21.1 n'est présent dans les JAR 26.x ;

@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Er equipo que fabricas recibe atributos adicionales: dureza de armaúra, daño o beloçidá de minado.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Obtiene er doble de êpperiençia ar cocinar comida en un ahumadôh.",
+  "neoorigins.configuration.title": "Configuración de NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Jugabilidad",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "Ajustes de jugabilidad de NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Administración y permisos",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "Ajustes de administración de NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Anulaciones de poderes",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "Anulaciones de poderes de NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Orígenes y clases",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "Interruptores de orígenes y clases de NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Pantaya der cliente",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "Ajustes de cliente de NeoOrigins",
+  "neoorigins.configuration.show_cooldown_countdown": "Mostrar cuenta regresiva de reutilización",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Opaçidá de la cuenta regresiva de reutilización (%)",
+  "neoorigins.configuration.hud_ability_display": "Modo de visualización der HUD de habilidades",
+  "neoorigins.configuration.always_show_ability_icons": "Mostrar çiempre lô iconos de habilidades"
+}

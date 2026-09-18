@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Сез ясаган җиһаз бонус атрибутларын ала - катгыйлык, зыян яки казу тизлеге.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Тәмәке тартучыда ризык пешерүдән икеләтә XP ала.",
+  "neoorigins.configuration.title": "NeoOrigins конфигурациясе",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Уен",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "NeoOrigins Gameplay көйләүләре",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Администратор һәм рөхсәтләр",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "NeoOrigins Администратор көйләүләре",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Көч юкка чыга",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "NeoOrigins көче юкка чыга",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Чыгышлары һәм класслары",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "Неооригиннарның килеп чыгышы һәм класс күчү",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Клиент дисплей",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "NeoOrigins клиент көйләүләре",
+  "neoorigins.configuration.show_cooldown_countdown": "Кулдаун санауны күрсәт",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Кулдаун санау караңгылыгы (%)",
+  "neoorigins.configuration.hud_ability_display": "HUD күрсәтү режимы",
+  "neoorigins.configuration.always_show_ability_icons": "Waysәрвакыт сәләт иконаларын күрсәтегез"
+}

@@ -1,0 +1,12 @@
+航班	src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/zh_tw.json	origin.medievalorigins.pixie.description	§l§n概述§r：
+§o§2+ 獨特航班，奇怪§r
+§o§6• 微小：22cm.9" §r
+§o§c-防禦、聲譽 §r
+通常被認為是好運的預兆，但也是狡猾、不值得信任的惡作劇代理人。小精靈是異想天開的，而且非常非常小。
+班級	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_zhtw_common_04/lang/zh_tw.json	jei.neoorigins.orb_of_class.info	僅重置您的班級選擇並重新開啟班級選擇器，保留您的主要來源。每次使用花費 2 XP 等級。使用時消耗。
+班級	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_zhtw_common_04/lang/zh_tw.json	emi.neoorigins.orb_of_class.info	僅重置您的班級選擇並重新開啟班級選擇器，保留您的主要來源。每次使用花費 2 XP 等級。使用時消耗。
+航班	src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/zh_tw.json	power.origins_fantasy.fae_flight.name	法埃航班
+產地	src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/zh_tw.json	screen.originsmodernui.title	選擇您的原產地
+原產地	src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/zh_tw.json	screen.originsmodernui.title	選擇您的原產地
+平視顯示器	src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/zh_tw.json	originsmodernui.config.hud.position	平視顯示器位置
+平視顯示器	src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/zh_tw.json	originsmodernui.config.hud.scale	平視顯示器比例

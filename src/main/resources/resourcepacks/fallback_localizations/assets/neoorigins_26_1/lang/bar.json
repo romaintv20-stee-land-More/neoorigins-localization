@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Vo da gefertigte Asrüstung erhält Bonus-Attribute – Rüstungshärtn, Schadn oda Abbaugeschwindigkeit.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Erhält doppelte Erfahrung beim Garen vo Nahrung im Reichaofn.",
+  "neoorigins.configuration.title": "NeoOrigins-Konfiguration",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Spuimechanik",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "NeoOrigins Spielmechanik-Einstellungen",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Admin & Berechtigungen",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "NeoOrigins Admin-Einstellungen",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Kraft-Überschreibungen",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "NeoOrigins Kraft-Überschreibungen",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Origins & Klassen",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "NeoOrigins Origin- & Klassen-Schalter",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Client-Anzeige",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "NeoOrigins Client-Einstellungen",
+  "neoorigins.configuration.show_cooldown_countdown": "Abklingzeit-Countdown oanzeign",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Deckkroft des Abklingzeit-Countdowns (%)",
+  "neoorigins.configuration.hud_ability_display": "Anzeigemodus da Fähigkeiten-HUD",
+  "neoorigins.configuration.always_show_ability_icons": "Fähigkeitssymbole imma oanzeign"
+}

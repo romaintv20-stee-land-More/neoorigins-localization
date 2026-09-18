@@ -1,0 +1,44 @@
+name: Sync Filipino 44-locale handoff
+
+on:
+  push:
+    branches: [ release/0.9.0-filipino-rebased ]
+    paths:
+      - 'scripts/update_handoff_filipino44.py'
+      - '.github/workflows/sync-handoff-filipino44.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-filipino-rebased
+
+      - name: Update handoff
+        run: python3 scripts/update_handoff_filipino44.py
+
+      - name: Validate handoff state
+        run: |
+          grep -F '0.9.0 development currently has 44 locales:' PROJECT_HANDOFF.txt
+          grep -F -- '- 44: Filipino / fil_ph' PROJECT_HANDOFF.txt
+          grep -F '32. FILIPINO 0.9.0 STATUS' PROJECT_HANDOFF.txt
+          grep -F 'NEXT LANGUAGE = language 45.' PROJECT_HANDOFF.txt
+          grep -F 'catalog.json says 44 supported locales' PROJECT_HANDOFF.txt
+
+      - name: Commit handoff
+        run: |
+          if git diff --quiet -- PROJECT_HANDOFF.txt; then
+            echo 'No handoff change needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add PROJECT_HANDOFF.txt
+          git commit -m 'Finalize Filipino as locale 44 handoff'
+          git push origin HEAD:release/0.9.0-filipino-rebased

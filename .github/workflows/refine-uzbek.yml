@@ -1,0 +1,131 @@
+name: Refine Uzbek localization
+
+on:
+  push:
+    branches: [ release/0.9.0-uzbek ]
+    paths:
+      - scripts/refine_uzbek.py
+      - .github/workflows/refine-uzbek.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-uzbek
+          fetch-depth: 0
+
+      - name: Apply contextual Uzbek refinements
+        run: python3 scripts/refine_uzbek.py
+
+      - name: Restrict add-on audits to Uzbek
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          scripts = [
+              'scripts/audit_medievalorigins_upstream.py',
+              'scripts/audit_ibarnorigins_upstream.py',
+              'scripts/audit_origins_fantasy_upstream.py',
+              'scripts/audit_origins_backgrounds_upstream.py',
+              'scripts/audit_origins_more_backgrounds_upstream.py',
+              'scripts/audit_origins_backgrounds_iss_upstream.py',
+              'scripts/audit_origins_furries_upstream.py',
+              'scripts/audit_origins_classes_extended_upstream.py',
+              'scripts/audit_origins_classes_iss_upstream.py',
+              'scripts/audit_origin_architect_upstream.py',
+          ]
+          for filename in scripts:
+              path = Path(filename)
+              text = path.read_text(encoding='utf-8')
+              updated, count = re.subn(r'^LOCALES\s*=.*$', 'LOCALES = ("uz_uz",)', text, count=1, flags=re.M)
+              if count == 0:
+                  updated, count = re.subn(r'^DEFAULT_LOCALES\s*=.*$', 'DEFAULT_LOCALES = ("uz_uz",)', text, count=1, flags=re.M)
+              if count != 1:
+                  raise SystemExit(f'Could not patch locale list in {filename}')
+              path.write_text(updated, encoding='utf-8')
+          PY
+
+      - name: Strict NeoOrigins audits
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref af467a3bc118f6bbc0970d68f7e03fa631d7e6f2 --output build/uz-refined-121 --locale uz_uz --fallback-namespace-glob 'neoorigins_uz_common_*' --extra-namespace neoorigins_uz_121 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref aa207ef14cf3b938e28b4081162701953957c1d5 --output build/uz-refined-261 --locale uz_uz --fallback-namespace-glob 'neoorigins_uz_common_*' --extra-namespace neoorigins_26_1 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 511cadcafe3027d2a56b4448652ec9b74e2f3b07 --output build/uz-refined-262 --locale uz_uz --fallback-namespace-glob 'neoorigins_uz_common_*' --extra-namespace neoorigins_26_2 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Strict add-on audits
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_fantasy_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_furries_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_extended_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origin_architect_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Validate localization JSON
+        run: python3 scripts/validate.py
+
+      - name: Assert contextual terms
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          files = list(Path('src/main/resources/resourcepacks/fallback_localizations/assets').glob('**/lang/uz_uz.json'))
+          merged = {}
+          for p in files:
+              merged.update(json.loads(p.read_text(encoding='utf-8')))
+          expected = {
+              'origins.layer.origin': 'Origin',
+              'origins.layer.class': 'Klass',
+              'gui.neoorigins.detail.powers_header': 'Qobiliyatlar',
+              'gui.neoorigins.mob_creator.tab.spawn_rules': "Paydo bo'lish qoidalari",
+              'power.origins_furries.scales.name': 'Tangachalar',
+              'power.origins_furries.pavlov.name': 'Pavlov reaksiyasi',
+              'power.origins_furries.night_vision.name': "Tunda ko'rish",
+              'screen.originsmodernui.title': 'Origin tanlang',
+          }
+          for key, want in expected.items():
+              got = merged.get(key)
+              if got != want:
+                  raise SystemExit(f'{key}: expected {want!r}, got {got!r}')
+          for i in range(1, 65):
+              key = f'key.neoorigins.hotkey.{i}'
+              if merged.get(key) != f'Tezkor tugma {i:02d}':
+                  raise SystemExit(f'Bad hotkey {i}: {merged.get(key)!r}')
+          print('Uzbek contextual assertions passed.')
+          PY
+
+      - name: Restore temporary audit script changes
+        if: always()
+        run: git checkout HEAD -- scripts/audit_*_upstream.py
+
+      - name: Upload refined audits
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: uzbek-refined-audits-${{ github.sha }}
+          path: build/uz-refined-*
+          if-no-files-found: warn
+
+      - name: Commit contextual refinement
+        if: success()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name 'uz_uz.json' -print0 | xargs -0 -r git add
+          if git diff --cached --quiet; then
+            echo 'No contextual changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Refine Uzbek gameplay terminology'
+          git fetch origin release/0.9.0-uzbek
+          git rebase origin/release/0.9.0-uzbek
+          git push origin HEAD:release/0.9.0-uzbek

@@ -1,0 +1,67 @@
+name: QA Chuvash localization
+
+on:
+  push:
+    branches:
+      - release/0.9.0-chuvash
+    paths:
+      - .github/workflows/qa-chuvash.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-chuvash
+
+      - name: Contextual terminology report
+        run: |
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+
+          root = Path('src/main/resources/resourcepacks/fallback_localizations/assets')
+          files = sorted(root.glob('**/lang/cv_cu.json'))
+          sensitive = re.compile(r'(power|origin|class|apply|drop|loot|spawn|night|vision|nether|netherite|charge|pavlov|scale|health|experience|\bxp\b|ultimine|architect|ability|mana|elytra|speed|mining|creator)', re.I)
+          english = re.compile(r'\b(?:Power|Ability|Origin|Class|Apply|Drops?|Loot|Spawn|Night Vision|Nether(?:ite)?|Charge|Pavlov|Scales?|Health|Experience|Ultimine|Creator|Speed Mining|Elytra Boost|Sonic Boom|Pack Bond|Pack Boost|Max Mana Boost|Rage Counter)\b', re.I)
+          russian = re.compile(r'\b(?:сила|здоровье|опыт|происхождение|класс|применить|добыча|спавн|масштаб|шкала|заряд|ночное|зрение|павлов|незер|незерит)\b', re.I)
+
+          print(f'FILES={len(files)}')
+          total = 0
+          for path in files:
+              data = json.loads(path.read_text(encoding='utf-8'))
+              hits = [(k, str(v)) for k, v in data.items() if sensitive.search(k)]
+              if hits:
+                  print(f'\n### {path}')
+                  for key, value in hits:
+                      total += 1
+                      print(f'{key} = {value}')
+          print(f'\nSENSITIVE_ROWS={total}')
+
+          print('\n### ENGLISH_LEFTOVERS')
+          left = []
+          for path in files:
+              data = json.loads(path.read_text(encoding='utf-8'))
+              for key, value in data.items():
+                  if english.search(str(value)):
+                      left.append((path, key, value))
+          for path, key, value in left:
+              print(f'{path} :: {key} = {value}')
+          print(f'ENGLISH_LEFTOVERS={len(left)}')
+
+          print('\n### RUSSIAN_SUSPECTS')
+          rus = []
+          for path in files:
+              data = json.loads(path.read_text(encoding='utf-8'))
+              for key, value in data.items():
+                  if russian.search(str(value)):
+                      rus.append((path, key, value))
+          for path, key, value in rus:
+              print(f'{path} :: {key} = {value}')
+          print(f'RUSSIAN_SUSPECTS={len(rus)}')
+          PY

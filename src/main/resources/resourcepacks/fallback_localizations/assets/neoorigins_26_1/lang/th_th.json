@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "อุปกรณ์ที่คุณประดิษฐ์จะได้รับคุณสมบัติโบนัส — ความเหนียว ความเสียหาย หรือความเร็วในการขุด",
+  "power.neoorigins.class_cook_smoker_xp.description": "ได้รับ XP สองเท่าจากการทำอาหารโดยสูบบุหรี่",
+  "neoorigins.configuration.title": "การกำหนดค่า NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "การเล่นเกม",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "การตั้งค่าการเล่นเกม NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "ผู้ดูแลระบบและการอนุญาต",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "การตั้งค่าผู้ดูแลระบบ NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "การแทนที่พลังงาน",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "การแทนที่พลังของ NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.content.toml": "ต้นกำเนิดและคลาส",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "NeoOrigins กำเนิดและสลับคลาส",
+  "neoorigins.configuration.section.neoorigins.client.toml": "การแสดงลูกค้า",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "การตั้งค่าไคลเอนต์ NeoOrigins",
+  "neoorigins.configuration.show_cooldown_countdown": "แสดงการนับถอยหลังคูลดาวน์",
+  "neoorigins.configuration.cooldown_countdown_opacity": "ความทึบของการนับถอยหลังคูลดาวน์ (%)",
+  "neoorigins.configuration.hud_ability_display": "โหมดการแสดงผลความสามารถ HUD",
+  "neoorigins.configuration.always_show_ability_icons": "แสดงไอคอนความสามารถเสมอ"
+}

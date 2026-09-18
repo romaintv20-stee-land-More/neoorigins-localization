@@ -1,0 +1,8 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "ನೀವು ತಯಾರಿಸಿದ ಉಪಕರಣಗಳು ಉತ್ತಮವಾಗಿವೆ - ಉಪಕರಣಗಳು ವೇಗವಾಗಿ ಗಣಿಗಾರಿಕೆ ಮಾಡುತ್ತವೆ, ಶಸ್ತ್ರಾಸ್ತ್ರಗಳು ಗಟ್ಟಿಯಾಗಿ ಹೊಡೆಯುತ್ತವೆ, ರಕ್ಷಾಕವಚವು ಕಠಿಣವಾಗಿರುತ್ತದೆ ಮತ್ತು ಎಲ್ಲವೂ ಹೆಚ್ಚು ಕಾಲ ಉಳಿಯುತ್ತದೆ.",
+  "power.neoorigins.class_cook_smoker_xp.description": "ಧೂಮಪಾನಿ ಅಥವಾ ಕುಲುಮೆಯಲ್ಲಿ ಬೇಯಿಸಿದ ಆಹಾರವು ಹೆಚ್ಚುವರಿ ಪೋಷಣೆಯನ್ನು ಪಡೆಯುತ್ತದೆ.",
+  "neoorigins.configuration.title": "NeoOrigins ಸಾಮಾನ್ಯ ಸಂರಚನೆ",
+  "reward.neoorigins.loot_pool": "ನಿಯೋ ಒರಿಜಿನ್ಸ್: ಗ್ರಾಂಟ್ ಲೂಟ್ ಪೂಲ್",
+  "reward.neoorigins.loot_pool.loot_table": "ಲೂಟ್ ಟೇಬಲ್",
+  "reward.neoorigins.loot_pool.rolls": "ರೋಲ್ಗಳು"
+}

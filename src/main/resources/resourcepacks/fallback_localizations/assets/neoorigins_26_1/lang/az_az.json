@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Hazırladığınız avadanlıq bonus atributları alır - möhkəmlik, zədə və ya mədən sürəti.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Siqaret çəkəndə yemək bişirməklə ikiqat XP qazanır.",
+  "neoorigins.configuration.title": "NeoOrigins Konfiqurasiyası",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Oyun",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "NeoOrigins Oyun Parametrləri",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Admin & İcazələr",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "NeoOrigins Admin Parametrləri",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Gücü ləğv edir",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "NeoOrigins Gücü ləğv edir",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Mənşəyi və Sinifləri",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "NeoOrigins Origin & Class keçidləri",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Müştəri Ekranı",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "NeoOrigins Müştəri Parametrləri",
+  "neoorigins.configuration.show_cooldown_countdown": "Soyuducu geri sayımı göstərin",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Soyuma müddətinin geri sayımının qeyri-şəffaflığı (%)",
+  "neoorigins.configuration.hud_ability_display": "HUD ekran rejimi bacarığı",
+  "neoorigins.configuration.always_show_ability_icons": "Həmişə qabiliyyət nişanlarını göstərin"
+}

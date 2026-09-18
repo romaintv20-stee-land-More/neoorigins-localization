@@ -1,0 +1,62 @@
+name: Sync Armenian 48-locale handoff
+
+on:
+  push:
+    branches:
+      - release/0.9.0-armenian
+    paths:
+      - .github/workflows/sync-handoff-armenian.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-armenian
+
+      - name: Update handoff
+        run: python3 scripts/update_handoff_armenian.py
+
+      - name: Validate handoff state
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          text=Path('PROJECT_HANDOFF.txt').read_text(encoding='utf-8')
+          required=[
+              '0.9.0 development currently has 48 locales:',
+              '- 48: Armenian / hy_am',
+              'FORTY-EIGHT IS NOT THE FINAL TARGET.',
+              'Armenian locale: hy_am / Հայերեն.',
+              'workflow run 34346145423: SUCCESS',
+              'workflow run 34346874201: SUCCESS',
+              'run ID 34347261076: SUCCESS on all three jobs',
+              'artifact ID 10102268738',
+              'artifact ID 10102254834',
+              'artifact ID 10102246481',
+              'NEXT LANGUAGE = language 49.',
+              'Do not stop permanently at 49;',
+          ]
+          missing=[x for x in required if x not in text]
+          if missing: raise SystemExit(f'Handoff markers missing: {missing}')
+          print('Armenian handoff validation passed: 48 locales, next 49')
+          PY
+
+      - name: Commit handoff
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add PROJECT_HANDOFF.txt
+          if git diff --cached --quiet; then
+            echo 'No handoff changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Finalize Armenian 0.9.0 handoff'
+          git fetch origin release/0.9.0-armenian
+          git rebase origin/release/0.9.0-armenian
+          git push origin HEAD:release/0.9.0-armenian

@@ -1,0 +1,8 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Опрема коју правите је супериорна — алати се рудирају брже, оружје удара јаче, оклоп је чвршћи и све траје дуже.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Храна кувана у пушачима или пећи добија додатну исхрану.",
+  "neoorigins.configuration.title": "Заједничка конфигурација НеоОригинс",
+  "reward.neoorigins.loot_pool": "NeoOrigins: Додели скуп плена",
+  "reward.neoorigins.loot_pool.loot_table": "Лоот Табле",
+  "reward.neoorigins.loot_pool.rolls": "Роллс"
+}

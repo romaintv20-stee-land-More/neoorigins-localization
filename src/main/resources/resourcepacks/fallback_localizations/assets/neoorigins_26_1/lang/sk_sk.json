@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Vybavenie, ktoré si vytvoríte, získa bonusové atribúty – odolnosť, poškodenie alebo rýchlosť ťažby.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Získa dvojnásobok XP z varenia jedla v udiarni.",
+  "neoorigins.configuration.title": "Konfigurácia NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Hrateľnosť",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "Nastavenia hry NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Správca a povolenia",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "Nastavenia správcu NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Prepisy napájania",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "Prepisy napájania NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Pôvod a triedy",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "Prepínače pôvodu a tried NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Klientsky displej",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "Nastavenia klienta NeoOrigins",
+  "neoorigins.configuration.show_cooldown_countdown": "Zobraziť odpočítavanie cooldownu",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Nepriehľadnosť odpočítavania na zníženie (%)",
+  "neoorigins.configuration.hud_ability_display": "Možnosť režimu zobrazenia HUD",
+  "neoorigins.configuration.always_show_ability_icons": "Vždy zobrazovať ikony schopností"
+}

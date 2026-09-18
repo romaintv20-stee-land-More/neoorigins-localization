@@ -1,0 +1,140 @@
+name: Refine Maltese localization
+
+on:
+  push:
+    branches: [ release/0.9.0-maltese ]
+    paths:
+      - scripts/refine_maltese.py
+      - .github/workflows/refine-maltese.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-maltese
+          fetch-depth: 0
+
+      - name: Apply contextual Maltese refinements
+        run: python3 scripts/refine_maltese.py
+
+      - name: Restrict add-on audits to Maltese
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          scripts = [
+              'scripts/audit_medievalorigins_upstream.py',
+              'scripts/audit_ibarnorigins_upstream.py',
+              'scripts/audit_origins_fantasy_upstream.py',
+              'scripts/audit_origins_backgrounds_upstream.py',
+              'scripts/audit_origins_more_backgrounds_upstream.py',
+              'scripts/audit_origins_backgrounds_iss_upstream.py',
+              'scripts/audit_origins_furries_upstream.py',
+              'scripts/audit_origins_classes_extended_upstream.py',
+              'scripts/audit_origins_classes_iss_upstream.py',
+              'scripts/audit_origin_architect_upstream.py',
+          ]
+          for filename in scripts:
+              path = Path(filename)
+              text = path.read_text(encoding='utf-8')
+              updated, count = re.subn(r'^LOCALES\s*=.*$', 'LOCALES = ("mt_mt",)', text, count=1, flags=re.M)
+              if count == 0:
+                  updated, count = re.subn(r'^DEFAULT_LOCALES\s*=.*$', 'DEFAULT_LOCALES = ("mt_mt",)', text, count=1, flags=re.M)
+              if count != 1:
+                  raise SystemExit(f'Could not patch locale list in {filename}')
+              path.write_text(updated, encoding='utf-8')
+          PY
+
+      - name: Strict NeoOrigins audits
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref af467a3bc118f6bbc0970d68f7e03fa631d7e6f2 --output build/mt-refined-121 --locale mt_mt --fallback-namespace-glob 'neoorigins_mt_common_*' --extra-namespace neoorigins_mt_121 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref aa207ef14cf3b938e28b4081162701953957c1d5 --output build/mt-refined-261 --locale mt_mt --fallback-namespace-glob 'neoorigins_mt_common_*' --extra-namespace neoorigins_26_1 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 511cadcafe3027d2a56b4448652ec9b74e2f3b07 --output build/mt-refined-262 --locale mt_mt --fallback-namespace-glob 'neoorigins_mt_common_*' --extra-namespace neoorigins_26_2 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Strict add-on audits
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_fantasy_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_furries_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_extended_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origin_architect_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Validate localization JSON
+        run: python3 scripts/validate.py
+
+      - name: Assert contextual terms and Maltese text
+        run: |
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+          files = list(Path('src/main/resources/resourcepacks/fallback_localizations/assets').glob('**/lang/mt_mt.json'))
+          merged = {}
+          values = []
+          for p in files:
+              data = json.loads(p.read_text(encoding='utf-8'))
+              merged.update(data)
+              values.extend(str(v) for v in data.values())
+          expected = {
+              'origins.layer.origin': 'Origin',
+              'origins.layer.class': 'Klassi',
+              'gui.neoorigins.detail.powers_header': 'Setgħat',
+              'gui.neoorigins.mob_creator.tab.spawn_rules': 'Regoli tat-Tfaċċar',
+              'power.origins_furries.scales.name': 'Skaldi',
+              'power.origins_furries.pavlov.name': "Reazzjoni ta' Pavlov",
+              'power.origins_furries.night_vision.name': 'Viżjoni bil-Lejl',
+              'screen.originsmodernui.title': 'Agħżel l-Origin tiegħek',
+          }
+          for key, want in expected.items():
+              got = merged.get(key)
+              if got != want:
+                  raise SystemExit(f'{key}: expected {want!r}, got {got!r}')
+          for i in range(1, 65):
+              key = f'key.neoorigins.hotkey.{i}'
+              if merged.get(key) != f'Tast Rapidu {i:02d}':
+                  raise SystemExit(f'Bad hotkey {i}: {merged.get(key)!r}')
+          text = '\n'.join(values)
+          low = text.lower().replace('’', "'").replace('‘', "'")
+          markers = len(re.findall(r"(?:għal|biex|mhux|jekk|tista|għand|meta|biss|ħsara|saħħa|veloċità|setgħa|waqt|minn|fuq|dan|din)", low))
+          letters = len(re.findall(r'[ċĊġĠgħGĦħĦżŻ]', text))
+          if markers < 900 or letters < 1200:
+              raise SystemExit(f'Maltese sanity too low after refinement: markers={markers}, letters={letters}')
+          print(f'Maltese contextual assertions passed: {len(files)} files, {markers} lexical markers, {letters} Maltese-specific letters.')
+          PY
+
+      - name: Restore temporary audit script changes
+        if: always()
+        run: git checkout HEAD -- scripts/audit_*_upstream.py
+
+      - name: Upload refined audits
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: maltese-refined-audits-${{ github.sha }}
+          path: build/mt-refined-*
+          if-no-files-found: warn
+
+      - name: Commit contextual refinement
+        if: success()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name 'mt_mt.json' -print0 | xargs -0 -r git add
+          if git diff --cached --quiet; then
+            echo 'No contextual changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Refine Maltese gameplay terminology'
+          git fetch origin release/0.9.0-maltese
+          git rebase origin/release/0.9.0-maltese
+          git push origin HEAD:release/0.9.0-maltese

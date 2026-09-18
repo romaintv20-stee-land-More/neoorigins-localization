@@ -16,8 +16,83 @@ def targetResourcePackFormat = project.property('resource_pack_format').toString
 def sourceVariant = project.findProperty('source_variant') ?: 'mc1_21_1'
 def includeAddonTranslations = (project.findProperty('include_addon_translations') ?: 'true').toBoolean()
 def legacyExpanded = project.findProperty('include_121_expanded_translations')
-def include121BatchTranslations = (project.findProperty('include_121_batch_translations') ?: legacyExpanded ?: 'true').toBoolean()
-def includeTurkishSplitTranslations = (project.findProperty('include_turkish_split_translations') ?: legacyExpanded ?: 'true').toBoolean()
+def include121BatchTranslations = (sourceVariant == 'mc1_21_1') && (project.findProperty('include_121_batch_translations') ?: legacyExpanded ?: 'true').toBoolean()
+def includeTurkishSplitTranslations = (project.findProperty('include_turkish_split_translations') ?: 'true').toBoolean()
+def defaultInclude121Translations = sourceVariant == 'mc1_21_1'
+def includeIndonesian121Translations = (project.findProperty('include_indonesian_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeSwedish121Translations = (project.findProperty('include_swedish_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeDanish121Translations = (project.findProperty('include_danish_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeFinnish121Translations = (project.findProperty('include_finnish_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeNorwegian121Translations = (project.findProperty('include_norwegian_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeRomanian121Translations = (project.findProperty('include_romanian_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeGreek121Translations = (project.findProperty('include_greek_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeBulgarian121Translations = (project.findProperty('include_bulgarian_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeVietnamese121Translations = (project.findProperty('include_vietnamese_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeArabic121Translations = (project.findProperty('include_arabic_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeHebrew121Translations = (project.findProperty('include_hebrew_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeThai121Translations = (project.findProperty('include_thai_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeSlovak121Translations = (project.findProperty('include_slovak_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeSlovenian121Translations = (project.findProperty('include_slovenian_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeCroatian121Translations = (project.findProperty('include_croatian_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeSerbian121Translations = (project.findProperty('include_serbian_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeCatalan121Translations = (project.findProperty('include_catalan_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeEstonian121Translations = (project.findProperty('include_estonian_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeLithuanian121Translations = (project.findProperty('include_lithuanian_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeLatvian121Translations = (project.findProperty('include_latvian_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeBasque121Translations = (project.findProperty('include_basque_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeGalician121Translations = (project.findProperty('include_galician_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeHindi121Translations = (project.findProperty('include_hindi_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeNynorsk121Translations = (project.findProperty('include_nynorsk_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includePersian121Translations = (project.findProperty('include_persian_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeIcelandic121Translations = (project.findProperty('include_icelandic_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeMalay121Translations = (project.findProperty('include_malay_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeFilipino121Translations = (project.findProperty('include_filipino_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeWelsh121Translations = (project.findProperty('include_welsh_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeIrish121Translations = (project.findProperty('include_irish_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeScottishGaelic121Translations = (project.findProperty('include_scottish_gaelic_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeArmenian121Translations = (project.findProperty('include_armenian_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeGeorgian121Translations = (project.findProperty('include_georgian_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeKazakh121Translations = (project.findProperty('include_kazakh_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeMongolian121Translations = (project.findProperty('include_mongolian_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeMacedonian121Translations = (project.findProperty('include_macedonian_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeBelarusian121Translations = (project.findProperty('include_belarusian_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeFaroese121Translations = (project.findProperty('include_faroese_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeAfrikaans121Translations = (project.findProperty('include_afrikaans_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeAzerbaijani121Translations = (project.findProperty('include_azerbaijani_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeKannada121Translations = (project.findProperty('include_kannada_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeChuvash121Translations = (project.findProperty('include_chuvash_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeUzbek121Translations = (project.findProperty('include_uzbek_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeMaltese121Translations = (project.findProperty('include_maltese_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeLuxembourgish121Translations = (project.findProperty('include_luxembourgish_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeSomali121Translations = (project.findProperty('include_somali_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeEsperanto121Translations = (project.findProperty('include_esperanto_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeKyrgyz121Translations = (project.findProperty('include_kyrgyz_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeTamil121Translations = (project.findProperty('include_tamil_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeAlbanian121Translations = (project.findProperty('include_albanian_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeLao121Translations = (project.findProperty('include_lao_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeBosnian121Translations = (project.findProperty('include_bosnian_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeBashkir121Translations = (project.findProperty('include_bashkir_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeBreton121Translations = (project.findProperty('include_breton_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeAsturian121Translations = (project.findProperty('include_asturian_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeFrisian121Translations = (project.findProperty('include_frisian_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeOccitan121Translations = (project.findProperty('include_occitan_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeIgbo121Translations = (project.findProperty('include_igbo_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeYoruba121Translations = (project.findProperty('include_yoruba_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeTatar121Translations = (project.findProperty('include_tatar_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeTraditionalChinese121Translations = (project.findProperty('include_traditional_chinese_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeNorthernSami121Translations = (project.findProperty('include_northern_sami_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeBavarian121Translations = (project.findProperty('include_bavarian_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeBrabantian121Translations = (project.findProperty('include_brabantian_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeAndalusian121Translations = (project.findProperty('include_andalusian_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeEastFranconian121Translations = (project.findProperty('include_east_franconian_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeFriulian121Translations = (project.findProperty('include_friulian_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeGallo121Translations = (project.findProperty('include_gallo_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeManx121Translations = (project.findProperty('include_manx_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeHawaiian121Translations = (project.findProperty('include_hawaiian_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeIdo121Translations = (project.findProperty('include_ido_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeInterslavic121Translations = (project.findProperty('include_interslavic_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeKabyle121Translations = (project.findProperty('include_kabyle_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
+def includeLimburgish121Translations = (project.findProperty('include_limburgish_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()
 def include26_1Translations = (project.findProperty('include_26_1_translations') ?: 'false').toBoolean()
 def include26_2Translations = (project.findProperty('include_26_2_translations') ?: 'false').toBoolean()
 
@@ -69,11 +144,107 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
 sourceSets.main.resources.srcDir generateModMetadata
 neoForge.ideSyncTask generateModMetadata
 
+def backgroundOrbTranslationsFile = file("localization/background_orb_translations.json")
+def generatedBackgroundOrbResources = layout.buildDirectory.dir("generated/backgroundOrbResources")
+def generateBackgroundOrbTranslations = tasks.register("generateBackgroundOrbTranslations") {
+    inputs.file backgroundOrbTranslationsFile
+    inputs.property 'resource_pack_format', targetResourcePackFormat
+    outputs.dir generatedBackgroundOrbResources
+    doLast {
+        def outputDir = generatedBackgroundOrbResources.get().asFile
+        outputDir.deleteDir()
+        def packDir = new File(outputDir, "resourcepacks/background_orb_localizations")
+        def langDir = new File(packDir, "assets/neoorigins/lang")
+        langDir.mkdirs()
+        def packMeta = [pack: [pack_format: Integer.parseInt(targetResourcePackFormat), description: "NeoOrigins Localization - contextual Background Orb translations"]]
+        new File(packDir, "pack.mcmeta").text = groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(packMeta)) + "\n"
+        def translations = new groovy.json.JsonSlurper().parse(backgroundOrbTranslationsFile)
+        translations.each { locale, values ->
+            new File(langDir, "${locale}.json").text = groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(values)) + "\n"
+        }
+    }
+}
+sourceSets.main.resources.srcDir generateBackgroundOrbTranslations
+
 tasks.named('processResources', ProcessResources) {
     inputs.property 'resource_pack_format', targetResourcePackFormat
     inputs.property 'include_addon_translations', includeAddonTranslations
     inputs.property 'include_121_batch_translations', include121BatchTranslations
     inputs.property 'include_turkish_split_translations', includeTurkishSplitTranslations
+    inputs.property 'include_indonesian_121_translations', includeIndonesian121Translations
+    inputs.property 'include_swedish_121_translations', includeSwedish121Translations
+    inputs.property 'include_danish_121_translations', includeDanish121Translations
+    inputs.property 'include_finnish_121_translations', includeFinnish121Translations
+    inputs.property 'include_norwegian_121_translations', includeNorwegian121Translations
+    inputs.property 'include_romanian_121_translations', includeRomanian121Translations
+    inputs.property 'include_greek_121_translations', includeGreek121Translations
+    inputs.property 'include_bulgarian_121_translations', includeBulgarian121Translations
+    inputs.property 'include_vietnamese_121_translations', includeVietnamese121Translations
+    inputs.property 'include_arabic_121_translations', includeArabic121Translations
+    inputs.property 'include_hebrew_121_translations', includeHebrew121Translations
+    inputs.property 'include_thai_121_translations', includeThai121Translations
+    inputs.property 'include_slovak_121_translations', includeSlovak121Translations
+    inputs.property 'include_slovenian_121_translations', includeSlovenian121Translations
+    inputs.property 'include_croatian_121_translations', includeCroatian121Translations
+    inputs.property 'include_serbian_121_translations', includeSerbian121Translations
+    inputs.property 'include_catalan_121_translations', includeCatalan121Translations
+    inputs.property 'include_estonian_121_translations', includeEstonian121Translations
+    inputs.property 'include_lithuanian_121_translations', includeLithuanian121Translations
+    inputs.property 'include_latvian_121_translations', includeLatvian121Translations
+    inputs.property 'include_basque_121_translations', includeBasque121Translations
+    inputs.property 'include_galician_121_translations', includeGalician121Translations
+    inputs.property 'include_hindi_121_translations', includeHindi121Translations
+    inputs.property 'include_nynorsk_121_translations', includeNynorsk121Translations
+    inputs.property 'include_persian_121_translations', includePersian121Translations
+    inputs.property 'include_icelandic_121_translations', includeIcelandic121Translations
+    inputs.property 'include_malay_121_translations', includeMalay121Translations
+    inputs.property 'include_filipino_121_translations', includeFilipino121Translations
+    inputs.property 'include_welsh_121_translations', includeWelsh121Translations
+    inputs.property 'include_irish_121_translations', includeIrish121Translations
+    inputs.property 'include_scottish_gaelic_121_translations', includeScottishGaelic121Translations
+    inputs.property 'include_armenian_121_translations', includeArmenian121Translations
+    inputs.property 'include_georgian_121_translations', includeGeorgian121Translations
+    inputs.property 'include_kazakh_121_translations', includeKazakh121Translations
+    inputs.property 'include_mongolian_121_translations', includeMongolian121Translations
+    inputs.property 'include_macedonian_121_translations', includeMacedonian121Translations
+    inputs.property 'include_belarusian_121_translations', includeBelarusian121Translations
+    inputs.property 'include_faroese_121_translations', includeFaroese121Translations
+    inputs.property 'include_afrikaans_121_translations', includeAfrikaans121Translations
+    inputs.property 'include_azerbaijani_121_translations', includeAzerbaijani121Translations
+    inputs.property 'include_kannada_121_translations', includeKannada121Translations
+    inputs.property 'include_chuvash_121_translations', includeChuvash121Translations
+    inputs.property 'include_uzbek_121_translations', includeUzbek121Translations
+    inputs.property 'include_maltese_121_translations', includeMaltese121Translations
+    inputs.property 'include_luxembourgish_121_translations', includeLuxembourgish121Translations
+    inputs.property 'include_somali_121_translations', includeSomali121Translations
+    inputs.property 'include_esperanto_121_translations', includeEsperanto121Translations
+    inputs.property 'include_kyrgyz_121_translations', includeKyrgyz121Translations
+    inputs.property 'include_tamil_121_translations', includeTamil121Translations
+    inputs.property 'include_albanian_121_translations', includeAlbanian121Translations
+    inputs.property 'include_lao_121_translations', includeLao121Translations
+    inputs.property 'include_bosnian_121_translations', includeBosnian121Translations
+    inputs.property 'include_bashkir_121_translations', includeBashkir121Translations
+    inputs.property 'include_breton_121_translations', includeBreton121Translations
+    inputs.property 'include_asturian_121_translations', includeAsturian121Translations
+    inputs.property 'include_frisian_121_translations', includeFrisian121Translations
+    inputs.property 'include_occitan_121_translations', includeOccitan121Translations
+    inputs.property 'include_igbo_121_translations', includeIgbo121Translations
+    inputs.property 'include_yoruba_121_translations', includeYoruba121Translations
+    inputs.property 'include_tatar_121_translations', includeTatar121Translations
+    inputs.property 'include_traditional_chinese_121_translations', includeTraditionalChinese121Translations
+    inputs.property 'include_northern_sami_121_translations', includeNorthernSami121Translations
+    inputs.property 'include_bavarian_121_translations', includeBavarian121Translations
+    inputs.property 'include_brabantian_121_translations', includeBrabantian121Translations
+    inputs.property 'include_andalusian_121_translations', includeAndalusian121Translations
+    inputs.property 'include_east_franconian_121_translations', includeEastFranconian121Translations
+    inputs.property 'include_friulian_121_translations', includeFriulian121Translations
+    inputs.property 'include_gallo_121_translations', includeGallo121Translations
+    inputs.property 'include_manx_121_translations', includeManx121Translations
+    inputs.property 'include_hawaiian_121_translations', includeHawaiian121Translations
+    inputs.property 'include_ido_121_translations', includeIdo121Translations
+    inputs.property 'include_interslavic_121_translations', includeInterslavic121Translations
+    inputs.property 'include_kabyle_121_translations', includeKabyle121Translations
+    inputs.property 'include_limburgish_121_translations', includeLimburgish121Translations
     inputs.property 'include_26_1_translations', include26_1Translations
     inputs.property 'include_26_2_translations', include26_2Translations
 
@@ -93,6 +264,12 @@ tasks.named('processResources', ProcessResources) {
         exclude 'resourcepacks/fallback_localizations/assets/origins_classes_ex/**'
         exclude 'resourcepacks/fallback_localizations/assets/origins_classes_iss/**'
         exclude 'resourcepacks/fallback_localizations/assets/originsmodernui/**'
+        exclude 'resourcepacks/fallback_localizations/assets/pathfinder_origins/**'
+        exclude 'resourcepacks/background_orb_localizations/**'
+    }
+
+    if (sourceVariant != 'mc1_21_1') {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_nds_121/**'
     }
 
     if (!include121BatchTranslations) {
@@ -101,6 +278,302 @@ tasks.named('processResources', ProcessResources) {
 
     if (!includeTurkishSplitTranslations) {
         exclude 'resourcepacks/fallback_localizations/assets/neoorigins_tr_*/**'
+    }
+
+    if (!includeIndonesian121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_id_121/**'
+    }
+
+    if (!includeSwedish121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_sv_121/**'
+    }
+
+    if (!includeDanish121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_da_121/**'
+    }
+
+    if (!includeFinnish121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_fi_121/**'
+    }
+
+    if (!includeNorwegian121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_no_121/**'
+    }
+
+    if (!includeRomanian121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_ro_121/**'
+    }
+
+    if (!includeGreek121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_el_121/**'
+    }
+
+    if (!includeBulgarian121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_bg_121/**'
+    }
+
+    if (!includeVietnamese121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_vi_121/**'
+    }
+
+    if (!includeArabic121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_ar_121/**'
+    }
+
+    if (!includeHebrew121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_he_121/**'
+    }
+
+    if (!includeThai121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_th_121/**'
+    }
+
+    if (!includeSlovak121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_sk_121/**'
+    }
+
+    if (!includeSlovenian121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_sl_121/**'
+    }
+
+    if (!includeCroatian121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_hr_121/**'
+    }
+
+    if (!includeSerbian121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_sr_121/**'
+    }
+
+    if (!includeCatalan121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_ca_121/**'
+    }
+
+    if (!includeEstonian121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_et_121/**'
+    }
+
+    if (!includeLithuanian121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_lt_121/**'
+    }
+
+    if (!includeLatvian121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_lv_121/**'
+    }
+
+    if (!includeBasque121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_eu_121/**'
+    }
+
+    if (!includeGalician121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_gl_121/**'
+    }
+
+    if (!includeHindi121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_hi_121/**'
+    }
+
+    if (!includeNynorsk121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_nn_121/**'
+    }
+
+    if (!includePersian121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_fa_121/**'
+    }
+
+    if (!includeIcelandic121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_is_121/**'
+    }
+
+    if (!includeMalay121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_ms_121/**'
+    }
+
+    if (!includeFilipino121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_fil_121/**'
+    }
+
+    if (!includeWelsh121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_cy_121/**'
+    }
+
+    if (!includeIrish121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_ga_121/**'
+    }
+
+    if (!includeScottishGaelic121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_gd_121/**'
+    }
+
+    if (!includeArmenian121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_hy_121/**'
+    }
+
+    if (!includeGeorgian121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_ka_121/**'
+    }
+
+    if (!includeKazakh121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_kk_121/**'
+    }
+
+    if (!includeMongolian121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_mn_121/**'
+    }
+
+    if (!includeMacedonian121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_mk_121/**'
+    }
+
+    if (!includeBelarusian121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_be_121/**'
+    }
+
+    if (!includeFaroese121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_fo_121/**'
+    }
+
+    if (!includeAfrikaans121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_af_121/**'
+    }
+
+    if (!includeAzerbaijani121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_az_121/**'
+    }
+
+    if (!includeKannada121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_kn_121/**'
+    }
+
+    if (!includeChuvash121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_cv_121/**'
+    }
+
+    if (!includeUzbek121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_uz_121/**'
+    }
+
+    if (!includeMaltese121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_mt_121/**'
+    }
+
+    if (!includeLuxembourgish121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_lb_121/**'
+    }
+
+    if (!includeSomali121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_so_121/**'
+    }
+
+    if (!includeEsperanto121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_eo_121/**'
+    }
+
+    if (!includeKyrgyz121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_ky_121/**'
+    }
+
+    if (!includeTamil121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_ta_121/**'
+    }
+
+    if (!includeAlbanian121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_sq_121/**'
+    }
+
+    if (!includeLao121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_lo_121/**'
+    }
+
+    if (!includeBosnian121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_bs_121/**'
+    }
+
+    if (!includeBashkir121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_ba_121/**'
+    }
+
+    if (!includeBreton121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_br_121/**'
+    }
+
+    if (!includeAsturian121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_ast_121/**'
+    }
+
+    if (!includeFrisian121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_fy_121/**'
+    }
+
+    if (!includeOccitan121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_oc_121/**'
+    }
+
+    if (!includeIgbo121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_ig_121/**'
+    }
+
+    if (!includeYoruba121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_yo_121/**'
+    }
+
+    if (!includeTatar121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_tt_121/**'
+    }
+
+    if (!includeTraditionalChinese121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_zhtw_121/**'
+    }
+
+    if (!includeNorthernSami121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_se_121/**'
+    }
+
+    if (!includeBavarian121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_bar_121/**'
+    }
+
+    if (!includeBrabantian121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_brb_121/**'
+    }
+
+    if (!includeAndalusian121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_esan_121/**'
+    }
+
+    if (!includeEastFranconian121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_fra_121/**'
+    }
+
+    if (!includeFriulian121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_fur_121/**'
+    }
+
+    if (!includeGallo121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_go_121/**'
+    }
+
+    if (!includeManx121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_gv_121/**'
+    }
+
+    if (!includeHawaiian121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_haw_121/**'
+    }
+
+    if (!includeIdo121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_io_121/**'
+    }
+
+    if (!includeInterslavic121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_isv_121/**'
+    }
+
+    if (!includeKabyle121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_kab_121/**'
+    }
+
+    if (!includeLimburgish121Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_li_121/**'
     }
 
     if (!include26_1Translations) {

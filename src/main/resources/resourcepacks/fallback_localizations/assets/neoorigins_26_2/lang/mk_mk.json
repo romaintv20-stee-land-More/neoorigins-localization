@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Опремата што ја изработувате добива бонус атрибути - цврстина, оштетување или брзина на рударство.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Добива двојно XP при готвење храна кај пушач.",
+  "neoorigins.configuration.title": "Конфигурација на NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Играње",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "Поставки за игра на NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Администратор и дозволи",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "Административни поставки на NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Надминува моќ",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "Neoorigins моќта надминува",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Потекло и класи",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "NeoOrigins Потекло и менувачи на класа",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Приказ на клиентот",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "Поставки за клиент на NeoOrigins",
+  "neoorigins.configuration.show_cooldown_countdown": "Прикажи одбројување за ладење",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Непроѕирност на одбројувањето на ладење (%)",
+  "neoorigins.configuration.hud_ability_display": "Способност HUD режим на прикажување",
+  "neoorigins.configuration.always_show_ability_icons": "Секогаш прикажувај ги иконите за способност"
+}

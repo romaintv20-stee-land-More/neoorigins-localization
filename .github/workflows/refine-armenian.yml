@@ -1,0 +1,93 @@
+name: Refine Armenian localization
+
+on:
+  push:
+    branches:
+      - release/0.9.0-armenian
+    paths:
+      - .github/workflows/refine-armenian.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-armenian
+
+      - name: Apply contextual Armenian fixes
+        run: python3 scripts/refine_armenian.py
+
+      - name: Validate JSON localization structure
+        run: python3 scripts/validate.py
+
+      - name: Strict Armenian NeoOrigins audit
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref 860ecdb24e723983e93004ea8ceb5de90ccf0d70 --output build/hy-refine-audit-121 --locale hy_am --fallback-namespace-glob 'neoorigins_hy_common_*' --extra-namespace neoorigins_hy_121 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 3c1c7365507679c836d3c14af5d4dd0654652e87 --output build/hy-refine-audit-261 --locale hy_am --fallback-namespace-glob 'neoorigins_hy_common_*' --extra-namespace neoorigins_26_1 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 65864716a5a796fa1c51ec3e8a6d9640abebb4ca --output build/hy-refine-audit-262 --locale hy_am --fallback-namespace-glob 'neoorigins_hy_common_*' --extra-namespace neoorigins_26_2 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Strict Armenian add-on audits
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re, subprocess
+          scripts=[
+            ('scripts/audit_medievalorigins_upstream.py',['--ref','1.21.1-fabric']),
+            ('scripts/audit_ibarnorigins_upstream.py',['--ref','multiloader-1.21.1-new-pack-format']),
+            ('scripts/audit_origins_fantasy_upstream.py',[]),
+            ('scripts/audit_origins_backgrounds_upstream.py',[]),
+            ('scripts/audit_origins_more_backgrounds_upstream.py',[]),
+            ('scripts/audit_origins_backgrounds_iss_upstream.py',[]),
+            ('scripts/audit_origins_furries_upstream.py',[]),
+            ('scripts/audit_origins_classes_extended_upstream.py',[]),
+            ('scripts/audit_origins_classes_iss_upstream.py',[]),
+            ('scripts/audit_origin_architect_upstream.py',[]),
+          ]
+          originals={n:Path(n).read_text(encoding='utf-8') for n,_ in scripts}
+          try:
+            for name,extra in scripts:
+              p=Path(name); src=originals[name]
+              out,count=re.subn(r'^LOCALES\s*=.*$','LOCALES = ("hy_am",)',src,count=1,flags=re.M)
+              if count==0: out,count=re.subn(r'^DEFAULT_LOCALES\s*=.*$','DEFAULT_LOCALES = ("hy_am",)',src,count=1,flags=re.M)
+              if count!=1: raise SystemExit(f'Could not patch locale in {name}')
+              p.write_text(out,encoding='utf-8')
+              subprocess.run(['python3',name,*extra,'--fail-on-overlap','--fail-on-missing','--fail-on-placeholders'],check=True)
+              p.write_text(src,encoding='utf-8')
+          finally:
+            for n,src in originals.items(): Path(n).write_text(src,encoding='utf-8')
+          PY
+
+      - name: Sanity-check corrected Armenian terminology
+        run: |
+          python3 - <<'PY'
+          import json,re
+          from pathlib import Path
+          files=list(Path('src/main/resources/resourcepacks/fallback_localizations/assets').glob('**/lang/hy_am.json'))
+          text='\n'.join(str(v) for p in files for v in json.loads(p.read_text(encoding='utf-8')).values())
+          armenian=len(re.findall(r'[\u0531-\u058F]',text))
+          bad=['Էլեկտրաէներգիան միացված է','Էլեկտրաէներգիան անջատված է','Պավլովեդ','"Կշեռքներ"','"Դիմել"','"Կաթիլներ"','Նորածիններ','Ցույց տալ ճարտարապետի մակարդակը']
+          remain=[x for x in bad if x in text]
+          if remain: raise SystemExit(f'Known Armenian false friends remain: {remain}')
+          if armenian < 5000: raise SystemExit(f'Armenian-script sanity too low: {armenian}')
+          print(f'Armenian refinement sanity passed: {armenian} Armenian chars across {len(files)} files')
+          PY
+
+      - name: Commit refined Armenian translations
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name 'hy_am.json' -print0 | xargs -0 -r git add
+          if git diff --cached --quiet; then
+            echo 'No Armenian refinement changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Refine Armenian Minecraft terminology'
+          git fetch origin release/0.9.0-armenian
+          git rebase origin/release/0.9.0-armenian
+          git push origin HEAD:release/0.9.0-armenian

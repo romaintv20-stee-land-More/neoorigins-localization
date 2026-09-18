@@ -1,0 +1,133 @@
+name: Finalize 1.0.0 locale 83 metadata
+
+on:
+  push:
+    branches:
+      - release/1.0.0-friulian
+    paths:
+      - scripts/finalize_locale_83_metadata.py
+      - .github/workflows/finalize-1.0.0-locale-83.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/1.0.0-friulian
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+
+      - name: Restrict add-on audits to Friulian
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          scripts = [
+              'scripts/audit_medievalorigins_upstream.py',
+              'scripts/audit_ibarnorigins_upstream.py',
+              'scripts/audit_origins_fantasy_upstream.py',
+              'scripts/audit_origins_backgrounds_upstream.py',
+              'scripts/audit_origins_more_backgrounds_upstream.py',
+              'scripts/audit_origins_backgrounds_iss_upstream.py',
+              'scripts/audit_origins_furries_upstream.py',
+              'scripts/audit_origins_classes_extended_upstream.py',
+              'scripts/audit_origins_classes_iss_upstream.py',
+              'scripts/audit_origin_architect_upstream.py',
+          ]
+          for filename in scripts:
+              path = Path(filename)
+              text = path.read_text(encoding='utf-8')
+              updated, count = re.subn(r'^LOCALES\s*=.*$', 'LOCALES = ("fur_it",)', text, count=1, flags=re.M)
+              if count == 0:
+                  updated, count = re.subn(r'^DEFAULT_LOCALES\s*=.*$', 'DEFAULT_LOCALES = ("fur_it",)', text, count=1, flags=re.M)
+              if count != 1:
+                  raise SystemExit(f'Could not patch locale list in {filename}')
+              path.write_text(updated, encoding='utf-8')
+          PY
+
+      - name: Finalize Friulian metadata
+        run: python3 scripts/finalize_locale_83_metadata.py
+
+      - name: Validate localization JSON
+        run: python3 scripts/validate.py
+
+      - name: Strict audit Friulian NeoOrigins coverage
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref af467a3bc118f6bbc0970d68f7e03fa631d7e6f2 --output build/fur-final-mc-1.21.1 --locale fur_it --fallback-namespace-glob 'neoorigins_fur_common_*' --extra-namespace neoorigins_fur_121 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref aa207ef14cf3b938e28b4081162701953957c1d5 --output build/fur-final-mc-26.1 --locale fur_it --fallback-namespace-glob 'neoorigins_fur_common_*' --extra-namespace neoorigins_26_1 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 511cadcafe3027d2a56b4448652ec9b74e2f3b07 --output build/fur-final-mc-26.2 --locale fur_it --fallback-namespace-glob 'neoorigins_fur_common_*' --extra-namespace neoorigins_26_2 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Strict audit Friulian add-on coverage
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_fantasy_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_furries_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_extended_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origin_architect_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Verify metadata state
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          catalog = json.loads(Path('catalog.json').read_text(encoding='utf-8'))
+          assert catalog['project']['supported_locale_count'] == 83
+
+          projects = [p for p in catalog['supported_projects'] if p.get('languages') is not None]
+          assert len(projects) == 11
+          for project in projects:
+              assert 'fur_it' in project['languages'], project.get('id')
+              assert project['languages']['fur_it']['name'] == 'Furlan', project.get('id')
+
+          neoorigins = next(p for p in projects if p.get('id') == 'neoorigins')
+          fallbacks = neoorigins['compatibility']['fallback_namespaces']
+          assert fallbacks['friulian_common_glob'] == 'neoorigins_fur_common_*'
+          assert fallbacks['friulian_mc_1_21_1'] == 'neoorigins_fur_121'
+
+          fur_files = sorted(Path('src/main/resources/resourcepacks/fallback_localizations/assets').glob('**/lang/fur_it.json'))
+          assert len(fur_files) == 29, len(fur_files)
+
+          readme = Path('README.md').read_text(encoding='utf-8')
+          catalog_md = Path('CATALOG.md').read_text(encoding='utf-8')
+          assert readme.count('Frioulan (`fur_it`)') == 1
+          assert readme.count('Pour le frioulan :') == 1
+          assert catalog_md.count('Furlan (`fur_it`)') == 11
+          print('Metadata state verified for locale 83 (Friulian / fur_it), 29 source files.')
+          PY
+
+      - name: Check whitespace
+        run: git diff --check
+
+      - name: Restore temporary audit-script changes
+        if: always()
+        run: git checkout HEAD -- scripts/audit_*_upstream.py
+
+      - name: Commit finalized metadata
+        if: success()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add catalog.json README.md CATALOG.md scripts/finalize_locale_83_metadata.py
+          if git diff --cached --quiet; then
+            echo 'No metadata changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Finalize Friulian locale 83 metadata'
+          git fetch origin release/1.0.0-friulian
+          git rebase origin/release/1.0.0-friulian
+          git push origin HEAD:release/1.0.0-friulian

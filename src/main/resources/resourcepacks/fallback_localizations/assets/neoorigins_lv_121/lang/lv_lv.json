@@ -1,0 +1,8 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Jūsu izgatavotais aprīkojums ir pārāks — instrumentus iegūst ātrāk, ieroči sit spēcīgāk, bruņas ir izturīgākas un viss kalpo ilgāk.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Ēdiens, kas pagatavots kūpinātajā vai krāsnī, saņem papildu uzturu.",
+  "neoorigins.configuration.title": "NeoOrigins kopējā konfigurācija",
+  "reward.neoorigins.loot_pool": "NeoOrigins: piešķirt laupījuma fondu",
+  "reward.neoorigins.loot_pool.loot_table": "Izlaupīšanas galds",
+  "reward.neoorigins.loot_pool.rolls": "Ruļļi"
+}

@@ -1,0 +1,108 @@
+name: Refine Mongolian localization
+
+on:
+  push:
+    branches:
+      - release/0.9.0-mongolian
+    paths:
+      - .github/workflows/refine-mongolian.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-mongolian
+
+      - name: Apply contextual Mongolian fixes
+        run: python3 scripts/refine_mongolian.py
+
+      - name: Validate JSON localization structure
+        run: python3 scripts/validate.py
+
+      - name: Strict Mongolian NeoOrigins audit
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref 860ecdb24e723983e93004ea8ceb5de90ccf0d70 --output build/mn-refine-audit-121 --locale mn_mn --fallback-namespace-glob 'neoorigins_mn_common_*' --extra-namespace neoorigins_mn_121 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 3c1c7365507679c836d3c14af5d4dd0654652e87 --output build/mn-refine-audit-261 --locale mn_mn --fallback-namespace-glob 'neoorigins_mn_common_*' --extra-namespace neoorigins_26_1 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 65864716a5a796fa1c51ec3e8a6d9640abebb4ca --output build/mn-refine-audit-262 --locale mn_mn --fallback-namespace-glob 'neoorigins_mn_common_*' --extra-namespace neoorigins_26_2 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Strict Mongolian add-on audits
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re, subprocess
+          scripts=[
+            ('scripts/audit_medievalorigins_upstream.py',['--ref','1.21.1-fabric']),
+            ('scripts/audit_ibarnorigins_upstream.py',['--ref','multiloader-1.21.1-new-pack-format']),
+            ('scripts/audit_origins_fantasy_upstream.py',[]),
+            ('scripts/audit_origins_backgrounds_upstream.py',[]),
+            ('scripts/audit_origins_more_backgrounds_upstream.py',[]),
+            ('scripts/audit_origins_backgrounds_iss_upstream.py',[]),
+            ('scripts/audit_origins_furries_upstream.py',[]),
+            ('scripts/audit_origins_classes_extended_upstream.py',[]),
+            ('scripts/audit_origins_classes_iss_upstream.py',[]),
+            ('scripts/audit_origin_architect_upstream.py',[]),
+          ]
+          originals={n:Path(n).read_text(encoding='utf-8') for n,_ in scripts}
+          try:
+            for name,extra in scripts:
+              p=Path(name); src=originals[name]
+              out,count=re.subn(r'^LOCALES\s*=.*$','LOCALES = ("mn_mn",)',src,count=1,flags=re.M)
+              if count==0: out,count=re.subn(r'^DEFAULT_LOCALES\s*=.*$','DEFAULT_LOCALES = ("mn_mn",)',src,count=1,flags=re.M)
+              if count!=1: raise SystemExit(f'Could not patch locale in {name}')
+              p.write_text(out,encoding='utf-8')
+              subprocess.run(['python3',name,*extra,'--fail-on-overlap','--fail-on-missing','--fail-on-placeholders'],check=True)
+              p.write_text(src,encoding='utf-8')
+          finally:
+            for n,src in originals.items(): Path(n).write_text(src,encoding='utf-8')
+          PY
+
+      - name: Sanity-check corrected Mongolian terminology
+        run: |
+          python3 - <<'PY'
+          import json,re
+          from pathlib import Path
+          files=list(Path('src/main/resources/resourcepacks/fallback_localizations/assets').glob('**/lang/mn_mn.json'))
+          all_data={}; parts=[]
+          for p in files:
+              data=json.loads(p.read_text(encoding='utf-8'))
+              all_data.update(data); parts.extend(str(v) for v in data.values())
+          text='\n'.join(parts)
+          specific=len(re.findall(r'[ӨөҮү]',text))
+          expected={
+            'neoorigins.toggle.on':'Чадвар асаалттай',
+            'neoorigins.ultimine.no_power':'Таны Origin-д Ultimine чадвар байхгүй.',
+            'gui.neoorigins.mob_creator.tab.drops':'Олз',
+            'gui.neoorigins.mob_creator.tab.spawn_rules':'Үүсэх дүрэм',
+            'origins.neoorigins.arachnid.name':'Arachnid',
+            'power.neoorigins.blazeling_nether_born.name':'Тамд төрсөн',
+            'power.origins_furries.pavlov.name':'Павловын урвал',
+            'power.origins_furries.scales.name':'Хайрс',
+            'power.origins_furries.night_vision.name':'Харанхуйд харах',
+            'originsmodernui.config.hud.show_level':'Origin Architect түвшнийг харуулах',
+          }
+          bad=[f'{k}={all_data.get(k)!r}' for k,v in expected.items() if all_data.get(k)!=v]
+          if bad: raise SystemExit(f'Mongolian contextual fixes missing: {bad}')
+          if specific < 1000: raise SystemExit(f'Mongolian-specific letter sanity too low: {specific}')
+          print(f'Mongolian refinement sanity passed: {specific} Mongolian-specific letters across {len(files)} files')
+          PY
+
+      - name: Commit refined Mongolian translations
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name 'mn_mn.json' -print0 | xargs -0 -r git add
+          if git diff --cached --quiet; then
+            echo 'No Mongolian refinement changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Refine Mongolian Minecraft terminology'
+          git fetch origin release/0.9.0-mongolian
+          git rebase origin/release/0.9.0-mongolian
+          git push origin HEAD:release/0.9.0-mongolian

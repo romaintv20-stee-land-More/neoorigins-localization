@@ -1,0 +1,44 @@
+name: Sync Welsh 45-locale handoff
+
+on:
+  push:
+    branches:
+      - release/0.9.0-welsh
+    paths:
+      - .github/workflows/sync-handoff-welsh.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-welsh
+      - name: Update handoff
+        run: python3 scripts/update_handoff_welsh.py
+      - name: Validate handoff state
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          t=Path('PROJECT_HANDOFF.txt').read_text(encoding='utf-8')
+          required=['currently has 45 locales','- 45: Welsh / cy_gb','FORTY-FIVE IS NOT THE FINAL TARGET','33. WELSH 0.9.0 STATUS','run ID 34340363045: SUCCESS','artifact ID 10099515489','NEXT LANGUAGE = language 46.','Do not stop permanently at 46;']
+          missing=[x for x in required if x not in t]
+          if missing: raise SystemExit(f'Handoff markers missing: {missing}')
+          if 'NEXT LANGUAGE = language 45.' in t: raise SystemExit('Old next-language marker remains')
+          print('Welsh handoff validation passed: locale 45, next 46')
+          PY
+      - name: Commit handoff
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add PROJECT_HANDOFF.txt
+          if git diff --cached --quiet; then echo 'No handoff changes.'; exit 0; fi
+          git commit -m 'Finalize Welsh 0.9.0 handoff'
+          git fetch origin release/0.9.0-welsh
+          git rebase origin/release/0.9.0-welsh
+          git push origin HEAD:release/0.9.0-welsh

@@ -1,0 +1,46 @@
+name: Sync Serbian Cyrillic handoff
+
+on:
+  push:
+    branches:
+      - release/0.9.0-beta
+    paths:
+      - scripts/update_handoff_serbian.py
+      - .github/workflows/sync-handoff-serbian.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-beta
+      - name: Update handoff
+        run: python3 scripts/update_handoff_serbian.py
+      - name: Validate handoff
+        run: |
+          grep -F '0.9.0 development currently has 31 locales:' PROJECT_HANDOFF.txt
+          grep -F -- '- 31: Serbian Cyrillic / sr_sp' PROJECT_HANDOFF.txt
+          grep -F 'NEXT LANGUAGE = language 32.' PROJECT_HANDOFF.txt
+          grep -F 'run ID 34270887263: SUCCESS on all three jobs' PROJECT_HANDOFF.txt
+          grep -F 'Serbian Cyrillic text sanity check passed: 96,446 Cyrillic letters across 29 sr_sp source files' PROJECT_HANDOFF.txt
+          grep -F 'artifact ID 10073801783; size 2,159,870 bytes' PROJECT_HANDOFF.txt
+          grep -F 'Serbian Latin (sr_cs) is intentionally NOT merged with Serbian Cyrillic (sr_sp).' PROJECT_HANDOFF.txt
+      - name: Commit handoff
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add PROJECT_HANDOFF.txt
+          if git diff --cached --quiet; then
+            echo 'No handoff changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Finalize Serbian Cyrillic 0.9.0 handoff'
+          git fetch origin release/0.9.0-beta
+          git rebase origin/release/0.9.0-beta
+          git push origin HEAD:release/0.9.0-beta

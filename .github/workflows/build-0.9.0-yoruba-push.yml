@@ -1,0 +1,182 @@
+name: Build NeoOrigins Localization 0.9.0 Yoruba Push
+
+on:
+  push:
+    branches:
+      - release/0.9.0-yoruba
+    paths:
+      - '.github/workflows/build-0.9.0-yoruba-push.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: mc-1.21.1
+            java: '21'
+            gradle: '8.14.3'
+            minecraft: '1.21.1'
+            minecraft_range: '[1.21.1]'
+            neoforge: '21.1.248'
+            loader_range: '[1,)'
+            parchment: 'true'
+            pack_format: '34'
+            source_variant: mc1_21_1
+            addons: 'true'
+            batch121: 'true'
+            inc261: 'false'
+            inc262: 'false'
+            frisian121: 'true'
+            occitan121: 'true'
+            igbo121: 'true'
+            yoruba121: 'true'
+            delta: neoorigins_yo_121
+            expected: '27'
+            mod_version: 0.9.0-beta+1.21.1
+          - target: mc-26.1.x
+            java: '25'
+            gradle: '9.4.1'
+            minecraft: '26.1.2'
+            minecraft_range: '[26.1,26.2)'
+            neoforge: '26.1.2.29-beta'
+            loader_range: '[4,)'
+            parchment: 'false'
+            pack_format: '84'
+            source_variant: mc26_1
+            addons: 'false'
+            batch121: 'true'
+            inc261: 'true'
+            inc262: 'false'
+            frisian121: 'false'
+            occitan121: 'false'
+            igbo121: 'false'
+            yoruba121: 'false'
+            delta: neoorigins_26_1
+            expected: '17'
+            mod_version: 0.9.0-beta+26.1
+          - target: mc-26.2
+            java: '25'
+            gradle: '9.4.1'
+            minecraft: '26.2'
+            minecraft_range: '[26.2,26.3)'
+            neoforge: '26.2.0.3-beta'
+            loader_range: '[4,)'
+            parchment: 'false'
+            pack_format: '84'
+            source_variant: mc26_1
+            addons: 'false'
+            batch121: 'false'
+            inc261: 'false'
+            inc262: 'true'
+            frisian121: 'false'
+            occitan121: 'false'
+            igbo121: 'false'
+            yoruba121: 'false'
+            delta: neoorigins_26_2
+            expected: '17'
+            mod_version: 0.9.0-beta+26.2
+
+    name: Build ${{ matrix.target }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact build source
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Set up Java ${{ matrix.java }}
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+
+      - name: Set up Gradle ${{ matrix.gradle }}
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          gradle-version: ${{ matrix.gradle }}
+
+      - name: Validate localization JSON
+        run: python3 scripts/validate.py
+
+      - name: Build pinned target
+        run: |
+          gradle build --stacktrace \
+            "-Pjava_version=${{ matrix.java }}" \
+            "-Puse_parchment=${{ matrix.parchment }}" \
+            "-Presource_pack_format=${{ matrix.pack_format }}" \
+            "-Psource_variant=${{ matrix.source_variant }}" \
+            "-Pinclude_addon_translations=${{ matrix.addons }}" \
+            "-Pinclude_121_batch_translations=${{ matrix.batch121 }}" \
+            "-Pinclude_turkish_split_translations=true" \
+            "-Pinclude_frisian_121_translations=${{ matrix.frisian121 }}" \
+            "-Pinclude_occitan_121_translations=${{ matrix.occitan121 }}" \
+            "-Pinclude_igbo_121_translations=${{ matrix.igbo121 }}" \
+            "-Pinclude_yoruba_121_translations=${{ matrix.yoruba121 }}" \
+            "-Pinclude_26_1_translations=${{ matrix.inc261 }}" \
+            "-Pinclude_26_2_translations=${{ matrix.inc262 }}" \
+            "-Pminecraft_version=${{ matrix.minecraft }}" \
+            "-Pminecraft_version_range=${{ matrix.minecraft_range }}" \
+            "-Pneo_version=${{ matrix.neoforge }}" \
+            "-Ploader_version_range=${{ matrix.loader_range }}" \
+            "-Pmod_version=${{ matrix.mod_version }}"
+
+      - name: Inspect exact Yoruba JAR contents
+        env:
+          TARGET: ${{ matrix.target }}
+          EXPECTED_DELTA: ${{ matrix.delta }}
+          EXPECTED_FILES: ${{ matrix.expected }}
+          INCLUDE_ADDONS: ${{ matrix.addons }}
+        run: |
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+          from zipfile import ZipFile
+          jars = [p for p in Path('build/libs').glob('*.jar') if not p.name.endswith('-sources.jar')]
+          if len(jars) != 1:
+              raise SystemExit(f'Expected exactly one runtime JAR, found {[p.name for p in jars]}')
+          jar = jars[0]
+          with ZipFile(jar) as zf:
+              yo = sorted(n for n in zf.namelist() if n.endswith('/lang/yo_ng.json'))
+          target = os.environ['TARGET']
+          delta = os.environ['EXPECTED_DELTA']
+          expected = int(os.environ['EXPECTED_FILES'])
+          addons = os.environ['INCLUDE_ADDONS'] == 'true'
+          def present(fragment):
+              return any(fragment in name for name in yo)
+          missing_common = [f'neoorigins_yo_common_{i:02d}/lang/yo_ng.json' for i in range(1,17) if not present(f'neoorigins_yo_common_{i:02d}/lang/yo_ng.json')]
+          if missing_common:
+              raise SystemExit(f'Missing Yoruba common entries: {missing_common}')
+          if not present(f'{delta}/lang/yo_ng.json'):
+              raise SystemExit(f'Missing expected Yoruba delta: {delta}')
+          addon_ns = ['medievalorigins','ibarnorigins','origins_fantasy','origins_backgrounds','origins_backgrounds_two','origins_backgrounds_iss','origins_furries','origins_classes_ex','origins_classes_iss','originsmodernui']
+          addon_entries = [f'{ns}/lang/yo_ng.json' for ns in addon_ns]
+          if addons:
+              missing = [x for x in addon_entries if not present(x)]
+              if missing:
+                  raise SystemExit(f'Missing Yoruba add-on entries: {missing}')
+              if present('neoorigins_26_1/lang/yo_ng.json') or present('neoorigins_26_2/lang/yo_ng.json'):
+                  raise SystemExit('1.21.1 JAR contains a 26.x Yoruba delta')
+          else:
+              wrong = [x for x in addon_entries if present(x)]
+              if wrong:
+                  raise SystemExit(f'26.x JAR contains Yoruba add-ons: {wrong}')
+              if present('neoorigins_yo_121/lang/yo_ng.json'):
+                  raise SystemExit('26.x JAR contains Yoruba 1.21.1 delta')
+              other = 'neoorigins_26_2' if delta == 'neoorigins_26_1' else 'neoorigins_26_1'
+              if present(f'{other}/lang/yo_ng.json'):
+                  raise SystemExit(f'{target} JAR contains wrong Yoruba delta {other}')
+          if len(yo) != expected:
+              raise SystemExit(f'{target}: expected {expected} yo_ng files, got {len(yo)}: {yo}')
+          print(f'JAR inspection passed for {target}: {jar.name}, {len(yo)} Yoruba files, delta={delta}')
+          PY
+
+      - name: Upload built JAR
+        uses: actions/upload-artifact@v7
+        with:
+          name: neoorigins-localization-0.9.0-${{ matrix.target }}-${{ github.sha }}
+          path: build/libs/*.jar
+          if-no-files-found: error

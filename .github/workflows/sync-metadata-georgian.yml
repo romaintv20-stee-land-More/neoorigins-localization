@@ -1,0 +1,66 @@
+name: Sync Georgian 49-locale metadata
+
+on:
+  push:
+    branches:
+      - release/0.9.0-georgian
+    paths:
+      - .github/workflows/sync-metadata-georgian.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-georgian
+
+      - name: Update catalog metadata
+        run: |
+          python3 scripts/update_catalog_georgian.py
+          python3 scripts/generate_catalog.py
+
+      - name: Update README metadata
+        run: python3 scripts/update_readme_georgian.py
+
+      - name: Validate 49-locale metadata
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          catalog=json.loads(Path('catalog.json').read_text(encoding='utf-8'))
+          if catalog['project']['supported_locale_count'] != 49:
+              raise SystemExit('catalog locale count is not 49')
+          for project in catalog['supported_projects']:
+              for locale in ('hy_am','ka_ge'):
+                  if locale not in project['languages']:
+                      raise SystemExit(f"{locale} missing from {project['id']}")
+          readme=Path('README.md').read_text(encoding='utf-8')
+          required=['Les quarante-neuf langues','Arménien (`hy_am`)','Géorgien (`ka_ge`)','Pour l’arménien :','Pour le géorgien :','/ HY / KA']
+          missing=[item for item in required if item not in readme]
+          if missing: raise SystemExit(f'README Georgian markers missing: {missing}')
+          catalog_md=Path('CATALOG.md').read_text(encoding='utf-8')
+          for marker in ('hy_am','ka_ge','Հայերեն','ქართული'):
+              if marker not in catalog_md:
+                  raise SystemExit(f'CATALOG.md marker missing: {marker}')
+          print('Georgian 49-locale metadata validation passed')
+          PY
+
+      - name: Commit Georgian metadata
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add catalog.json CATALOG.md README.md
+          if git diff --cached --quiet; then
+            echo 'No Georgian metadata changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Document Georgian localization in 0.9.0 beta'
+          git fetch origin release/0.9.0-georgian
+          git rebase origin/release/0.9.0-georgian
+          git push origin HEAD:release/0.9.0-georgian

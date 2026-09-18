@@ -1,0 +1,8 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Valmistamasi varusteet ovat ylivoimaisia – työkalut louhivat nopeammin, aseet osuvat kovemmin, panssari on kovempaa ja kaikki kestää kauemmin.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Savustimessa tai uunissa kypsennetty ruoka saa lisäravintoa.",
+  "neoorigins.configuration.title": "NeoOriginsin yhteinen kokoonpano",
+  "reward.neoorigins.loot_pool": "NeoOrigins: Myönnä saalisvaranto",
+  "reward.neoorigins.loot_pool.loot_table": "Ryöstämispöytä",
+  "reward.neoorigins.loot_pool.rolls": "Rullat"
+}

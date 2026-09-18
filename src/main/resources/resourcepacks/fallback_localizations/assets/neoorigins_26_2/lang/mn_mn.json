@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Таны урласан тоног төхөөрөмж бат бөх чанар, гэмтэл эсвэл олборлолтын хурд зэрэг нэмэлт шинж чанаруудыг хүлээн авдаг.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Тамхичинд хоол хийснээр хоёр дахин XP авдаг.",
+  "neoorigins.configuration.title": "NeoOrigins тохиргоо",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Тоглоомын явц",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "NeoOrigins Тоглоомын тохиргоо",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Админ ба зөвшөөрөл",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "NeoOrigins админ тохиргоо",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Эрчим хүчийг дарах",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "Neorigins-ийн хүчийг дарж байна",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Гарал үүсэл ба ангиуд",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "NeoOrigins Origins болон Ангилалыг сэлгэх",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Үйлчлүүлэгчийн дэлгэц",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "NeoOrigins үйлчлүүлэгчийн тохиргоо",
+  "neoorigins.configuration.show_cooldown_countdown": "Хөргөх хугацааг харуулах",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Хөргөх хугацааг тоолох тунгалаг байдал (%)",
+  "neoorigins.configuration.hud_ability_display": "Чадвар HUD дэлгэцийн горим",
+  "neoorigins.configuration.always_show_ability_icons": "Чадвар дүрсийг үргэлж харуул"
+}

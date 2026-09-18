@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Utstyr du lager får bonusattributter – seighet, skade eller gruvehastighet.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Får dobbel XP ved å lage mat i en røyker.",
+  "neoorigins.configuration.title": "NeoOrigins-konfigurasjon",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Spilling",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "NeoOrigins spillinnstillinger",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Administrator og tillatelser",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "NeoOrigins Administrasjonsinnstillinger",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Strømoverstyringer",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "Neoorigins makt overstyrer",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Opprinnelse og klasser",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "NeoOrigins opprinnelse og klasse veksler",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Klientvisning",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "NeoOrigins klientinnstillinger",
+  "neoorigins.configuration.show_cooldown_countdown": "Vis nedtelling",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Nedtellingsgjennomsiktighet (%)",
+  "neoorigins.configuration.hud_ability_display": "Evne til HUD-visningsmodus",
+  "neoorigins.configuration.always_show_ability_icons": "Vis alltid evneikoner"
+}

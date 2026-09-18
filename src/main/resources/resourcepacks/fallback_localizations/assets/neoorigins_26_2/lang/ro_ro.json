@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Echipamentul pe care îl creați primește atribute bonus - duritate, daune sau viteza de exploatare.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Câștigă XP dublu din gătirea alimentelor într-un afumător.",
+  "neoorigins.configuration.title": "Configurație NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Gameplay-ul",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "Setări de joc NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Administrator și permisiuni",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "Setări Admin NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Anulări de putere",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "Neoorigins anulează puterea",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Origini și clase",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "Comutări Origine și clasă NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Afișare client",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "Setări client NeoOrigins",
+  "neoorigins.configuration.show_cooldown_countdown": "Afișează numărătoarea inversă pentru timpul de răcire",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Opacitatea numărătoarea inversă a timpului de răcire (%)",
+  "neoorigins.configuration.hud_ability_display": "Abilitatea mod de afișare HUD",
+  "neoorigins.configuration.always_show_ability_icons": "Afișați întotdeauna pictogramele de abilități"
+}

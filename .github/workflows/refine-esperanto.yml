@@ -1,0 +1,172 @@
+name: Refine Esperanto localization
+
+on:
+  push:
+    branches: [ release/0.9.0-esperanto ]
+    paths:
+      - scripts/refine_esperanto.py
+      - scripts/refine_esperanto_observed.py
+      - .github/workflows/refine-esperanto.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-esperanto
+          fetch-depth: 0
+
+      - name: Apply contextual Esperanto refinements
+        run: |
+          python3 scripts/refine_esperanto.py
+          python3 scripts/refine_esperanto_observed.py
+
+      - name: Restrict add-on audits to Esperanto
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          scripts = [
+              'scripts/audit_medievalorigins_upstream.py',
+              'scripts/audit_ibarnorigins_upstream.py',
+              'scripts/audit_origins_fantasy_upstream.py',
+              'scripts/audit_origins_backgrounds_upstream.py',
+              'scripts/audit_origins_more_backgrounds_upstream.py',
+              'scripts/audit_origins_backgrounds_iss_upstream.py',
+              'scripts/audit_origins_furries_upstream.py',
+              'scripts/audit_origins_classes_extended_upstream.py',
+              'scripts/audit_origins_classes_iss_upstream.py',
+              'scripts/audit_origin_architect_upstream.py',
+          ]
+          for filename in scripts:
+              path = Path(filename)
+              text = path.read_text(encoding='utf-8')
+              updated, count = re.subn(r'^LOCALES\s*=.*$', 'LOCALES = ("eo_uy",)', text, count=1, flags=re.M)
+              if count == 0:
+                  updated, count = re.subn(r'^DEFAULT_LOCALES\s*=.*$', 'DEFAULT_LOCALES = ("eo_uy",)', text, count=1, flags=re.M)
+              if count != 1:
+                  raise SystemExit(f'Could not patch locale list in {filename}')
+              path.write_text(updated, encoding='utf-8')
+          PY
+
+      - name: Strict NeoOrigins audits
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref af467a3bc118f6bbc0970d68f7e03fa631d7e6f2 --output build/eo-refined-121 --locale eo_uy --fallback-namespace-glob 'neoorigins_eo_common_*' --extra-namespace neoorigins_eo_121 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref aa207ef14cf3b938e28b4081162701953957c1d5 --output build/eo-refined-261 --locale eo_uy --fallback-namespace-glob 'neoorigins_eo_common_*' --extra-namespace neoorigins_26_1 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 511cadcafe3027d2a56b4448652ec9b74e2f3b07 --output build/eo-refined-262 --locale eo_uy --fallback-namespace-glob 'neoorigins_eo_common_*' --extra-namespace neoorigins_26_2 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Strict add-on audits
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_fantasy_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_furries_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_extended_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origin_architect_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Validate localization JSON
+        run: python3 scripts/validate.py
+
+      - name: Assert contextual terms and Esperanto text
+        run: |
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+          files = list(Path('src/main/resources/resourcepacks/fallback_localizations/assets').glob('**/lang/eo_uy.json'))
+          merged = {}; values = []
+          for p in files:
+              data = json.loads(p.read_text(encoding='utf-8'))
+              merged.update(data); values.extend(str(v) for v in data.values())
+          expected = {
+              'origins.layer.origin': 'Origin',
+              'origins.layer.class': 'Klaso',
+              'gui.neoorigins.detail.powers_header': 'Povoj',
+              'gui.neoorigins.creator.apply': 'Apliki',
+              'gui.neoorigins.mob_creator.tab.spawn_rules': 'Generaj Reguloj',
+              'gui.neoorigins.mob_creator.tab.drops': 'Faligaĵoj',
+              'power.neoorigins.blazeling_blaze_scales.name': 'Blaze-skvamoj',
+              'power.origins_furries.scales.name': 'Skvamoj',
+              'power.origins_furries.pavlov.name': 'Pavlova Reflekso',
+              'power.origins_furries.night_vision.name': 'Noktvido',
+              'screen.originsmodernui.title': 'Elektu vian Origin',
+              'key.originsmodernui.toggle_hud': 'Ŝalti/malŝalti la Origin Architect HUD',
+              'gui.neoorigins.editor.on': 'Ŝaltita',
+              'gui.neoorigins.editor.off': 'Malŝaltita',
+          }
+          for key, want in expected.items():
+              got = merged.get(key)
+              if got != want:
+                  raise SystemExit(f'{key}: expected {want!r}, got {got!r}')
+          for i in range(1,65):
+              key=f'key.neoorigins.hotkey.{i}'
+              if merged.get(key) != f'Fulmoklavo {i:02d}':
+                  raise SystemExit(f'Bad hotkey {i}: {merged.get(key)!r}')
+          text='\n'.join(values); low=text.lower()
+          markers=len(re.findall(r'\b(?:la|kaj|de|al|en|por|kun|estas|kiu|kiuj|via|viaj|vi|ĝi|ili|se|kiam|aŭ|ne|sur|per|el|povas|uzu|premu|ludanto|povo|kapablo|origin)\b', low))
+          diacritics=len(re.findall(r'[ĉĝĥĵŝŭĈĜĤĴŜŬ]', text))
+          latin=len(re.findall(r'[A-Za-zÀ-ž]', text))
+          if markers < 1500 or diacritics < 900 or latin < 25000:
+              raise SystemExit(f'Esperanto sanity too low after refinement: markers={markers}, diacritics={diacritics}, latin={latin}')
+          suspicious = [v for v in values if re.search(r'\b(?:Night Vision|Hotkey|Pavloved|Knockback Resistance|Raw Mutton|Rotten Flesh|Pufferfish)\b', v, re.I)]
+          if suspicious:
+              raise SystemExit(f'Known English/contextual remnants remain: {suspicious[:10]!r}')
+          print(f'Esperanto contextual assertions passed: {len(files)} files, {markers} lexical markers, {diacritics} Esperanto diacritics, {latin} Latin chars.')
+          PY
+
+      - name: Write contextual QA report
+        run: |
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+          rows=[]
+          for p in sorted(Path('src/main/resources/resourcepacks/fallback_localizations/assets').glob('**/lang/eo_uy.json')):
+              data=json.loads(p.read_text(encoding='utf-8'))
+              for k,v in data.items():
+                  s=str(v)
+                  if re.search(r'origin|power|pov|nether|vision|nokt|spawn|gener|xp|spert|class|klas|scale|skvam|pavlov|apply|aplik|hotkey|fulmoklav', k+' '+s, re.I):
+                      rows.append({'file':str(p), 'key':k, 'value':s})
+          out=Path('build/eo-contextual-report.json'); out.parent.mkdir(parents=True, exist_ok=True)
+          out.write_text(json.dumps(rows, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
+          print(f'Contextual QA report: {len(rows)} entries')
+          PY
+
+      - name: Check whitespace errors
+        run: git diff --check
+
+      - name: Restore temporary audit script changes
+        if: always()
+        run: git checkout HEAD -- scripts/audit_*_upstream.py
+
+      - name: Upload refined audits
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: esperanto-refined-audits-${{ github.sha }}
+          path: |
+            build/eo-refined-*
+            build/eo-contextual-report.json
+          if-no-files-found: warn
+
+      - name: Commit contextual refinement
+        if: success()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name 'eo_uy.json' -print0 | xargs -0 -r git add
+          if git diff --cached --quiet; then
+            echo 'No contextual changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Refine Esperanto gameplay terminology'
+          git fetch origin release/0.9.0-esperanto
+          git rebase origin/release/0.9.0-esperanto
+          git push origin HEAD:release/0.9.0-esperanto

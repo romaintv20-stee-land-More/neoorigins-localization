@@ -1,0 +1,53 @@
+name: Harden Bavarian corpus mapping
+
+on:
+  push:
+    branches:
+      - release/1.0.0-bavarian
+    paths:
+      - '.github/workflows/harden-bavarian-corpus-mapping.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  harden:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: release/1.0.0-bavarian
+      - name: Restrict learned mappings to orthographically plausible corpus pairs
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('scripts/bootstrap_bavarian.py')
+          text = path.read_text(encoding='utf-8')
+          old = '''        if (\n            (top >= 2 and share >= 0.60)\n            or (top >= 5 and share >= 0.50)\n            or (top == 1 and total == 1 and len(source) >= 4 and len(target) >= 3 and similarity >= 0.55)\n        ):\n            learned[source] = target\n'''
+          new = '''        plausible = len(target) >= 3 and similarity >= 0.45\n        if plausible and (\n            (top >= 2 and share >= 0.60)\n            or (top >= 5 and share >= 0.50)\n            or (top == 1 and total == 1 and len(source) >= 4 and similarity >= 0.55)\n        ):\n            learned[source] = target\n'''
+          if old not in text:
+              raise SystemExit('Expected learned-mapping block not found')
+          text = text.replace(old, new, 1)
+          anchor = '    "wiederholen": "Wiederholn",\n'
+          extra = '''    "der": "da",\n    "die": "de",\n    "das": "as",\n    "aus": "as",\n    "durch": "duach",\n    "wird": "wiad",\n    "werden": "wern",\n    "alle": "olle",\n    "mehr": "meah",\n    "weniger": "weniga",\n    "klein": "kloan",\n'''
+          if anchor not in text:
+              raise SystemExit('Manual-word anchor not found')
+          text = text.replace(anchor, anchor + extra, 1)
+          # Guard against the exact destructive mapping that exposed the alignment risk.
+          marker = '    learned.update(MANUAL_WORDS)\n'
+          guard = '''    destructive = {s: t for s, t in learned.items() if len(s) >= 5 and len(t) <= 2}\n    if destructive:\n        raise RuntimeError(f"Destructive learned Bavarian mappings detected: {destructive}")\n'''
+          if marker not in text:
+              raise SystemExit('learned.update anchor not found')
+          text = text.replace(marker, marker + guard, 1)
+          path.write_text(text, encoding='utf-8')
+          PY
+      - name: Verify and commit
+        run: |
+          python3 -m py_compile scripts/bootstrap_bavarian.py
+          git diff --check
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add scripts/bootstrap_bavarian.py
+          git commit -m 'Harden Bavarian corpus alignment'
+          git push origin HEAD:release/1.0.0-bavarian

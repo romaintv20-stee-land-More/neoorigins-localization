@@ -1,0 +1,63 @@
+name: Sync Macedonian 52-locale handoff
+
+on:
+  push:
+    branches:
+      - release/0.9.0-macedonian
+    paths:
+      - .github/workflows/sync-handoff-macedonian.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-macedonian
+
+      - name: Update handoff
+        run: python3 scripts/update_handoff_macedonian.py
+
+      - name: Validate handoff state
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          text=Path('PROJECT_HANDOFF.txt').read_text(encoding='utf-8')
+          required=[
+              '0.9.0 development currently has 52 locales:',
+              '- 52: Macedonian / mk_mk',
+              'FIFTY-TWO IS NOT THE FINAL TARGET.',
+              'Macedonian locale: mk_mk / Македонски.',
+              'successful workflow run 34360492525: SUCCESS',
+              'workflow run 34361474409: SUCCESS',
+              'synchronization run 34361736440: SUCCESS',
+              'run ID 34361874941: SUCCESS on all three jobs',
+              'artifact ID 10108226329',
+              'artifact ID 10108207419',
+              'artifact ID 10108200854',
+              'NEXT LANGUAGE = language 53.',
+              'Do not stop permanently at 53;',
+          ]
+          missing=[x for x in required if x not in text]
+          if missing: raise SystemExit(f'Handoff markers missing: {missing}')
+          print('Macedonian handoff validation passed: 52 locales, next 53')
+          PY
+
+      - name: Commit handoff
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add PROJECT_HANDOFF.txt
+          if git diff --cached --quiet; then
+            echo 'No handoff changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Finalize Macedonian 0.9.0 handoff'
+          git fetch origin release/0.9.0-macedonian
+          git rebase origin/release/0.9.0-macedonian
+          git push origin HEAD:release/0.9.0-macedonian

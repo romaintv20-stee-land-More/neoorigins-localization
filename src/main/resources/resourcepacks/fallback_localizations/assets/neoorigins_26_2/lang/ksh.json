@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Equipemente, di jeschaffe wääde, kriije Bonusattribute — Zähigkeit, Schadde oder Minneschnelligkeit.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Verdient doppelte XP von Köche Essen in enem Räucher.",
+  "neoorigins.configuration.title": "NeoOrigins-Konfiguratiun",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Spillspell",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "NeoOrigins Spillspell-Einstellunge",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Admin & Verlöven",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "NeoOrigins Admin-Einstellunge",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Macht övverdraare",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "NeoOrigins Macht övverdraare",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Origines & Classes",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "NeoOrigins Origines & Class Toggles",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Client-Anzeige",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "NeoOrigins Client-Einstellunge",
+  "neoorigins.configuration.show_cooldown_countdown": "Öt jitt öt zösamme:",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Kooftzählung deckt (%)",
+  "neoorigins.configuration.hud_ability_display": "Möjelichkeet HUD-Anzeigemodus",
+  "neoorigins.configuration.always_show_ability_icons": "Emmer Fähigkeits-Icons zeechne"
+}

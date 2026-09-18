@@ -1,0 +1,44 @@
+name: Sync Vietnamese handoff
+
+on:
+  push:
+    branches:
+      - release/0.9.0-beta
+    paths:
+      - scripts/update_handoff_vietnamese.py
+      - .github/workflows/sync-handoff-vietnamese.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-beta
+      - name: Update handoff
+        run: python3 scripts/update_handoff_vietnamese.py
+      - name: Validate handoff
+        run: |
+          grep -F '0.9.0 development currently has 24 locales:' PROJECT_HANDOFF.txt
+          grep -F -- '- 24: Vietnamese / vi_vn' PROJECT_HANDOFF.txt
+          grep -F 'NEXT LANGUAGE = language 25.' PROJECT_HANDOFF.txt
+          grep -F 'run ID 34261836142: SUCCESS on all three jobs' PROJECT_HANDOFF.txt
+          grep -F 'artifact ID 10070253529' PROJECT_HANDOFF.txt
+      - name: Commit handoff
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add PROJECT_HANDOFF.txt
+          if git diff --cached --quiet; then
+            echo 'No handoff changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Finalize Vietnamese 0.9.0 handoff'
+          git fetch origin release/0.9.0-beta
+          git rebase origin/release/0.9.0-beta
+          git push origin HEAD:release/0.9.0-beta

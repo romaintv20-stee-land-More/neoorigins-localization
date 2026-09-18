@@ -1,0 +1,75 @@
+name: Finalize Occitan metadata
+
+on:
+  push:
+    branches: [ release/0.9.0-occitan ]
+    paths:
+      - scripts/finalize_occitan_metadata.py
+      - .github/workflows/finalize-occitan-metadata.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  metadata:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-occitan
+          fetch-depth: 0
+
+      - name: Synchronize Occitan catalog and README metadata
+        run: python3 scripts/finalize_occitan_metadata.py
+
+      - name: Assert 73-language metadata state
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          catalog = json.loads(Path('catalog.json').read_text(encoding='utf-8'))
+          assert catalog['project']['supported_locale_count'] == 73
+          count = 0
+          def walk(obj):
+              global count
+              if isinstance(obj, dict):
+                  if 'oc_fr' in obj and isinstance(obj['oc_fr'], dict) and obj['oc_fr'].get('name') == 'Occitan':
+                      count += 1
+                  for value in obj.values(): walk(value)
+              elif isinstance(obj, list):
+                  for value in obj: walk(value)
+          walk(catalog)
+          assert count >= 11, count
+          neo = next(x for x in catalog['supported_projects'] if x.get('id') == 'neoorigins')
+          ns = neo['compatibility']['fallback_namespaces']
+          assert ns['occitan_common_glob'] == 'neoorigins_oc_common_*'
+          assert ns['occitan_mc_1_21_1'] == 'neoorigins_oc_121'
+          readme = Path('README.md').read_text(encoding='utf-8')
+          assert readme.count('| 73 |') == 3
+          assert 'Occitan (`oc_fr`)' in readme
+          assert "Pour l'occitan :" in readme
+          assert 'Les soixante-treize langues' in readme
+          catalogue = Path('CATALOG.md').read_text(encoding='utf-8')
+          assert catalogue.count('Occitan (`oc_fr`)') >= 11
+          print(f'Metadata assertions passed: 73 locales, {count} Occitan catalog entries.')
+          PY
+
+      - name: Validate JSON and whitespace
+        run: |
+          python3 scripts/validate.py
+          git diff --check
+
+      - name: Commit Occitan metadata
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add catalog.json CATALOG.md README.md
+          if git diff --cached --quiet; then
+            echo 'No metadata changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Document Occitan localization in 0.9.0 beta'
+          git fetch origin release/0.9.0-occitan
+          git rebase origin/release/0.9.0-occitan
+          git push origin HEAD:release/0.9.0-occitan

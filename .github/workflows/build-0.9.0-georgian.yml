@@ -1,0 +1,199 @@
+name: Build 0.9.0 Georgian
+
+on:
+  push:
+    branches: [ release/0.9.0-georgian ]
+    paths:
+      - '.github/workflows/build-0.9.0-georgian.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Georgian ${{ matrix.target }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: mc-1.21.1
+            minecraft: '1.21.1'
+            minecraft_range: '[1.21.1]'
+            java: '21'
+            gradle: '8.14.3'
+            neoforge: '21.1.248'
+            loader_range: '[1,)'
+            parchment: 'true'
+            pack_format: '34'
+            source_variant: 'mc1_21_1'
+            upstream_ref: '860ecdb24e723983e93004ea8ceb5de90ccf0d70'
+            ka_extra_namespace: 'neoorigins_ka_121'
+            include_addons: true
+            include_121_batch: true
+            include_26_1: false
+            include_26_2: false
+          - target: mc-26.1.x
+            minecraft: '26.1.2'
+            minecraft_range: '[26.1,26.2)'
+            java: '25'
+            gradle: '9.4.1'
+            neoforge: '26.1.2.29-beta'
+            loader_range: '[4,)'
+            parchment: 'false'
+            pack_format: '84'
+            source_variant: 'mc26_1'
+            upstream_ref: '3c1c7365507679c836d3c14af5d4dd0654652e87'
+            ka_extra_namespace: 'neoorigins_26_1'
+            include_addons: false
+            include_121_batch: true
+            include_26_1: true
+            include_26_2: false
+          - target: mc-26.2
+            minecraft: '26.2'
+            minecraft_range: '[26.2,26.3)'
+            java: '25'
+            gradle: '9.4.1'
+            neoforge: '26.2.0.3-beta'
+            loader_range: '[4,)'
+            parchment: 'false'
+            pack_format: '84'
+            source_variant: 'mc26_1'
+            upstream_ref: '65864716a5a796fa1c51ec3e8a6d9640abebb4ca'
+            ka_extra_namespace: 'neoorigins_26_2'
+            include_addons: false
+            include_121_batch: false
+            include_26_1: false
+            include_26_2: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Java ${{ matrix.java }}
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+
+      - name: Set up Gradle ${{ matrix.gradle }}
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          gradle-version: ${{ matrix.gradle }}
+
+      - name: Strict audit Georgian NeoOrigins
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref '${{ matrix.upstream_ref }}' --output 'build/ka-${{ matrix.target }}' --locale ka_ge --fallback-namespace-glob 'neoorigins_ka_common_*' --extra-namespace '${{ matrix.ka_extra_namespace }}' --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Strict audit Georgian add-ons
+        if: matrix.include_addons == true
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re, subprocess
+          scripts=[
+            ('scripts/audit_medievalorigins_upstream.py',['--ref','1.21.1-fabric']),
+            ('scripts/audit_ibarnorigins_upstream.py',['--ref','multiloader-1.21.1-new-pack-format']),
+            ('scripts/audit_origins_fantasy_upstream.py',[]),
+            ('scripts/audit_origins_backgrounds_upstream.py',[]),
+            ('scripts/audit_origins_more_backgrounds_upstream.py',[]),
+            ('scripts/audit_origins_backgrounds_iss_upstream.py',[]),
+            ('scripts/audit_origins_furries_upstream.py',[]),
+            ('scripts/audit_origins_classes_extended_upstream.py',[]),
+            ('scripts/audit_origins_classes_iss_upstream.py',[]),
+            ('scripts/audit_origin_architect_upstream.py',[]),
+          ]
+          originals={n:Path(n).read_text(encoding='utf-8') for n,_ in scripts}
+          try:
+            for name,extra in scripts:
+              p=Path(name); src=originals[name]
+              out,count=re.subn(r'^LOCALES\s*=.*$','LOCALES = ("ka_ge",)',src,count=1,flags=re.M)
+              if count==0: out,count=re.subn(r'^DEFAULT_LOCALES\s*=.*$','DEFAULT_LOCALES = ("ka_ge",)',src,count=1,flags=re.M)
+              if count!=1: raise SystemExit(f'Could not patch locale in {name}')
+              p.write_text(out,encoding='utf-8')
+              subprocess.run(['python3',name,*extra,'--fail-on-overlap','--fail-on-missing','--fail-on-placeholders'],check=True)
+              p.write_text(src,encoding='utf-8')
+          finally:
+            for n,src in originals.items(): Path(n).write_text(src,encoding='utf-8')
+          PY
+
+      - name: Validate localization files
+        run: python3 scripts/validate.py
+
+      - name: Sanity-check Georgian text
+        run: |
+          python3 - <<'PY'
+          import json,re
+          from pathlib import Path
+          files=list(Path('src/main/resources/resourcepacks/fallback_localizations/assets').glob('**/lang/ka_ge.json'))
+          all_data={}; parts=[]
+          for p in files:
+              data=json.loads(p.read_text(encoding='utf-8'))
+              all_data.update(data); parts.extend(str(v) for v in data.values())
+          text='\n'.join(parts)
+          georgian=len(re.findall(r'[\u10D0-\u10FF\u1C90-\u1CBF]',text))
+          expected={
+            'neoorigins.toggle.on':'ძალა ჩართულია',
+            'neoorigins.ultimine.no_power':'თქვენს Origin-ს არ აქვს Ultimine ძალა.',
+            'gui.neoorigins.mob_creator.tab.drops':'ნადავლი',
+            'gui.neoorigins.mob_creator.apply':'გამოყენება',
+            'origins.neoorigins.arachnid.name':'Arachnid',
+            'power.neoorigins.blazeling_nether_born.name':'ნეზერში დაბადებული',
+            'power.origins_furries.pavlov.name':'პავლოვის რეაქცია',
+            'power.origins_furries.scales.name':'ქერცლები',
+            'originsmodernui.config.hud.show_level':'Origin Architect-ის დონის ჩვენება',
+          }
+          bad=[f'{k}={all_data.get(k)!r}' for k,v in expected.items() if all_data.get(k)!=v]
+          if bad: raise SystemExit(f'Georgian contextual fixes missing: {bad}')
+          if georgian < 5000: raise SystemExit(f'Georgian-script sanity too low: {georgian}')
+          print(f'Georgian sanity passed: {georgian} Georgian chars across {len(files)} files')
+          PY
+
+      - name: Build mod
+        run: |
+          gradle build --stacktrace \
+            "-Pjava_version=${{ matrix.java }}" \
+            "-Puse_parchment=${{ matrix.parchment }}" \
+            "-Presource_pack_format=${{ matrix.pack_format }}" \
+            "-Psource_variant=${{ matrix.source_variant }}" \
+            "-Pinclude_addon_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_121_batch_translations=${{ matrix.include_121_batch }}" \
+            "-Pinclude_georgian_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_26_1_translations=${{ matrix.include_26_1 }}" \
+            "-Pinclude_26_2_translations=${{ matrix.include_26_2 }}" \
+            "-Pminecraft_version=${{ matrix.minecraft }}" \
+            "-Pminecraft_version_range=${{ matrix.minecraft_range }}" \
+            "-Pneo_version=${{ matrix.neoforge }}" \
+            "-Ploader_version_range=${{ matrix.loader_range }}" \
+            "-Pmod_version=0.9.0-beta+ka-${{ matrix.target }}"
+
+      - name: Verify Georgian packaging
+        run: |
+          JAR=$(find build/libs -type f -name '*.jar' ! -name '*-sources.jar' | head -n1)
+          test -n "$JAR"
+          jar tf "$JAR" > build/jar-ka.txt
+          COUNT=$(grep -cE '(^|/)lang/ka_ge\.json$' build/jar-ka.txt || true)
+          for index in $(seq -w 1 16); do grep -Eq "assets/neoorigins_ka_common_${index}/lang/ka_ge\.json$" build/jar-ka.txt; done
+          ADDONS='medievalorigins ibarnorigins origins_fantasy origins_backgrounds origins_backgrounds_two origins_backgrounds_iss origins_furries origins_classes_ex origins_classes_iss originsmodernui'
+          ADDON_PATTERN='assets/(medievalorigins|medievalorigins_[^/]*|ibarnorigins|origins_fantasy|origins_backgrounds|origins_backgrounds_two|origins_backgrounds_iss|origins_furries|origins_classes_ex|origins_classes_iss|originsmodernui)/'
+          if [ '${{ matrix.include_addons }}' = 'true' ]; then
+            EXPECTED=27
+            grep -Eq 'assets/neoorigins_ka_121/lang/ka_ge\.json$' build/jar-ka.txt
+            for ns in $ADDONS; do grep -Eq "assets/$ns/lang/ka_ge\.json$" build/jar-ka.txt; done
+            ! grep -Eq 'assets/neoorigins_26_(1|2)/lang/ka_ge\.json$' build/jar-ka.txt
+          else
+            EXPECTED=17
+            ! grep -Eq "$ADDON_PATTERN" build/jar-ka.txt
+            ! grep -Eq 'assets/neoorigins_ka_121/lang/ka_ge\.json$' build/jar-ka.txt
+            grep -Eq "assets/${{ matrix.ka_extra_namespace }}/lang/ka_ge\.json$" build/jar-ka.txt
+          fi
+          echo "Georgian: $COUNT / $EXPECTED"
+          test "$COUNT" -eq "$EXPECTED"
+
+      - name: Upload JAR
+        uses: actions/upload-artifact@v7
+        with:
+          name: neoorigins-localization-georgian-${{ matrix.target }}-${{ github.sha }}
+          path: build/libs/*.jar
+          if-no-files-found: error

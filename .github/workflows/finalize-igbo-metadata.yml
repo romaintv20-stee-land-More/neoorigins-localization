@@ -1,0 +1,65 @@
+name: Finalize Igbo metadata
+
+on:
+  push:
+    branches:
+      - release/0.9.0-igbo
+    paths:
+      - scripts/finalize_igbo_metadata.py
+      - .github/workflows/finalize-igbo-metadata.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  metadata:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-igbo
+
+      - name: Finalize Igbo metadata
+        run: python3 scripts/finalize_igbo_metadata.py
+
+      - name: Assert metadata state
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          catalog = json.loads(Path('catalog.json').read_text(encoding='utf-8'))
+          if catalog['project']['supported_locale_count'] != 74:
+              raise SystemExit('catalog supported_locale_count is not 74')
+          projects = catalog['supported_projects']
+          missing = [p.get('id') for p in projects if 'ig_ng' not in p.get('languages', {})]
+          if missing:
+              raise SystemExit(f'ig_ng missing from catalog project languages: {missing}')
+          readme = Path('README.md').read_text(encoding='utf-8')
+          if readme.count('| 74 |') != 3 or 'Igbo (`ig_ng`)' not in readme:
+              raise SystemExit('README Igbo/74-language metadata assertion failed')
+          cat = Path('CATALOG.md').read_text(encoding='utf-8')
+          if cat.count('Igbo (`ig_ng`)') < 11:
+              raise SystemExit('CATALOG Igbo entries incomplete')
+          print('Igbo metadata assertions passed')
+          PY
+
+      - name: Validate repository JSON and whitespace
+        run: |
+          python3 scripts/validate.py
+          git diff --check
+
+      - name: Commit Igbo metadata
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add catalog.json CATALOG.md README.md
+          if git diff --cached --quiet; then
+            echo 'No Igbo metadata changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Add Igbo localization metadata'
+          git fetch origin release/0.9.0-igbo
+          git rebase origin/release/0.9.0-igbo
+          git push origin HEAD:release/0.9.0-igbo

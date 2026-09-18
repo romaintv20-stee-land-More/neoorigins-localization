@@ -1,0 +1,65 @@
+name: Refine Nynorsk localization
+
+on:
+  push:
+    branches:
+      - release/0.9.0-nynorsk
+    paths:
+      - scripts/refine_nynorsk.py
+      - .github/workflows/refine-nynorsk.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-nynorsk
+
+      - name: Apply contextual Nynorsk fixes
+        run: python3 scripts/refine_nynorsk.py
+
+      - name: Validate JSON localization structure
+        run: python3 scripts/validate.py
+
+      - name: Strict audit Nynorsk NeoOrigins coverage
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref 860ecdb24e723983e93004ea8ceb5de90ccf0d70 --output build/nn-refine-audit-121 --locale nn_no --fallback-namespace-glob 'neoorigins_nn_common_*' --extra-namespace neoorigins_nn_121 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 3c1c7365507679c836d3c14af5d4dd0654652e87 --output build/nn-refine-audit-261 --locale nn_no --fallback-namespace-glob 'neoorigins_nn_common_*' --extra-namespace neoorigins_26_1 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 65864716a5a796fa1c51ec3e8a6d9640abebb4ca --output build/nn-refine-audit-262 --locale nn_no --fallback-namespace-glob 'neoorigins_nn_common_*' --extra-namespace neoorigins_26_2 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Sanity-check corrected Nynorsk text
+        run: |
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+          files = list(Path('src/main/resources/resourcepacks/fallback_localizations/assets').glob('**/lang/nn_no.json'))
+          text = '\n'.join(str(v).lower() for p in files for v in json.loads(p.read_text(encoding='utf-8')).values())
+          markers = len(re.findall(r'\b(ikkje|frå|berre|sjølv|kvar|kva|utan|noko|nokon|desse|dei|eit|ein|òg|mykje|mogleg|høg|låg|gjer|vert|opna|forsterking|målar)\b', text))
+          if markers < 250:
+              raise SystemExit(f'Nynorsk lexical sanity too low: {markers}')
+          forbidden = ['opphavet ditt kan ikkje vera min', '"søk"', 'dråper']
+          present = [item for item in forbidden if item in text]
+          if present:
+              raise SystemExit(f'Known Nynorsk false friends remain: {present}')
+          print(f'Nynorsk refinement sanity passed: {markers} lexical markers across {len(files)} files')
+          PY
+
+      - name: Commit refined Nynorsk translations
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name 'nn_no.json' -print0 | xargs -0 -r git add
+          if git diff --cached --quiet; then
+            echo 'No Nynorsk refinement changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Refine Nynorsk Minecraft terminology'
+          git fetch origin release/0.9.0-nynorsk
+          git rebase origin/release/0.9.0-nynorsk
+          git push origin HEAD:release/0.9.0-nynorsk

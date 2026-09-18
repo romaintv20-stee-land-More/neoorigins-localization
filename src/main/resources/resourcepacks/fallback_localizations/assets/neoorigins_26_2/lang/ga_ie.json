@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Faigheann trealamh a dhéanann tú tréithe bónais - déine, damáiste nó luas mianadóireachta.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Gnóthachain XP faoi dhó as cócaireacht bia i gcaitheann tobac.",
+  "neoorigins.configuration.title": "Cumraíocht NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Sliocht cluiche",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "Socruithe gameplay NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Riarachán & Ceadanna",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "Socruithe Riaracháin NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Sáraíonn Cumhacht",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "Sáraítear Cumhacht NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Bunús & Ranganna",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "Scoránaigh NeoOrigins Origin & Class",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Taispeáin Cliant",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "Socruithe Cliant NeoOrigins",
+  "neoorigins.configuration.show_cooldown_countdown": "Taispeáin comhaireamh síos fuarú",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Teimhneacht comhaireamh síos fuarú (%)",
+  "neoorigins.configuration.hud_ability_display": "Cumas modh taispeána HUD",
+  "neoorigins.configuration.always_show_ability_icons": "Taispeáin deilbhíní cumais i gcónaí"
+}

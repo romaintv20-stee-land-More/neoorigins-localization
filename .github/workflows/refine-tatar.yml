@@ -1,0 +1,132 @@
+name: Refine Tatar localization
+
+on:
+  push:
+    branches:
+      - release/0.9.0-tatar
+    paths:
+      - 'src/main/resources/resourcepacks/fallback_localizations/**/tt_ru.json'
+      - '.github/workflows/refine-tatar.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-tatar
+
+      - name: Restrict add-on audits to Tatar
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          scripts = [
+              'scripts/audit_medievalorigins_upstream.py',
+              'scripts/audit_ibarnorigins_upstream.py',
+              'scripts/audit_origins_fantasy_upstream.py',
+              'scripts/audit_origins_backgrounds_upstream.py',
+              'scripts/audit_origins_more_backgrounds_upstream.py',
+              'scripts/audit_origins_backgrounds_iss_upstream.py',
+              'scripts/audit_origins_furries_upstream.py',
+              'scripts/audit_origins_classes_extended_upstream.py',
+              'scripts/audit_origins_classes_iss_upstream.py',
+              'scripts/audit_origin_architect_upstream.py',
+          ]
+          for filename in scripts:
+              path = Path(filename)
+              text = path.read_text(encoding='utf-8')
+              updated, count = re.subn(r'^LOCALES\s*=.*$', 'LOCALES = ("tt_ru",)', text, count=1, flags=re.M)
+              if count == 0:
+                  updated, count = re.subn(r'^DEFAULT_LOCALES\s*=.*$', 'DEFAULT_LOCALES = ("tt_ru",)', text, count=1, flags=re.M)
+              if count != 1:
+                  raise SystemExit(f'Could not patch locale list in {filename}')
+              path.write_text(updated, encoding='utf-8')
+          PY
+
+      - name: Refine Tatar localization context
+        run: python3 scripts/refine_tatar.py
+
+      - name: Strict audit Tatar NeoOrigins coverage
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref af467a3bc118f6bbc0970d68f7e03fa631d7e6f2 --output build/tt-refine-mc-1.21.1 --locale tt_ru --fallback-namespace-glob 'neoorigins_tt_common_*' --extra-namespace neoorigins_tt_121 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref aa207ef14cf3b938e28b4081162701953957c1d5 --output build/tt-refine-mc-26.1 --locale tt_ru --fallback-namespace-glob 'neoorigins_tt_common_*' --extra-namespace neoorigins_26_1 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 511cadcafe3027d2a56b4448652ec9b74e2f3b07 --output build/tt-refine-mc-26.2 --locale tt_ru --fallback-namespace-glob 'neoorigins_tt_common_*' --extra-namespace neoorigins_26_2 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Strict audit Tatar add-on coverage
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_fantasy_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_furries_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_extended_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origin_architect_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Validate JSON
+        run: python3 scripts/validate.py
+
+      - name: Tatar contextual sanity
+        run: |
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+          root = Path('src/main/resources/resourcepacks/fallback_localizations/assets')
+          files = list(root.glob('**/lang/tt_ru.json'))
+          if len(files) != 29:
+              raise SystemExit(f'Expected 29 tt_ru source files, found {len(files)}')
+          data = {}
+          values = []
+          for p in files:
+              obj = json.loads(p.read_text(encoding='utf-8'))
+              data.update(obj)
+              values.extend(str(v) for v in obj.values())
+          text = '\n'.join(values)
+          cyrillic = len(re.findall(r'[А-Яа-яЁёӘәӨөҮүҖҗҢңҺһ]', text))
+          signals = len(re.findall(r'[ӘәӨөҮүҖҗҢңҺһ]', text))
+          markers = len(re.findall(r'\b(?:һәм|өчен|белән|бу|ул|алар|сез|мөмкин|түгел|вакыт|көч|уенчы|зыян|җан|һөҗүм|куллана|кулланып|әгәр|тик|кайчан|сәләт|эзләү|сайлагыз)\b', text, flags=re.I))
+          if cyrillic < 70000 or signals < 1200 or markers < 350:
+              raise SystemExit(f'Tatar text sanity failed: cyrillic={cyrillic}, signals={signals}, markers={markers}')
+          expected = {
+              'key.category.neoorigins.neoorigins': 'NeoOrigins',
+              'screen.neoorigins.choose_origin': 'Origin сайлагыз',
+              'neoorigins.night_vision.on': 'Төн күрү кабызылды',
+              'key.neoorigins.class_skill': 'Класс сәләте',
+          }
+          for key, value in expected.items():
+              if data.get(key) != value:
+                  raise SystemExit(f'Context assertion failed for {key}: {data.get(key)!r}')
+          if 'Neorigins' in text or 'Neoorigins' in text:
+              raise SystemExit('Non-canonical NeoOrigins branding remains')
+          print(f'Tatar contextual sanity passed: {cyrillic} Cyrillic chars, {signals} Tatar-specific letters, {markers} lexical markers across {len(files)} files')
+          PY
+
+      - name: Check whitespace
+        run: git diff --check
+
+      - name: Restore temporary audit-script changes
+        if: always()
+        run: git checkout HEAD -- scripts/audit_*_upstream.py
+
+      - name: Commit Tatar refinement
+        if: success()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name 'tt_ru.json' -print0 | xargs -0 -r git add
+          if git diff --cached --quiet; then
+            echo 'No Tatar refinement changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Refine Tatar localization context'
+          git fetch origin release/0.9.0-tatar
+          git rebase origin/release/0.9.0-tatar
+          git push origin HEAD:release/0.9.0-tatar

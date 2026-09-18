@@ -1,0 +1,66 @@
+name: Sync Macedonian 52-locale metadata
+
+on:
+  push:
+    branches:
+      - release/0.9.0-macedonian
+    paths:
+      - .github/workflows/sync-metadata-macedonian.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-macedonian
+
+      - name: Update catalog metadata
+        run: |
+          python3 scripts/update_catalog_macedonian.py
+          python3 scripts/generate_catalog.py
+
+      - name: Update README metadata
+        run: python3 scripts/update_readme_macedonian.py
+
+      - name: Validate 52-locale metadata
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          catalog=json.loads(Path('catalog.json').read_text(encoding='utf-8'))
+          if catalog['project']['supported_locale_count'] != 52:
+              raise SystemExit('catalog locale count is not 52')
+          for project in catalog['supported_projects']:
+              for locale in ('mn_mn','mk_mk'):
+                  if locale not in project['languages']:
+                      raise SystemExit(f"{locale} missing from {project['id']}")
+          readme=Path('README.md').read_text(encoding='utf-8')
+          required=['Les cinquante-deux langues','Mongol (`mn_mn`)','Macédonien (`mk_mk`)','Pour le mongol :','Pour le macédonien :','/ MN / MK']
+          missing=[item for item in required if item not in readme]
+          if missing: raise SystemExit(f'README Macedonian markers missing: {missing}')
+          catalog_md=Path('CATALOG.md').read_text(encoding='utf-8')
+          for marker in ('mn_mn','mk_mk','Монгол хэл','Македонски'):
+              if marker not in catalog_md:
+                  raise SystemExit(f'CATALOG.md marker missing: {marker}')
+          print('Macedonian 52-locale metadata validation passed')
+          PY
+
+      - name: Commit Macedonian metadata
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add catalog.json CATALOG.md README.md
+          if git diff --cached --quiet; then
+            echo 'No Macedonian metadata changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Document Macedonian localization in 0.9.0 beta'
+          git fetch origin release/0.9.0-macedonian
+          git rebase origin/release/0.9.0-macedonian
+          git push origin HEAD:release/0.9.0-macedonian

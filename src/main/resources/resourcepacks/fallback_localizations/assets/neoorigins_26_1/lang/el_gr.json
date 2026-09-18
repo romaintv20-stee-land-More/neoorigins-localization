@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Ο εξοπλισμός που κατασκευάζετε λαμβάνει χαρακτηριστικά μπόνους — σκληρότητα, ζημιά ή ταχύτητα εξόρυξης.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Κερδίζει διπλάσια XP από το μαγείρεμα φαγητού σε έναν καπνιστή.",
+  "neoorigins.configuration.title": "Διαμόρφωση NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Παιχνίδι",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "Ρυθμίσεις παιχνιδιού NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Διαχειριστής και δικαιώματα",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "Ρυθμίσεις διαχειριστή NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Παράκαμψη ισχύος",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "Neoorigins εξουσία υπερισχύει",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Προέλευση & Τάξεις",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "Neoorigins προέλευσης & εναλλαγής κατηγορίας",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Εμφάνιση πελάτη",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "Ρυθμίσεις πελάτη NeoOrigins",
+  "neoorigins.configuration.show_cooldown_countdown": "Εμφάνιση αντίστροφης μέτρησης για ψύξη",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Αδιαφάνεια αντίστροφης μέτρησης (%)",
+  "neoorigins.configuration.hud_ability_display": "Δυνατότητα λειτουργίας προβολής HUD",
+  "neoorigins.configuration.always_show_ability_icons": "Να εμφανίζονται πάντα εικονίδια ικανότητας"
+}

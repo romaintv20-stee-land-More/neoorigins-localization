@@ -7,6 +7,15 @@ catalog = json.loads((ROOT / "catalog.json").read_text(encoding="utf-8"))
 
 project_meta = catalog.get("project", {})
 builds = project_meta.get("builds", {})
+primary_project = next(
+    (project for project in catalog.get("supported_projects", []) if project.get("id") == "neoorigins"),
+    {},
+)
+locale_codes = [
+    code
+    for code, meta in primary_project.get("languages", {}).items()
+    if meta.get("status") == "supported"
+]
 
 lines = [
     "# Catalogue des localisations",
@@ -63,11 +72,13 @@ lines.extend([
     "",
     "## Notes",
     "",
-    "- Les onze langues ciblées sont : fr_fr, de_de, es_es, pt_br, nl_nl, it_it, pl_pl, ru_ru, tr_tr, zh_cn et cs_cz.",
+    f"- Les {len(locale_codes)} langues ciblées sont : "
+    + ", ".join(f"`{code}`" for code in locale_codes[:-1])
+    + (f" et `{locale_codes[-1]}`." if locale_codes else "—."),
     "- Les builds 26.x n'embarquent actuellement que les traductions NeoOrigins.",
     "- Tous les add-ons listés restent inclus uniquement dans le build 1.21.1 tant que leur compatibilité NeoForge 26.x n'est pas validée.",
     "- Les traductions officielles des projets amont gardent toujours la priorité ; notre pack ne fournit que les clés manquantes.",
-    "- La cible 26.2 utilise un delta de localisation dédié ; le tchèque y ajoute 14 clés à ses 19 fichiers NeoOrigins communs.",
+    "- Les cibles 1.21.1, 26.1.x et 26.2 utilisent leurs deltas de localisation dédiés lorsque nécessaire.",
 ])
 
 (ROOT / "CATALOG.md").write_text("\n".join(lines) + "\n", encoding="utf-8")

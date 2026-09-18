@@ -1,0 +1,44 @@
+name: Finalize Tatar metadata
+
+on:
+  push:
+    branches:
+      - release/0.9.0-tatar
+    paths:
+      - '.github/workflows/finalize-tatar-metadata.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-tatar
+
+      - name: Finalize Tatar metadata
+        run: python3 scripts/finalize_tatar_metadata.py
+
+      - name: Validate JSON
+        run: python3 scripts/validate.py
+
+      - name: Check whitespace
+        run: git diff --check
+
+      - name: Commit Tatar metadata
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add catalog.json CATALOG.md README.md
+          if git diff --cached --quiet; then
+            echo 'No Tatar metadata changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Finalize Tatar localization metadata'
+          git fetch origin release/0.9.0-tatar
+          git rebase origin/release/0.9.0-tatar
+          git push origin HEAD:release/0.9.0-tatar

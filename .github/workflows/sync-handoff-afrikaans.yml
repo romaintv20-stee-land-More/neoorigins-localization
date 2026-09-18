@@ -1,0 +1,63 @@
+name: Sync Afrikaans 55-locale handoff
+
+on:
+  push:
+    branches:
+      - release/0.9.0-afrikaans
+    paths:
+      - .github/workflows/sync-handoff-afrikaans.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-afrikaans
+
+      - name: Update handoff
+        run: python3 scripts/update_handoff_afrikaans.py
+
+      - name: Validate handoff state
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          text=Path('PROJECT_HANDOFF.txt').read_text(encoding='utf-8')
+          required=[
+              '0.9.0 development currently has 55 locales:',
+              '- 55: Afrikaans / af_za',
+              'FIFTY-FIVE IS NOT THE FINAL TARGET.',
+              'Afrikaans locale: af_za / Afrikaans.',
+              'workflow run 34368581196: SUCCESS',
+              'final workflow run 34369946175: SUCCESS',
+              'synchronization run 34370294595: SUCCESS',
+              'run ID 34370462722: SUCCESS on all three jobs',
+              'artifact ID 10111730427',
+              'artifact ID 10111725668',
+              'artifact ID 10111730737',
+              'NEXT LANGUAGE = language 56.',
+              'Do not stop permanently at 56;',
+          ]
+          missing=[x for x in required if x not in text]
+          if missing: raise SystemExit(f'Handoff markers missing: {missing}')
+          print('Afrikaans handoff validation passed: 55 locales, next 56')
+          PY
+
+      - name: Commit handoff
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add PROJECT_HANDOFF.txt
+          if git diff --cached --quiet; then
+            echo 'No handoff changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Finalize Afrikaans 0.9.0 handoff'
+          git fetch origin release/0.9.0-afrikaans
+          git rebase origin/release/0.9.0-afrikaans
+          git push origin HEAD:release/0.9.0-afrikaans

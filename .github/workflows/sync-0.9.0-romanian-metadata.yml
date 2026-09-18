@@ -1,0 +1,68 @@
+name: Sync 0.9.0 Romanian metadata
+
+on:
+  push:
+    branches:
+      - release/0.9.0-beta
+    paths:
+      - 'src/main/resources/resourcepacks/fallback_localizations/assets/**/ro_ro.json'
+      - 'scripts/update_catalog_romanian.py'
+      - 'scripts/update_readme_romanian.py'
+      - '.github/workflows/sync-0.9.0-romanian-metadata.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-beta
+
+      - name: Update catalog and README
+        run: |
+          python3 scripts/update_catalog_romanian.py
+          python3 scripts/generate_catalog.py
+          python3 scripts/update_readme_romanian.py
+
+      - name: Validate metadata
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          catalog = json.loads(Path('catalog.json').read_text(encoding='utf-8'))
+          if catalog['project']['supported_locale_count'] != 21:
+              raise SystemExit('catalog locale count is not 21')
+          neo = next(p for p in catalog['supported_projects'] if p['id'] == 'neoorigins')
+          if neo['languages'].get('ro_ro', {}).get('status') != 'supported':
+              raise SystemExit('ro_ro is not marked supported for NeoOrigins')
+          for project in catalog['supported_projects']:
+              if project['languages'].get('ro_ro', {}).get('status') != 'supported':
+                  raise SystemExit(f"ro_ro missing from catalog project {project['id']}")
+          oa = next(p for p in catalog['supported_projects'] if p['id'] == 'originsmodernui')
+          if oa['languages']['ro_ro'].get('official_keys') != 22 or oa['languages']['ro_ro'].get('fallback_keys') != 0:
+              raise SystemExit('Origin Architect Romanian official/fallback coverage is incorrect')
+          readme = Path('README.md').read_text(encoding='utf-8')
+          if 'Roumain (`ro_ro`)' not in readme or 'Les vingt et une langues' not in readme:
+              raise SystemExit('README Romanian metadata missing')
+          print('Romanian metadata validation passed')
+          PY
+
+      - name: Commit synchronized metadata
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add catalog.json CATALOG.md README.md
+          if git diff --cached --quiet; then
+            echo 'No metadata changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Document Romanian localization in 0.9.0 beta'
+          git fetch origin release/0.9.0-beta
+          git rebase origin/release/0.9.0-beta
+          git push origin HEAD:release/0.9.0-beta

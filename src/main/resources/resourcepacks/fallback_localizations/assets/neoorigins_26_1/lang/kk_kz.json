@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Сіз жасаған жабдық бонустық атрибуттарды алады - қаттылық, зақымдану немесе өндіру жылдамдығы.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Шылым шегетінде тағамды пісіру екі есе XP жинайды.",
+  "neoorigins.configuration.title": "NeoOrigins конфигурациясы",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Ойын барысы",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "NeoOrigins геймплей параметрлері",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Әкімші және рұқсаттар",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "NeoOrigins әкімші параметрлері",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Қуатты қайта анықтау",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "NeoOrigins қуатты қайта анықтау",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Шығулар мен сыныптар",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "NeoOrigins Origins және класс ауыстырып-қосқыштары",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Клиент дисплейі",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "NeoOrigins клиенттік параметрлері",
+  "neoorigins.configuration.show_cooldown_countdown": "Салқындату уақытын кері санауды көрсетіңіз",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Салқындату уақытының кері санағының мөлдірлігі (%)",
+  "neoorigins.configuration.hud_ability_display": "Мүмкіндік HUD дисплей режимі",
+  "neoorigins.configuration.always_show_ability_icons": "Әрқашан қабілет белгішелерін көрсетіңіз"
+}

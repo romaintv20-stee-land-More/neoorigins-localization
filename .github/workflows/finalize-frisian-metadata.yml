@@ -1,0 +1,75 @@
+name: Finalize Frisian metadata
+
+on:
+  push:
+    branches: [ release/0.9.0-frisian ]
+    paths:
+      - scripts/finalize_frisian_metadata.py
+      - .github/workflows/finalize-frisian-metadata.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  metadata:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-frisian
+          fetch-depth: 0
+
+      - name: Synchronize Frisian catalog and README metadata
+        run: python3 scripts/finalize_frisian_metadata.py
+
+      - name: Assert 72-language metadata state
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          catalog = json.loads(Path('catalog.json').read_text(encoding='utf-8'))
+          assert catalog['project']['supported_locale_count'] == 72
+          count = 0
+          def walk(obj):
+              global count
+              if isinstance(obj, dict):
+                  if 'fy_nl' in obj and isinstance(obj['fy_nl'], dict) and obj['fy_nl'].get('name') == 'Frysk':
+                      count += 1
+                  for value in obj.values(): walk(value)
+              elif isinstance(obj, list):
+                  for value in obj: walk(value)
+          walk(catalog)
+          assert count >= 11, count
+          neo = next(x for x in catalog['supported_projects'] if x.get('id') == 'neoorigins')
+          ns = neo['compatibility']['fallback_namespaces']
+          assert ns['frisian_common_glob'] == 'neoorigins_fy_common_*'
+          assert ns['frisian_mc_1_21_1'] == 'neoorigins_fy_121'
+          readme = Path('README.md').read_text(encoding='utf-8')
+          assert readme.count('| 72 |') == 3
+          assert 'Frison occidental (`fy_nl`)' in readme
+          assert 'Pour le frison occidental :' in readme
+          assert 'Les soixante-douze langues' in readme
+          catalogue = Path('CATALOG.md').read_text(encoding='utf-8')
+          assert catalogue.count('Frysk (`fy_nl`)') >= 11
+          print(f'Metadata assertions passed: 72 locales, {count} Frisian catalog entries.')
+          PY
+
+      - name: Validate JSON and whitespace
+        run: |
+          python3 scripts/validate.py
+          git diff --check
+
+      - name: Commit Frisian metadata
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add catalog.json CATALOG.md README.md
+          if git diff --cached --quiet; then
+            echo 'No metadata changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Document Frisian localization in 0.9.0 beta'
+          git fetch origin release/0.9.0-frisian
+          git rebase origin/release/0.9.0-frisian
+          git push origin HEAD:release/0.9.0-frisian

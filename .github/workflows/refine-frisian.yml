@@ -1,0 +1,132 @@
+name: Refine Frisian localization
+
+on:
+  push:
+    branches:
+      - release/0.9.0-frisian
+    paths:
+      - scripts/refine_frisian.py
+      - .github/workflows/refine-frisian.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-frisian
+
+      - name: Restrict add-on audits to Frisian
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          scripts = [
+              'scripts/audit_medievalorigins_upstream.py',
+              'scripts/audit_ibarnorigins_upstream.py',
+              'scripts/audit_origins_fantasy_upstream.py',
+              'scripts/audit_origins_backgrounds_upstream.py',
+              'scripts/audit_origins_more_backgrounds_upstream.py',
+              'scripts/audit_origins_backgrounds_iss_upstream.py',
+              'scripts/audit_origins_furries_upstream.py',
+              'scripts/audit_origins_classes_extended_upstream.py',
+              'scripts/audit_origins_classes_iss_upstream.py',
+              'scripts/audit_origin_architect_upstream.py',
+          ]
+          for filename in scripts:
+              path = Path(filename)
+              text = path.read_text(encoding='utf-8')
+              updated, count = re.subn(r'^LOCALES\s*=.*$', 'LOCALES = ("fy_nl",)', text, count=1, flags=re.M)
+              if count == 0:
+                  updated, count = re.subn(r'^DEFAULT_LOCALES\s*=.*$', 'DEFAULT_LOCALES = ("fy_nl",)', text, count=1, flags=re.M)
+              if count != 1:
+                  raise SystemExit(f'Could not patch locale list in {filename}')
+              path.write_text(updated, encoding='utf-8')
+          PY
+
+      - name: Refine Frisian localization context
+        run: python3 scripts/refine_frisian.py
+
+      - name: Strict audit Frisian NeoOrigins coverage
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref af467a3bc118f6bbc0970d68f7e03fa631d7e6f2 --output build/fy-refine-mc-1.21.1 --locale fy_nl --fallback-namespace-glob 'neoorigins_fy_common_*' --extra-namespace neoorigins_fy_121 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref aa207ef14cf3b938e28b4081162701953957c1d5 --output build/fy-refine-mc-26.1 --locale fy_nl --fallback-namespace-glob 'neoorigins_fy_common_*' --extra-namespace neoorigins_26_1 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 511cadcafe3027d2a56b4448652ec9b74e2f3b07 --output build/fy-refine-mc-26.2 --locale fy_nl --fallback-namespace-glob 'neoorigins_fy_common_*' --extra-namespace neoorigins_26_2 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Strict audit Frisian add-on coverage
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_fantasy_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_furries_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_extended_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origin_architect_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Validate JSON
+        run: python3 scripts/validate.py
+
+      - name: Frisian contextual sanity
+        run: |
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+          root = Path('src/main/resources/resourcepacks/fallback_localizations/assets')
+          files = list(root.glob('**/lang/fy_nl.json'))
+          if len(files) != 29:
+              raise SystemExit(f'Expected 29 fy_nl source files, found {len(files)}')
+          data = {}
+          values = []
+          for p in files:
+              obj = json.loads(p.read_text(encoding='utf-8'))
+              data.update(obj)
+              values.extend(str(v) for v in obj.values())
+          text = '\n'.join(values)
+          latin = len(re.findall(r'[A-Za-zÀ-ÿ]', text))
+          signals = len(re.findall(r'(?:û|â|ê|ô|ú|Û|Â|Ê|Ô|Ú|ij|sk|tsj|sj)', text))
+          markers = len(re.findall(r'\b(?:de|it|in|en|fan|mei|foar|net|gjin|is|binne|hat|op|oan|út|sûnder|kin|spiler|wrâld|taal|krêft|snelheid|sûnens|nacht|klear)\b', text, flags=re.I))
+          if latin < 70000 or signals < 500 or markers < 500:
+              raise SystemExit(f'Frisian text sanity failed: latin={latin}, signals={signals}, markers={markers}')
+          expected = {
+              'key.category.neoorigins.neoorigins': 'NeoOrigins',
+              'screen.neoorigins.choose_origin': 'Kies in Origin',
+              'neoorigins.night_vision.on': 'Nachtsicht ynskeakele',
+              'key.neoorigins.class_skill': 'Klassefeardigens',
+          }
+          for key, value in expected.items():
+              if data.get(key) != value:
+                  raise SystemExit(f'Context assertion failed for {key}: {data.get(key)!r}')
+          if 'Neorigins' in text or 'Neoorigins' in text:
+              raise SystemExit('Non-canonical NeoOrigins branding remains')
+          print(f'Frisian contextual sanity passed: {latin} Latin chars, {signals} orthographic signals, {markers} lexical markers across {len(files)} files')
+          PY
+
+      - name: Check whitespace
+        run: git diff --check
+
+      - name: Restore temporary audit-script changes
+        if: always()
+        run: git checkout HEAD -- scripts/audit_*_upstream.py
+
+      - name: Commit Frisian refinement
+        if: success()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name 'fy_nl.json' -print0 | xargs -0 -r git add
+          if git diff --cached --quiet; then
+            echo 'No Frisian refinement changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Refine Frisian localization context'
+          git fetch origin release/0.9.0-frisian
+          git rebase origin/release/0.9.0-frisian
+          git push origin HEAD:release/0.9.0-frisian

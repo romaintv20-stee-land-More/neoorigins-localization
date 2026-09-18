@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "O equipo que creas recibe atributos extra: dureza, danos ou velocidade de minería.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Gaña o dobre de XP ao cociñar alimentos nun afumador.",
+  "neoorigins.configuration.title": "Configuración de NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Jogabilidade",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "Configuración de xogo de NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Administración e permisos",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "Configuración de administración de NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Anulacións de poder",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "Anulacións de poder de NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Orixes e clases",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "Alternativas de orixe e clase de NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Visualización do cliente",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "Configuración do cliente de NeoOrigins",
+  "neoorigins.configuration.show_cooldown_countdown": "Mostrar a conta atrás do tempo de recarga",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Opacidade da conta atrás do tempo de recarga (%)",
+  "neoorigins.configuration.hud_ability_display": "Modo de visualización HUD de capacidade",
+  "neoorigins.configuration.always_show_ability_icons": "Mostra sempre as iconas de habilidades"
+}

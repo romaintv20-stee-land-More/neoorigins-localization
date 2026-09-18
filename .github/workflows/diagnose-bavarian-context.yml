@@ -1,0 +1,94 @@
+name: Diagnose Bavarian localization context
+
+on:
+  push:
+    branches:
+      - release/1.0.0-bavarian
+    paths:
+      - '.github/workflows/diagnose-bavarian-context.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: release/1.0.0-bavarian
+      - name: Inspect high-visibility Bavarian strings
+        run: |
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+
+          assets = Path('src/main/resources/resourcepacks/fallback_localizations/assets')
+          rows = []
+          for path in sorted(assets.glob('**/lang/bar.json')):
+              namespace = path.parts[path.parts.index('assets') + 1]
+              for key, value in json.loads(path.read_text(encoding='utf-8')).items():
+                  rows.append((namespace, key, str(value)))
+
+          exact_keys = {
+              'origins.layer.origin', 'origins.layer.class',
+              'screen.neoorigins.choose_origin', 'screen.neoorigins.choose.origins.layer.origin',
+              'screen.neoorigins.choose.origins.layer.class', 'gui.neoorigins.detail.powers_header',
+              'gui.neoorigins.search.label', 'gui.neoorigins.picker.no_results',
+              'gui.neoorigins.hint.select', 'gui.neoorigins.sort.class',
+              'key.neoorigins.class_skill', 'key.neoorigins.view_info',
+              'key.neoorigins.open_creator', 'key.neoorigins.open_mob_creator',
+              'screen.neoorigins.hud_editor', 'screen.neoorigins.hud_editor.scale',
+              'screen.neoorigins.origin_info', 'screen.neoorigins.debug_powers',
+              'gui.neoorigins.info.no_origin', 'gui.neoorigins.info.your_origin',
+              'screen.neoorigins.origin_editor', 'gui.neoorigins.editor.layers_header',
+              'gui.neoorigins.editor.powers_header', 'screen.neoorigins.creator',
+              'gui.neoorigins.creator.tab.powers', 'gui.neoorigins.creator.tab.layer',
+              'gui.neoorigins.creator.apply', 'screen.neoorigins.mob_creator',
+              'gui.neoorigins.mob_creator.tab.powers', 'gui.neoorigins.mob_creator.apply',
+              'neoorigins.configuration.sun_damage.helmet_protection',
+              'neoorigins.configuration.helmet_protection',
+              'effect.ibarnorigins.inflation_effect', 'power.ibarnorigins.ghasterinflate.name',
+              'power.ibarnorigins.wpairswim.name', 'power.origins_fantasy.fae_flight.name',
+              'screen.originsmodernui.title', 'originsmodernui.config.hud.position',
+              'originsmodernui.config.hud.scale',
+          }
+          print('=== HIGH VISIBILITY ===')
+          for namespace, key, value in rows:
+              if key in exact_keys:
+                  print(f'{namespace}\t{key}\t{value}')
+
+          concepts = re.compile(r'(origin|power|class|flight|fly|health|damage|speed|armor|armour|helmet|hud|apply|creator|inflation|ability|skill)', re.I)
+          print('=== CONCEPT SAMPLE ===')
+          count = 0
+          for namespace, key, value in rows:
+              if concepts.search(key) and key not in exact_keys:
+                  print(f'{namespace}\t{key}\t{value}')
+                  count += 1
+                  if count >= 120:
+                      break
+
+          suspicious = re.compile(r'\b(?:Ursprung|Ursprünge|Klasse|Klassen|Macht|Mächte|Kraft|Kräfte|Flug|Fliegen|Schaden|Geschwindigkeit|Gesundheit|Anwenden|Helm|Position|Skalierung|Ersteller|Fähigkeit|Fähigkeiten)\b', re.I)
+          print('=== STANDARD-GERMAN CONCEPT SURVIVORS ===')
+          hits = 0
+          for namespace, key, value in rows:
+              if suspicious.search(value):
+                  print(f'{namespace}\t{key}\t{value}')
+                  hits += 1
+                  if hits >= 160:
+                      break
+          print('survivor_hits_shown=', hits)
+
+          # Detect values that look almost entirely unchanged from German technical/UI vocabulary.
+          common_standard = [' der ', ' die ', ' das ', ' und ', ' nicht ', ' mit ', ' für ', ' eine ', ' einen ', ' kann ', ' wird ', ' werden ', ' wenn ', ' während ', ' durch ']
+          scored = []
+          for namespace, key, value in rows:
+              low = ' ' + re.sub(r'§.', '', value).casefold() + ' '
+              score = sum(low.count(token) for token in common_standard)
+              if score >= 3:
+                  scored.append((score, namespace, key, value))
+          print('=== STANDARD-GERMAN-LIKE LONG VALUES ===')
+          for score, namespace, key, value in sorted(scored, reverse=True)[:80]:
+              print(f'{score}\t{namespace}\t{key}\t{value}')
+          PY

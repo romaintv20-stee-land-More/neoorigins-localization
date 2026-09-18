@@ -1,0 +1,8 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "المعدات التي تصنعها متفوقة - يتم استخراج الأدوات بشكل أسرع، والأسلحة تضرب بقوة أكبر، والدروع أقوى، وكل شيء يدوم لفترة أطول.",
+  "power.neoorigins.class_cook_smoker_xp.description": "الطعام المطبوخ في المدخن أو الفرن يحصل على تغذية إضافية.",
+  "neoorigins.configuration.title": "التكوين المشترك لـ NeoOrigins",
+  "reward.neoorigins.loot_pool": "NeoOrigins: منح مجموعة الغنائم",
+  "reward.neoorigins.loot_pool.loot_table": "جدول المسروقات",
+  "reward.neoorigins.loot_pool.rolls": "لفات"
+}

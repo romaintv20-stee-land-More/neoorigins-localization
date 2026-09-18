@@ -1,0 +1,375 @@
+files=29
+values=3583
+sami_specific_chars=9712
+english_term_values=26
+standard_german_term_values=6
+
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/se_no.json	effect.ibarnorigins.soul_fire_effect	Sielu buollimat
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/se_no.json	effect.ibarnorigins.grant_soul_mage_attributes	Addit Soul Sorcerer Attributes
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/se_no.json	effect.ibarnorigins.revoke_soul_mage_attributes	Heaittihit Soul Sorcerer Attributes
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/se_no.json	effect.ibarnorigins.grant_sand_person_attributes	Addit Sand Person Attributes
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/se_no.json	effect.ibarnorigins.revoke_sand_person_attributes	Heaittihit Sand Person Attributes
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/se_no.json	origin.ibarnorigins.soul_wizard.name	Sielu noaidi
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/se_no.json	power.ibarnorigins.soul_speed.name	Siellu leahttu
+ENGLISH?	src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/se_no.json	origin.medievalorigins.banshee.description	Flight	§l§nOverview§r: 
+§o§2+ Flight, Support, Phasing§r
+§o§6• Undead
+§o§c- Suodjalus§r
+§o§c- Erenoamáš rievdadusat, lohket vuos!§r
+§lBanshees§r leat váivves vuoiŋŋat geaid čuorvumat sáhttet billistit glássaid ja dagahit ahte olbmot šaddet čáhppesin. Myhtain sin boahtin atnojuvvo dávjá jápminmearkan.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/se_no.json	origin.medievalorigins.high_elf.name	Alimus Elf
+ENGLISH?	src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/se_no.json	origin.medievalorigins.high_elf.description	Abilities	§l§nOverview§r: 
+§o§2+ Magic, Unique Abilities§r
+§o§c- Fysalaš vahágat
+- Suodjalus§r
+§lHigh Elves§r leat dovddus arrogánttat, vaikko leat jáhkkemeahttun čeahpit; elemeantalaš magiija manná garrasit sin varrasuotna čađa, vaikko dat leat heajut veahkaválddálašvuođain.
+ENGLISH?	src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/se_no.json	origin.medievalorigins.moon_elf.description	Damage	§l§nOverview§r: 
+§o§2+ Dagger Damage
++ Dextrous§r
+§o§6• Stealthy, Doesn't Sleep§r
+§o§c- Suodjalus§r
+Mystihkalaš, eterihkalaš olbmot geat eai leat dán máilmmis. Mánnueallit eai leat nammaduvvon sin ruovttueatnama dihte, muhto dan áidna dihte maid sin gillájeaddjit besset oaidnit ovdal go jápmet.
+ENGLISH?	src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/se_no.json	origin.medievalorigins.pixie.description	Flight	§l§nOverview§r: 
+§o§2+ Unique Flight, Odd§r
+§o§6• Unna: 22cm.9" §r
+§o§c- Suodjalus, Dovdomearka §r
+Dávjá atnojuvvojit buori lihkku ovdagovvan, muhto maiddái čeahpes, luohtehahtti vealaheami áššedovdin. Pixies leat čáppa ja hui, hui smávva.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/se_no.json	power.medievalorigins.alfiq.on_your_feet.name	Du julggiid alde
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/se_no.json	power.medievalorigins.alfiq.poor_grip.name	Heajos giehta
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/se_no.json	power.medievalorigins.alfiq.agile_preference.name	Agilis ovdamunni
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/se_no.json	power.medievalorigins.banshee.sonic_shriek.name	Ovddalgihtii elegiija
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/se_no.json	power.medievalorigins.banshee.cursed_sigil.name	Nealguduvvon Sigil
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/se_no.json	power.medievalorigins.banshee.cursed_ward.name	Nealguduvvon suodjalus
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/se_no.json	power.medievalorigins.incubus.demon_fire.name	Demon buollin
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/se_no.json	power.medievalorigins.incubus.dimension_strength.name	Riikka ovdamunni
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/se_no.json	power.medievalorigins.fae.natures_ward.name	Luonddu guovlu
+GERMAN?	src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/se_no.json	power.medievalorigins.gorgon.hydrophobe.description	das	Gorgonat eai sáhte dohkkehit čázi buhtisvuođa ja váldet vahágiid das.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/se_no.json	power.medievalorigins.gorgon.poison_blood.name	Gievrras varra
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/se_no.json	power.medievalorigins.high_elf.ebonbreath.name	Govve Essence
+GERMAN?	src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/se_no.json	power.medievalorigins.ogre.lead_belly.description	das	Oagrat eai beroš das maid borret. Biebmu lea biebmu. Sii eai vásihan gievrrasvuođa dahje nealggi.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/se_no.json	power.medievalorigins.pixie.feather_footed.name	Feather Footed
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/se_no.json	power.medievalorigins.pixie.flight.name	Dulvviid alde
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/se_no.json	power.medievalorigins.pixie.good_fortunes.name	Buorre lihkku
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/se_no.json	power.medievalorigins.plague_victim.foul_aura.name	Heajos aura
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/se_no.json	power.medievalorigins.yeti.frigid_pulse.name	Galbma pulsa
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/se_no.json	power.medievalorigins.revenant.hellraiser.name	Njuovvan ossodat
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/se_no.json	sounds.medievalorigins.bone_crunch	Rievdaduvvon bealli
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/se_no.json	tooltip.medievalorigins.set_bonus	Bidjat bonusa:
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/se_no.json	tooltip.medievalorigins.stab_bonus	Stealth Break Bonus
+ENGLISH?	src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/se_no.json	origin.medievalorigins.high_elf.arcanist.description	Power	Alit elliid leat riegádahtton eambbo čeahpit ovtta elemeanttas, mearriduvvon riegádeamis. 
+
+Mágiija gii lea áŋgir hálddašit esoterihkalaš ja dovdatmeahttun. 
+
++1 Arcane Spell Power
+ENGLISH?	src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/se_no.json	origin.medievalorigins.high_elf.cryomancer.description	Power	Roahkkadis, viissis sielu gii fokusere stivremii ja strategiijai. 
+
++1 Frost Spell Power
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_26_1/lang/se_no.json	neoorigins.configuration.section.neoorigins.client.toml.title	NeoOrigins klieantta njuolggadusat
+ENGLISH?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_26_1/lang/se_no.json	neoorigins.configuration.show_cooldown_countdown	cooldown	Čájet cooldown-lohkama
+ENGLISH?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_26_1/lang/se_no.json	neoorigins.configuration.cooldown_countdown_opacity	Cooldown	Cooldown-lohkan-opasitehta (%)
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_26_2/lang/se_no.json	neoorigins.configuration.section.neoorigins.client.toml.title	NeoOrigins klieantta njuolggadusat
+ENGLISH?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_26_2/lang/se_no.json	neoorigins.configuration.show_cooldown_countdown	cooldown	Čájet cooldown-lohkama
+ENGLISH?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_26_2/lang/se_no.json	neoorigins.configuration.cooldown_countdown_opacity	Cooldown	Cooldown-lohkan-opasitehta (%)
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_121/lang/se_no.json	reward.neoorigins.loot_pool	Neoorigins: addit loot pool
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_121/lang/se_no.json	reward.neoorigins.loot_pool.loot_table	Loot Tabealla
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_01/lang/se_no.json	neoorigins.night_vision.off	Geassegovva heaittihuvvon
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_01/lang/se_no.json	gui.neoorigins.sort.name_asc	Namma (A-Z)
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_01/lang/se_no.json	gui.neoorigins.sort.name_desc	Namma (Z-A)
+ENGLISH?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_01/lang/se_no.json	key.neoorigins.open_creator	Origin	Raba Origin Creator
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_01/lang/se_no.json	key.neoorigins.open_creator	Raba Origin Creator
+ENGLISH?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_01/lang/se_no.json	key.neoorigins.open_mob_creator	Origin	Raba Mob Origin Creator
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_01/lang/se_no.json	key.neoorigins.open_mob_creator	Raba Mob Origin Creator
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_01/lang/se_no.json	key.neoorigins.hotkey.10	Hotkey 10
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_01/lang/se_no.json	key.neoorigins.hotkey.15	Hotkey 15
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_01/lang/se_no.json	key.neoorigins.hotkey.19	Hotkey 19
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_01/lang/se_no.json	key.neoorigins.hotkey.20	Hotkey 20
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_01/lang/se_no.json	key.neoorigins.hotkey.30	Hotkey 30
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_01/lang/se_no.json	key.neoorigins.hotkey.40	Hotkey 40
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_01/lang/se_no.json	key.neoorigins.hotkey.50	Hotkey 50
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_01/lang/se_no.json	key.neoorigins.hotkey.55	Hotkey 55
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_01/lang/se_no.json	key.neoorigins.hotkey.59	Hotkey 59
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_01/lang/se_no.json	key.neoorigins.hotkey.60	Hotkey 60
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_01/lang/se_no.json	gui.neoorigins.info.evolution_apex	Apex olahii
+ENGLISH?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_02/lang/se_no.json	screen.neoorigins.mob_creator	Origin	Mob Origin Creator
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_02/lang/se_no.json	screen.neoorigins.mob_creator	Mob Origin Creator
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_02/lang/se_no.json	origins.gui.impact.none	Ii oktage
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_02/lang/se_no.json	power.neoorigins.merling_night_vision.name	Govda oaidnu
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_02/lang/se_no.json	power.neoorigins.avian_keen_sight.name	Garra oaidnu
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_02/lang/se_no.json	power.neoorigins.avian_hollow_bones.name	Hoahppu bealit
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_02/lang/se_no.json	power.neoorigins.avian_feather_hop.name	Feather Hop
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_02/lang/se_no.json	power.neoorigins.blazeling_night_vision.name	Liegga oaidnu
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_02/lang/se_no.json	power.neoorigins.elytrian_elytra_boost.name	Elytra Boost
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_02/lang/se_no.json	power.neoorigins.enderian_teleport.name	Ender Warp
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_02/lang/se_no.json	power.neoorigins.shulk_slow_movement.name	Shulker Bulk
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_02/lang/se_no.json	power.neoorigins.shulk_levitation_burst.name	Luotta almmuheapmi
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_02/lang/se_no.json	power.neoorigins.shulk_levitation_immunity.name	Eatnama alde
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_02/lang/se_no.json	power.neoorigins.phantom_no_sleep.name	Unnitkeahtes ballu
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_02/lang/se_no.json	power.neoorigins.feline_no_fall_damage.name	Njeallje eallima
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_02/lang/se_no.json	power.neoorigins.feline_mobs_ignore.name	Elliid roahkkadisvuohta
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_03/lang/se_no.json	power.neoorigins.feline_hunger_drain.name	Alit metabolisma
+GERMAN?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_03/lang/se_no.json	power.neoorigins.golem_knockback_resist.description	Das	Das lea 80% vuostálasvuohta.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_03/lang/se_no.json	power.neoorigins.caveborn_night_vision.name	Divrras heivehuvvon
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_03/lang/se_no.json	power.neoorigins.caveborn_emerald_bonus.name	Smaragd reprieve
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_03/lang/se_no.json	power.neoorigins.caveborn_netherite_bonus.name	Netherite Core
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_03/lang/se_no.json	power.neoorigins.caveborn_small_frame.name	Kompakta huksen
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_03/lang/se_no.json	power.neoorigins.sylvan_mobs_ignore.name	Okta luondduin
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_03/lang/se_no.json	power.neoorigins.draconic_lava_vision.name	Suoladuvvon oaidnu
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_03/lang/se_no.json	power.neoorigins.draconic_scare_mobs.name	Bajimus ovdanbuktin
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_03/lang/se_no.json	power.neoorigins.draconic_size.name	Heivehuvvon sturrodat
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_03/lang/se_no.json	power.neoorigins.tiny_wall_climbing.name	Ovddabeale giehta
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_03/lang/se_no.json	power.neoorigins.cave_dragon_apex_hp.name	Bajimus wyrm
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_03/lang/se_no.json	power.neoorigins.forest_dragon_evolved_hp.name	Bark Hide
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_03/lang/se_no.json	power.neoorigins.sea_dragon_ascended_might.name	Riptide Fury
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_04/lang/se_no.json	power.neoorigins.abyssal_night_vision.name	Govda oaidnu
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_04/lang/se_no.json	power.neoorigins.abyssal_thorns_aura.name	Presse Spines
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_04/lang/se_no.json	power.neoorigins.abyssal_daylight_damage.name	Ovddabeale buollima
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_04/lang/se_no.json	power.neoorigins.stoneguard_thorns_aura.name	Rocky Rebound
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_04/lang/se_no.json	power.neoorigins.stoneguard_knockback_resist.name	Eatnama alde
+GERMAN?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_04/lang/se_no.json	power.neoorigins.stoneguard_knockback_resist.description	Das	Das lea 50% vuostálasvuohta.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_04/lang/se_no.json	power.neoorigins.verdant_no_fall_damage.name	Ruotnasiid vuolgin
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_04/lang/se_no.json	power.neoorigins.draconic_flight.name	Dragon siivvit
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_04/lang/se_no.json	power.neoorigins.abyssal_starting_trident.name	Abyssal Trident
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_04/lang/se_no.json	power.neoorigins.verdant_harvest_bonus.name	Rikkis njuovvan
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_04/lang/se_no.json	item.neoorigins.purple_orb	Lilla Orb
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_05/lang/se_no.json	power.neoorigins.frostborn_freeze_aura.name	Frost Nova
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_05/lang/se_no.json	power.neoorigins.frostborn_cold_buff.name	Galbma varra
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_05/lang/se_no.json	power.neoorigins.frostborn_freeze_immunity.name	Galbma immunitehta
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_05/lang/se_no.json	power.neoorigins.strider_nether_buff.name	Ii ge leahttu
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_05/lang/se_no.json	power.neoorigins.strider_night_vision.name	Ii ge oaidnu
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_05/lang/se_no.json	power.neoorigins.strider_overworld_slowness.name	Galbma varra
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_05/lang/se_no.json	power.neoorigins.siren_charm.name	Geasuheaddji ovdanbuktin
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_05/lang/se_no.json	power.neoorigins.piglin_nether_buff.name	Ii mihkkege vihaheami
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_05/lang/se_no.json	power.neoorigins.piglin_gold_affinity.name	Golli sohkabealli
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_05/lang/se_no.json	power.neoorigins.piglin_gold_affinity.description	Piglins ja Piglin Brutes eai falle du.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_05/lang/se_no.json	power.neoorigins.piglin_overworld_weakness.name	Ovddabeale buohcuvuohta
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_05/lang/se_no.json	power.neoorigins.piglin_soul_fire_damage.name	Sielu ballu
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_05/lang/se_no.json	power.neoorigins.hiveling_hunger_drain.name	Buorre metabolisma
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_05/lang/se_no.json	power.neoorigins.cinderborn_natural_armor.name	Basaltta ivdni
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_05/lang/se_no.json	power.neoorigins.cinderborn_night_vision.name	Ember Glow
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_05/lang/se_no.json	power.neoorigins.sculkborn_sonic_bolt.name	Sonic Shriek
+GERMAN?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_05/lang/se_no.json	power.neoorigins.sculkborn_knockback_resist.description	Das	Das lea 50% vuostálasvuohta.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_05/lang/se_no.json	power.neoorigins.sculkborn_projectile_immunity.description	Piillat sirdojuvvojit vibrerensuorggis.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_05/lang/se_no.json	power.neoorigins.enderite_slow_fall.name	Ender Drift
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_05/lang/se_no.json	power.neoorigins.enderite_night_vision.name	Loahppa oaidnu
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_06/lang/se_no.json	power.neoorigins.class_miner_efficiency.name	Doaibmi roggan
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_06/lang/se_no.json	power.neoorigins.class_miner_deep_sense.name	Govda dovdu
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_06/lang/se_no.json	power.neoorigins.class_miner_tough_back.name	Garra ruoktot
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_06/lang/se_no.json	power.neoorigins.class_herbalist_poison_immunity.description	Immuna gievrrasvuhtii.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_06/lang/se_no.json	power.neoorigins.class_herbalist_harvest_bonus.name	Rikkis njuovvan
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_07/lang/se_no.json	power.neoorigins.class_blacksmith_repairs.name	Doaibmi divvumat
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_07/lang/se_no.json	power.neoorigins.class_cook_knife.name	Kokka niibi
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_07/lang/se_no.json	power.neoorigins.class_fisher_starting_rod.name	Buressivdniduvvon ruovdi
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_07/lang/se_no.json	power.neoorigins.class_fisher_night_sight_water.name	Divrras oaidnu
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_07/lang/se_no.json	power.neoorigins.class_mason_strong_grip.name	Gievrras giehta
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_07/lang/se_no.json	power.neoorigins.class_paladin_holy_armor.name	Bassi suodjalus
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_07/lang/se_no.json	power.neoorigins.class_paladin_starting_sword.description	Spawn Smite I ruovdemiehkiin.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_07/lang/se_no.json	power.neoorigins.class_paladin_effect_immunity.name	Bassi searvi
+GERMAN?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_07/lang/se_no.json	power.neoorigins.gorgon_knockback_resist.description	Das	Das lea 50% vuostálasvuohta.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_07/lang/se_no.json	power.neoorigins.gorgon_size.name	Heivehuvvon sturrodat
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_07/lang/se_no.json	power.neoorigins.automaton_hide_air_bar.name	Ii leat luftbar
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_08/lang/se_no.json	power.neoorigins.warden_sonic_boom.name	Sonic Boom
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_08/lang/se_no.json	power.neoorigins.warden_night_vision.name	Dievva divrras oaidnu
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_08/lang/se_no.json	power.neoorigins.dwarf_sturdy_legs.name	Gievrras juolggit
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_08/lang/se_no.json	power.neoorigins.dwarf_mining_hunger.name	Doaibmi metabolisma
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_08/lang/se_no.json	power.neoorigins.tame_mob.no_target	Ii oktage mob oidnosis.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_08/lang/se_no.json	power.neoorigins.mount.no_target	Ii oktage ollisvuohta.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_08/lang/se_no.json	power.neoorigins.mount.no_request	Dus eai leat vuordimis biddjon jearaldagat.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_08/lang/se_no.json	origins.neoorigins.earth_mage.name	Eatnama Mage
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_08/lang/se_no.json	power.neoorigins.earth_mage_earthbound.name	Eatnama alde
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_09/lang/se_no.json	power.neoorigins.water_mage_healing_mist.name	Buorideaddji muohta
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_09/lang/se_no.json	power.neoorigins.fire_mage_inferno_burst.name	Inferno Burst
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_09/lang/se_no.json	origins.neoorigins.gravity_mage.name	Gravitehta Mage
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_09/lang/se_no.json	power.neoorigins.darkness_mage_night_vision.name	Divrras oaidnu
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_09/lang/se_no.json	neoorigins.configuration.ocean_origins.spawn_in_ocean	Rievdat mearas
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_09/lang/se_no.json	neoorigins.configuration.ocean_origins.dries_out	Kuivvu eatnamii
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_09/lang/se_no.json	neoorigins.configuration.friendly_fire.protect_owned_pets	Suodjalit oamastan elliid
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_09/lang/se_no.json	neoorigins.configuration.friendly_fire.protect_animals	Suodjalit passiiva elliid
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_09/lang/se_no.json	neoorigins.configuration.friendly_fire.protect_villagers	Suodjalit giliolbmuid
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_09/lang/se_no.json	neoorigins.configuration.friendly_fire.protect_iron_golems	Suodjalit ruovdegolmmaid
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_10/lang/se_no.json	neoorigins.configuration.origins.earth_mage	Eatnama Mage
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_10/lang/se_no.json	neoorigins.configuration.origins.gravity_mage	Gravitehta Mage
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_10/lang/se_no.json	neoorigins.configuration.spawn_in_ocean	Rievdat mearas
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_10/lang/se_no.json	neoorigins.configuration.dries_out	Kuivvu eatnamii
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_10/lang/se_no.json	neoorigins.configuration.protect_owned_pets	Suodjalit oamastan elliid
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_10/lang/se_no.json	neoorigins.configuration.protect_animals	Suodjalit passiiva elliid
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_10/lang/se_no.json	neoorigins.configuration.protect_villagers	Suodjalit giliolbmuid
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_10/lang/se_no.json	neoorigins.configuration.protect_iron_golems	Suodjalit ruovdegolmmaid
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_10/lang/se_no.json	neoorigins.configuration.earth_mage	Eatnama Mage
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_10/lang/se_no.json	neoorigins.configuration.gravity_mage	Gravitehta Mage
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_10/lang/se_no.json	neoorigins.configuration.abyssal_thorns_aura	Abyssal Thorns Aura
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_10/lang/se_no.json	neoorigins.configuration.avian_no_hunger_sprint	Lottiid ii nealgudan sprint
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_10/lang/se_no.json	neoorigins.configuration.breeze_speed_boost	Brieze Speed Boost
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_10/lang/se_no.json	neoorigins.configuration.breeze_wind_charge	Biegga biegga
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_10/lang/se_no.json	neoorigins.configuration.breeze_wind_dash	Biegga biegga
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_10/lang/se_no.json	neoorigins.configuration.caveborn_mining_speed	Caveborn ruvkedoaibma leahttu
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.dwarf_mining_hunger	Dverg ruvkedoaibma nealgi
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.dwarf_short_reach	Dverg Short Reach
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.dwarf_stonecunning	Dverg Stonecunning
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.elytrian_elytra_boost	Elytrian Elytra Boost
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.enderite_attack_bonus	Enderite falleheami bonus
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.frostborn_freeze_aura	Frostborn Freeze Aura
+ENGLISH?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.frostborn_nether_damage	Damage	Frostborn Nether Damage
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.frostborn_nether_damage	Frostborn Nether Damage
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.golem_knockback_resist	Golem Knockback Resist
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.golem_size	Golem sturrodat
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.golem_slow_movement	Golem guhkes lihkadus
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.gorgon_hunger_drain	Gorgon nealgi
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.gorgon_knockback_resist	Gorgon Knockback Resist
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.gorgon_size	Gorgona sturrodat
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.hiveling_size	Hiveling sturrodat
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.hiveling_sting	Hiveling Sting
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.inchling_hunger_efficiency	Inchling Hunger Effectency
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.inchling_speed_boost	Inchling Speed Boost
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.kraken_beached	Kraken Beached
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.kraken_ink_shot	Kraken Ink Shot
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.kraken_massive	Kraken massiiva
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.kraken_pressure_armor	Kraken Pressure Armor
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.kraken_tentacle_lash	Kraken Tentacle Lash
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.piglin_attack_bonus	Piglin falleheami bonus
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.revenant_active_bolt	Revenant aktiiva bolt
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.revenant_slow_regen	Revenant Slow Regen
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.sculkborn_darkness_aura	Skullkborn darkness aura
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.sculkborn_knockback_resist	Sculkborn Knockback Resist
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.sculkborn_slow_movement	Sculkborn guhkes lihkadus
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.sculkborn_sonic_bolt	Sculkborn Sonic Bolt
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.shulk_slow_movement	Shulk guhkes lihkadus
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.siren_land_slowdown	Sirena eatnama bisseheapmi
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.sporeling_slow_movement	Sporeling guhkes lihkadus
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.stoneguard_active_glowstone	Stoneguard Active Glowstone
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.stoneguard_knockback_resist	Stoneguard Knockback Resist
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.stoneguard_no_mob_spawns	Stoneguard Ii Mob Spawns
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.stoneguard_slow_movement	Stoneguard guhkes lihkadus
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.stoneguard_stone_mining	Stoneguard Stone Mining
+ENGLISH?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.sylvan_nether_damage	Damage	Sylvan Nether Damage
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.sylvan_nether_damage	Sylvan Nether Damage
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.tiny_size	Unna sturrodat
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.umbral_shadow_orb	Umbral Shadow Orb
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.vampire_attack_bonus	Vampyra falleheami bonus
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.vampire_slow_regen	Vampyr Slow Regen
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_11/lang/se_no.json	neoorigins.configuration.voidwalker_active_teleport	Voidwalker aktiiva teleporteren
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_12/lang/se_no.json	power.neoorigins.wraith_ascended_weakness_aura.name	Ballu ovdanbuktin
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_12/lang/se_no.json	power.neoorigins.skeleton_diet.name	Beanakeahtes biebmu
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_12/lang/se_no.json	power.neoorigins.abyssal_ascended_swim_speed.description	Buoriduvvon vuodjinleahttu.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_12/lang/se_no.json	power.neoorigins.air_mage_apex_speed.description	Buoriduvvon lihkadanleahttu.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_12/lang/se_no.json	power.neoorigins.arachnid_ascended_poison_immunity.name	Gievrras immunitehta
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_12/lang/se_no.json	power.neoorigins.arachnid_ascended_poison_immunity.description	Immuna gievrrasvuhtii.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_12/lang/se_no.json	power.neoorigins.arachnid_apex_night_vision.name	Divrras oaidnu
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_12/lang/se_no.json	power.neoorigins.avian_apex_speed.description	Buoriduvvon lihkadanleahttu.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_12/lang/se_no.json	power.neoorigins.caveborn_ascended_night_vision.name	Divrras oaidnu
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_12/lang/se_no.json	power.neoorigins.darkness_mage_ascended_night_vision.name	Divrras oaidnu
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_13/lang/se_no.json	power.neoorigins.draconic_apex_speed.description	Buoriduvvon lihkadanleahttu.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_13/lang/se_no.json	power.neoorigins.elytrian_ascended_speed.description	Buoriduvvon lihkadanleahttu.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_13/lang/se_no.json	power.neoorigins.elytrian_apex_fall_immune.name	Perfekta landing
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_13/lang/se_no.json	power.neoorigins.elytrian_apex_sky_piercer.name	Apex Sky Piercer
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_13/lang/se_no.json	power.neoorigins.enderite_ascended_speed.description	Buoriduvvon lihkadanleahttu.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_13/lang/se_no.json	power.neoorigins.feline_ascended_night_vision.name	Divrras oaidnu
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_13/lang/se_no.json	power.neoorigins.feline_ascended_fall_immunity.name	Perfekta landing
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_13/lang/se_no.json	power.neoorigins.feline_apex_speed.description	Buoriduvvon lihkadanleahttu.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_13/lang/se_no.json	power.neoorigins.golem_ascended_armor.name	Badjelmeare fortifiseren
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_13/lang/se_no.json	power.neoorigins.gorgon_apex_speed.description	Buoriduvvon lihkadanleahttu.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_13/lang/se_no.json	power.neoorigins.hiveling_ascended_speed.description	Buoriduvvon lihkadanleahttu.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_13/lang/se_no.json	power.neoorigins.hiveling_apex_poison_immunity.name	Gievrras immunitehta
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_13/lang/se_no.json	power.neoorigins.hiveling_apex_poison_immunity.description	Immuna gievrrasvuhtii.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_13/lang/se_no.json	power.neoorigins.human_ascended_speed.description	Buoriduvvon lihkadanleahttu.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_13/lang/se_no.json	power.neoorigins.human_apex_luck.name	Lihkku ovdamunni
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_14/lang/se_no.json	power.neoorigins.inchling_ascended_speed.description	Buoriduvvon lihkadanleahttu.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_14/lang/se_no.json	power.neoorigins.kraken_ascended_swim_speed.description	Buoriduvvon vuodjinleahttu.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_14/lang/se_no.json	power.neoorigins.merling_evolved_swim_speed.description	Buoriduvvon vuodjinleahttu.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_14/lang/se_no.json	power.neoorigins.monster_tamer_apex_speed.description	Buoriduvvon lihkadanleahttu.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_14/lang/se_no.json	power.neoorigins.necromancer_apex_night_vision.name	Divrras oaidnu
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_14/lang/se_no.json	power.neoorigins.phantom_ascended_speed.description	Buoriduvvon lihkadanleahttu.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_14/lang/se_no.json	power.neoorigins.sculkborn_ascended_night_vision.name	Divrras oaidnu
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_14/lang/se_no.json	power.neoorigins.siren_ascended_swim_speed.description	Buoriduvvon vuodjinleahttu.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_14/lang/se_no.json	power.neoorigins.skeleton_apex_brittle_frame.name	Nannejuvvon bealit
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_14/lang/se_no.json	power.neoorigins.slime_ascended_sticky.name	Lihkostuvvan aura
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_14/lang/se_no.json	power.neoorigins.sporeling_ascended_night_vision.name	Divrras oaidnu
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_15/lang/se_no.json	power.neoorigins.strider_ascended_speed.description	Buoriduvvon lihkadanleahttu.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_15/lang/se_no.json	power.neoorigins.sylvan_ascended_night_vision.name	Divrras oaidnu
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_15/lang/se_no.json	power.neoorigins.sylvan_apex_speed.description	Buoriduvvon lihkadanleahttu.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_15/lang/se_no.json	power.neoorigins.tiny_ascended_speed.description	Buoriduvvon lihkadanleahttu.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_15/lang/se_no.json	power.neoorigins.umbral_ascended_night_vision.name	Divrras oaidnu
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_15/lang/se_no.json	power.neoorigins.umbral_apex_speed.description	Buoriduvvon lihkadanleahttu.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_15/lang/se_no.json	power.neoorigins.verdant_ascended_speed.description	Buoriduvvon lihkadanleahttu.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_15/lang/se_no.json	power.neoorigins.voidwalker_apex_fall_immunity.name	Perfekta landing
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_15/lang/se_no.json	power.neoorigins.water_mage_ascended_swim_speed.description	Buoriduvvon vuodjinleahttu.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_15/lang/se_no.json	power.neoorigins.inchling_apex_dodge.name	Lilliputian Dodge
+ENGLISH?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_15/lang/se_no.json	power.neoorigins.water_mage_irons_attunement.description	cooldown	Heivehuvvon Iron's Spells: +20% mana ođasmahttin, +10% speallanfápmu ja 5% oanehat cooldown.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_15/lang/se_no.json	power.neoorigins.earth_mage_irons_attunement.name	Stoneward Attunement
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/neoorigins_se_common_15/lang/se_no.json	power.neoorigins.darkness_mage_irons_attunement.name	Umbral Attunement
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/se_no.json	power.origins_backgrounds.improved_healing.name	Buoriduvvon buorideapmi
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/se_no.json	power.origins_backgrounds.hello_darkness	Hei Darkness
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/se_no.json	power.origins_backgrounds.trusty_hoe.name	Luohtehahtti njuovvan
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/se_no.json	origin.origins_backgrounds_iss.nether_student.name	Ii oktage studeanta
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/se_no.json	origin.origins_backgrounds_iss.pyrology_student.name	Pyrologiija studeanta
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/se_no.json	power.origins_backgrounds_iss.cold_intolerance.name	Galbma gierdameahttunvuohta
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/se_no.json	power.origins_backgrounds_iss.end_touched.name	Loahppa guoskkahuvvon
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/se_no.json	power.origins_backgrounds_iss.max_mana.description	Dus lea +50 eanet Mana.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/se_no.json	power.origins_backgrounds_iss.nether_touched.name	Nether guoskkahii
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/se_no.json	power.origins_backgrounds_iss.nether_touched_ii.name	Frost Fumble
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/se_no.json	origin.origins_backgrounds_two.miner.name	Oahppi ruvkebargi
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/se_no.json	origin.origins_backgrounds_two.cook.name	Kokka oahppi
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/se_no.json	origins.origins_classes_ex.ninja.description	Goddimat seavdnjadasas.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/se_no.json	power.origins_classes_ex.dark_counter.name	Divrras lohkki
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/se_no.json	power.origins_classes_ex.inuk_chuk.name	Juoga mu
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/se_no.json	power.origins_classes_ex.cheaper_anvil.description	Enchants ja Repairs on Anvil lea bealli haddi.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/se_no.json	power.origins_classes_ex.quality_equipment.name	Kvalitehta rusttegat
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/se_no.json	power.origins_classes_ex.offhand_defense.name	Offhand suodjalus
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/se_no.json	power.origins_classes_ex.life_armor.name	Ealli rusttet
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/se_no.json	power.origins_classes_ex.superior_swordsmanship.name	Buoremus miehki
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/se_no.json	power.origins_classes_ex.poison_immunity.description	Don leat immuna gievrrasvuhtii.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/se_no.json	power.origins_classes_ex.poison_immunity.name	Gievrras immunitehta
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/se_no.json	power.origins_classes_ex.potion_drink.name	Juoga mu
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/se_no.json	power.origins_classes_ex.armor_weakness.name	Suodjalus lea garra
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/se_no.json	power.origins_classes_ex.dark_slowness.description	Dus lea guhkesvuohta mun seavdnjadasas
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/se_no.json	power.origins_classes_ex.dark_slowness.name	Divrras guhkesvuohta
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/se_no.json	power.origins_classes_iss.archmagus_slow.name	Guhkes lihkadus
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/se_no.json	power.origins_classes_iss.archmagus_weakness.name	Heajos falleheamit
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/se_no.json	power.origins_classes_iss.max_mana_boost.name	Alimus Mana Boost
+ENGLISH?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/se_no.json	power.origins_classes_iss.mystic_resistant_villagers.description	Resistance	Giliolbmot geaiguin gávppašat ožžot Resistance IV bissovaččat.
+ENGLISH?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/se_no.json	power.origins_classes_iss.mystic_scroll_health.description	Health	Oaččut 1 minuhta Health Boost maŋŋel go leat geavahan rulla.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/se_no.json	power.origins_classes_iss.mystic_scroll_health.name	Buorideaddji rullat
+ENGLISH?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/se_no.json	power.origins_classes_iss.sorcerer_ice_power.description	Power	Dus lea 10% buoret Ice Spell Power.
+ENGLISH?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/se_no.json	power.origins_classes_iss.warlock_cooldown.description	Cooldown	Cooldown-lohkki.
+ENGLISH?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/se_no.json	power.origins_classes_iss.warlock_cooldown.name	cooldown	Noaidi cooldown
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/se_no.json	power.origins_classes_iss.warlock_cooldown.name	Noaidi cooldown
+ENGLISH?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/se_no.json	power.origins_classes_iss.warlock_penalties.description	Weakness	Jus it leat oaffaruššan iežat suodjaleaddji ovddas, de oaččut Slowness II ja Weakness II.
+ENGLISH?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/se_no.json	power.origins_classes_iss.warmage_cooldown.description	Cooldown	Dus lea 10% stuorát Cooldown-geahpedeapmi.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/se_no.json	power.origins_classes_iss.warmage_spell_power.name	Gievrrat go lea roasmmohuvvan
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/se_no.json	power.origins_classes_iss.wizard_essence_recipe.name	Alkemiija I
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/se_no.json	power.origins_classes_iss.wizard_ink_recipe.name	Alkemiija II
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/se_no.json	power.origins_fantasy.deep_vision.name	Govda oaidnu
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/se_no.json	power.origins_fantasy.dwarf_sized.description	Don leat 3/4 seamma guhku go olbmot.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/se_no.json	power.origins_fantasy.dwarf_sized.name	Dverg sturrodat
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/se_no.json	power.origins_fantasy.elf_eyes.name	Elliid oaidnu
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/se_no.json	power.origins_fantasy.fae_flight.description	Dus lea kreatiiva girdi.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/se_no.json	power.origins_fantasy.fire_reduction.description	Don leat suodjaluvvon buollimii.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/se_no.json	power.origins_fantasy.goblin_sized.name	Goblina sturrodat
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/se_no.json	power.origins_fantasy.goblin_weakness.name	Heajos bealit
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/se_no.json	power.origins_fantasy.lich_power_iss.name	Lich Magic
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/se_no.json	power.origins_fantasy.rage_top.description	Rage Top.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/se_no.json	power.origins_fantasy.rage_top.name	Rage Top
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/se_no.json	power.origins_fantasy.rotten_diet.name	Roasmmehuvvan diet
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/se_no.json	power.origins_fantasy.rotten_nutrition.name	Roasmmehuvvan biebmu
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/se_no.json	power.origins_fantasy.slow_attacks.name	Guhkes falleheamit
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/se_no.json	power.origins_fantasy.sluggish_attacks.name	Guhkes falleheamit
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/se_no.json	power.origins_fantasy.strong_brews.name	Gievrras bierggut
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/se_no.json	power.origins_fantasy.swamp_hag.description	Dus lea Regenereren suoluin.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/se_no.json	power.origins_fantasy.apex_na.name	Bajimus rusttet
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/se_no.json	power.origins_fantasy.elf_indirect_magic.power.name	Eahpenjuolga magiija
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/se_no.json	power.origins_fantasy.fae_wither_immunity.name	Heahtedilis immunitehta
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/se_no.json	power.origins_fantasy.orc_wolf_buff.name	Buoriduvvon ovttasbargoguoimmit
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/se_no.json	origin.origins_furries.cow.description	Bohccot buvttadit mielkki ja ovddidit ealuid.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/se_no.json	secret.inventory	Dovddus lumma
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/se_no.json	power.origins_furries.cold_blooded.name	Galbma varra
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/se_no.json	power.origins_furries.eat_trash.name	Borrat ruskkaid
+ENGLISH?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/se_no.json	power.origins_furries.grace.description	Key	Don sáhtát oažžut 30 sekundda Dolphin's Grace go deaddilat Secondary Key.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/se_no.json	power.origins_furries.hates_skels.name	Viha Skeletons
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/se_no.json	power.origins_furries.heavy_wool.name	Garra ullo
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/se_no.json	power.origins_furries.poison_attack.name	Gievrras falleheapmi
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/se_no.json	power.origins_furries.poison_immune.name	Gievrras immunitehta
+ENGLISH?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/se_no.json	power.origins_furries.secret_pocket.description	Key	Dus leat lassi gálvojođut maidda sáhtát geavahit Primary Key:in.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/se_no.json	power.origins_furries.secret_pocket.name	Dovddus lumma
+ENGLISH?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/se_no.json	power.origins_furries.shear_self.description	Key	Go deaddilat Primary Key go doalat čuohppanrusttegiid, de oaččut 2 ullu oktii juohke nuppi minuhtas. Čuovggaid haga don dušše roasmmehuvvat iežat.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/se_no.json	power.origins_furries.small.description	Don leat bealli olbmo sturrodagas.
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/se_no.json	key.originsmodernui.open_profile	Rahpat karakteraprofiilla
+ASCII-ONLY?	src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/se_no.json	originsmodernui.config.hud.enabled	Aktivere integrerejuvvon HUD

@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "It-tagħmir li tfassal jirċievi attributi bonus — toughness, ħsara, jew veloċità tal-minjieri.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Jikseb XP doppju mit-tisjir tal-ikel f'persuna li tpejjep.",
+  "neoorigins.configuration.title": "Konfigurazzjoni NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Gameplay",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "Settings tal-logħob neoorigins",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Amministratur & Permessi",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "NeoOrigins Amministrazzjoni Settings",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Jitqabbel il-Qawwa",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "NeoOrigins Power Overrides",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Oriġini u Klassijiet",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "NeoOrigins Oriġini & Klassi Toggles",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Wiri tal-Klijent",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "Settings tal-Klijent NeoOrigins",
+  "neoorigins.configuration.show_cooldown_countdown": "Uri l-countdown tat-tkessiħ",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Opaċità tal-countdown tat-tkessiħ (%)",
+  "neoorigins.configuration.hud_ability_display": "Modalità tal-wiri tal-HUD tal-abbiltà",
+  "neoorigins.configuration.always_show_ability_icons": "Dejjem uri ikoni tal-ħila"
+}

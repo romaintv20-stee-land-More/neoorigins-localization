@@ -1,0 +1,65 @@
+name: Sync Icelandic 0.9.0 metadata
+
+on:
+  push:
+    branches:
+      - release/0.9.0-icelandic
+    paths:
+      - .github/workflows/sync-metadata-icelandic.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-icelandic
+
+      - name: Update catalog metadata
+        run: |
+          python3 scripts/update_catalog_icelandic.py
+          python3 scripts/generate_catalog.py
+
+      - name: Update README metadata
+        run: python3 scripts/update_readme_icelandic.py
+
+      - name: Validate Icelandic metadata
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          catalog = json.loads(Path('catalog.json').read_text(encoding='utf-8'))
+          if catalog['project']['supported_locale_count'] != 42:
+              raise SystemExit('catalog locale count is not 42')
+          for project in catalog['supported_projects']:
+              if 'is_is' not in project['languages']:
+                  raise SystemExit(f"is_is missing from {project['id']}")
+          readme = Path('README.md').read_text(encoding='utf-8')
+          required = ['Les quarante-deux langues', 'Islandais (`is_is`)', "Pour l'islandais :", '2 296/2 296', '2 307/2 307', '/ FA / IS']
+          missing = [item for item in required if item not in readme]
+          if missing:
+              raise SystemExit(f'README Icelandic markers missing: {missing}')
+          catalog_md = Path('CATALOG.md').read_text(encoding='utf-8')
+          if 'is_is' not in catalog_md or 'Íslenska' not in catalog_md:
+              raise SystemExit('CATALOG.md Icelandic markers missing')
+          print('Icelandic metadata validation passed: 42 locales')
+          PY
+
+      - name: Commit Icelandic metadata
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add catalog.json CATALOG.md README.md
+          if git diff --cached --quiet; then
+            echo 'No Icelandic metadata changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Document Icelandic localization in 0.9.0 beta'
+          git fetch origin release/0.9.0-icelandic
+          git rebase origin/release/0.9.0-icelandic
+          git push origin HEAD:release/0.9.0-icelandic

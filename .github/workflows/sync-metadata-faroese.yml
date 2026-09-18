@@ -1,0 +1,66 @@
+name: Sync Faroese 54-locale metadata
+
+on:
+  push:
+    branches:
+      - release/0.9.0-faroese
+    paths:
+      - .github/workflows/sync-metadata-faroese.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-faroese
+
+      - name: Update catalog metadata
+        run: |
+          python3 scripts/update_catalog_faroese.py
+          python3 scripts/generate_catalog.py
+
+      - name: Update README metadata
+        run: python3 scripts/update_readme_faroese.py
+
+      - name: Validate 54-locale metadata
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          catalog=json.loads(Path('catalog.json').read_text(encoding='utf-8'))
+          if catalog['project']['supported_locale_count'] != 54:
+              raise SystemExit('catalog locale count is not 54')
+          for project in catalog['supported_projects']:
+              for locale in ('be_by','fo_fo'):
+                  if locale not in project['languages']:
+                      raise SystemExit(f"{locale} missing from {project['id']}")
+          readme=Path('README.md').read_text(encoding='utf-8')
+          required=['Les cinquante-quatre langues','Biélorusse (`be_by`)','Féroïen (`fo_fo`)','Pour le biélorusse :','Pour le féroïen :','/ BE / FO']
+          missing=[item for item in required if item not in readme]
+          if missing: raise SystemExit(f'README Faroese markers missing: {missing}')
+          catalog_md=Path('CATALOG.md').read_text(encoding='utf-8')
+          for marker in ('be_by','fo_fo','Беларуская','Føroyskt'):
+              if marker not in catalog_md:
+                  raise SystemExit(f'CATALOG.md marker missing: {marker}')
+          print('Faroese 54-locale metadata validation passed')
+          PY
+
+      - name: Commit Faroese metadata
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add catalog.json CATALOG.md README.md
+          if git diff --cached --quiet; then
+            echo 'No Faroese metadata changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Document Faroese localization in 0.9.0 beta'
+          git fetch origin release/0.9.0-faroese
+          git rebase origin/release/0.9.0-faroese
+          git push origin HEAD:release/0.9.0-faroese

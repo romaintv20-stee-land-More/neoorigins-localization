@@ -1,0 +1,44 @@
+name: Finalize Tamil handoff
+
+on:
+  push:
+    branches: [ release/0.9.0-tamil ]
+    paths:
+      - 'scripts/finalize_tamil_handoff.py'
+      - '.github/workflows/finalize-tamil-handoff.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Finalize Tamil handoff
+        run: python3 scripts/finalize_tamil_handoff.py
+
+      - name: Verify handoff state
+        run: |
+          grep -F '0.9.0 development currently has 65 locales:' PROJECT_HANDOFF.txt
+          grep -F -- '- 65: Tamil / ta_in' PROJECT_HANDOFF.txt
+          grep -F 'TAMIL / LANGUAGE #65 FINAL STATUS' PROJECT_HANDOFF.txt
+          grep -F 'Completed language count: **65**.' NEXT_CHAT_HANDOFF.md
+          grep -F 'Last completed language: **#65 Tamil — `ta_in / தமிழ்`**.' NEXT_CHAT_HANDOFF.md
+          grep -F 'Next language: **#66**.' NEXT_CHAT_HANDOFF.md
+
+      - name: Commit finalized handoff
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add PROJECT_HANDOFF.txt NEXT_CHAT_HANDOFF.md
+          if git diff --cached --quiet; then
+            echo 'No handoff changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Finalize Tamil handoff'
+          git push

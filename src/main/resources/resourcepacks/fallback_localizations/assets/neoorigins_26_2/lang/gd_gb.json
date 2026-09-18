@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Bidh uidheamachd a bhios tu a’ dèanamh a’ faighinn buadhan bonus - cruas, milleadh no astar mèinnearachd.",
+  "power.neoorigins.class_cook_smoker_xp.description": "A ’faighinn XP dùbailte bho bhith a’ còcaireachd biadh ann an neach smocaidh.",
+  "neoorigins.configuration.title": "Configuration NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Gèam",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "Roghainnean cluiche NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Rianachd & Ceadan",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "Roghainnean rianachd NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Cumhachd a 'dol thairis air",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "Tha cumhachd NeoOrigins a’ dol thairis",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Tùsan & Clasaichean",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "Tùs neoorigins & toggles clas",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Taisbeanadh Cliant",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "Roghainnean teachdaiche NeoOrigins",
+  "neoorigins.configuration.show_cooldown_countdown": "Seall cunntadh sìos fuarachadh",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Teòthachd cunntadh sìos fuarachadh (%)",
+  "neoorigins.configuration.hud_ability_display": "Comas modh taisbeanaidh HUD",
+  "neoorigins.configuration.always_show_ability_icons": "Seall ìomhaighean comas an-còmhnaidh"
+}

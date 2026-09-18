@@ -1,0 +1,107 @@
+name: Diagnose Northern Sami context
+
+on:
+  push:
+    branches:
+      - release/1.0.0-northern-sami
+    paths:
+      - 'src/main/resources/resourcepacks/fallback_localizations/assets/**/lang/se_no.json'
+      - '.github/workflows/diagnose-northern-sami-context.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/1.0.0-northern-sami
+
+      # This report-only pass is intentionally re-runnable after bootstrap/refinement.
+      - name: Record suspicious context hits
+        run: |
+          python3 - <<'PY'
+          import json
+          import re
+          from pathlib import Path
+
+          root = Path('src/main/resources/resourcepacks/fallback_localizations/assets')
+          files = sorted(root.glob('**/lang/se_no.json'))
+          if not files:
+              print('No Northern Sami files committed yet; diagnostic will run again when translations land.')
+
+          # These are report-only heuristics. Proper names and technical terms may
+          # legitimately remain untranslated and are reviewed manually afterward.
+          english_terms = re.compile(
+              r'\b(?:choose|class|origin|power|apply|cancel|done|reset|position|scale|'
+              r'flight|weakness|resistance|health|damage|ability|abilities|description|'
+              r'enabled|disabled|press|key|player|target|cooldown)\b',
+              re.I,
+          )
+          standard_german = re.compile(
+              r'\b(?:der|die|das|und|ist|nicht|eine|einen|dein|deine|mit|für|von|zu|'
+              r'ursprung|klasse|fähigkeit|fähigkeiten|anwenden|flug|schwäche)\b',
+              re.I,
+          )
+          same_as_keyish = re.compile(r'^[A-Za-z][A-Za-z0-9 _:/+.,()\-]{3,}$')
+          protected_names = {
+              'NeoOrigins', 'Origin Architect', 'JSON', 'HUD', 'JEI', 'EMI', 'Ultimine',
+              'Alfiq', 'Banshee', 'Fae', 'Pixie', 'Yeti', 'Cinderborn', 'Elytrian',
+              'Sculkborn', 'Warden', 'Wither', 'Enderian', 'Enderite',
+          }
+
+          hits = []
+          totals = {'files': len(files), 'values': 0, 'sami_chars': 0, 'english': 0, 'german': 0}
+          for path in files:
+              obj = json.loads(path.read_text(encoding='utf-8'))
+              for key, raw in obj.items():
+                  value = str(raw)
+                  totals['values'] += 1
+                  totals['sami_chars'] += len(re.findall(r'[ÁáČčĐđŊŋŠšŦŧŽž]', value))
+                  sanitized = value
+                  for name in protected_names:
+                      sanitized = sanitized.replace(name, '')
+                  em = sorted(set(m.group(0) for m in english_terms.finditer(sanitized)))
+                  gm = sorted(set(m.group(0) for m in standard_german.finditer(sanitized)))
+                  if em:
+                      totals['english'] += 1
+                      hits.append(f'ENGLISH?\t{path}\t{key}\t{",".join(em)}\t{value}')
+                  if gm:
+                      totals['german'] += 1
+                      hits.append(f'GERMAN?\t{path}\t{key}\t{",".join(gm)}\t{value}')
+                  # Catch fully ASCII labels that may have been left untouched.
+                  if same_as_keyish.fullmatch(sanitized.strip()) and len(sanitized.split()) >= 2:
+                      hits.append(f'ASCII-ONLY?\t{path}\t{key}\t{value}')
+
+          out = Path('diagnostics/northern-sami-context-hits.txt')
+          out.parent.mkdir(parents=True, exist_ok=True)
+          header = [
+              f"files={totals['files']}",
+              f"values={totals['values']}",
+              f"sami_specific_chars={totals['sami_chars']}",
+              f"english_term_values={totals['english']}",
+              f"standard_german_term_values={totals['german']}",
+              '',
+          ]
+          out.write_text('\n'.join(header + hits) + '\n', encoding='utf-8')
+          print('\n'.join(header))
+          print(f'Recorded {len(hits)} review hits')
+          PY
+
+      - name: Commit diagnostic report
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add diagnostics/northern-sami-context-hits.txt
+          if git diff --cached --quiet; then
+            echo 'No diagnostic changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Record Northern Sami context diagnostics'
+          git fetch origin release/1.0.0-northern-sami
+          git rebase origin/release/1.0.0-northern-sami
+          git push origin HEAD:release/1.0.0-northern-sami

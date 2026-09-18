@@ -1,0 +1,78 @@
+name: Finalize 1.0.0 locale 82 metadata
+
+on:
+  push:
+    branches:
+      - release/1.0.0-east-franconian
+    paths:
+      - scripts/finalize_locale_82_metadata.py
+      - .github/workflows/finalize-1.0.0-locale-82.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/1.0.0-east-franconian
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+
+      - name: Finalize East Franconian metadata
+        run: python3 scripts/finalize_locale_82_metadata.py
+
+      - name: Validate localization JSON
+        run: python3 scripts/validate.py
+
+      - name: Verify metadata state
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          catalog = json.loads(Path('catalog.json').read_text(encoding='utf-8'))
+          assert catalog['project']['supported_locale_count'] == 82
+
+          projects = [p for p in catalog['supported_projects'] if p.get('languages') is not None]
+          assert len(projects) == 11
+          for project in projects:
+              assert 'fra_de' in project['languages'], project.get('id')
+              assert project['languages']['fra_de']['name'] == 'Fränggisch', project.get('id')
+
+          neoorigins = next(p for p in projects if p.get('id') == 'neoorigins')
+          fallbacks = neoorigins['compatibility']['fallback_namespaces']
+          assert fallbacks['east_franconian_common_glob'] == 'neoorigins_fra_common_*'
+          assert fallbacks['east_franconian_mc_1_21_1'] == 'neoorigins_fra_121'
+
+          readme = Path('README.md').read_text(encoding='utf-8')
+          catalog_md = Path('CATALOG.md').read_text(encoding='utf-8')
+          assert readme.count('Francique oriental (`fra_de`)') == 1
+          assert readme.count('Pour le francique oriental :') == 1
+          assert catalog_md.count('Fränggisch (`fra_de`)') == 11
+          print('Metadata state verified for locale 82 (East Franconian / fra_de).')
+          PY
+
+      - name: Check whitespace
+        run: git diff --check
+
+      - name: Commit finalized metadata
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add catalog.json README.md CATALOG.md scripts/finalize_locale_82_metadata.py
+          if git diff --cached --quiet; then
+            echo 'No metadata changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Finalize East Franconian locale 82 metadata'
+          git fetch origin release/1.0.0-east-franconian
+          git rebase origin/release/1.0.0-east-franconian
+          git push origin HEAD:release/1.0.0-east-franconian

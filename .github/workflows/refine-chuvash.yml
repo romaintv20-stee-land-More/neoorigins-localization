@@ -1,0 +1,122 @@
+name: Refine Chuvash localization
+
+on:
+  push:
+    branches:
+      - release/0.9.0-chuvash
+    paths:
+      - scripts/refine_chuvash.py
+      - .github/workflows/refine-chuvash.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-chuvash
+
+      - name: Refine Chuvash terminology
+        run: python3 scripts/refine_chuvash.py
+
+      - name: Restrict add-on audits to Chuvash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          scripts=[
+            'scripts/audit_medievalorigins_upstream.py','scripts/audit_ibarnorigins_upstream.py',
+            'scripts/audit_origins_fantasy_upstream.py','scripts/audit_origins_backgrounds_upstream.py',
+            'scripts/audit_origins_more_backgrounds_upstream.py','scripts/audit_origins_backgrounds_iss_upstream.py',
+            'scripts/audit_origins_furries_upstream.py','scripts/audit_origins_classes_extended_upstream.py',
+            'scripts/audit_origins_classes_iss_upstream.py','scripts/audit_origin_architect_upstream.py']
+          for filename in scripts:
+              p=Path(filename); src=p.read_text(encoding='utf-8')
+              out,count=re.subn(r'^LOCALES\s*=.*$','LOCALES = ("cv_cu",)',src,count=1,flags=re.M)
+              if count==0: out,count=re.subn(r'^DEFAULT_LOCALES\s*=.*$','DEFAULT_LOCALES = ("cv_cu",)',src,count=1,flags=re.M)
+              if count!=1: raise SystemExit(f'Could not patch locale in {filename}')
+              p.write_text(out,encoding='utf-8')
+          PY
+
+      - name: Strict audit Chuvash NeoOrigins
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref 860ecdb24e723983e93004ea8ceb5de90ccf0d70 --output build/cv-refine-121 --locale cv_cu --fallback-namespace-glob 'neoorigins_cv_common_*' --extra-namespace neoorigins_cv_121 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 3c1c7365507679c836d3c14af5d4dd0654652e87 --output build/cv-refine-261 --locale cv_cu --fallback-namespace-glob 'neoorigins_cv_common_*' --extra-namespace neoorigins_26_1 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 65864716a5a796fa1c51ec3e8a6d9640abebb4ca --output build/cv-refine-262 --locale cv_cu --fallback-namespace-glob 'neoorigins_cv_common_*' --extra-namespace neoorigins_26_2 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Strict audit Chuvash add-ons
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_fantasy_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_furries_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_extended_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origin_architect_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Validate JSON
+        run: python3 scripts/validate.py
+
+      - name: Validate Chuvash contextual fixes
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json,re
+          files=list(Path('src/main/resources/resourcepacks/fallback_localizations/assets').glob('**/lang/cv_cu.json'))
+          all_data={}; values=[]
+          for p in files:
+              d=json.loads(p.read_text(encoding='utf-8')); all_data.update(d); values.extend(map(str,d.values()))
+          expected={
+            'neoorigins.toggle.on':'Пултарулӑх вӑй кӗртнӗ',
+            'neoorigins.toggle.off':'Пултарулӑх сӳнтернӗ',
+            'neoorigins.night_vision.on':'Ҫӗрлехи куҫ вӑй кӗртнӗ',
+            'neoorigins.ultimine.no_power':'Сирӗн Originӑрӑн Ultimine пултарулӑхӗ ҫук.',
+            'origins.layer.origin':'Origin',
+            'gui.neoorigins.detail.powers_header':'Пултарулӑхсем',
+            'gui.neoorigins.mob_creator.tab.spawn_rules':'Спавн правилӗсем',
+            'gui.neoorigins.mob_creator.tab.drops':'Лут',
+            'gui.neoorigins.creator.apply':'Йышӑнтар',
+            'origins.neoorigins.avian.name':'Avian',
+            'power.neoorigins.blazeling_nether_born.name':'Незерте ҫуралнӑ',
+            'power.origins_furries.pavlov.name':'Павлов реакцийӗ',
+            'power.origins_furries.scales.name':'Хупӑсем',
+            'power.origins_furries.night_vision.name':'Ҫӗрлехи куҫ',
+            'originsmodernui.config.hud.show_level':'Origin Architect шайне кӑтарт',
+          }
+          bad=[f'{k}={all_data.get(k)!r}' for k,v in expected.items() if all_data.get(k)!=v]
+          if bad: raise SystemExit(f'Chuvash contextual fixes missing: {bad}')
+          for i in range(1,65):
+              k=f'key.neoorigins.hotkey.{i}'; want=f'Хоткей {i:02d}'
+              if all_data.get(k)!=want: raise SystemExit(f'Chuvash hotkey normalization failed: {k}={all_data.get(k)!r}')
+          text='\n'.join(values)
+          forbidden=['Электричество сӳнтернӗ','Влаҫсем','Хӑвӑрӑн ҫуралнӑ ҫӗршыва суйласа илӗр','Павловд','Масштабсем']
+          found=[x for x in forbidden if x in text]
+          if found: raise SystemExit(f'Chuvash false-friend guard failed: {found}')
+          specific=len(re.findall(r'[ӐӑӖӗҪҫӲӳ]',text))
+          if specific < 16000: raise SystemExit(f'Chuvash script sanity low: specific={specific}')
+          print(f'Chuvash refinement sanity passed: {specific} Chuvash-specific letters across {len(files)} files')
+          PY
+
+      - name: Restore audit scripts
+        if: always()
+        run: git checkout HEAD -- scripts/audit_*_upstream.py
+
+      - name: Commit Chuvash refinements
+        if: success()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name 'cv_cu.json' -print0 | xargs -0 -r git add
+          if git diff --cached --quiet; then echo 'No Chuvash refinement changes.'; exit 0; fi
+          git commit -m 'Refine Chuvash Minecraft terminology'
+          git fetch origin release/0.9.0-chuvash
+          git rebase origin/release/0.9.0-chuvash
+          git push origin HEAD:release/0.9.0-chuvash

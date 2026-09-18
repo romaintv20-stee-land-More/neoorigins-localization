@@ -1,0 +1,119 @@
+name: Refine Kannada localization
+
+on:
+  push:
+    branches:
+      - release/0.9.0-kannada
+    paths:
+      - scripts/refine_kannada.py
+      - .github/workflows/refine-kannada.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-kannada
+
+      - name: Refine Kannada terminology
+        run: python3 scripts/refine_kannada.py
+
+      - name: Restrict add-on audits to Kannada
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          scripts=[
+            'scripts/audit_medievalorigins_upstream.py','scripts/audit_ibarnorigins_upstream.py',
+            'scripts/audit_origins_fantasy_upstream.py','scripts/audit_origins_backgrounds_upstream.py',
+            'scripts/audit_origins_more_backgrounds_upstream.py','scripts/audit_origins_backgrounds_iss_upstream.py',
+            'scripts/audit_origins_furries_upstream.py','scripts/audit_origins_classes_extended_upstream.py',
+            'scripts/audit_origins_classes_iss_upstream.py','scripts/audit_origin_architect_upstream.py']
+          for filename in scripts:
+              p=Path(filename); src=p.read_text(encoding='utf-8')
+              out,count=re.subn(r'^LOCALES\s*=.*$','LOCALES = ("kn_in",)',src,count=1,flags=re.M)
+              if count==0: out,count=re.subn(r'^DEFAULT_LOCALES\s*=.*$','DEFAULT_LOCALES = ("kn_in",)',src,count=1,flags=re.M)
+              if count!=1: raise SystemExit(f'Could not patch locale in {filename}')
+              p.write_text(out,encoding='utf-8')
+          PY
+
+      - name: Strict audit Kannada NeoOrigins
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref 860ecdb24e723983e93004ea8ceb5de90ccf0d70 --output build/kn-refine-121 --locale kn_in --fallback-namespace-glob 'neoorigins_kn_common_*' --extra-namespace neoorigins_kn_121 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 3c1c7365507679c836d3c14af5d4dd0654652e87 --output build/kn-refine-261 --locale kn_in --fallback-namespace-glob 'neoorigins_kn_common_*' --extra-namespace neoorigins_26_1 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 65864716a5a796fa1c51ec3e8a6d9640abebb4ca --output build/kn-refine-262 --locale kn_in --fallback-namespace-glob 'neoorigins_kn_common_*' --extra-namespace neoorigins_26_2 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Strict audit Kannada add-ons
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_fantasy_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_furries_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_extended_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origin_architect_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Validate JSON
+        run: python3 scripts/validate.py
+
+      - name: Validate Kannada contextual fixes
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json,re
+          files=list(Path('src/main/resources/resourcepacks/fallback_localizations/assets').glob('**/lang/kn_in.json'))
+          all_data={}; values=[]
+          for p in files:
+              d=json.loads(p.read_text(encoding='utf-8')); all_data.update(d); values.extend(map(str,d.values()))
+          expected={
+            'neoorigins.toggle.on':'ಸಾಮರ್ಥ್ಯ ಸಕ್ರಿಯವಾಗಿದೆ',
+            'neoorigins.ultimine.no_power':'ನಿಮ್ಮ Origin‌ಗೆ Ultimine ಸಾಮರ್ಥ್ಯ ಇಲ್ಲ.',
+            'gui.neoorigins.mob_creator.tab.spawn_rules':'ಸ್ಪಾನ್ ನಿಯಮಗಳು',
+            'gui.neoorigins.mob_creator.tab.drops':'ಲೂಟ್',
+            'gui.neoorigins.creator.apply':'ಅನ್ವಯಿಸಿ',
+            'origins.neoorigins.avian.name':'Avian',
+            'power.neoorigins.blazeling_nether_born.name':'Nether‌ನಲ್ಲಿ ಜನಿಸಿದ',
+            'power.origins_furries.pavlov.name':'ಪಾವ್ಲೋವ್ ಪ್ರತಿಕ್ರಿಯೆ',
+            'power.origins_furries.scales.name':'ಶಲ್ಕಗಳು',
+            'power.origins_furries.night_vision.name':'ರಾತ್ರಿ ದೃಷ್ಟಿ',
+            'originsmodernui.config.hud.show_level':'Origin Architect ಮಟ್ಟವನ್ನು ತೋರಿಸಿ',
+          }
+          bad=[f'{k}={all_data.get(k)!r}' for k,v in expected.items() if all_data.get(k)!=v]
+          if bad: raise SystemExit(f'Kannada contextual fixes missing: {bad}')
+          for i in range(1,65):
+              k=f'key.neoorigins.hotkey.{i}'; want=f'ಹಾಟ್‌ಕೀ {i:02d}'
+              if all_data.get(k)!=want: raise SystemExit(f'Kannada hotkey normalization failed: {k}={all_data.get(k)!r}')
+          text='\n'.join(values)
+          forbidden=['ಪವರ್ ಸಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ','ವಿದ್ಯುತ್ ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ','ಮೂಲ ಸೃಷ್ಟಿಕರ್ತ','ಪಾವ್ಲೋವ್ಡ್','ಮಾಪಕಗಳು']
+          found=[x for x in forbidden if x in text]
+          if found: raise SystemExit(f'Kannada false-friend guard failed: {found}')
+          markers=len(re.findall(r'(?:ಮತ್ತು|ನೀವು|ನಿಮ್ಮ|ಈ|ಒಂದು|ಅನ್ನು|ಇದು|ಆಗ|ಮಾಡಿ|ಮಾಡಲು|ಹೆಚ್ಚು|ಇಲ್ಲ|ಮೂಲಕ|ಜೊತೆ|ಮಾತ್ರ|ಯಾವಾಗ|ಆದರೆ)',text))
+          specific=len(re.findall(r'[\u0C80-\u0CFF]',text))
+          if markers < 1400 or specific < 100000: raise SystemExit(f'Kannada lexical sanity low: markers={markers}, specific={specific}')
+          print(f'Kannada refinement sanity passed: {markers} lexical markers, {specific} Kannada-script chars across {len(files)} files')
+          PY
+
+      - name: Restore audit scripts
+        if: always()
+        run: git checkout HEAD -- scripts/audit_*_upstream.py
+
+      - name: Commit Kannada refinements
+        if: success()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name 'kn_in.json' -print0 | xargs -0 -r git add
+          if git diff --cached --quiet; then echo 'No Kannada refinement changes.'; exit 0; fi
+          git commit -m 'Refine Kannada Minecraft terminology'
+          git fetch origin release/0.9.0-kannada
+          git rebase origin/release/0.9.0-kannada
+          git push origin HEAD:release/0.9.0-kannada

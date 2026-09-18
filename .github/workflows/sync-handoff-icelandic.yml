@@ -1,0 +1,58 @@
+name: Sync Icelandic handoff
+
+on:
+  push:
+    branches:
+      - release/0.9.0-icelandic
+    paths:
+      - .github/workflows/sync-handoff-icelandic.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-icelandic
+
+      - name: Update project handoff
+        run: python3 scripts/update_handoff_icelandic.py
+
+      - name: Validate Icelandic handoff
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          text = Path('PROJECT_HANDOFF.txt').read_text(encoding='utf-8')
+          required = [
+              '0.9.0 development currently has 42 locales:',
+              '- 42: Icelandic / is_is',
+              'FORTY-TWO IS NOT THE FINAL TARGET.',
+              '30. ICELANDIC 0.9.0 STATUS',
+              'run ID 34328244490: SUCCESS on all three jobs',
+              'catalog.json says 42 supported locales',
+              'NEXT LANGUAGE = language 43.',
+          ]
+          missing = [item for item in required if item not in text]
+          if missing:
+              raise SystemExit(f'Icelandic handoff markers missing: {missing}')
+          print('Icelandic handoff validation passed; next language 43')
+          PY
+
+      - name: Commit Icelandic handoff
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add PROJECT_HANDOFF.txt
+          if git diff --cached --quiet; then
+            echo 'No Icelandic handoff changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Finalize Icelandic 0.9.0 handoff'
+          git fetch origin release/0.9.0-icelandic
+          git rebase origin/release/0.9.0-icelandic
+          git push origin HEAD:release/0.9.0-icelandic

@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "主張した",
+  "gui.neoorigins.picker.claimed_by": "%s によって要求されました",
+  "neoorigins.configuration.always_show_ability_icons": "アビリティアイコンを常に表示",
+  "neoorigins.configuration.cooldown_countdown_opacity": "クールダウン残り秒数の不透明度（%）",
+  "neoorigins.configuration.hud_ability_display": "アビリティHUDの表示モード",
+  "neoorigins.configuration.js_active": "JSアクティブ",
+  "neoorigins.configuration.show_cooldown_countdown": "クールダウンの残り秒数を表示",
+  "neoorigins.configuration.unique_origin_layers": "固有の元のレイヤー"
+}

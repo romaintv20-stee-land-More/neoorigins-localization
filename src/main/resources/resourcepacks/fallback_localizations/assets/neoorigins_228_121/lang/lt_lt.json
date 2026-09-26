@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Teigė",
+  "gui.neoorigins.picker.claimed_by": "Pareiškėjas %s",
+  "neoorigins.configuration.always_show_ability_icons": "Visada rodyti gebėjimų piktogramas",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Atšaldymo atgalinio skaičiavimo neskaidrumas (%)",
+  "neoorigins.configuration.hud_ability_display": "Galimybė HUD rodymo režimas",
+  "neoorigins.configuration.js_active": "JS aktyvus",
+  "neoorigins.configuration.show_cooldown_countdown": "Rodyti atvėsimo atgalinį skaičiuoklį",
+  "neoorigins.configuration.unique_origin_layers": "Unikalios kilmės sluoksniai"
+}

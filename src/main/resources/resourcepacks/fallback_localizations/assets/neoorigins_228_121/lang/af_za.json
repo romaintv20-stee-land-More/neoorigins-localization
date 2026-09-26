@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Geëis",
+  "gui.neoorigins.picker.claimed_by": "Geëis deur %s",
+  "neoorigins.configuration.always_show_ability_icons": "Wys altyd vermoë ikone",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Afkoel-afteldeursigtigheid (%)",
+  "neoorigins.configuration.hud_ability_display": "Vermoë HUD-vertoonmodus",
+  "neoorigins.configuration.js_active": "JS aktief",
+  "neoorigins.configuration.show_cooldown_countdown": "Wys afkoel aftelling",
+  "neoorigins.configuration.unique_origin_layers": "Unieke oorspronglae"
+}

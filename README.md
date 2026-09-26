@@ -6,11 +6,17 @@ Mod client NeoForge fournissant des **traductions complémentaires en priorité 
 
 | Cible | Version | Java | Langues | Contenu empaqueté |
 |---|---|---:|---:|---|
-| Minecraft 1.21.1 | `1.1.0+1.21.1` | 21 | 92 | NeoOrigins + Medieval Origins Revival + ibarn's quartet origins addon + Origins Fantasy + Origins: Backgrounds + Origins: More Backgrounds + Origins: Backgrounds ISS + Origins Furries + Origins: Classes Extended + Origins: Classes ISS + Origin Architect + Pathfinder Origins (Pathfinder : 13 locales) |
-| Minecraft 26.1 / 26.1.1 / 26.1.2 | `1.1.0+26.1` | 25 | 92 | NeoOrigins uniquement + delta 26.1 |
-| Minecraft 26.2 | `1.1.0+26.2` | 25 | 92 | NeoOrigins uniquement + delta 26.2 |
+| Minecraft 1.21.1 | `1.1.1+1.21.1` | 21 | 92 | NeoOrigins + Medieval Origins Revival + ibarn's quartet origins addon + Origins Fantasy + Origins: Backgrounds + Origins: More Backgrounds + Origins: Backgrounds ISS + Origins Furries + Origins: Classes Extended + Origins: Classes ISS + Origin Architect + Pathfinder Origins (Pathfinder : 13 locales) |
+| Minecraft 26.1 / 26.1.1 / 26.1.2 | `1.1.1+26.1` | 25 | 92 | NeoOrigins uniquement + delta 26.1 |
+| Minecraft 26.2 | `1.1.1+26.2` | 25 | 92 | NeoOrigins uniquement + delta 26.2 |
 
 Les builds 26.x n'embarquent aucune traduction des add-ons 1.21.1. La CI construit et audite séparément les trois cibles.
+
+## NeoOrigins 2.2.28 (mise à jour 1.1.1)
+
+Les trois builds intègrent les nouvelles clés anglaises de NeoOrigins 2.2.28. Les **92 locales** reçoivent un fallback pour les **228 nouvelles clés communes**, plus **8 clés 1.21.1** ou **1 clé 26.1.x** ; les **deux descriptions du Voleur** sont actualisées. Le code et les JAR amont restent ceux de NeoOrigins.
+
+Les nouveaux textes ont été générés avec réutilisation de traductions existantes et traduction automatique vérifiée structurellement. Une révision native est encore souhaitable, notamment pour les variantes régionales et dialectales.
 
 ## Langues
 

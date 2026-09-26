@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Påstået",
+  "gui.neoorigins.picker.claimed_by": "Hævdet af %s",
+  "neoorigins.configuration.always_show_ability_icons": "Vis altid evneikoner",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Nedtællingsgennemsigtighed (%)",
+  "neoorigins.configuration.hud_ability_display": "Mulighed for HUD-visningstilstand",
+  "neoorigins.configuration.js_active": "JS Aktiv",
+  "neoorigins.configuration.show_cooldown_countdown": "Vis nedtælling",
+  "neoorigins.configuration.unique_origin_layers": "Unikke oprindelseslag"
+}

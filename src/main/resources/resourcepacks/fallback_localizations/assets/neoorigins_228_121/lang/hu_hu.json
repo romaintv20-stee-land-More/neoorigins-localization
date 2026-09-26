@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Azt állította",
+  "gui.neoorigins.picker.claimed_by": "A %s követelése",
+  "neoorigins.configuration.always_show_ability_icons": "Képességikonok mindig láthatók",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Újratöltési visszaszámlálás átlátszatlansága (%)",
+  "neoorigins.configuration.hud_ability_display": "Képességek HUD-megjelenítési módja",
+  "neoorigins.configuration.js_active": "JS Active",
+  "neoorigins.configuration.show_cooldown_countdown": "Újratöltési visszaszámlálás megjelenítése",
+  "neoorigins.configuration.unique_origin_layers": "Egyedi eredetű rétegek"
+}

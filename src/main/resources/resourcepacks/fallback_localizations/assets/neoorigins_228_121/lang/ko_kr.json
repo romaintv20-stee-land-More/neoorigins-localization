@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "청구됨",
+  "gui.neoorigins.picker.claimed_by": "%s가 소유권을 주장함",
+  "neoorigins.configuration.always_show_ability_icons": "능력 아이콘 항상 표시",
+  "neoorigins.configuration.cooldown_countdown_opacity": "재사용 대기시간 카운트다운 불투명도 (%)",
+  "neoorigins.configuration.hud_ability_display": "능력 HUD 표시 모드",
+  "neoorigins.configuration.js_active": "JS 액티브",
+  "neoorigins.configuration.show_cooldown_countdown": "재사용 대기시간 카운트다운 표시",
+  "neoorigins.configuration.unique_origin_layers": "고유한 원본 레이어"
+}

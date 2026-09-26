@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Hawliwyd",
+  "gui.neoorigins.picker.claimed_by": "Wedi'i hawlio gan %s",
+  "neoorigins.configuration.always_show_ability_icons": "Dangoswch eiconau gallu bob amser",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Didreiddedd cyfrif i lawr oeri (%)",
+  "neoorigins.configuration.hud_ability_display": "Modd arddangos HUD gallu",
+  "neoorigins.configuration.js_active": "JS Actif",
+  "neoorigins.configuration.show_cooldown_countdown": "Dangos y broses ailgyfrif",
+  "neoorigins.configuration.unique_origin_layers": "Haenau tarddiad unigryw"
+}

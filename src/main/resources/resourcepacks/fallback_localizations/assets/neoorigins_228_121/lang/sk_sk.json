@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Nárokované",
+  "gui.neoorigins.picker.claimed_by": "Nárokované %s",
+  "neoorigins.configuration.always_show_ability_icons": "Vždy zobrazovať ikony schopností",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Nepriehľadnosť odpočítavania na zníženie (%)",
+  "neoorigins.configuration.hud_ability_display": "Možnosť režimu zobrazenia HUD",
+  "neoorigins.configuration.js_active": "JS Active",
+  "neoorigins.configuration.show_cooldown_countdown": "Zobraziť odpočítavanie cooldownu",
+  "neoorigins.configuration.unique_origin_layers": "Jedinečné pôvodné vrstvy"
+}

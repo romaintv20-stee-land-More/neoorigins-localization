@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Da'vo qilingan",
+  "gui.neoorigins.picker.claimed_by": "%s tomonidan daʼvo qilingan",
+  "neoorigins.configuration.always_show_ability_icons": "Har doim qobiliyat piktogrammalarini ko'rsating",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Sovutish vaqtini ortga hisoblash shaffofligi (%)",
+  "neoorigins.configuration.hud_ability_display": "Imkoniyat HUD displey rejimi",
+  "neoorigins.configuration.js_active": "JS faol",
+  "neoorigins.configuration.show_cooldown_countdown": "Sovutish vaqtining ortga hisobini ko'rsatish",
+  "neoorigins.configuration.unique_origin_layers": "Noyob kelib chiqish qatlamlari"
+}

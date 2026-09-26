@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Diklaim",
+  "gui.neoorigins.picker.claimed_by": "Diklaim oleh %s",
+  "neoorigins.configuration.always_show_ability_icons": "Selalu tampilkan ikon kemampuan",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Opasitas hitung mundur waktu tunggu (%)",
+  "neoorigins.configuration.hud_ability_display": "Mode tampilan HUD kemampuan",
+  "neoorigins.configuration.js_active": "JS Aktif",
+  "neoorigins.configuration.show_cooldown_countdown": "Tampilkan hitung mundur waktu tunggu",
+  "neoorigins.configuration.unique_origin_layers": "Lapisan asal yang unik"
+}

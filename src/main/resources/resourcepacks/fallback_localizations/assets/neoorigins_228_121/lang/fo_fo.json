@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Kravt",
+  "gui.neoorigins.picker.claimed_by": "Kravt av %s",
+  "neoorigins.configuration.always_show_ability_icons": "Vís altíð førleikamerki",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Niðurteljing av køling ógjøgnumskygni (%)",
+  "neoorigins.configuration.hud_ability_display": "Møguleiki HUD sýnisháttur",
+  "neoorigins.configuration.js_active": "JS virkið",
+  "neoorigins.configuration.show_cooldown_countdown": "Vís niðurteljing av køling",
+  "neoorigins.configuration.unique_origin_layers": "Einstøk upprunaløg"
+}

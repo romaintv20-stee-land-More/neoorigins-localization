@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Reclamado",
+  "gui.neoorigins.picker.claimed_by": "Reclamado por %s",
+  "neoorigins.configuration.always_show_ability_icons": "Mostrar siempre iconos de habilidades",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Opacidad de la cuenta regresiva de enfriamiento (%)",
+  "neoorigins.configuration.hud_ability_display": "Modo de visualización HUD de habilidad",
+  "neoorigins.configuration.js_active": "JS activo",
+  "neoorigins.configuration.show_cooldown_countdown": "Mostrar cuenta regresiva de tiempo de reutilización",
+  "neoorigins.configuration.unique_origin_layers": "Capas de origen únicas"
+}

@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Asertita",
+  "gui.neoorigins.picker.claimed_by": "Asertita de %s",
+  "neoorigins.configuration.always_show_ability_icons": "Omna montrar kapacita ikoni",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Kolorala notita trovita (%)",
+  "neoorigins.configuration.hud_ability_display": "Avancez HUD-vidigilo modo",
+  "neoorigins.configuration.js_active": "JS Active",
+  "neoorigins.configuration.show_cooldown_countdown": "Montrez kolektez lunderilo",
+  "neoorigins.configuration.unique_origin_layers": "Unika origino tavoloj"
+}

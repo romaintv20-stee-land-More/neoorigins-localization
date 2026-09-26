@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Διεκδικήθηκε",
+  "gui.neoorigins.picker.claimed_by": "Διεκδικήθηκε από %s",
+  "neoorigins.configuration.always_show_ability_icons": "Να εμφανίζονται πάντα εικονίδια ικανότητας",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Αδιαφάνεια αντίστροφης μέτρησης (%)",
+  "neoorigins.configuration.hud_ability_display": "Δυνατότητα λειτουργίας προβολής HUD",
+  "neoorigins.configuration.js_active": "JS Active",
+  "neoorigins.configuration.show_cooldown_countdown": "Εμφάνιση αντίστροφης μέτρησης για ψύξη",
+  "neoorigins.configuration.unique_origin_layers": "Μοναδικά στρώματα προέλευσης"
+}

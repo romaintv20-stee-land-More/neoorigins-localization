@@ -576,6 +576,15 @@ tasks.named('processResources', ProcessResources) {
         exclude 'resourcepacks/fallback_localizations/assets/neoorigins_li_121/**'
     }
 
+    if (!include121BatchTranslations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_228_121/**'
+    }
+    if (!include26_1Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_228_26_1/**'
+    }
+    if (!include26_2Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_228_26_2/**'
+    }
     if (!include26_1Translations) {
         exclude 'resourcepacks/fallback_localizations/assets/neoorigins_26_1/**'
     }

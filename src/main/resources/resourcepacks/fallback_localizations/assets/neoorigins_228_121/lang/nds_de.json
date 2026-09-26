@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Behauptet",
+  "gui.neoorigins.picker.claimed_by": "Beansprucht von %s",
+  "neoorigins.configuration.always_show_ability_icons": "Jümmers de Lüttbiller wiesen",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Daallaad- Deckstärk (%)",
+  "neoorigins.configuration.hud_ability_display": "Könen- HUD- Wiesbedrief",
+  "neoorigins.configuration.js_active": "JS Aktiv",
+  "neoorigins.configuration.show_cooldown_countdown": "Aftellen wiesen",
+  "neoorigins.configuration.unique_origin_layers": "Einzigartige Ursprungsebenen"
+}

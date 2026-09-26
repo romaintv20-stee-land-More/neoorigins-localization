@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Заявено",
+  "gui.neoorigins.picker.claimed_by": "Заявено от %s",
+  "neoorigins.configuration.always_show_ability_icons": "Винаги показвайте иконите за способности",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Непрозрачност за обратно отброяване на изчакване (%)",
+  "neoorigins.configuration.hud_ability_display": "Способност HUD режим на показване",
+  "neoorigins.configuration.js_active": "JS активен",
+  "neoorigins.configuration.show_cooldown_countdown": "Показване на обратното броене за охлаждане",
+  "neoorigins.configuration.unique_origin_layers": "Слоеве с уникален произход"
+}

@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "दावा किया",
+  "gui.neoorigins.picker.claimed_by": "%s द्वारा दावा किया गया",
+  "neoorigins.configuration.always_show_ability_icons": "हमेशा क्षमता चिह्न दिखाएं",
+  "neoorigins.configuration.cooldown_countdown_opacity": "कूलडाउन उलटी गिनती अस्पष्टता (%)",
+  "neoorigins.configuration.hud_ability_display": "क्षमता HUD डिस्प्ले मोड",
+  "neoorigins.configuration.js_active": "जेएस सक्रिय",
+  "neoorigins.configuration.show_cooldown_countdown": "कूलडाउन उलटी गिनती दिखाएं",
+  "neoorigins.configuration.unique_origin_layers": "अद्वितीय मूल परतें"
+}

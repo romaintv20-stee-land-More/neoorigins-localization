@@ -1,11 +1,9 @@
 {
   "power.neoorigins.class_titan_heavy_steps.description": "10%-kal lassabban mozogsz — ekkora tömeg visszafogja a lépteket.",
   "origins.neoorigins.class_rogue.name": "Zsivány",
-  "origins.neoorigins.class_rogue.description": "Lopakodó orgyilkos, aki lopakodás közben láthatatlanná válik, és pusztító hátbaszúrást mér.",
   "power.neoorigins.class_rogue_sneaky.name": "Rejtett jelenlét",
   "power.neoorigins.class_rogue_sneaky.description": "A névtáblád soha nem látható falakon keresztül, és a mobok sokkal nehezebben vesznek észre.",
   "power.neoorigins.class_rogue_stealth.name": "Lopakodás",
-  "power.neoorigins.class_rogue_stealth.description": "10 másodpercnyi lopakodás után láthatatlanná válsz. Hátulról támadva kétszeres sebzést okozol.",
   "power.neoorigins.class_rogue_soft_landing.name": "Puha landolás",
   "power.neoorigins.class_rogue_soft_landing.description": "Feleakkora esési sebzést szenvedsz.",
   "power.neoorigins.class_rogue_parkour.name": "Parkour",

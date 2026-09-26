@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Éilithe",
+  "gui.neoorigins.picker.claimed_by": "Éilithe ag %s",
+  "neoorigins.configuration.always_show_ability_icons": "Taispeáin deilbhíní cumais i gcónaí",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Teimhneacht comhaireamh síos fuarú (%)",
+  "neoorigins.configuration.hud_ability_display": "Cumas modh taispeána HUD",
+  "neoorigins.configuration.js_active": "JS Gníomhach",
+  "neoorigins.configuration.show_cooldown_countdown": "Taispeáin comhaireamh síos fuarú",
+  "neoorigins.configuration.unique_origin_layers": "Sraitheanna tionscnaimh uathúla"
+}

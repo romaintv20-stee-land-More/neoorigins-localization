@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Prelevat",
+  "gui.neoorigins.picker.claimed_by": "Talbet minn %s",
+  "neoorigins.configuration.always_show_ability_icons": "Dejjem uri ikoni tal-ħila",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Opaċità tal-countdown tat-tkessiħ (%)",
+  "neoorigins.configuration.hud_ability_display": "Modalità tal-wiri tal-HUD tal-abbiltà",
+  "neoorigins.configuration.js_active": "JS Attiva",
+  "neoorigins.configuration.show_cooldown_countdown": "Uri l-countdown tat-tkessiħ",
+  "neoorigins.configuration.unique_origin_layers": "Saffi ta 'oriġini unika"
+}

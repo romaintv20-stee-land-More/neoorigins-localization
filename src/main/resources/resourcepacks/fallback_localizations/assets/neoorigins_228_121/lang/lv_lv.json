@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Pretenzija",
+  "gui.neoorigins.picker.claimed_by": "Pieprasīja %s",
+  "neoorigins.configuration.always_show_ability_icons": "Vienmēr rādīt spēju ikonas",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Atdzesēšanas atpakaļskaitīšanas necaurredzamība (%)",
+  "neoorigins.configuration.hud_ability_display": "Ability HUD displeja režīms",
+  "neoorigins.configuration.js_active": "JS Active",
+  "neoorigins.configuration.show_cooldown_countdown": "Rādīt atdzišanas atpakaļskaitīšanu",
+  "neoorigins.configuration.unique_origin_layers": "Unikāli izcelsmes slāņi"
+}

@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Игътибар",
+  "gui.neoorigins.picker.claimed_by": "%s таләп итә",
+  "neoorigins.configuration.always_show_ability_icons": "Waysәрвакыт сәләт иконаларын күрсәтегез",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Кулдаун санау караңгылыгы (%)",
+  "neoorigins.configuration.hud_ability_display": "HUD күрсәтү режимы",
+  "neoorigins.configuration.js_active": "JS Актив",
+  "neoorigins.configuration.show_cooldown_countdown": "Кулдаун санауны күрсәт",
+  "neoorigins.configuration.unique_origin_layers": "Уникаль башлангыч катламнары"
+}

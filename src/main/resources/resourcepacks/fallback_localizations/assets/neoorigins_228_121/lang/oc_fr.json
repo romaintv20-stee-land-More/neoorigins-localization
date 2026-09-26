@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Reclamat",
+  "gui.neoorigins.picker.claimed_by": "Reclamat per %s",
+  "neoorigins.configuration.always_show_ability_icons": "Afichar totjorn las icònas d'abilitat",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Opacitat de compte enrè de refregiment (%)",
+  "neoorigins.configuration.hud_ability_display": "Abilitat mòde d'afichatge HUD",
+  "neoorigins.configuration.js_active": "JS actiu",
+  "neoorigins.configuration.show_cooldown_countdown": "Afichar lo compte enrè de refregiment",
+  "neoorigins.configuration.unique_origin_layers": "Calques d'origina unics"
+}

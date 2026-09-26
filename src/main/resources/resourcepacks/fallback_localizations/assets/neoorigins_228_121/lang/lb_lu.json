@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Fuerdert",
+  "gui.neoorigins.picker.claimed_by": "Fuerderung vun %s",
+  "neoorigins.configuration.always_show_ability_icons": "Ëmmer weisen Fäegkeet Symboler",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Cooldown Countdown Opazitéit (%)",
+  "neoorigins.configuration.hud_ability_display": "Fäegkeet HUD Displaymodus",
+  "neoorigins.configuration.js_active": "JS aktiv",
+  "neoorigins.configuration.show_cooldown_countdown": "Weisen cooldown Countdown",
+  "neoorigins.configuration.unique_origin_layers": "Eenzegaarteg Hierkonft Schichten"
+}

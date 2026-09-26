@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "İddia edildi",
+  "gui.neoorigins.picker.claimed_by": "%s tərəfindən iddia edilib",
+  "neoorigins.configuration.always_show_ability_icons": "Həmişə qabiliyyət nişanlarını göstərin",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Soyuma müddətinin geri sayımının qeyri-şəffaflığı (%)",
+  "neoorigins.configuration.hud_ability_display": "HUD ekran rejimi bacarığı",
+  "neoorigins.configuration.js_active": "JS Aktivdir",
+  "neoorigins.configuration.show_cooldown_countdown": "Soyuducu geri sayımı göstərin",
+  "neoorigins.configuration.unique_origin_layers": "Unikal mənşəli təbəqələr"
+}

@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Asertita",
+  "gui.neoorigins.picker.claimed_by": "Asertita de %s",
+  "neoorigins.configuration.always_show_ability_icons": "Ĉiam montru kapablecpikonojn",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Malvarmiga retronombrado opakeco (%)",
+  "neoorigins.configuration.hud_ability_display": "Kapablo HUD-montra reĝimo",
+  "neoorigins.configuration.js_active": "JS Aktiva",
+  "neoorigins.configuration.show_cooldown_countdown": "Montru retronombradon de malvarmigo",
+  "neoorigins.configuration.unique_origin_layers": "Unika origino tavoloj"
+}

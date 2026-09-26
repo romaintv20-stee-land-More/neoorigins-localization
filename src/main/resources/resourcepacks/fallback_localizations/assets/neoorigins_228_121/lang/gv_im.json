@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Claimt",
+  "gui.neoorigins.picker.claimed_by": "Claimt liorish %s",
+  "neoorigins.configuration.always_show_ability_icons": "Show dagh uair iconyn cochiangle",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Opacity countdown (%)",
+  "neoorigins.configuration.hud_ability_display": "Cooidjagh HUD mood taishbyney",
+  "neoorigins.configuration.js_active": "JS glan",
+  "neoorigins.configuration.show_cooldown_countdown": "Soilshaghey coontey cooyl-down",
+  "neoorigins.configuration.unique_origin_layers": "Slattyn bun un-ghooghyssagh"
+}

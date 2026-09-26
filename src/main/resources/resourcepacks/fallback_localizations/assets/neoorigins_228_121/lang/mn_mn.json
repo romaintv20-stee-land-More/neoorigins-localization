@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Нэхэмжлэгдсэн",
+  "gui.neoorigins.picker.claimed_by": "%s нэхэмжилсэн",
+  "neoorigins.configuration.always_show_ability_icons": "Чадвар дүрсийг үргэлж харуул",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Хөргөх хугацааг тоолох тунгалаг байдал (%)",
+  "neoorigins.configuration.hud_ability_display": "Чадвар HUD дэлгэцийн горим",
+  "neoorigins.configuration.js_active": "JS идэвхтэй",
+  "neoorigins.configuration.show_cooldown_countdown": "Хөргөх хугацааг харуулах",
+  "neoorigins.configuration.unique_origin_layers": "Өвөрмөц гаралтай давхаргууд"
+}

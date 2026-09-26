@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Geclaimd",
+  "gui.neoorigins.picker.claimed_by": "Geclaimd door %s",
+  "neoorigins.configuration.always_show_ability_icons": "Vaardigheidspictogrammen altijd weergeven",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Ondoorzichtigheid van de afkoeltijdaftelling (%)",
+  "neoorigins.configuration.hud_ability_display": "Weergavemodus van de vaardigheden-HUD",
+  "neoorigins.configuration.js_active": "JS actief",
+  "neoorigins.configuration.show_cooldown_countdown": "Aftelling van de afkoeltijd weergeven",
+  "neoorigins.configuration.unique_origin_layers": "Unieke oorsprongslagen"
+}

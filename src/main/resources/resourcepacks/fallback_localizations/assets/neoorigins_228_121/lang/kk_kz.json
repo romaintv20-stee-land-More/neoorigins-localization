@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Талап етілген",
+  "gui.neoorigins.picker.claimed_by": "%s мәлімдеген",
+  "neoorigins.configuration.always_show_ability_icons": "Әрқашан қабілет белгішелерін көрсетіңіз",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Салқындату уақытының кері санағының мөлдірлігі (%)",
+  "neoorigins.configuration.hud_ability_display": "Мүмкіндік HUD дисплей режимі",
+  "neoorigins.configuration.js_active": "JS белсенді",
+  "neoorigins.configuration.show_cooldown_countdown": "Салқындату уақытын кері санауды көрсетіңіз",
+  "neoorigins.configuration.unique_origin_layers": "Бірегей бастапқы қабаттар"
+}

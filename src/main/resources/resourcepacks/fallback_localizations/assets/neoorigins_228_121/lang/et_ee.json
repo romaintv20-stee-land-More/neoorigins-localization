@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Väidetud",
+  "gui.neoorigins.picker.claimed_by": "Nõudnud %s",
+  "neoorigins.configuration.always_show_ability_icons": "Näita alati võimete ikoone",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Jahutusloenduse läbipaistmatus (%)",
+  "neoorigins.configuration.hud_ability_display": "Võimalus HUD kuvarežiim",
+  "neoorigins.configuration.js_active": "JS aktiivne",
+  "neoorigins.configuration.show_cooldown_countdown": "Näita jahtumisloendust",
+  "neoorigins.configuration.unique_origin_layers": "Unikaalsed päritolukihid"
+}

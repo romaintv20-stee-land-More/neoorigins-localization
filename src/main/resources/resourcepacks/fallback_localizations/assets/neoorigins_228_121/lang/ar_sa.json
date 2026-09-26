@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "ادعى",
+  "gui.neoorigins.picker.claimed_by": "تمت المطالبة به بواسطة %s",
+  "neoorigins.configuration.always_show_ability_icons": "إظهار أيقونات القدرة دائمًا",
+  "neoorigins.configuration.cooldown_countdown_opacity": "عتامة العد التنازلي (%)",
+  "neoorigins.configuration.hud_ability_display": "القدرة على وضع عرض HUD",
+  "neoorigins.configuration.js_active": "شبيبة نشطة",
+  "neoorigins.configuration.show_cooldown_countdown": "عرض العد التنازلي للتبريد",
+  "neoorigins.configuration.unique_origin_layers": "طبقات الأصل الفريدة"
+}

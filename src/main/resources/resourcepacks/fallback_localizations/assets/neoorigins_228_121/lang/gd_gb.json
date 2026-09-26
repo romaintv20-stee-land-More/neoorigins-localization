@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Air a thagradh",
+  "gui.neoorigins.picker.claimed_by": "Air a thagradh le %s",
+  "neoorigins.configuration.always_show_ability_icons": "Seall ìomhaighean comas an-còmhnaidh",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Teòthachd cunntadh sìos fuarachadh (%)",
+  "neoorigins.configuration.hud_ability_display": "Comas modh taisbeanaidh HUD",
+  "neoorigins.configuration.js_active": "JS Gnìomhach",
+  "neoorigins.configuration.show_cooldown_countdown": "Seall cunntadh sìos fuarachadh",
+  "neoorigins.configuration.unique_origin_layers": "Sreathan tùsail gun samhail"
+}

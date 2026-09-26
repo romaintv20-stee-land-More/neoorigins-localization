@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Đã xác nhận quyền sở hữu",
+  "gui.neoorigins.picker.claimed_by": "Được xác nhận bởi %s",
+  "neoorigins.configuration.always_show_ability_icons": "Luôn hiển thị biểu tượng khả năng",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Độ mờ đếm ngược thời gian hồi chiêu (%)",
+  "neoorigins.configuration.hud_ability_display": "Khả năng chế độ hiển thị HUD",
+  "neoorigins.configuration.js_active": "JS đang hoạt động",
+  "neoorigins.configuration.show_cooldown_countdown": "Hiển thị đếm ngược thời gian hồi chiêu",
+  "neoorigins.configuration.unique_origin_layers": "Lớp gốc độc đáo"
+}

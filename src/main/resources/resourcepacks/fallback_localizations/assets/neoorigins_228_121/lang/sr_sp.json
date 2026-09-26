@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Захтевано",
+  "gui.neoorigins.picker.claimed_by": "Preuzeto od %s",
+  "neoorigins.configuration.always_show_ability_icons": "Увек прикажи иконе способности",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Непрозирност одбројавања (%)",
+  "neoorigins.configuration.hud_ability_display": "Способност Худ режим приказа",
+  "neoorigins.configuration.js_active": "ЈС Ацтиве",
+  "neoorigins.configuration.show_cooldown_countdown": "Прикажи одбројавање времена за хлађење",
+  "neoorigins.configuration.unique_origin_layers": "Јединствени изворни слојеви"
+}

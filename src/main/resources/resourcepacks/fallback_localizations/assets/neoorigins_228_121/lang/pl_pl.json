@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Zgłoszono",
+  "gui.neoorigins.picker.claimed_by": "Przedmiot roszczenia %s",
+  "neoorigins.configuration.always_show_ability_icons": "Zawsze pokazuj ikony umiejętności",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Nieprzezroczystość odliczania czasu odnowienia (%)",
+  "neoorigins.configuration.hud_ability_display": "Tryb wyświetlania HUD umiejętności",
+  "neoorigins.configuration.js_active": "JS Aktywny",
+  "neoorigins.configuration.show_cooldown_countdown": "Pokaż odliczanie czasu odnowienia",
+  "neoorigins.configuration.unique_origin_layers": "Unikalne warstwy początkowe"
+}

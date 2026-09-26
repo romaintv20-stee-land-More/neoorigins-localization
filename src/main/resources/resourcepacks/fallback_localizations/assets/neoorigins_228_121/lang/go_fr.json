@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Réclamé",
+  "gui.neoorigins.picker.claimed_by": "Réclamé par %s",
+  "neoorigins.configuration.always_show_ability_icons": "Terjou montrer les icônes en capacités",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Opacité du conte à rebours en recharge (%)",
+  "neoorigins.configuration.hud_ability_display": "Mode d'affichage du HUD des capacités",
+  "neoorigins.configuration.js_active": "JS actif",
+  "neoorigins.configuration.show_cooldown_countdown": "Montrer le conte à rebours en recharge",
+  "neoorigins.configuration.unique_origin_layers": "Couches d'origine uniques"
+}

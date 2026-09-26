@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Reclamat",
+  "gui.neoorigins.picker.claimed_by": "Reclamat per %s",
+  "neoorigins.configuration.always_show_ability_icons": "Mostra sempre les icones d'habilitats",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Opacitat del compte enrere del temps de reutilització (%)",
+  "neoorigins.configuration.hud_ability_display": "Mode de visualització HUD de capacitat",
+  "neoorigins.configuration.js_active": "JS Active",
+  "neoorigins.configuration.show_cooldown_countdown": "Mostra el compte enrere de reutilització",
+  "neoorigins.configuration.unique_origin_layers": "Capes d'origen úniques"
+}

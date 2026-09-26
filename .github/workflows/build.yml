@@ -23,12 +23,13 @@ jobs:
             parchment: 'true'
             pack_format: '34'
             source_variant: 'mc1_21_1'
-            upstream_ref: 'af467a3bc118f6bbc0970d68f7e03fa631d7e6f2'
-            mod_version: '1.1.0+1.21.1'
+            upstream_ref: '87860513d5947fa0407a4dd1868126c9489e56cd'
+            mod_version: '1.1.1+1.21.1'
             audit_addons: true
             audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz hu_hu ja_jp ko_kr uk_ua nds_de'
             audit_extra_namespace: 'neoorigins_121_batch1'
             audit_226_namespace: 'neoorigins_226'
+            audit_228_namespace: 'neoorigins_228_121'
             audit_26_1_namespace: ''
             audit_namespace_glob: 'neoorigins_tr_*'
             audit_czech_namespace_glob: 'neoorigins_cs_*'
@@ -52,12 +53,13 @@ jobs:
             parchment: 'false'
             pack_format: '84'
             source_variant: 'mc26_1'
-            upstream_ref: 'aa207ef14cf3b938e28b4081162701953957c1d5'
-            mod_version: '1.1.0+26.1'
+            upstream_ref: '4f11c58362a7b3c76d5475ed072b79f49ceb537d'
+            mod_version: '1.1.1+26.1'
             audit_addons: false
             audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz hu_hu ja_jp ko_kr uk_ua nds_de'
             audit_extra_namespace: ''
             audit_226_namespace: 'neoorigins_226'
+            audit_228_namespace: 'neoorigins_228_26_1'
             audit_26_1_namespace: 'neoorigins_26_1'
             audit_namespace_glob: 'neoorigins_tr_*'
             audit_czech_namespace_glob: 'neoorigins_cs_*'
@@ -81,12 +83,13 @@ jobs:
             parchment: 'false'
             pack_format: '84'
             source_variant: 'mc26_1'
-            upstream_ref: '511cadcafe3027d2a56b4448652ec9b74e2f3b07'
-            mod_version: '1.1.0+26.2'
+            upstream_ref: 'd2d7c0b6d5439e11e3ed3e981dcdd25642f0b417'
+            mod_version: '1.1.1+26.2'
             audit_addons: false
             audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz hu_hu ja_jp ko_kr uk_ua nds_de'
             audit_extra_namespace: 'neoorigins_26_2'
             audit_226_namespace: 'neoorigins_226'
+            audit_228_namespace: ''
             audit_26_1_namespace: ''
             audit_namespace_glob: 'neoorigins_tr_*'
             audit_czech_namespace_glob: 'neoorigins_cs_*'
@@ -130,6 +133,10 @@ jobs:
           if [ -n "${{ matrix.audit_extra_namespace }}" ]; then
             EXTRA_ARGS+=(--extra-namespace "${{ matrix.audit_extra_namespace }}")
           fi
+          EXTRA_ARGS+=(--extra-namespace "neoorigins_228_common")
+          if [ -n "${{ matrix.audit_228_namespace }}" ]; then
+            EXTRA_ARGS+=(--extra-namespace "${{ matrix.audit_228_namespace }}")
+          fi
           if [ -n "${{ matrix.audit_226_namespace }}" ]; then
             EXTRA_ARGS+=(--extra-namespace "${{ matrix.audit_226_namespace }}")
           fi
@@ -154,6 +161,7 @@ jobs:
             --output "build/upstream-audit-${{ matrix.target }}" \
             --fail-on-overlap \
             --fail-on-missing \
+            --fail-on-placeholders \
             "${EXTRA_ARGS[@]}"
 
       - name: Audit Medieval Origins upstream locales
@@ -168,6 +176,8 @@ jobs:
             --locale id_id \
             --fallback-namespace-glob 'neoorigins_id_common_*' \
             --extra-namespace "${{ matrix.audit_indonesian_extra_namespace }}" \
+            --extra-namespace "neoorigins_228_common" \
+            --extra-namespace "${{ matrix.audit_228_namespace }}" \
             --fail-on-overlap \
             --fail-on-missing \
             --fail-on-placeholders
@@ -180,6 +190,8 @@ jobs:
             --locale sv_se \
             --fallback-namespace-glob 'neoorigins_sv_common_*' \
             --extra-namespace "${{ matrix.audit_swedish_extra_namespace }}" \
+            --extra-namespace "neoorigins_228_common" \
+            --extra-namespace "${{ matrix.audit_228_namespace }}" \
             --fail-on-overlap \
             --fail-on-missing \
             --fail-on-placeholders
@@ -246,6 +258,9 @@ jobs:
             build/pathfinder-origins-upstream-audit
           if-no-files-found: warn
 
+      - name: Audit 2.2.28 deltas across all 92 locales
+        run: python3 scripts/audit_neoorigins_228.py
+
       - name: Validate localization files
         run: python3 scripts/validate.py
 
@@ -268,6 +283,11 @@ jobs:
             "-Pneo_version=${{ matrix.neoforge }}" \
             "-Ploader_version_range=${{ matrix.loader_range }}" \
             "-Pmod_version=${{ matrix.mod_version }}"
+
+      - name: Verify 2.2.28 version-specific JAR resources
+        run: |
+          JAR=$(find build/libs -type f -name '*.jar' ! -name '*-sources.jar' | head -n 1)
+          python3 scripts/audit_neoorigins_228_jar.py --jar "$JAR" --target "${{ matrix.target }}"
 
       - name: Verify packaged Japanese localizations
         run: |
@@ -355,9 +375,11 @@ jobs:
           ID_COUNT=$(grep -cE '(^|/)lang/id_id\.json$' build/jar-contents-id-${{ matrix.target }}.txt || true)
 
           if [ "${{ matrix.include_addon_translations }}" = "true" ]; then
-            EXPECTED_ID_COUNT=28
+            EXPECTED_ID_COUNT=30
+          elif [ "${{ matrix.target }}" = "mc-26.1.x" ]; then
+            EXPECTED_ID_COUNT=19
           else
-            EXPECTED_ID_COUNT=17
+            EXPECTED_ID_COUNT=18
           fi
           echo "Indonesian localization files in ${{ matrix.target }}: $ID_COUNT (expected $EXPECTED_ID_COUNT)"
           test "$ID_COUNT" -eq "$EXPECTED_ID_COUNT"
@@ -398,9 +420,11 @@ jobs:
           SV_COUNT=$(grep -cE '(^|/)lang/sv_se\.json$' build/jar-contents-sv-${{ matrix.target }}.txt || true)
 
           if [ "${{ matrix.include_addon_translations }}" = "true" ]; then
-            EXPECTED_SV_COUNT=28
+            EXPECTED_SV_COUNT=30
+          elif [ "${{ matrix.target }}" = "mc-26.1.x" ]; then
+            EXPECTED_SV_COUNT=19
           else
-            EXPECTED_SV_COUNT=17
+            EXPECTED_SV_COUNT=18
           fi
           echo "Swedish localization files in ${{ matrix.target }}: $SV_COUNT (expected $EXPECTED_SV_COUNT)"
           test "$SV_COUNT" -eq "$EXPECTED_SV_COUNT"
@@ -441,9 +465,11 @@ jobs:
           NDS_COUNT=$(grep -cE '(^|/)lang/nds_de\.json$' build/jar-contents-nds-${{ matrix.target }}.txt || true)
 
           if [ "${{ matrix.include_addon_translations }}" = "true" ]; then
-            EXPECTED_NDS_COUNT=29
+            EXPECTED_NDS_COUNT=31
+          elif [ "${{ matrix.target }}" = "mc-26.1.x" ]; then
+            EXPECTED_NDS_COUNT=19
           else
-            EXPECTED_NDS_COUNT=17
+            EXPECTED_NDS_COUNT=18
           fi
           echo "Low German localization files in ${{ matrix.target }}: $NDS_COUNT (expected $EXPECTED_NDS_COUNT)"
           test "$NDS_COUNT" -eq "$EXPECTED_NDS_COUNT"

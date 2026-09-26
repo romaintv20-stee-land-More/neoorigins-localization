@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Ekwuru",
+  "gui.neoorigins.picker.claimed_by": "%s kwadoro ya",
+  "neoorigins.configuration.always_show_ability_icons": "Gosi akara ngosi ike mgbe niile",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Opacity akwụsị akwụsị (%)",
+  "neoorigins.configuration.hud_ability_display": "Ụdị ngosi HUD ike",
+  "neoorigins.configuration.js_active": "JS nọ n'ọrụ",
+  "neoorigins.configuration.show_cooldown_countdown": "Gosi agụta nkwụsịtụ",
+  "neoorigins.configuration.unique_origin_layers": "N'ígwé mmalite pụrụ iche"
+}

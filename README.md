@@ -543,7 +543,7 @@ Sur 26.x, trois anciennes clés de récompense restent dans les fichiers de fall
 | Pathfinder Origins | 0.4.0 | 406/406 dans 13 locales | 406/406 |
 
 
-Les versions Origins: Backgrounds 1.0.3 et Origins: More Backgrounds 1.0.4 ajoutent quatre chaînes contextuelles pour l'`Orb of Background`. Elles sont fournies dans les 92 langues par un pack intégré activé uniquement lorsqu'un de ces add-ons est chargé, afin de ne pas renommer l'orbe violette de NeoOrigins lorsqu'ils sont absents.
+Les versions Origins: Backgrounds 1.0.3 et Origins: More Backgrounds 1.0.4 ajoutent quatre chaînes contextuelles pour l'`Orb of Background`. Elles sont fournies dans les 93 langues par un pack intégré activé uniquement lorsqu'un de ces add-ons est chargé, afin de ne pas renommer l'orbe violette de NeoOrigins lorsqu'ils sont absents.
 
 Les intégrations DraconicArcher sont réalisées avec son autorisation explicite pour redistribuer les **chaînes de localisation traduites**. Aucun code, texture, modèle ou autre asset de gameplay de ces add-ons n'est redistribué ; les mods originaux restent requis.
 

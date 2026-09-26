@@ -8,7 +8,7 @@ args=p.parse_args()
 mapping={"mc-1.21.1":"121","mc-26.1.x":"261","mc-26.2":"262"}
 if args.target not in mapping:raise SystemExit(f"Unknown target: {args.target}")
 src=json.loads((ROOT/"localization/neoorigins_228_source.json").read_text(encoding="utf-8"))
-locales=list(next(x for x in json.loads((ROOT/"catalog.json").read_text(encoding="utf-8"))["supported_projects"] if x["id"]=="neoorigins")["languages"])
+locales=[locale for locale in next(x for x in json.loads((ROOT/"catalog.json").read_text(encoding="utf-8"))["supported_projects"] if x["id"]=="neoorigins")["languages"] if locale!="mr_in"]
 paths={"common":"neoorigins_228_common","121":"neoorigins_228_121",
        "261":"neoorigins_228_26_1","262":"neoorigins_228_26_2"}
 with zipfile.ZipFile(args.jar) as f:

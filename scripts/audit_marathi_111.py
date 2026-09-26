@@ -52,12 +52,18 @@ def source_audit():
         p=ASSETS/ns/"lang/mr_in.json"
         check(english,rj(p),f"addon {ns}")
         assert c["supported_projects"][[p["id"] for p in c["supported_projects"]].index(ns)]["languages"]["mr_in"]["fallback_keys"]==len(english)
+    ctx=rj(ROOT/"localization/background_orb_translations.json")
+    registered=set(next(p for p in c["supported_projects"] if p["id"]=="neoorigins")["languages"])
+    assert set(ctx)==registered
+    src_ctx={key:addons["origins_backgrounds"][key] for key in ctx["mr_in"]}
+    check(src_ctx,ctx["mr_in"],"Marathi Background Orb contextual override")
+    mr_bg=rj(ASSETS/"origins_backgrounds/lang/mr_in.json")
+    assert all(mr_bg[k]==v for k,v in ctx["mr_in"].items())
     for target,version in (("121","1.21.1"),("261","26.1.2"),("262","26.2")):
         localized=rj(ROOT/"localization/minecraft_marathi"/version/"mr_in.json")
         manifest=coverage["minecraft"][version]
         assert len(localized)==manifest["keys"]
         assert sha(localized)==manifest["key_sha256"]
-        assert {k:len(localized) for k in []}=={}
     mcmeta=(ROOT/"src/main/resources"/PACK/"pack.mcmeta").read_text(encoding="utf-8")
     mcmeta=mcmeta.replace("$"+"{resource_pack_format}","34")
     language=json.loads(mcmeta)["language"]["mr_in"]
@@ -97,6 +103,11 @@ def jar_audit(jar,target,core,addons,coverage):
             name=PACK+f"assets/{ns}/lang/mr_in.json"
             if key=="121":check(src,get(name),f"{target} {ns}")
             elif name in files:raise RuntimeError(f"{target}: 1.21.1 addon leaked: {ns}")
+        ctx=rj(ROOT/"localization/background_orb_translations.json")["mr_in"]
+        contextual_path="resourcepacks/background_orb_localizations/assets/neoorigins/lang/mr_in.json"
+        if key=="121":
+            check({k:addons["origins_backgrounds"][k] for k in ctx},get(contextual_path),"Background Orb contextual pack")
+        elif contextual_path in files:raise RuntimeError(f"{target}: 1.21.1 contextual pack leaked")
     print(f"PASS JAR {target}: {len(coremap)} NeoOrigins keys, {len(vanilla)} Minecraft keys")
 def main():
     p=argparse.ArgumentParser()

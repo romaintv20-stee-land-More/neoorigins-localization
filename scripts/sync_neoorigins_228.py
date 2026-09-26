@@ -226,7 +226,8 @@ def main():
     p.add_argument("--locale",action="append");p.add_argument("--workers",type=int,default=4)
     a=p.parse_args();old,splits=prepare()
     catalog=readj(ROOT/"catalog.json")
-    locales=a.locale or list(next(p for p in catalog["supported_projects"] if p["id"]=="neoorigins")["languages"])
+    locales=a.locale or [x for x in next(p for p in catalog["supported_projects"] if p["id"]=="neoorigins")["languages"] if x!="mr_in"]
+    if "mr_in" in locales:raise SystemExit("Generate Marathi using build_marathi_111.py instead.")
     reports=[r for r in (readj(CACHE/"translation_report.json") if (CACHE/"translation_report.json").exists() else [])
              if r["locale"] not in set(locales)]
     with concurrent.futures.ThreadPoolExecutor(max_workers=a.workers) as pool:

@@ -1,0 +1,15 @@
+{
+  "neoorigins.configuration.section.neoorigins.admin.toml": "प्रशासन आणि परवानग्या",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "NeoOrigins प्रशासन सेटिंग्ज",
+  "neoorigins.configuration.section.neoorigins.client.toml": "क्लायंट डिस्प्ले",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "NeoOrigins क्लायंट सेटिंग्ज",
+  "neoorigins.configuration.section.neoorigins.content.toml": "उत्पत्ती आणि वर्ग",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "NeoOrigins मूळ आणि वर्ग टॉगल",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "गेमप्ले",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "NeoOrigins गेमप्ले सेटिंग्ज",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "पॉवर ओव्हरराइड्स",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "NeoOrigins पॉवर ओव्हरराइड्स",
+  "neoorigins.configuration.title": "NeoOrigins कॉन्फिगरेशन",
+  "power.neoorigins.class_blacksmith_quality.description": "तुम्ही क्राफ्ट करता त्या उपकरणांना बोनस गुणधर्म मिळतात - कडकपणा, नुकसान किंवा खाण वेग.",
+  "power.neoorigins.class_cook_smoker_xp.description": "धूम्रपान करणाऱ्या व्यक्तीमध्ये अन्न शिजवून दुप्पट XP मिळतो."
+}

@@ -26,10 +26,11 @@ jobs:
             upstream_ref: '87860513d5947fa0407a4dd1868126c9489e56cd'
             mod_version: '1.1.1+1.21.1'
             audit_addons: true
-            audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz hu_hu ja_jp ko_kr uk_ua nds_de'
+            audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz hu_hu ja_jp ko_kr uk_ua nds_de mr_in'
             audit_extra_namespace: 'neoorigins_121_batch1'
             audit_226_namespace: 'neoorigins_226'
             audit_228_namespace: 'neoorigins_228_121'
+            audit_marathi_namespace: 'neoorigins_mr_121'
             audit_26_1_namespace: ''
             audit_namespace_glob: 'neoorigins_tr_*'
             audit_czech_namespace_glob: 'neoorigins_cs_*'
@@ -56,10 +57,11 @@ jobs:
             upstream_ref: '4f11c58362a7b3c76d5475ed072b79f49ceb537d'
             mod_version: '1.1.1+26.1'
             audit_addons: false
-            audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz hu_hu ja_jp ko_kr uk_ua nds_de'
+            audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz hu_hu ja_jp ko_kr uk_ua nds_de mr_in'
             audit_extra_namespace: ''
             audit_226_namespace: 'neoorigins_226'
             audit_228_namespace: 'neoorigins_228_26_1'
+            audit_marathi_namespace: 'neoorigins_mr_26_1'
             audit_26_1_namespace: 'neoorigins_26_1'
             audit_namespace_glob: 'neoorigins_tr_*'
             audit_czech_namespace_glob: 'neoorigins_cs_*'
@@ -81,15 +83,16 @@ jobs:
             neoforge: '26.2.0.3-beta'
             loader_range: '[4,)'
             parchment: 'false'
-            pack_format: '84'
+            pack_format: '88'
             source_variant: 'mc26_1'
             upstream_ref: 'd2d7c0b6d5439e11e3ed3e981dcdd25642f0b417'
             mod_version: '1.1.1+26.2'
             audit_addons: false
-            audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz hu_hu ja_jp ko_kr uk_ua nds_de'
+            audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz hu_hu ja_jp ko_kr uk_ua nds_de mr_in'
             audit_extra_namespace: 'neoorigins_26_2'
             audit_226_namespace: 'neoorigins_226'
             audit_228_namespace: ''
+            audit_marathi_namespace: 'neoorigins_mr_26_2'
             audit_26_1_namespace: ''
             audit_namespace_glob: 'neoorigins_tr_*'
             audit_czech_namespace_glob: 'neoorigins_cs_*'
@@ -153,6 +156,8 @@ jobs:
             EXTRA_ARGS+=(--fallback-namespace-glob "${{ matrix.audit_hungarian_namespace_glob }}")
           fi
           EXTRA_ARGS+=(--fallback-namespace-glob "neoorigins_nds_common_*")
+          EXTRA_ARGS+=(--fallback-namespace-glob "neoorigins_mr_common_*")
+          EXTRA_ARGS+=(--extra-namespace "${{ matrix.audit_marathi_namespace }}")
           if [ "${{ matrix.source_variant }}" = "mc1_21_1" ]; then
             EXTRA_ARGS+=(--extra-namespace "neoorigins_nds_121")
           fi
@@ -264,6 +269,9 @@ jobs:
       - name: Validate localization files
         run: python3 scripts/validate.py
 
+      - name: Audit Marathi Minecraft and add-ons (93rd locale)
+        run: python3 scripts/audit_marathi_111.py
+
       - name: Build mod
         run: |
           gradle build --stacktrace \
@@ -288,6 +296,11 @@ jobs:
         run: |
           JAR=$(find build/libs -type f -name '*.jar' ! -name '*-sources.jar' | head -n 1)
           python3 scripts/audit_neoorigins_228_jar.py --jar "$JAR" --target "${{ matrix.target }}"
+
+      - name: Verify packaged Marathi language and target resources
+        run: |
+          JAR=$(find build/libs -type f -name '*.jar' ! -name '*-sources.jar' | head -n 1)
+          python3 scripts/audit_marathi_111.py --jar "$JAR" --target "${{ matrix.target }}"
 
       - name: Verify packaged Japanese localizations
         run: |

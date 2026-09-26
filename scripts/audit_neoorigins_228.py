@@ -12,6 +12,7 @@ def rj(p):return json.loads(Path(p).read_text(encoding="utf-8"))
 def main():
     src=rj(SOURCE)
     langs=next(x for x in rj(ROOT/"catalog.json")["supported_projects"] if x["id"]=="neoorigins")["languages"]
+    langs={k:v for k,v in langs.items() if k!='mr_in'}
     if len(langs)!=92:raise SystemExit(f"Expected 92 locales, got {len(langs)}")
     errors=[];stats=collections.Counter()
     expected={"common":230,"121":8,"261":1,"262":0}

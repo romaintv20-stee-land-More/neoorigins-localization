@@ -2,5 +2,12 @@
   "pack": {
     "pack_format": ${resource_pack_format},
     "description": "NeoOrigins Localization - low-priority fallback translations"
+  },
+  "language": {
+    "mr_in": {
+      "region": "भारत",
+      "name": "मराठी",
+      "bidirectional": false
+    }
   }
 }

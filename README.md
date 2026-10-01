@@ -6,11 +6,18 @@ Mod client NeoForge fournissant des **traductions complémentaires en priorité 
 
 | Cible | Version | Java | Langues | Contenu empaqueté |
 |---|---|---:|---:|---|
-| Minecraft 1.21.1 | `1.1.1+1.21.1` | 21 | 93 | NeoOrigins + Medieval Origins Revival + ibarn's quartet origins addon + Origins Fantasy + Origins: Backgrounds + Origins: More Backgrounds + Origins: Backgrounds ISS + Origins Furries + Origins: Classes Extended + Origins: Classes ISS + Origin Architect + Pathfinder Origins (Pathfinder : 13 locales) |
-| Minecraft 26.1 / 26.1.1 / 26.1.2 | `1.1.1+26.1` | 25 | 93 | NeoOrigins uniquement + delta 26.1 |
-| Minecraft 26.2 | `1.1.1+26.2` | 25 | 93 | NeoOrigins uniquement + delta 26.2 |
+| Minecraft 1.21.1 | `1.1.2+1.21.1` | 21 | 93 | NeoOrigins + Medieval Origins Revival + ibarn's quartet origins addon + Origins Fantasy + Origins: Backgrounds + Origins: More Backgrounds + Origins: Backgrounds ISS + Origins Furries + Origins: Classes Extended + Origins: Classes ISS + Origin Architect + Pathfinder Origins (Pathfinder : 13 locales) |
+| Minecraft 26.1 / 26.1.1 / 26.1.2 | `1.1.2+26.1` | 25 | 93 | NeoOrigins uniquement + delta 26.1 |
+| Minecraft 26.2 | `1.1.2+26.2` | 25 | 93 | NeoOrigins uniquement + delta 26.2 |
 
 Les builds 26.x n'embarquent aucune traduction des add-ons 1.21.1. La CI construit et audite séparément les trois cibles.
+
+## NeoOrigins Localization 1.1.2 — Origins Furries 1.0.3
+
+Cette version met à jour **Origins Furries for NeoOrigins de 1.0.0 à 1.0.3** sur Minecraft 1.21.1. L'audit a détecté **52 nouvelles clés** ; elles sont maintenant couvertes dans les **93 langues prises en charge**, soit **4 836 nouvelles entrées de fallback**. La couverture de l'add-on passe à **169/169 clés** par locale.
+
+Les builds **26.1.x** et **26.2** n'embarquent pas Origins Furries : leur contenu de traduction NeoOrigins reste identique à la 1.1.1, mais ils sont republiés en 1.1.2 afin de garder une version de release cohérente sur les trois cibles.
+
 
 ## Marathi (मराठी, mr_in) — 93e langue dans la 1.1.1
 
@@ -42,7 +49,7 @@ La référence d'audit actuelle est **NeoOrigins 2.2.29** :
 - 26.1.x : commit `71e314492848a6f887e91f959c857a29822041d2` ;
 - 26.2 : commit `8060d65189739a75785d885a8d87f795679bfd30`.
 
-Les fichiers de langue de NeoOrigins 2.2.29 sont **inchangés par rapport à 2.2.28** sur les trois cibles. Les 93 locales de NeoOrigins Localization 1.1.1 restent donc couvertes sans nouveau delta de traduction ni nouveau JAR.
+Les fichiers de langue de NeoOrigins 2.2.29 sont **inchangés par rapport à 2.2.28** sur les trois cibles. Les 93 locales de NeoOrigins Localization 1.1.2 restent donc couvertes sans nouveau delta de traduction NeoOrigins.
 
 Les lacunes historiques détectées avant la 1.1.1 ont été récupérées. La couverture anglaise vérifiée reste de **2 532/2 532** clés en 1.21.1, **2 536/2 536** en 26.1.x et **2 535/2 535** en 26.2.
 

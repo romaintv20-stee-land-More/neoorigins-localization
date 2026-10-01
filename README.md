@@ -6,11 +6,21 @@ Mod client NeoForge fournissant des **traductions complémentaires en priorité 
 
 | Cible | Version | Java | Langues | Contenu empaqueté |
 |---|---|---:|---:|---|
-| Minecraft 1.21.1 | `1.1.0+1.21.1` | 21 | 92 | NeoOrigins + Medieval Origins Revival + ibarn's quartet origins addon + Origins Fantasy + Origins: Backgrounds + Origins: More Backgrounds + Origins: Backgrounds ISS + Origins Furries + Origins: Classes Extended + Origins: Classes ISS + Origin Architect + Pathfinder Origins (Pathfinder : 13 locales) |
-| Minecraft 26.1 / 26.1.1 / 26.1.2 | `1.1.0+26.1` | 25 | 92 | NeoOrigins uniquement + delta 26.1 |
-| Minecraft 26.2 | `1.1.0+26.2` | 25 | 92 | NeoOrigins uniquement + delta 26.2 |
+| Minecraft 1.21.1 | `1.1.1+1.21.1` | 21 | 93 | NeoOrigins + Medieval Origins Revival + ibarn's quartet origins addon + Origins Fantasy + Origins: Backgrounds + Origins: More Backgrounds + Origins: Backgrounds ISS + Origins Furries + Origins: Classes Extended + Origins: Classes ISS + Origin Architect + Pathfinder Origins (Pathfinder : 13 locales) |
+| Minecraft 26.1 / 26.1.1 / 26.1.2 | `1.1.1+26.1` | 25 | 93 | NeoOrigins uniquement + delta 26.1 |
+| Minecraft 26.2 | `1.1.1+26.2` | 25 | 93 | NeoOrigins uniquement + delta 26.2 |
 
 Les builds 26.x n'embarquent aucune traduction des add-ons 1.21.1. La CI construit et audite séparément les trois cibles.
+
+## Marathi (मराठी, mr_in) — 93e langue dans la 1.1.1
+
+La langue est ajoutée au sélecteur de Minecraft via le pack embarqué. Les 7 886 chaînes Minecraft 26.1.2 de Beyond & More ont été réutilisées, avec des variantes spécifiques pour 1.21.1 et 26.2. NeoOrigins 2.2.28 est traduit pour les trois cibles ; les 11 extensions, dont Pathfinder Origins, sont traduites sur 1.21.1. Les nouveaux textes automatiques requièrent une relecture linguistique.
+
+## NeoOrigins 2.2.28 (mise à jour 1.1.1)
+
+Les trois builds intègrent les nouvelles clés anglaises de NeoOrigins 2.2.28. Les **93 locales** reçoivent un fallback pour les **228 nouvelles clés communes**, plus **8 clés 1.21.1** ou **1 clé 26.1.x** ; les **deux descriptions du Voleur** sont actualisées. Le code et les JAR amont restent ceux de NeoOrigins.
+
+Les nouveaux textes ont été générés avec réutilisation de traductions existantes et traduction automatique vérifiée structurellement. Une révision native est encore souhaitable, notamment pour les variantes régionales et dialectales.
 
 ## Langues
 
@@ -533,7 +543,7 @@ Sur 26.x, trois anciennes clés de récompense restent dans les fichiers de fall
 | Pathfinder Origins | 0.4.0 | 406/406 dans 13 locales | 406/406 |
 
 
-Les versions Origins: Backgrounds 1.0.3 et Origins: More Backgrounds 1.0.4 ajoutent quatre chaînes contextuelles pour l'`Orb of Background`. Elles sont fournies dans les 92 langues par un pack intégré activé uniquement lorsqu'un de ces add-ons est chargé, afin de ne pas renommer l'orbe violette de NeoOrigins lorsqu'ils sont absents.
+Les versions Origins: Backgrounds 1.0.3 et Origins: More Backgrounds 1.0.4 ajoutent quatre chaînes contextuelles pour l'`Orb of Background`. Elles sont fournies dans les 93 langues par un pack intégré activé uniquement lorsqu'un de ces add-ons est chargé, afin de ne pas renommer l'orbe violette de NeoOrigins lorsqu'ils sont absents.
 
 Les intégrations DraconicArcher sont réalisées avec son autorisation explicite pour redistribuer les **chaînes de localisation traduites**. Aucun code, texture, modèle ou autre asset de gameplay de ces add-ons n'est redistribué ; les mods originaux restent requis.
 

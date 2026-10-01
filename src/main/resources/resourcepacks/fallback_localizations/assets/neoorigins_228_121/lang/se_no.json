@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Gáibáduvvon",
+  "gui.neoorigins.picker.claimed_by": "%s gáibida",
+  "neoorigins.configuration.always_show_ability_icons": "Čájet álo máhttoikonaid",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Áigemearri-lohkama opasitehta (%)",
+  "neoorigins.configuration.hud_ability_display": "Máhttu HUD čájehanmodealla",
+  "neoorigins.configuration.js_active": "JS Active",
+  "neoorigins.configuration.show_cooldown_countdown": "Čájet áigemearri-lohkama",
+  "neoorigins.configuration.unique_origin_layers": "Erenoamáš álgoálgosaš lávkkit"
+}

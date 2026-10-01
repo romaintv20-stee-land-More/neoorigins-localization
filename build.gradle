@@ -14,6 +14,7 @@ base {
 def targetJavaVersion = (project.findProperty('java_version') ?: '21') as int
 def targetResourcePackFormat = project.property('resource_pack_format').toString()
 def sourceVariant = project.findProperty('source_variant') ?: 'mc1_21_1'
+def minecraftMarathiTarget = (sourceVariant == 'mc1_21_1') ? '1.21.1' : (project.property('minecraft_version').toString() == '26.2' ? '26.2' : '26.1.2')
 def includeAddonTranslations = (project.findProperty('include_addon_translations') ?: 'true').toBoolean()
 def legacyExpanded = project.findProperty('include_121_expanded_translations')
 def include121BatchTranslations = (sourceVariant == 'mc1_21_1') && (project.findProperty('include_121_batch_translations') ?: legacyExpanded ?: 'true').toBoolean()
@@ -167,6 +168,11 @@ def generateBackgroundOrbTranslations = tasks.register("generateBackgroundOrbTra
 sourceSets.main.resources.srcDir generateBackgroundOrbTranslations
 
 tasks.named('processResources', ProcessResources) {
+    inputs.property 'minecraft_marathi_target', minecraftMarathiTarget
+    from("localization/minecraft_marathi/${minecraftMarathiTarget}") {
+        include 'mr_in.json'
+        into 'resourcepacks/fallback_localizations/assets/minecraft/lang'
+    }
     inputs.property 'resource_pack_format', targetResourcePackFormat
     inputs.property 'include_addon_translations', includeAddonTranslations
     inputs.property 'include_121_batch_translations', include121BatchTranslations
@@ -576,6 +582,20 @@ tasks.named('processResources', ProcessResources) {
         exclude 'resourcepacks/fallback_localizations/assets/neoorigins_li_121/**'
     }
 
+    if (!include121BatchTranslations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_mr_121/**'
+    }
+    if (!include121BatchTranslations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_228_121/**'
+    }
+    if (!include26_1Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_mr_26_1/**'
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_228_26_1/**'
+    }
+    if (!include26_2Translations) {
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_mr_26_2/**'
+        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_228_26_2/**'
+    }
     if (!include26_1Translations) {
         exclude 'resourcepacks/fallback_localizations/assets/neoorigins_26_1/**'
     }

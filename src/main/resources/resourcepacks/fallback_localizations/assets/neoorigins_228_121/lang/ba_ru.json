@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Заявлено",
+  "gui.neoorigins.picker.claimed_by": "Заявлен %s",
+  "neoorigins.configuration.always_show_ability_icons": "Һәр ваҡыт һәләт иконкаларын күрһәтегеҙ",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Һыуытыу ваҡыты кире иҫәп асыҡ булмауы (%)",
+  "neoorigins.configuration.hud_ability_display": "Мөмкинлек HUD дисплей режимы",
+  "neoorigins.configuration.js_active": "JS активен",
+  "neoorigins.configuration.show_cooldown_countdown": "Кулддаун кире иҫәбен күрһәтеү",
+  "neoorigins.configuration.unique_origin_layers": "Уникальные исходные слои"
+}

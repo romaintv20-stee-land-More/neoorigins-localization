@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Krafðist",
+  "gui.neoorigins.picker.claimed_by": "Krafist af %s",
+  "neoorigins.configuration.always_show_ability_icons": "Sýndu alltaf hæfileikatákn",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Ógegnsæi niðurtalningar (%)",
+  "neoorigins.configuration.hud_ability_display": "Hæfni HUD skjástilling",
+  "neoorigins.configuration.js_active": "JS virk",
+  "neoorigins.configuration.show_cooldown_countdown": "Sýna niðurtalningu",
+  "neoorigins.configuration.unique_origin_layers": "Einstök upprunalög"
+}

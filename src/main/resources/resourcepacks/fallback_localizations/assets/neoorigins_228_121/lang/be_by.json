@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Заяўлены",
+  "gui.neoorigins.picker.claimed_by": "Заяўлена %s",
+  "neoorigins.configuration.always_show_ability_icons": "Заўсёды паказваць значкі здольнасцяў",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Непразрыстасць зваротнага адліку часу перазарадкі (%)",
+  "neoorigins.configuration.hud_ability_display": "Магчымасць рэжым адлюстравання HUD",
+  "neoorigins.configuration.js_active": "JS актыўны",
+  "neoorigins.configuration.show_cooldown_countdown": "Паказаць зваротны адлік часу перазарадкі",
+  "neoorigins.configuration.unique_origin_layers": "Унікальнае паходжанне пластоў"
+}

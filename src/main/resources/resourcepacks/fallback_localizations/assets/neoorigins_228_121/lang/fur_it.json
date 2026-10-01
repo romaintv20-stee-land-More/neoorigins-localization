@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Rivendicât",
+  "gui.neoorigins.picker.claimed_by": "Rivendicât di %s",
+  "neoorigins.configuration.always_show_ability_icons": "Mostre sempre le icone delle abilità",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Opacità dal conto alla rovescia della ricarica (%)",
+  "neoorigins.configuration.hud_ability_display": "Modalitât di visualizazion dell'HUD delle abilità",
+  "neoorigins.configuration.js_active": "JS Atîf",
+  "neoorigins.configuration.show_cooldown_countdown": "Mostre il conto alla rovescia della ricarica",
+  "neoorigins.configuration.unique_origin_layers": "Strâts di origjine unics"
+}

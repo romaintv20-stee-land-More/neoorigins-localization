@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Nárokováno",
+  "gui.neoorigins.picker.claimed_by": "Nárokováno %s",
+  "neoorigins.configuration.always_show_ability_icons": "Vždy zobrazovat ikony schopností",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Krytí odpočtu obnovení (%)",
+  "neoorigins.configuration.hud_ability_display": "Režim zobrazení schopností v HUD",
+  "neoorigins.configuration.js_active": "JS Aktivní",
+  "neoorigins.configuration.show_cooldown_countdown": "Zobrazovat odpočet obnovení",
+  "neoorigins.configuration.unique_origin_layers": "Jedinečné původní vrstvy"
+}

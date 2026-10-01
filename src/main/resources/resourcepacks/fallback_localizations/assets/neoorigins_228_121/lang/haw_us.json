@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Koi ʻia",
+  "gui.neoorigins.picker.claimed_by": "Koi ʻia e %s",
+  "neoorigins.configuration.always_show_ability_icons": "Hōʻike mau i nā ikona hiki",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Opacity helu hoʻomaha (%)",
+  "neoorigins.configuration.hud_ability_display": "Hiki HUD ke ano hoike",
+  "neoorigins.configuration.js_active": "JS Active",
+  "neoorigins.configuration.show_cooldown_countdown": "Hōʻike i ka helu hoʻomaha",
+  "neoorigins.configuration.unique_origin_layers": "Nā papa kumu kū hoʻokahi"
+}

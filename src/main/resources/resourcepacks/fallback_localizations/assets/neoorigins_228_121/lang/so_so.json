@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Sheegtay",
+  "gui.neoorigins.picker.claimed_by": "Waxaa sheegtay %s",
+  "neoorigins.configuration.always_show_ability_icons": "Had iyo jeer muuji astaamaha kartida",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Hoos u dhigista mugdiga (%)",
+  "neoorigins.configuration.hud_ability_display": "Habka soo bandhigida kartida HUD",
+  "neoorigins.configuration.js_active": "JS Firfircoon",
+  "neoorigins.configuration.show_cooldown_countdown": "Muuji tirinta qaboojinta",
+  "neoorigins.configuration.unique_origin_layers": "Lakabyada asalka ah ee gaarka ah"
+}

@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Déjà choisie",
+  "gui.neoorigins.picker.claimed_by": "Déjà choisie par %s",
+  "neoorigins.configuration.always_show_ability_icons": "Toujours afficher les icônes de capacités",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Opacité du compte à rebours de recharge (%)",
+  "neoorigins.configuration.hud_ability_display": "Mode d'affichage du HUD des capacités",
+  "neoorigins.configuration.js_active": "JS actif",
+  "neoorigins.configuration.show_cooldown_countdown": "Afficher le compte à rebours de recharge",
+  "neoorigins.configuration.unique_origin_layers": "Couches d'origine uniques"
+}

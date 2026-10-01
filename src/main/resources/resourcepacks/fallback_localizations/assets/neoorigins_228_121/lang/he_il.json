@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "טען",
+  "gui.neoorigins.picker.claimed_by": "נתבע על ידי %s",
+  "neoorigins.configuration.always_show_ability_icons": "הצג תמיד סמלי יכולת",
+  "neoorigins.configuration.cooldown_countdown_opacity": "אטימות הספירה לאחור (%)",
+  "neoorigins.configuration.hud_ability_display": "יכולת תצוגה HUD",
+  "neoorigins.configuration.js_active": "JS Active",
+  "neoorigins.configuration.show_cooldown_countdown": "הצג ספירה לאחור של התקררות",
+  "neoorigins.configuration.unique_origin_layers": "שכבות מקור ייחודיות"
+}

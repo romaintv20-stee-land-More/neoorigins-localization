@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Revendicat",
+  "gui.neoorigins.picker.claimed_by": "Revendicat de %s",
+  "neoorigins.configuration.always_show_ability_icons": "Afișați întotdeauna pictogramele de abilități",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Opacitatea numărătoarea inversă a timpului de răcire (%)",
+  "neoorigins.configuration.hud_ability_display": "Abilitatea mod de afișare HUD",
+  "neoorigins.configuration.js_active": "JS Active",
+  "neoorigins.configuration.show_cooldown_countdown": "Afișează numărătoarea inversă pentru timpul de răcire",
+  "neoorigins.configuration.unique_origin_layers": "Straturi de origine unică"
+}

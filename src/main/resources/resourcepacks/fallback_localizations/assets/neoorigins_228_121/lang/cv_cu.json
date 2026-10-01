@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Ҫирӗплетнӗ",
+  "gui.neoorigins.picker.claimed_by": "%s ыйтнӑ",
+  "neoorigins.configuration.always_show_ability_icons": "Яланах пултарулӑх значокӗсене кӑтартӑр",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Кулдаун шутлавӗн тӗксӗмлӗхӗ (%)",
+  "neoorigins.configuration.hud_ability_display": "Пултарулӑх HUD дисплей режимӗ",
+  "neoorigins.configuration.js_active": "JS Active",
+  "neoorigins.configuration.show_cooldown_countdown": "Кулдаун шутне кӑтарт",
+  "neoorigins.configuration.unique_origin_layers": "Хӑйне евӗрлӗ пуҫламӑш сийӗсем"
+}

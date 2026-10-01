@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Ti sọ",
+  "gui.neoorigins.picker.claimed_by": "So nipa %s",
+  "neoorigins.configuration.always_show_ability_icons": "Fi awọn aami agbara han nigbagbogbo",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Opaati kika kika (%)",
+  "neoorigins.configuration.hud_ability_display": "Ipo ifihan agbara HUD",
+  "neoorigins.configuration.js_active": "JS ti nṣiṣe lọwọ",
+  "neoorigins.configuration.show_cooldown_countdown": "Ṣe afihan kika itutu agbaiye",
+  "neoorigins.configuration.unique_origin_layers": "Oto Oti fẹlẹfẹlẹ"
+}

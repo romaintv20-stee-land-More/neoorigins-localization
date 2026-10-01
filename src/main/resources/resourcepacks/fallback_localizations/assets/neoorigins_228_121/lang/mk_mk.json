@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Тврди",
+  "gui.neoorigins.picker.claimed_by": "Пријавено од %s",
+  "neoorigins.configuration.always_show_ability_icons": "Секогаш прикажувај ги иконите за способност",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Непроѕирност на одбројувањето на ладење (%)",
+  "neoorigins.configuration.hud_ability_display": "Способност HUD режим на прикажување",
+  "neoorigins.configuration.js_active": "JS Active",
+  "neoorigins.configuration.show_cooldown_countdown": "Прикажи одбројување за ладење",
+  "neoorigins.configuration.unique_origin_layers": "Уникатни слоеви на потекло"
+}

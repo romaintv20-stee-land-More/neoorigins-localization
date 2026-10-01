@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "E pretenduar",
+  "gui.neoorigins.picker.claimed_by": "Pretenduar nga %s",
+  "neoorigins.configuration.always_show_ability_icons": "Trego gjithmonë ikonat e aftësive",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Opaciteti i numërimit mbrapsht të ftohjes (%)",
+  "neoorigins.configuration.hud_ability_display": "Aftësia e modalitetit të ekranit HUD",
+  "neoorigins.configuration.js_active": "JS Active",
+  "neoorigins.configuration.show_cooldown_countdown": "Shfaq numërimin mbrapsht të ftohjes",
+  "neoorigins.configuration.unique_origin_layers": "Shtresa unike të origjinës"
+}

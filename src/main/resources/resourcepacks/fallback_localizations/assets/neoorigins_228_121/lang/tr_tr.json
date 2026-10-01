@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Hak talebinde bulunuldu",
+  "gui.neoorigins.picker.claimed_by": "%s tarafından hak talebinde bulunuldu",
+  "neoorigins.configuration.always_show_ability_icons": "Yetenek simgelerini her zaman göster",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Bekleme süresi geri sayımı opaklığı (%)",
+  "neoorigins.configuration.hud_ability_display": "Yetenek HUD görüntüleme modu",
+  "neoorigins.configuration.js_active": "JS Aktif",
+  "neoorigins.configuration.show_cooldown_countdown": "Bekleme süresi geri sayımını göster",
+  "neoorigins.configuration.unique_origin_layers": "Benzersiz başlangıç katmanları"
+}

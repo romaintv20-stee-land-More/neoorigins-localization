@@ -1,0 +1,41 @@
+{
+  "addon_keys": {
+    "ibarnorigins": 69,
+    "medievalorigins": 401,
+    "origins_backgrounds": 69,
+    "origins_backgrounds_iss": 77,
+    "origins_backgrounds_two": 39,
+    "origins_classes_ex": 124,
+    "origins_classes_iss": 99,
+    "origins_fantasy": 240,
+    "origins_furries": 117,
+    "originsmodernui": 22,
+    "pathfinder_origins": 406
+  },
+  "core_sections": {
+    "121": 10,
+    "261": 14,
+    "262": 13,
+    "common": 2522
+  },
+  "locale": "mr_in",
+  "minecraft": {
+    "1.21.1": {
+      "key_sha256": "3eaae62c0313cdfa48be004f2ca0f2ab938feebd309749b9b23a323c852852f9",
+      "keys": 6881,
+      "reused_from_bnm": 6651
+    },
+    "26.1.2": {
+      "key_sha256": "6f9fb54e4896b0b8da94149d05fd457f5d2355e6f0742169450d69b6cee82581",
+      "keys": 7886,
+      "reused_from_bnm": 7886
+    },
+    "26.2": {
+      "key_sha256": "0381913c0a25e597a08aa4f1343da68233abc17138a287f5f98f6aad8462fb00",
+      "keys": 8123,
+      "reused_from_bnm": 7846
+    }
+  },
+  "review_status": "machine_translation_pending_native_review",
+  "source": "Beyond & More 26.1.2 mr_in and pinned source strings"
+}

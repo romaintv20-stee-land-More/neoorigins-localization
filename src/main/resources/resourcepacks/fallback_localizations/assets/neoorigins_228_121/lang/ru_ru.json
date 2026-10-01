@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Заявлено",
+  "gui.neoorigins.picker.claimed_by": "Заявлен %s",
+  "neoorigins.configuration.always_show_ability_icons": "Всегда показывать значки способностей",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Непрозрачность обратного отсчёта перезарядки (%)",
+  "neoorigins.configuration.hud_ability_display": "Режим отображения HUD способностей",
+  "neoorigins.configuration.js_active": "JS Активный",
+  "neoorigins.configuration.show_cooldown_countdown": "Показывать обратный отсчёт перезарядки",
+  "neoorigins.configuration.unique_origin_layers": "Уникальные исходные слои"
+}

@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "உரிமை கோரப்பட்டது",
+  "gui.neoorigins.picker.claimed_by": "%s ஆல் உரிமை கோரப்பட்டது",
+  "neoorigins.configuration.always_show_ability_icons": "திறன் ஐகான்களை எப்போதும் காட்டு",
+  "neoorigins.configuration.cooldown_countdown_opacity": "கூல்டவுன் கவுண்டவுன் ஒளிபுகாநிலை (%)",
+  "neoorigins.configuration.hud_ability_display": "திறன் HUD காட்சி முறை",
+  "neoorigins.configuration.js_active": "ஜேஎஸ் ஆக்டிவ்",
+  "neoorigins.configuration.show_cooldown_countdown": "கூல்டவுன் கவுண்ட்டவுனைக் காட்டு",
+  "neoorigins.configuration.unique_origin_layers": "தனித்துவமான தோற்ற அடுக்குகள்"
+}

@@ -1,0 +1,12 @@
+{
+  "gui.neoorigins.picker.claimed": "दावा केला",
+  "gui.neoorigins.picker.claimed_by": "%s द्वारे दावा केलेला",
+  "neoorigins.configuration.js_active": "जेएस सक्रिय",
+  "neoorigins.configuration.title": "NeoOrigins कॉमन कॉन्फिगरेशन",
+  "neoorigins.configuration.unique_origin_layers": "अद्वितीय मूळ स्तर",
+  "power.neoorigins.class_blacksmith_quality.description": "तुम्ही बनवलेली उपकरणे श्रेष्ठ आहेत — साधने जलद गतीने खाण करतात, शस्त्रे अधिक जोरात मारतात, चिलखत अधिक कठीण असते आणि सर्व काही जास्त काळ टिकते.",
+  "power.neoorigins.class_cook_smoker_xp.description": "धुम्रपान करणाऱ्या किंवा भट्टीत शिजवलेल्या अन्नाला अतिरिक्त पोषण मिळते.",
+  "reward.neoorigins.loot_pool": "NeoOrigins: अनुदान लूट पूल",
+  "reward.neoorigins.loot_pool.loot_table": "लूट टेबल",
+  "reward.neoorigins.loot_pool.rolls": "रोल्स"
+}

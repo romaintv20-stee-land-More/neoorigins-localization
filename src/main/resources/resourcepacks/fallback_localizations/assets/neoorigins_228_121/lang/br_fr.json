@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Goulennet",
+  "gui.neoorigins.picker.claimed_by": "Goulennet gant %s",
+  "neoorigins.configuration.always_show_ability_icons": "Diskouez arlunoù barregezhioù atav",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Teñvalded ar c'hontadennoù en-dro (%)",
+  "neoorigins.configuration.hud_ability_display": "Mod diskouez HUD galloud",
+  "neoorigins.configuration.js_active": "JS oberiant",
+  "neoorigins.configuration.show_cooldown_countdown": "Diskouez ar c'hontadennoù en-dro",
+  "neoorigins.configuration.unique_origin_layers": "Treuzfollennoù orin dibar"
+}

@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Geclaimd",
+  "gui.neoorigins.picker.claimed_by": "Geclaimd door %s",
+  "neoorigins.configuration.always_show_ability_icons": "Altied vertoon vermogen-iconen",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Opsjtèlling (%)",
+  "neoorigins.configuration.hud_ability_display": "Vertoonmodus van de vaardigheden-HUD",
+  "neoorigins.configuration.js_active": "JS Active",
+  "neoorigins.configuration.show_cooldown_countdown": "Sjoon koeldowntelling",
+  "neoorigins.configuration.unique_origin_layers": "Unieke oorsprongslaoge"
+}

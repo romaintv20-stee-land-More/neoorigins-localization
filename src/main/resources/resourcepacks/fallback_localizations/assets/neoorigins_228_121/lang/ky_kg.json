@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "доомат кылган",
+  "gui.neoorigins.picker.claimed_by": "%s доомат кылган",
+  "neoorigins.configuration.always_show_ability_icons": "Ар дайым жөндөм сүрөтчөлөрүн көрсөтүңүз",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Муздатуу убактысынын тунуктугу (%)",
+  "neoorigins.configuration.hud_ability_display": "Жөндөмдүүлүк HUD дисплей режими",
+  "neoorigins.configuration.js_active": "JS Active",
+  "neoorigins.configuration.show_cooldown_countdown": "Муздатуу үчүн артка санаууну көрсөтүү",
+  "neoorigins.configuration.unique_origin_layers": "Уникалдуу баштапкы катмарлар"
+}

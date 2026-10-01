@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Заявлено",
+  "gui.neoorigins.picker.claimed_by": "Заявлено %s",
+  "neoorigins.configuration.always_show_ability_icons": "Завжди показувати значки здібностей",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Непрозорість зворотного відліку перезарядки (%)",
+  "neoorigins.configuration.hud_ability_display": "Режим відображення HUD здібностей",
+  "neoorigins.configuration.js_active": "JS активний",
+  "neoorigins.configuration.show_cooldown_countdown": "Показувати зворотний відлік перезарядки",
+  "neoorigins.configuration.unique_origin_layers": "Унікальні шари походження"
+}

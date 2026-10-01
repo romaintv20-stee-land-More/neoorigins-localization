@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Reclamado",
+  "gui.neoorigins.picker.claimed_by": "Reclamado por %s",
+  "neoorigins.configuration.always_show_ability_icons": "Mostra sempre as iconas de habilidades",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Opacidade da conta atrás do tempo de recarga (%)",
+  "neoorigins.configuration.hud_ability_display": "Modo de visualización HUD de capacidade",
+  "neoorigins.configuration.js_active": "JS Activo",
+  "neoorigins.configuration.show_cooldown_countdown": "Mostrar a conta atrás do tempo de recarga",
+  "neoorigins.configuration.unique_origin_layers": "Capas de orixe únicas"
+}

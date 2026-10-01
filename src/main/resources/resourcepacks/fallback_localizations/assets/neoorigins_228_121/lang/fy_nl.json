@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Claimed",
+  "gui.neoorigins.picker.claimed_by": "Opeaske troch %s",
+  "neoorigins.configuration.always_show_ability_icons": "Toan altyd fermogensikoanen",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Cooldown countdown dekking (%)",
+  "neoorigins.configuration.hud_ability_display": "Mooglikheid HUD display modus",
+  "neoorigins.configuration.js_active": "JS aktyf",
+  "neoorigins.configuration.show_cooldown_countdown": "Lit ôftelling ôfkoeling sjen",
+  "neoorigins.configuration.unique_origin_layers": "Unike oarsprong lagen"
+}

@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Erreklamatua",
+  "gui.neoorigins.picker.claimed_by": "%s-k erreklamatuta",
+  "neoorigins.configuration.always_show_ability_icons": "Erakutsi beti gaitasun ikonoak",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Cooldown atzerako kontaketa opakutasuna (%)",
+  "neoorigins.configuration.hud_ability_display": "Gaitasuna HUD bistaratzeko modua",
+  "neoorigins.configuration.js_active": "JS Aktiboa",
+  "neoorigins.configuration.show_cooldown_countdown": "Erakutsi hozte-kontua",
+  "neoorigins.configuration.unique_origin_layers": "Jatorrizko geruza bereziak"
+}

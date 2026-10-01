@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Réclamé",
+  "gui.neoorigins.picker.claimed_by": "Réclamé par %s",
+  "neoorigins.configuration.always_show_ability_icons": "Sken yal tikelt tignitin n tezmert",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Tiḍullest n usiḍen n usemmiḍ (%)",
+  "neoorigins.configuration.hud_ability_display": "Askar n uskan HUD n tzemmar",
+  "neoorigins.configuration.js_active": "JS actif",
+  "neoorigins.configuration.show_cooldown_countdown": "Sken amḍan arurmid n usemmiḍ",
+  "neoorigins.configuration.unique_origin_layers": "Couches d'origine uniques"
+}

@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Hevdet",
+  "gui.neoorigins.picker.claimed_by": "Kravet av %s",
+  "neoorigins.configuration.always_show_ability_icons": "Vis alltid evneikon",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Nedtellingsgjennomsiktighet (%)",
+  "neoorigins.configuration.hud_ability_display": "Evne til HUD-visningsmodus",
+  "neoorigins.configuration.js_active": "JS Active",
+  "neoorigins.configuration.show_cooldown_countdown": "Vis nedteljing",
+  "neoorigins.configuration.unique_origin_layers": "Unike opprinnelseslag"
+}

@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Behauptet",
+  "gui.neoorigins.picker.claimed_by": "Beansprucht von %s",
+  "neoorigins.configuration.always_show_ability_icons": "Fähigkeitssymbole imma oanzeign",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Deckkroft des Abklingzeit-Countdowns (%)",
+  "neoorigins.configuration.hud_ability_display": "Anzeigemodus da Fähigkeiten-HUD",
+  "neoorigins.configuration.js_active": "JS Aktiv",
+  "neoorigins.configuration.show_cooldown_countdown": "Abklingzeit-Countdown oanzeign",
+  "neoorigins.configuration.unique_origin_layers": "Einzigartige Ursprungsebenen"
+}

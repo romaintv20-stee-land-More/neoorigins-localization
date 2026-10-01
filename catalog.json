@@ -11,10 +11,10 @@
     ],
     "loader": "NeoForge",
     "localization_mode": "low_priority_fallback",
-    "supported_locale_count": 92,
+    "supported_locale_count": 93,
     "builds": {
       "1.21.1": {
-        "version": "1.1.0+1.21.1",
+        "version": "1.1.1+1.21.1",
         "java": 21,
         "in_game_tested": false,
         "included_projects": [
@@ -38,7 +38,7 @@
           "26.1.1",
           "26.1.2"
         ],
-        "version": "1.1.0+26.1",
+        "version": "1.1.1+26.1",
         "java": 25,
         "in_game_tested": false,
         "included_projects": [
@@ -46,13 +46,23 @@
         ]
       },
       "26.2": {
-        "version": "1.1.0+26.2",
+        "version": "1.1.1+26.2",
         "java": 25,
         "in_game_tested": false,
         "included_projects": [
           "neoorigins"
         ]
       }
+    },
+    "marathi": {
+      "locale": "mr_in",
+      "source": "Beyond & More 26.1.2",
+      "minecraft_versions": [
+        "1.21.1",
+        "26.1.2",
+        "26.2"
+      ],
+      "editorial_review": "pending"
     }
   },
   "supported_projects": [
@@ -64,7 +74,7 @@
       "curseforge": "https://www.curseforge.com/minecraft/mc-mods/neoorigins",
       "source": "https://github.com/CyberDay1/NeoOrigins",
       "compatibility": {
-        "version": "2.2.27",
+        "version": "2.2.28",
         "minecraft": [
           "1.21.1",
           "26.1",
@@ -78,23 +88,23 @@
           "26.2": "pending"
         },
         "audit_refs": {
-          "1.21.1": "af467a3bc118f6bbc0970d68f7e03fa631d7e6f2",
-          "26.1.x": "aa207ef14cf3b938e28b4081162701953957c1d5",
-          "26.2": "511cadcafe3027d2a56b4448652ec9b74e2f3b07"
+          "1.21.1": "87860513d5947fa0407a4dd1868126c9489e56cd",
+          "26.1.x": "4f11c58362a7b3c76d5475ed072b79f49ceb537d",
+          "26.2": "d2d7c0b6d5439e11e3ed3e981dcdd25642f0b417"
         },
         "coverage": {
           "1.21.1": {
-            "english_keys": 2296,
-            "covered_keys": 2296
+            "english_keys": 2532,
+            "covered_keys": 2532
           },
           "26.1.x": {
-            "english_keys": 2307,
-            "covered_keys": 2307,
+            "english_keys": 2536,
+            "covered_keys": 2536,
             "stale_fallback_keys_full_fallback_locales": 3
           },
           "26.2": {
-            "english_keys": 2307,
-            "covered_keys": 2307,
+            "english_keys": 2535,
+            "covered_keys": 2535,
             "stale_fallback_keys_full_fallback_locales": 3
           }
         },
@@ -289,7 +299,19 @@
           }
         },
         "coverage_note": "NeoOrigins 2.2.27 has the same en_us localization payload as 2.2.26 on all three targets. Historical gaps in it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz and hu_hu were recovered before language 59. All 92 currently supported locales are complete against 2.2.27 on their target builds.",
-        "legacy_gap_recovery_completed": true
+        "legacy_gap_recovery_completed": true,
+        "delta_2_2_28": {
+          "common": 228,
+          "mc_1_21_1_only": 8,
+          "mc_26_1_only": 1,
+          "mc_26_2_only": 0,
+          "changed_descriptions": 2,
+          "fallback_namespaces": {
+            "common": "neoorigins_228_common",
+            "1.21.1": "neoorigins_228_121",
+            "26.1.x": "neoorigins_228_26_1"
+          }
+        }
       },
       "languages": {
         "fr_fr": {
@@ -1119,6 +1141,16 @@
             "26.1.x",
             "26.2"
           ]
+        },
+        "mr_in": {
+          "name": "मराठी",
+          "status": "machine-assisted; native review pending",
+          "targets": [
+            "1.21.1",
+            "26.1.x",
+            "26.2"
+          ],
+          "includes_minecraft": true
         }
       }
     },
@@ -1678,6 +1710,12 @@
           "name": "Plattdüütsch",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/nds_de.json",
+          "fallback_keys": 401
+        },
+        "mr_in": {
+          "name": "मराठी",
+          "status": "machine-assisted; native review pending",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/medievalorigins/lang/mr_in.json",
           "fallback_keys": 401
         }
       }
@@ -2242,6 +2280,12 @@
           "name": "Plattdüütsch",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/nds_de.json",
+          "fallback_keys": 69
+        },
+        "mr_in": {
+          "name": "मराठी",
+          "status": "machine-assisted; native review pending",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/ibarnorigins/lang/mr_in.json",
           "fallback_keys": 69
         }
       }
@@ -2808,6 +2852,12 @@
           "name": "Plattdüütsch",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/nds_de.json",
+          "fallback_keys": 240
+        },
+        "mr_in": {
+          "name": "मराठी",
+          "status": "machine-assisted; native review pending",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_fantasy/lang/mr_in.json",
           "fallback_keys": 240
         }
       }
@@ -3377,6 +3427,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/nds_de.json",
           "fallback_keys": 65
+        },
+        "mr_in": {
+          "name": "मराठी",
+          "status": "machine-assisted; native review pending",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds/lang/mr_in.json",
+          "fallback_keys": 69
         }
       }
     },
@@ -3945,6 +4001,12 @@
           "name": "Plattdüütsch",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/nds_de.json"
+        },
+        "mr_in": {
+          "name": "मराठी",
+          "status": "machine-assisted; native review pending",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_two/lang/mr_in.json",
+          "fallback_keys": 39
         }
       }
     },
@@ -4516,6 +4578,12 @@
           "name": "Plattdüütsch",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/nds_de.json"
+        },
+        "mr_in": {
+          "name": "मराठी",
+          "status": "machine-assisted; native review pending",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_backgrounds_iss/lang/mr_in.json",
+          "fallback_keys": 77
         }
       }
     },
@@ -5085,6 +5153,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/nds_de.json",
           "fallback_keys": 117
+        },
+        "mr_in": {
+          "name": "मराठी",
+          "status": "machine-assisted; native review pending",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/mr_in.json",
+          "fallback_keys": 117
         }
       }
     },
@@ -5653,6 +5727,12 @@
           "name": "Plattdüütsch",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/nds_de.json",
+          "fallback_keys": 124
+        },
+        "mr_in": {
+          "name": "मराठी",
+          "status": "machine-assisted; native review pending",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_ex/lang/mr_in.json",
           "fallback_keys": 124
         }
       }
@@ -6224,6 +6304,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/nds_de.json",
           "fallback_keys": 99
+        },
+        "mr_in": {
+          "name": "मराठी",
+          "status": "machine-assisted; native review pending",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_classes_iss/lang/mr_in.json",
+          "fallback_keys": 99
         }
       }
     },
@@ -6793,6 +6879,12 @@
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/nds_de.json",
           "fallback_keys": 22
+        },
+        "mr_in": {
+          "name": "मराठी",
+          "status": "machine-assisted; native review pending",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/originsmodernui/lang/mr_in.json",
+          "fallback_keys": 22
         }
       }
     },
@@ -6888,6 +6980,12 @@
           "name": "Plattdüütsch",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/pathfinder_origins/lang/nds_de.json",
+          "fallback_keys": 406
+        },
+        "mr_in": {
+          "name": "मराठी",
+          "status": "machine-assisted; native review pending",
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/pathfinder_origins/lang/mr_in.json",
           "fallback_keys": 406
         }
       }

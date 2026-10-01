@@ -166,3 +166,13 @@ Chaque cible doit passer :
 4. la génération et l'upload du JAR.
 
 Sur Minecraft 1.21.1, la CI doit en plus réussir les audits dédiés de tous les add-ons pris en charge, y compris Pathfinder Origins 0.4.0 avec zéro chaîne manquante, zéro clé obsolète et zéro erreur de placeholder.
+
+## NeoOrigins 2.2.28 — vérifications 1.1.1
+
+- [ ] Minecraft 1.21.1 : 236 nouvelles clés, 2 descriptions Rogue, 92 langues empaquetées.
+- [ ] Minecraft 26.1.x : 229 nouvelles clés et aucun add-on réservé à 1.21.1.
+- [ ] Minecraft 26.2 : 228 nouvelles clés ; aucune des variantes 1.21.1/26.1.x empaquetée.
+- [ ] Ouvrir les configurations en français : aucun identifiant de clé brut visible.
+- [ ] Essayer l'origine déjà choisie et vérifier le formatage du nom du joueur (`%s`).
+- [ ] Tester les neuf noms d'entités et les nouveaux textes du Voleur.
+- [ ] Examiner les noms longs, les alphabets RTL et les traductions auto des dialectes.

@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "声称",
+  "gui.neoorigins.picker.claimed_by": "由 %s 认领",
+  "neoorigins.configuration.always_show_ability_icons": "始终显示技能图标",
+  "neoorigins.configuration.cooldown_countdown_opacity": "冷却倒计时不透明度（%）",
+  "neoorigins.configuration.hud_ability_display": "技能HUD显示模式",
+  "neoorigins.configuration.js_active": "JS活跃",
+  "neoorigins.configuration.show_cooldown_countdown": "显示冷却倒计时",
+  "neoorigins.configuration.unique_origin_layers": "独特的原始层"
+}

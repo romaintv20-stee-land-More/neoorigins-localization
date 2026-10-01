@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "ಹಕ್ಕು ಪಡೆದಿದ್ದಾರೆ",
+  "gui.neoorigins.picker.claimed_by": "%s ಮೂಲಕ ಕ್ಲೈಮ್ ಮಾಡಲಾಗಿದೆ",
+  "neoorigins.configuration.always_show_ability_icons": "ಯಾವಾಗಲೂ ಸಾಮರ್ಥ್ಯದ ಐಕಾನ್‌ಗಳನ್ನು ತೋರಿಸಿ",
+  "neoorigins.configuration.cooldown_countdown_opacity": "ಕೂಲ್‌ಡೌನ್ ಕೌಂಟ್‌ಡೌನ್ ಅಪಾರದರ್ಶಕತೆ (%)",
+  "neoorigins.configuration.hud_ability_display": "ಸಾಮರ್ಥ್ಯ HUD ಪ್ರದರ್ಶನ ಮೋಡ್",
+  "neoorigins.configuration.js_active": "JS ಸಕ್ರಿಯ",
+  "neoorigins.configuration.show_cooldown_countdown": "ಕೂಲ್‌ಡೌನ್ ಕೌಂಟ್‌ಡೌನ್ ತೋರಿಸಿ",
+  "neoorigins.configuration.unique_origin_layers": "ವಿಶಿಷ್ಟ ಮೂಲ ಪದರಗಳು"
+}

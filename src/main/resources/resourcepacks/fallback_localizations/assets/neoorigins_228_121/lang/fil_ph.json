@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Inangkin",
+  "gui.neoorigins.picker.claimed_by": "Na-claim ng %s",
+  "neoorigins.configuration.always_show_ability_icons": "Palaging magpakita ng mga icon ng kakayahan",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Cooldown countdown opacity (%)",
+  "neoorigins.configuration.hud_ability_display": "Kakayahang HUD display mode",
+  "neoorigins.configuration.js_active": "Aktibo ang JS",
+  "neoorigins.configuration.show_cooldown_countdown": "Ipakita ang cooldown countdown",
+  "neoorigins.configuration.unique_origin_layers": "Mga natatanging layer ng pinagmulan"
+}

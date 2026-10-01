@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Påstod",
+  "gui.neoorigins.picker.claimed_by": "Anspråk på %s",
+  "neoorigins.configuration.always_show_ability_icons": "Visa alltid förmåga ikoner",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Nedräkningsgenomskinlighet (%)",
+  "neoorigins.configuration.hud_ability_display": "Möjlighet HUD visningsläge",
+  "neoorigins.configuration.js_active": "JS Active",
+  "neoorigins.configuration.show_cooldown_countdown": "Visa nedräkning",
+  "neoorigins.configuration.unique_origin_layers": "Unika ursprungsskikt"
+}

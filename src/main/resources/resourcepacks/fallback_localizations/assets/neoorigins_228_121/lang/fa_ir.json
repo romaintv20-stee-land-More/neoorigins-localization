@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "ادعا کرد",
+  "gui.neoorigins.picker.claimed_by": "ادعا شده توسط %s",
+  "neoorigins.configuration.always_show_ability_icons": "همیشه نمادهای توانایی را نشان دهید",
+  "neoorigins.configuration.cooldown_countdown_opacity": "کدورت شمارش معکوس (%)",
+  "neoorigins.configuration.hud_ability_display": "قابلیت حالت نمایش HUD",
+  "neoorigins.configuration.js_active": "JS Active",
+  "neoorigins.configuration.show_cooldown_countdown": "نمایش شمارش معکوس خنک شدن",
+  "neoorigins.configuration.unique_origin_layers": "لایه های منشاء منحصر به فرد"
+}

@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Պնդեց",
+  "gui.neoorigins.picker.claimed_by": "Պահանջվում է %s-ի կողմից",
+  "neoorigins.configuration.always_show_ability_icons": "Միշտ ցուցադրեք կարողությունների պատկերակները",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Սառեցման հետհաշվարկի անթափանցիկություն (%)",
+  "neoorigins.configuration.hud_ability_display": "HUD ցուցադրման ռեժիմի հնարավորություն",
+  "neoorigins.configuration.js_active": "JS Active",
+  "neoorigins.configuration.show_cooldown_countdown": "Ցույց տալ հովացման հետհաշվարկը",
+  "neoorigins.configuration.unique_origin_layers": "Եզակի ծագման շերտեր"
+}

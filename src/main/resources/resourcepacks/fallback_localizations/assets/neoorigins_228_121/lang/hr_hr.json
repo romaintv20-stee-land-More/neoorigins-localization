@@ -1,0 +1,10 @@
+{
+  "gui.neoorigins.picker.claimed": "Traženo",
+  "gui.neoorigins.picker.claimed_by": "Polaže pravo %s",
+  "neoorigins.configuration.always_show_ability_icons": "Uvijek prikaži ikone sposobnosti",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Neprozirnost odbrojavanja hlađenja (%)",
+  "neoorigins.configuration.hud_ability_display": "Način prikaza sposobnosti HUD",
+  "neoorigins.configuration.js_active": "JS aktivan",
+  "neoorigins.configuration.show_cooldown_countdown": "Prikaži odbrojavanje vremena hlađenja",
+  "neoorigins.configuration.unique_origin_layers": "Jedinstveni izvorni slojevi"
+}

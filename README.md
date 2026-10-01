@@ -22,27 +22,31 @@ Les trois builds intègrent les nouvelles clés anglaises de NeoOrigins 2.2.28. 
 
 Les nouveaux textes ont été générés avec réutilisation de traductions existantes et traduction automatique vérifiée structurellement. Une révision native est encore souhaitable, notamment pour les variantes régionales et dialectales.
 
+### Compatibilité NeoOrigins 2.2.29
+
+L'audit du 1er octobre 2026 confirme que **NeoOrigins 2.2.29 ne modifie aucun fichier de langue par rapport à 2.2.28** sur Minecraft 1.21.1, 26.1.x et 26.2. Les comptes anglais restent à **2 532**, **2 536** et **2 535** clés. La version **NeoOrigins Localization 1.1.1 reste donc complète pour NeoOrigins 2.2.29** ; aucun nouveau JAR n'est nécessaire uniquement pour cette mise à jour amont.
+
 ## Langues
 
 La **1.1.0** prend en charge : Français (`fr_fr`), Allemand (`de_de`), Espagnol (`es_es`), Portugais brésilien (`pt_br`), Néerlandais (`nl_nl`), Italien (`it_it`), Polonais (`pl_pl`), Russe (`ru_ru`), Turc (`tr_tr`), Chinois simplifié (`zh_cn`), **Tchèque (`cs_cz`)**, **Hongrois (`hu_hu`)**, **Japonais (`ja_jp`)**, **Coréen (`ko_kr`)**, **Ukrainien (`uk_ua`)**, **Indonésien (`id_id`)**, **Suédois (`sv_se`)**, **Danois (`da_dk`)**, **Finnois (`fi_fi`)**, **Norvégien bokmål (`no_no`)**, **Roumain (`ro_ro`)**, **Grec (`el_gr`)**, **Bulgare (`bg_bg`)**, **Vietnamien (`vi_vn`)**, **Arabe (`ar_sa`)**, **Hébreu (`he_il`)**, **Thaï (`th_th`)**, **Slovaque (`sk_sk`)**, **Slovène (`sl_si`)**, **Croate (`hr_hr`)**, **Serbe cyrillique (`sr_sp`)**, **Serbe latin (`sr_cs`)**, **Catalan (`ca_es`)**, **Estonien (`et_ee`)**, **Lituanien (`lt_lt`)**, **Letton (`lv_lv`)**, **Basque (`eu_es`)**, **Galicien (`gl_es`)**, **Hindi (`hi_in`)**, **Norvégien nynorsk (`nn_no`)**, **Persan (`fa_ir`)**, **Islandais (`is_is`)**, **Malais (`ms_my`)**, **Filipino (`fil_ph`)**, **Gallois (`cy_gb`)**, **Irlandais (`ga_ie`)**, **Gaélique écossais (`gd_gb`)**, **Arménien (`hy_am`)**, **Géorgien (`ka_ge`)**, **Kazakh (`kk_kz`)**, **Mongol (`mn_mn`)**, **Macédonien (`mk_mk`)**, **Biélorusse (`be_by`)**, **Féroïen (`fo_fo`)**, **Afrikaans (`af_za`)**, **Azéri (`az_az`)**, **Kannada (`kn_in`)**, **Tchouvache (`cv_cu`)**, **Ouzbek (`uz_uz`)**, **Maltais (`mt_mt`)**, **Luxembourgeois (`lb_lu`)**, **Somali (`so_so`)**, **Espéranto (`eo_uy`)**, **Kirghize (`ky_kg`)**, **Tamoul (`ta_in`)**, **Albanais (`sq_al`)**, **Lao (`lo_la`)**, **Bosnien (`bs_ba`)**, **Bachkir (`ba_ru`)**, **Breton (`br_fr`)**, **Asturien (`ast_es`)**, **Frison occidental (`fy_nl`)**, **Occitan (`oc_fr`)**, **Igbo (`ig_ng`)**, **Yoruba (`yo_ng`)** et **Tatar (`tt_ru`)**, **Chinois traditionnel (`zh_tw`)** et **Same du Nord (`se_no`)** et **Bavarois (`bar`)** et **Brabançon (`brb`)** et **Andalou (`esan`)** et **Francique oriental (`fra_de`)** et **Frioulan (`fur_it`)** et **Gallo (`go_fr`)** et **Mannois (`gv_im`)** et **Hawaïen (`haw_us`)** et **Ido (`io_en`)** et **Interslave (`isv`)** et **Kabyle (`kab_kab`)** et **Kölsch (`ksh`)** et **Limbourgeois (`li_li`)** et **Bas allemand / Plattdüütsch (`nds_de`)**.
 
-Les quatre-vingt-douze langues sont disponibles sur les trois builds pour NeoOrigins. Les traductions d'add-ons sont empaquetées uniquement sur Minecraft 1.21.1 lorsqu'une version compatible de l'add-on est réellement disponible.
+Les 93 langues sont disponibles sur les trois builds pour NeoOrigins. Les traductions d'add-ons sont empaquetées uniquement sur Minecraft 1.21.1 lorsqu'une version compatible de l'add-on est réellement disponible.
 
 **Pathfinder Origins 0.4.0** est ajouté en 1.1.0 avec **406/406 chaînes** traduites dans 13 locales (`fr_fr`, `de_de`, `es_es`, `pt_br`, `nl_nl`, `it_it`, `pl_pl`, `ru_ru`, `tr_tr`, `zh_cn`, `cs_cz`, `hu_hu`, `nds_de`). Les 92 langues de NeoOrigins et des intégrations déjà présentes sont conservées.
 
 ## Référence NeoOrigins
 
-La référence d'audit actuelle est **NeoOrigins 2.2.27** :
+La référence d'audit actuelle est **NeoOrigins 2.2.29** :
 
-- 1.21.1 : commit `af467a3bc118f6bbc0970d68f7e03fa631d7e6f2` ;
-- 26.1.x : commit `aa207ef14cf3b938e28b4081162701953957c1d5` ;
-- 26.2 : commit `511cadcafe3027d2a56b4448652ec9b74e2f3b07`.
+- 1.21.1 : commit `9a96c9f1a66b2a920f22e083d0563702c70f27c9` ;
+- 26.1.x : commit `71e314492848a6f887e91f959c857a29822041d2` ;
+- 26.2 : commit `8060d65189739a75785d885a8d87f795679bfd30`.
 
-Le fichier anglais `en_us.json` de NeoOrigins 2.2.27 est **strictement identique à celui de 2.2.26** sur les trois cibles : cette mise à jour n'ajoute donc aucune chaîne à traduire. La 2.2.27 est essentiellement un hotfix NeoForge.
+Les fichiers de langue de NeoOrigins 2.2.29 sont **inchangés par rapport à 2.2.28** sur les trois cibles. Les 93 locales de NeoOrigins Localization 1.1.1 restent donc couvertes sans nouveau delta de traduction ni nouveau JAR.
 
-L’audit intégral initial des 58 locales avait révélé sept lacunes historiques, antérieures à la 2.2.27. Elles ont depuis été récupérées avant la langue #59 : italien, polonais, russe, chinois simplifié, turc, tchèque et hongrois sont désormais complets contre la baseline 2.2.27. L’audit qui avait exposé ces lacunes est le run `34400432957`.
+Les lacunes historiques détectées avant la 1.1.1 ont été récupérées. La couverture anglaise vérifiée reste de **2 532/2 532** clés en 1.21.1, **2 536/2 536** en 26.1.x et **2 535/2 535** en 26.2.
 
-Le namespace physique `neoorigins_226` conserve son nom historique car il contient le delta introduit avec la 2.2.26 ; il n'est pas renommé lors du passage de la baseline d'audit à 2.2.27.
+Les namespaces physiques `neoorigins_226` et `neoorigins_228_*` conservent leurs noms historiques : ils correspondent aux deltas introduits respectivement avec NeoOrigins 2.2.26 et 2.2.28 et restent valides pour 2.2.29.
 
 Pour le tchèque :
 

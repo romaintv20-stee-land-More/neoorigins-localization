@@ -6,7 +6,7 @@ Mod client NeoForge fournissant des **traductions complémentaires en priorité 
 
 | Cible | Version | Java | Langues | Contenu empaqueté |
 |---|---|---:|---:|---|
-| Minecraft 1.21.1 | `1.1.2+1.21.1` | 21 | 93 | NeoOrigins + Medieval Origins Revival + ibarn's quartet origins addon + Origins Fantasy + Origins: Backgrounds + Origins: More Backgrounds + Origins: Backgrounds ISS + Origins Furries + Origins: Classes Extended + Origins: Classes ISS + Origin Architect + Pathfinder Origins (Pathfinder : 13 locales) |
+| Minecraft 1.21.1 | `1.1.2+1.21.1` | 21 | 93 | NeoOrigins + Medieval Origins Revival + ibarn's quartet origins addon + Origins Fantasy + Origins: Backgrounds + Origins: More Backgrounds + Origins: Backgrounds ISS + Origins Furries + Origins: Classes Extended + Origins: Classes ISS + Origin Architect + Pathfinder Origins (Pathfinder : 14 locales) |
 | Minecraft 26.1 / 26.1.1 / 26.1.2 | `1.1.2+26.1` | 25 | 93 | NeoOrigins uniquement + delta 26.1 |
 | Minecraft 26.2 | `1.1.2+26.2` | 25 | 93 | NeoOrigins uniquement + delta 26.2 |
 
@@ -31,7 +31,7 @@ Les nouveaux textes ont été générés avec réutilisation de traductions exis
 
 ### Compatibilité NeoOrigins 2.2.29
 
-L'audit du 1er octobre 2026 confirme que **NeoOrigins 2.2.29 ne modifie aucun fichier de langue par rapport à 2.2.28** sur Minecraft 1.21.1, 26.1.x et 26.2. Les comptes anglais restent à **2 532**, **2 536** et **2 535** clés. La version **NeoOrigins Localization 1.1.1 reste donc complète pour NeoOrigins 2.2.29** ; aucun nouveau JAR n'est nécessaire uniquement pour cette mise à jour amont.
+L'audit du 1er octobre 2026 confirme que **NeoOrigins 2.2.29 ne modifie aucun fichier de langue par rapport à 2.2.28** sur Minecraft 1.21.1, 26.1.x et 26.2. Les comptes anglais restent à **2 532**, **2 536** et **2 535** clés. La version **NeoOrigins Localization 1.1.2 reste donc complète pour NeoOrigins 2.2.29** ; aucun nouveau delta NeoOrigins n'est nécessaire uniquement pour cette mise à jour amont.
 
 ## Langues
 
@@ -39,7 +39,7 @@ La **1.1.0** prend en charge : Français (`fr_fr`), Allemand (`de_de`), Espagnol
 
 Les 93 langues sont disponibles sur les trois builds pour NeoOrigins. Les traductions d'add-ons sont empaquetées uniquement sur Minecraft 1.21.1 lorsqu'une version compatible de l'add-on est réellement disponible.
 
-**Pathfinder Origins 0.4.0** est ajouté en 1.1.0 avec **406/406 chaînes** traduites dans 13 locales (`fr_fr`, `de_de`, `es_es`, `pt_br`, `nl_nl`, `it_it`, `pl_pl`, `ru_ru`, `tr_tr`, `zh_cn`, `cs_cz`, `hu_hu`, `nds_de`). Les 92 langues de NeoOrigins et des intégrations déjà présentes sont conservées.
+**Pathfinder Origins 0.4.0** a été ajouté en 1.1.0 avec **406/406 chaînes**. Depuis la 1.1.1, Marathi (`mr_in`) est également inclus, portant Pathfinder Origins à **14 locales** (`fr_fr`, `de_de`, `es_es`, `pt_br`, `nl_nl`, `it_it`, `pl_pl`, `ru_ru`, `tr_tr`, `zh_cn`, `cs_cz`, `hu_hu`, `nds_de`, `mr_in`).
 
 ## Référence NeoOrigins
 

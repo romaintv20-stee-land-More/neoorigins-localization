@@ -24,7 +24,7 @@ jobs:
             pack_format: '34'
             source_variant: 'mc1_21_1'
             upstream_ref: '9a96c9f1a66b2a920f22e083d0563702c70f27c9'
-            mod_version: '1.1.1+1.21.1'
+            mod_version: '1.1.2+1.21.1'
             audit_addons: true
             audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz hu_hu ja_jp ko_kr uk_ua nds_de mr_in'
             audit_extra_namespace: 'neoorigins_121_batch1'
@@ -55,7 +55,7 @@ jobs:
             pack_format: '84'
             source_variant: 'mc26_1'
             upstream_ref: '71e314492848a6f887e91f959c857a29822041d2'
-            mod_version: '1.1.1+26.1'
+            mod_version: '1.1.2+26.1'
             audit_addons: false
             audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz hu_hu ja_jp ko_kr uk_ua nds_de mr_in'
             audit_extra_namespace: ''
@@ -86,7 +86,7 @@ jobs:
             pack_format: '88'
             source_variant: 'mc26_1'
             upstream_ref: '8060d65189739a75785d885a8d87f795679bfd30'
-            mod_version: '1.1.1+26.2'
+            mod_version: '1.1.2+26.2'
             audit_addons: false
             audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz hu_hu ja_jp ko_kr uk_ua nds_de mr_in'
             audit_extra_namespace: 'neoorigins_26_2'
@@ -513,4 +513,46 @@ jobs:
         with:
           name: neoorigins-localization-${{ matrix.target }}-${{ github.sha }}
           path: build/libs/*.jar
+          if-no-files-found: error
+
+
+  package-release:
+    needs: build
+    runs-on: ubuntu-latest
+    name: Package 1.1.2 release bundle
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Download built JARs
+        uses: actions/download-artifact@v8
+        with:
+          pattern: neoorigins-localization-mc-*-${{ github.sha }}
+          path: build/release-input
+          merge-multiple: true
+
+      - name: Assemble release bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/release
+          find build/release-input -type f -name '*.jar' ! -name '*-sources.jar' -exec cp {} build/release/ \;
+          JAR_COUNT=$(find build/release -maxdepth 1 -type f -name '*.jar' | wc -l)
+          echo "Release JAR count: $JAR_COUNT"
+          test "$JAR_COUNT" -eq 3
+          cp docs/CHANGELOG_1.1.2.md build/release/CHANGELOG_1.1.2.md
+          (
+            cd build/release
+            zip -9 ../NeoOrigins-Localization-1.1.2-release.zip ./*
+          )
+
+      - name: Upload release bundle
+        uses: actions/upload-artifact@v7
+        with:
+          name: neoorigins-localization-1.1.2-release-${{ github.sha }}
+          path: |
+            build/NeoOrigins-Localization-1.1.2-release.zip
+            build/release/*.jar
+            build/release/CHANGELOG_1.1.2.md
           if-no-files-found: error

@@ -21,3 +21,7 @@
 ## Marathi — 93e langue
 
 Minecraft traduit sur 1.21.1, 26.1.2 et 26.2 à partir des 7 886 clés 26.1.2 de Beyond & More et de compléments adaptés ; NeoOrigins traduit sur les trois cibles et 11 extensions 1.21.1 prises en charge. Relecture des nouvelles traductions automatiques nécessaire.
+
+## Compatibilité vérifiée avec NeoOrigins 2.2.29
+
+Audit du 1er octobre 2026 : aucun fichier de langue NeoOrigins ne change entre 2.2.28 et 2.2.29 sur Minecraft 1.21.1, 26.1.x ou 26.2. Les comptes anglais restent à 2 532, 2 536 et 2 535 clés. Les JAR 1.1.1 déjà publiés restent donc complets pour NeoOrigins 2.2.29 ; aucune 1.1.2 n'est nécessaire uniquement pour cette mise à jour amont.

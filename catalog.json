@@ -74,7 +74,7 @@
       "curseforge": "https://www.curseforge.com/minecraft/mc-mods/neoorigins",
       "source": "https://github.com/CyberDay1/NeoOrigins",
       "compatibility": {
-        "version": "2.2.28",
+        "version": "2.2.29",
         "minecraft": [
           "1.21.1",
           "26.1",
@@ -88,9 +88,9 @@
           "26.2": "pending"
         },
         "audit_refs": {
-          "1.21.1": "87860513d5947fa0407a4dd1868126c9489e56cd",
-          "26.1.x": "4f11c58362a7b3c76d5475ed072b79f49ceb537d",
-          "26.2": "d2d7c0b6d5439e11e3ed3e981dcdd25642f0b417"
+          "1.21.1": "9a96c9f1a66b2a920f22e083d0563702c70f27c9",
+          "26.1.x": "71e314492848a6f887e91f959c857a29822041d2",
+          "26.2": "8060d65189739a75785d885a8d87f795679bfd30"
         },
         "coverage": {
           "1.21.1": {
@@ -298,7 +298,7 @@
             }
           }
         },
-        "coverage_note": "NeoOrigins 2.2.27 has the same en_us localization payload as 2.2.26 on all three targets. Historical gaps in it_it, pl_pl, ru_ru, tr_tr, zh_cn, cs_cz and hu_hu were recovered before language 59. All 92 currently supported locales are complete against 2.2.27 on their target builds.",
+        "coverage_note": "NeoOrigins 2.2.29 has the same language payload as 2.2.28 on all three targets. The 93 supported locales remain complete against 2.2.29, with 2,532 English keys on 1.21.1, 2,536 on 26.1.x and 2,535 on 26.2. No new localization JAR is required solely for NeoOrigins 2.2.29.",
         "legacy_gap_recovery_completed": true,
         "delta_2_2_28": {
           "common": 228,
@@ -311,6 +311,13 @@
             "1.21.1": "neoorigins_228_121",
             "26.1.x": "neoorigins_228_26_1"
           }
+        },
+        "delta_2_2_29": {
+          "localization_files_changed": 0,
+          "english_keys_added": 0,
+          "english_keys_removed": 0,
+          "english_values_changed": 0,
+          "requires_new_localization_release": false
         }
       },
       "languages": {

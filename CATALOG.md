@@ -33,6 +33,10 @@ Minecraft et NeoOrigins localisés sur les trois versions ; 11 extensions sur 1.
 
 La 1.1.1 intègre 236 nouvelles clés distinctes pour les 92 langues (228 communes aux trois versions, 8 propres à 1.21.1 et 1 propre à 26.1.x) et deux descriptions modifiées. Les nouvelles traductions nécessitent encore une relecture linguistique, sans modification du nombre de langues.
 
+## Audit de compatibilité 2.2.29
+
+NeoOrigins 2.2.29 ne change aucun fichier de langue par rapport à 2.2.28 sur les trois branches prises en charge. Les comptes anglais restent à 2 532 clés en 1.21.1, 2 536 en 26.1.x et 2 535 en 26.2. La 1.1.1 reste donc complète et aucun nouveau JAR de localisation n'est requis uniquement pour NeoOrigins 2.2.29.
+
 ## Notes
 
 - Les 93 langues ciblées sont : `fr_fr`, `de_de`, `es_es`, `pt_br`, `nl_nl`, `it_it`, `pl_pl`, `ru_ru`, `tr_tr`, `zh_cn`, `cs_cz`, `hu_hu`, `ja_jp`, `ko_kr`, `uk_ua`, `id_id`, `sv_se`, `da_dk`, `fi_fi`, `no_no`, `ro_ro`, `el_gr`, `bg_bg`, `vi_vn`, `ar_sa`, `he_il`, `th_th`, `sk_sk`, `sl_si`, `hr_hr`, `sr_sp`, `sr_cs`, `ca_es`, `et_ee`, `lt_lt`, `lv_lv`, `eu_es`, `gl_es`, `hi_in`, `nn_no`, `fa_ir`, `is_is`, `ms_my`, `fil_ph`, `cy_gb`, `ga_ie`, `gd_gb`, `hy_am`, `ka_ge`, `kk_kz`, `mn_mn`, `mk_mk`, `be_by`, `fo_fo`, `af_za`, `az_az`, `kn_in`, `cv_cu`, `uz_uz`, `mt_mt`, `lb_lu`, `so_so`, `eo_uy`, `ky_kg`, `ta_in`, `sq_al`, `lo_la`, `bs_ba`, `ba_ru`, `br_fr`, `ast_es`, `fy_nl`, `oc_fr`, `ig_ng`, `yo_ng`, `tt_ru`, `zh_tw`, `se_no`, `bar`, `brb`, `esan`, `fra_de`, `fur_it`, `go_fr`, `gv_im`, `haw_us`, `io_en`, `isv`, `kab_kab`, `ksh`, `li_li` et `nds_de`, mr_in.

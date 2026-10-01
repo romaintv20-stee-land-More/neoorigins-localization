@@ -4607,7 +4607,7 @@
       },
       "compatibility": {
         "method": "NeoForge mod in mods/",
-        "version": "1.0.0 / Minecraft 1.21.1",
+        "version": "1.0.3 / Minecraft 1.21.1",
         "minecraft": [
           "1.21.1"
         ],
@@ -4615,557 +4615,570 @@
           "NeoOrigins"
         ],
         "in_game_validation": "pending",
-        "note": "Audité contre le JAR CurseForge 8397352 ; aucune traduction officielle parmi les cinquante-sept langues ciblées ; absent des builds 26.x."
+        "note": "Audité contre le JAR CurseForge 8891687 ; 169 clés anglaises, couverture fallback complète dans les 93 langues prises en charge ; aucune traduction officielle détectée dans le JAR ciblé ; absent des builds 26.x."
       },
       "coverage": {
-        "source_keys": 117,
-        "fallback_keys_per_locale": 117
+        "source_keys": 169,
+        "fallback_keys_per_locale": 169
       },
       "languages": {
         "fr_fr": {
           "name": "Français",
           "status": "supported",
-          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/fr_fr.json"
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/fr_fr.json",
+          "fallback_keys": 169
         },
         "de_de": {
           "name": "Deutsch",
           "status": "supported",
-          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/de_de.json"
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/de_de.json",
+          "fallback_keys": 169
         },
         "es_es": {
           "name": "Español",
           "status": "supported",
-          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/es_es.json"
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/es_es.json",
+          "fallback_keys": 169
         },
         "pt_br": {
           "name": "Português (Brasil)",
           "status": "supported",
-          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/pt_br.json"
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/pt_br.json",
+          "fallback_keys": 169
         },
         "nl_nl": {
           "name": "Nederlands",
           "status": "supported",
-          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/nl_nl.json"
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/nl_nl.json",
+          "fallback_keys": 169
         },
         "it_it": {
           "name": "Italiano",
           "status": "supported",
-          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/it_it.json"
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/it_it.json",
+          "fallback_keys": 169
         },
         "pl_pl": {
           "name": "Polski",
           "status": "supported",
-          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/pl_pl.json"
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/pl_pl.json",
+          "fallback_keys": 169
         },
         "ru_ru": {
           "name": "Русский",
           "status": "supported",
-          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/ru_ru.json"
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/ru_ru.json",
+          "fallback_keys": 169
         },
         "tr_tr": {
           "name": "Türkçe",
           "status": "supported",
-          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/tr_tr.json"
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/tr_tr.json",
+          "fallback_keys": 169
         },
         "zh_cn": {
           "name": "简体中文",
           "status": "supported",
-          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/zh_cn.json"
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/zh_cn.json",
+          "fallback_keys": 169
         },
         "cs_cz": {
           "name": "Čeština",
           "status": "supported",
-          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/cs_cz.json"
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/cs_cz.json",
+          "fallback_keys": 169
         },
         "hu_hu": {
           "name": "Magyar",
           "status": "supported",
-          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/hu_hu.json"
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/hu_hu.json",
+          "fallback_keys": 169
         },
         "ja_jp": {
           "name": "日本語",
           "status": "supported",
-          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/ja_jp.json"
+          "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/ja_jp.json",
+          "fallback_keys": 169
         },
         "ko_kr": {
           "name": "한국어",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/ko_kr.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "uk_ua": {
           "name": "Українська",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/uk_ua.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "id_id": {
           "name": "Bahasa Indonesia",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/id_id.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "sv_se": {
           "name": "Svenska",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/sv_se.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "da_dk": {
           "name": "Dansk",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/da_dk.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "fi_fi": {
           "name": "Suomi",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/fi_fi.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "no_no": {
           "name": "Norsk bokmål",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/no_no.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "ro_ro": {
           "name": "Română",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/ro_ro.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "el_gr": {
           "name": "Ελληνικά",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/el_gr.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "bg_bg": {
           "name": "Български",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/bg_bg.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "vi_vn": {
           "name": "Tiếng Việt",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/vi_vn.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "ar_sa": {
           "name": "العربية",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/ar_sa.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "he_il": {
           "name": "עברית",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/he_il.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "th_th": {
           "name": "ภาษาไทย",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/th_th.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "sk_sk": {
           "name": "Slovenčina",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/sk_sk.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "sl_si": {
           "name": "Slovenščina",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/sl_si.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "hr_hr": {
           "name": "Hrvatski",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/hr_hr.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "sr_sp": {
           "name": "Српски",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/sr_sp.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "sr_cs": {
           "name": "Srpski",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/sr_cs.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "ca_es": {
           "name": "Català",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/ca_es.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "et_ee": {
           "name": "Eesti",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/et_ee.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "lt_lt": {
           "name": "Lietuvių",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/lt_lt.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "lv_lv": {
           "name": "Latviešu",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/lv_lv.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "eu_es": {
           "name": "Euskara",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/eu_es.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "gl_es": {
           "name": "Galego",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/gl_es.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "hi_in": {
           "name": "हिन्दी",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/hi_in.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "nn_no": {
           "name": "Norsk nynorsk",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/nn_no.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "fa_ir": {
           "name": "فارسی",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/fa_ir.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "is_is": {
           "name": "Íslenska",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/is_is.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "ms_my": {
           "name": "Bahasa Melayu",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/ms_my.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "fil_ph": {
           "name": "Filipino",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/fil_ph.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "cy_gb": {
           "name": "Cymraeg",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/cy_gb.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "ga_ie": {
           "name": "Gaeilge",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/ga_ie.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "gd_gb": {
           "name": "Gàidhlig",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/gd_gb.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "hy_am": {
           "name": "Հայերեն",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/hy_am.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "ka_ge": {
           "name": "ქართული",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/ka_ge.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "kk_kz": {
           "name": "Қазақша",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/kk_kz.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "mn_mn": {
           "name": "Монгол хэл",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/mn_mn.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "mk_mk": {
           "name": "Македонски",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/mk_mk.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "be_by": {
           "name": "Беларуская",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/be_by.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "fo_fo": {
           "name": "Føroyskt",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/fo_fo.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "af_za": {
           "name": "Afrikaans",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/af_za.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "az_az": {
           "name": "Azərbaycanca",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/az_az.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "kn_in": {
           "name": "ಕನ್ನಡ",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/kn_in.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "cv_cu": {
           "name": "Чӑвашла",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/cv_cu.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "uz_uz": {
           "name": "O'zbekcha",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/uz_uz.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "mt_mt": {
           "name": "Malti",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/mt_mt.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "lb_lu": {
           "name": "Lëtzebuergesch",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/lb_lu.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "so_so": {
           "name": "Soomaali",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/so_so.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "eo_uy": {
           "name": "Esperanto",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/eo_uy.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "ky_kg": {
           "name": "Кыргызча",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/ky_kg.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "ta_in": {
           "name": "தமிழ்",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/ta_in.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "sq_al": {
           "name": "Shqip",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/sq_al.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "lo_la": {
           "name": "ລາວ",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/lo_la.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "bs_ba": {
           "name": "Bosanski",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/bs_ba.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "ba_ru": {
           "name": "Башҡортса",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/ba_ru.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "br_fr": {
           "name": "Brezhoneg",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/br_fr.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "ast_es": {
           "name": "Asturianu",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/ast_es.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "fy_nl": {
           "name": "Frysk",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/fy_nl.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "oc_fr": {
           "name": "Occitan",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/oc_fr.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "ig_ng": {
           "name": "Igbo",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/ig_ng.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "yo_ng": {
           "name": "Yorùbá",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/yo_ng.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "tt_ru": {
           "name": "Татарча",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/tt_ru.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "zh_tw": {
           "name": "繁體中文",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/zh_tw.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "se_no": {
           "name": "Davvisámegiella",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/se_no.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "bar": {
           "name": "Boarisch",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/bar.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "brb": {
           "name": "Braobans",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/brb.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "esan": {
           "name": "Andalûh",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/esan.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "fra_de": {
           "name": "Fränggisch",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/fra_de.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "fur_it": {
           "name": "Furlan",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/fur_it.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "go_fr": {
           "name": "Galo",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/go_fr.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "gv_im": {
           "name": "Gaelg",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/gv_im.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "haw_us": {
           "name": "ʻŌlelo Hawaiʻi",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/haw_us.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "io_en": {
           "name": "Ido",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/io_en.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "isv": {
           "name": "Medžuslovjansky",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/isv.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "kab_kab": {
           "name": "Taqbaylit",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/kab_kab.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "ksh": {
           "name": "Kölsch/Ripoarisch",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/ksh.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "li_li": {
           "name": "Limburgs",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/li_li.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "nds_de": {
           "name": "Plattdüütsch",
           "status": "supported",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/nds_de.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         },
         "mr_in": {
           "name": "मराठी",
           "status": "machine-assisted; native review pending",
           "file": "src/main/resources/resourcepacks/fallback_localizations/assets/origins_furries/lang/mr_in.json",
-          "fallback_keys": 117
+          "fallback_keys": 169
         }
       }
     },

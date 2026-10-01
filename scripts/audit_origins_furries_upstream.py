@@ -11,7 +11,7 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 PACK_ROOT = ROOT / "src/main/resources/resourcepacks/fallback_localizations/assets"
-LOCALES = ("fr_fr", "de_de", "es_es", "pt_br", "nl_nl", "it_it", "pl_pl", "ru_ru", "tr_tr", "zh_cn", "cs_cz", "hu_hu", "ja_jp", "ko_kr", "uk_ua", "id_id", "sv_se", "nds_de")
+LOCALES = ("af_za", "ar_sa", "ast_es", "az_az", "ba_ru", "bar", "be_by", "bg_bg", "br_fr", "brb", "bs_ba", "ca_es", "cs_cz", "cv_cu", "cy_gb", "da_dk", "de_de", "el_gr", "eo_uy", "es_es", "esan", "et_ee", "eu_es", "fa_ir", "fi_fi", "fil_ph", "fo_fo", "fr_fr", "fra_de", "fur_it", "fy_nl", "ga_ie", "gd_gb", "gl_es", "go_fr", "gv_im", "haw_us", "he_il", "hi_in", "hr_hr", "hu_hu", "hy_am", "id_id", "ig_ng", "io_en", "is_is", "isv", "it_it", "ja_jp", "ka_ge", "kab_kab", "kk_kz", "kn_in", "ko_kr", "ksh", "ky_kg", "lb_lu", "li_li", "lo_la", "lt_lt", "lv_lv", "mk_mk", "mn_mn", "mr_in", "ms_my", "mt_mt", "nds_de", "nl_nl", "nn_no", "no_no", "oc_fr", "pl_pl", "pt_br", "ro_ro", "ru_ru", "se_no", "sk_sk", "sl_si", "so_so", "sq_al", "sr_cs", "sr_sp", "sv_se", "ta_in", "th_th", "tr_tr", "tt_ru", "uk_ua", "uz_uz", "vi_vn", "yo_ng", "zh_cn", "zh_tw")
 DEFAULT_FILE_ID = "8891687"
 DEFAULT_FILENAME = "Origins-Furries-1.21.1-NeoOrigins-1.0.3.jar"
 DEFAULT_NAMESPACE = "origins_furries"

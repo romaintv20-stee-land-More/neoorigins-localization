@@ -1,0 +1,63 @@
+name: Sync Latvian handoff
+
+on:
+  push:
+    branches:
+      - release/0.9.0-beta
+    paths:
+      - scripts/update_handoff_latvian.py
+      - .github/workflows/sync-handoff-latvian.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-beta
+
+      - name: Update handoff
+        run: python3 scripts/update_handoff_latvian.py
+
+      - name: Validate handoff
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          text = Path('PROJECT_HANDOFF.txt').read_text(encoding='utf-8')
+          required = [
+              '0.9.0 development currently has 36 locales:',
+              '- 36: Latvian / lv_lv',
+              '24. LATVIAN 0.9.0 STATUS',
+              'workflow run 34278840372 succeeded completely',
+              'e0a5f0b798d41ea1aa8275b7c81cf8cab20d9aab',
+              'artifact ID 10076878703',
+              'run ID 34279238396: SUCCESS on all three jobs',
+              'artifact ID 10076978386',
+              'artifact ID 10076973662',
+              'artifact ID 10076979994',
+              'NEXT LANGUAGE = language 37.',
+          ]
+          missing = [x for x in required if x not in text]
+          if missing:
+              raise SystemExit(f'Missing Latvian handoff markers: {missing}')
+          print('Latvian handoff validation passed')
+          PY
+
+      - name: Commit handoff
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add PROJECT_HANDOFF.txt
+          if git diff --cached --quiet; then
+            echo 'No handoff changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Finalize Latvian 0.9.0 handoff'
+          git fetch origin release/0.9.0-beta
+          git rebase origin/release/0.9.0-beta
+          git push origin HEAD:release/0.9.0-beta

@@ -1,0 +1,185 @@
+name: Build 0.9.0 Welsh
+
+on:
+  push:
+    branches: [ release/0.9.0-welsh ]
+    paths:
+      - '.github/workflows/build-0.9.0-welsh.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Welsh ${{ matrix.target }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: mc-1.21.1
+            minecraft: '1.21.1'
+            minecraft_range: '[1.21.1]'
+            java: '21'
+            gradle: '8.14.3'
+            neoforge: '21.1.248'
+            loader_range: '[1,)'
+            parchment: 'true'
+            pack_format: '34'
+            source_variant: 'mc1_21_1'
+            upstream_ref: '860ecdb24e723983e93004ea8ceb5de90ccf0d70'
+            cy_extra_namespace: 'neoorigins_cy_121'
+            include_addons: true
+            include_121_batch: true
+            include_26_1: false
+            include_26_2: false
+          - target: mc-26.1.x
+            minecraft: '26.1.2'
+            minecraft_range: '[26.1,26.2)'
+            java: '25'
+            gradle: '9.4.1'
+            neoforge: '26.1.2.29-beta'
+            loader_range: '[4,)'
+            parchment: 'false'
+            pack_format: '84'
+            source_variant: 'mc26_1'
+            upstream_ref: '3c1c7365507679c836d3c14af5d4dd0654652e87'
+            cy_extra_namespace: 'neoorigins_26_1'
+            include_addons: false
+            include_121_batch: true
+            include_26_1: true
+            include_26_2: false
+          - target: mc-26.2
+            minecraft: '26.2'
+            minecraft_range: '[26.2,26.3)'
+            java: '25'
+            gradle: '9.4.1'
+            neoforge: '26.2.0.3-beta'
+            loader_range: '[4,)'
+            parchment: 'false'
+            pack_format: '84'
+            source_variant: 'mc26_1'
+            upstream_ref: '65864716a5a796fa1c51ec3e8a6d9640abebb4ca'
+            cy_extra_namespace: 'neoorigins_26_2'
+            include_addons: false
+            include_121_batch: false
+            include_26_1: false
+            include_26_2: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Java ${{ matrix.java }}
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+
+      - name: Set up Gradle ${{ matrix.gradle }}
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          gradle-version: ${{ matrix.gradle }}
+
+      - name: Strict audit Welsh NeoOrigins
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref '${{ matrix.upstream_ref }}' --output 'build/cy-${{ matrix.target }}' --locale cy_gb --fallback-namespace-glob 'neoorigins_cy_common_*' --extra-namespace '${{ matrix.cy_extra_namespace }}' --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Strict audit Welsh add-ons
+        if: matrix.include_addons == true
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re, subprocess
+          scripts=[
+            ('scripts/audit_medievalorigins_upstream.py',['--ref','1.21.1-fabric']),
+            ('scripts/audit_ibarnorigins_upstream.py',['--ref','multiloader-1.21.1-new-pack-format']),
+            ('scripts/audit_origins_fantasy_upstream.py',[]),
+            ('scripts/audit_origins_backgrounds_upstream.py',[]),
+            ('scripts/audit_origins_more_backgrounds_upstream.py',[]),
+            ('scripts/audit_origins_backgrounds_iss_upstream.py',[]),
+            ('scripts/audit_origins_furries_upstream.py',[]),
+            ('scripts/audit_origins_classes_extended_upstream.py',[]),
+            ('scripts/audit_origins_classes_iss_upstream.py',[]),
+            ('scripts/audit_origin_architect_upstream.py',[]),
+          ]
+          originals={n:Path(n).read_text(encoding='utf-8') for n,_ in scripts}
+          try:
+            for name,extra in scripts:
+              p=Path(name); src=originals[name]
+              out,count=re.subn(r'^LOCALES\s*=.*$','LOCALES = ("cy_gb",)',src,count=1,flags=re.M)
+              if count==0: out,count=re.subn(r'^DEFAULT_LOCALES\s*=.*$','DEFAULT_LOCALES = ("cy_gb",)',src,count=1,flags=re.M)
+              if count!=1: raise SystemExit(f'Could not patch locale in {name}')
+              p.write_text(out,encoding='utf-8')
+              subprocess.run(['python3',name,*extra,'--fail-on-overlap','--fail-on-missing','--fail-on-placeholders'],check=True)
+              p.write_text(src,encoding='utf-8')
+          finally:
+            for n,src in originals.items(): Path(n).write_text(src,encoding='utf-8')
+          PY
+
+      - name: Validate localization files
+        run: python3 scripts/validate.py
+
+      - name: Sanity-check Welsh text
+        run: |
+          python3 - <<'PY'
+          import json,re
+          from pathlib import Path
+          files=list(Path('src/main/resources/resourcepacks/fallback_localizations/assets').glob('**/lang/cy_gb.json'))
+          text='\n'.join(str(v) for p in files for v in json.loads(p.read_text(encoding='utf-8')).values())
+          markers=len(re.findall(r'(?i)\b(?:y|yr|a|ac|yn|i|o|ar|gyda|gall|eich|chi|pan|nid|mae|cael|neu|hwn|hon|hyn|wedi|fel|gan)\b',text))
+          bad=['Ymgeisiwch','Ni all eich tarddiad gwythiennau-mwynglawdd.','"Tâl"','Pavloved','"Graddfeydd"','Toggle Pensaer HUD','Dangos lefel Pensaer','funud.Heb','gwlân.Digon']
+          remain=[x for x in bad if x in text]
+          if remain: raise SystemExit(f'Known Welsh false friends remain: {remain}')
+          if markers < 500: raise SystemExit(f'Welsh lexical sanity too low: {markers}')
+          print(f'Welsh sanity passed: {markers} markers across {len(files)} files')
+          PY
+
+      - name: Build mod
+        run: |
+          gradle build --stacktrace \
+            "-Pjava_version=${{ matrix.java }}" \
+            "-Puse_parchment=${{ matrix.parchment }}" \
+            "-Presource_pack_format=${{ matrix.pack_format }}" \
+            "-Psource_variant=${{ matrix.source_variant }}" \
+            "-Pinclude_addon_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_121_batch_translations=${{ matrix.include_121_batch }}" \
+            "-Pinclude_welsh_121_translations=${{ matrix.include_addons }}" \
+            "-Pinclude_26_1_translations=${{ matrix.include_26_1 }}" \
+            "-Pinclude_26_2_translations=${{ matrix.include_26_2 }}" \
+            "-Pminecraft_version=${{ matrix.minecraft }}" \
+            "-Pminecraft_version_range=${{ matrix.minecraft_range }}" \
+            "-Pneo_version=${{ matrix.neoforge }}" \
+            "-Ploader_version_range=${{ matrix.loader_range }}" \
+            "-Pmod_version=0.9.0-beta+cy-${{ matrix.target }}"
+
+      - name: Verify Welsh packaging
+        run: |
+          JAR=$(find build/libs -type f -name '*.jar' ! -name '*-sources.jar' | head -n1)
+          test -n "$JAR"
+          jar tf "$JAR" > build/jar-cy.txt
+          COUNT=$(grep -cE '(^|/)lang/cy_gb\.json$' build/jar-cy.txt || true)
+          for index in $(seq -w 1 16); do grep -Eq "assets/neoorigins_cy_common_${index}/lang/cy_gb\.json$" build/jar-cy.txt; done
+          ADDONS='medievalorigins ibarnorigins origins_fantasy origins_backgrounds origins_backgrounds_two origins_backgrounds_iss origins_furries origins_classes_ex origins_classes_iss originsmodernui'
+          ADDON_PATTERN='assets/(medievalorigins|medievalorigins_[^/]*|ibarnorigins|origins_fantasy|origins_backgrounds|origins_backgrounds_two|origins_backgrounds_iss|origins_furries|origins_classes_ex|origins_classes_iss|originsmodernui)/'
+          if [ '${{ matrix.include_addons }}' = 'true' ]; then
+            EXPECTED=27
+            grep -Eq 'assets/neoorigins_cy_121/lang/cy_gb\.json$' build/jar-cy.txt
+            for ns in $ADDONS; do grep -Eq "assets/$ns/lang/cy_gb\.json$" build/jar-cy.txt; done
+            ! grep -Eq 'assets/neoorigins_26_(1|2)/lang/cy_gb\.json$' build/jar-cy.txt
+          else
+            EXPECTED=17
+            ! grep -Eq "$ADDON_PATTERN" build/jar-cy.txt
+            ! grep -Eq 'assets/neoorigins_cy_121/lang/cy_gb\.json$' build/jar-cy.txt
+            grep -Eq "assets/${{ matrix.cy_extra_namespace }}/lang/cy_gb\.json$" build/jar-cy.txt
+          fi
+          echo "Welsh: $COUNT / $EXPECTED"
+          test "$COUNT" -eq "$EXPECTED"
+
+      - name: Upload JAR
+        uses: actions/upload-artifact@v7
+        with:
+          name: neoorigins-localization-welsh-${{ matrix.target }}-${{ github.sha }}
+          path: build/libs/*.jar
+          if-no-files-found: error

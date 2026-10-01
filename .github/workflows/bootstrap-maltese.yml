@@ -1,0 +1,184 @@
+name: Bootstrap Maltese localization
+
+on:
+  push:
+    branches:
+      - release/0.9.0-maltese
+    paths:
+      - scripts/bootstrap_maltese.py
+      - .github/workflows/bootstrap-maltese.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-maltese
+
+      - name: Restrict add-on audits to Maltese
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          scripts = [
+              'scripts/audit_medievalorigins_upstream.py',
+              'scripts/audit_ibarnorigins_upstream.py',
+              'scripts/audit_origins_fantasy_upstream.py',
+              'scripts/audit_origins_backgrounds_upstream.py',
+              'scripts/audit_origins_more_backgrounds_upstream.py',
+              'scripts/audit_origins_backgrounds_iss_upstream.py',
+              'scripts/audit_origins_furries_upstream.py',
+              'scripts/audit_origins_classes_extended_upstream.py',
+              'scripts/audit_origins_classes_iss_upstream.py',
+              'scripts/audit_origin_architect_upstream.py',
+          ]
+          for filename in scripts:
+              path = Path(filename)
+              text = path.read_text(encoding='utf-8')
+              updated, count = re.subn(r'^LOCALES\s*=.*$', 'LOCALES = ("mt_mt",)', text, count=1, flags=re.M)
+              if count == 0:
+                  updated, count = re.subn(r'^DEFAULT_LOCALES\s*=.*$', 'DEFAULT_LOCALES = ("mt_mt",)', text, count=1, flags=re.M)
+              if count != 1:
+                  raise SystemExit(f'Could not patch locale list in {filename}')
+              path.write_text(updated, encoding='utf-8')
+          PY
+
+      - name: Discover Maltese NeoOrigins coverage
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref af467a3bc118f6bbc0970d68f7e03fa631d7e6f2 --output build/mt-discovery-mc-1.21.1 --locale mt_mt
+          python3 scripts/audit_neoorigins_upstream.py --ref aa207ef14cf3b938e28b4081162701953957c1d5 --output build/mt-discovery-mc-26.1 --locale mt_mt
+          python3 scripts/audit_neoorigins_upstream.py --ref 511cadcafe3027d2a56b4448652ec9b74e2f3b07 --output build/mt-discovery-mc-26.2 --locale mt_mt
+
+      - name: Discover Maltese add-on coverage and English sources
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format
+          python3 scripts/audit_origins_fantasy_upstream.py
+          python3 scripts/audit_origins_backgrounds_upstream.py
+          python3 scripts/audit_origins_more_backgrounds_upstream.py
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py
+          python3 scripts/audit_origins_furries_upstream.py
+          python3 scripts/audit_origins_classes_extended_upstream.py
+          python3 scripts/audit_origins_classes_iss_upstream.py
+          python3 scripts/audit_origin_architect_upstream.py
+
+      - name: Generate Maltese fallback files
+        run: python3 scripts/bootstrap_maltese.py
+
+      - name: Prune add-on keys already translated upstream
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --prune
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --prune
+          python3 scripts/audit_origins_fantasy_upstream.py --prune
+          python3 scripts/audit_origins_backgrounds_upstream.py --prune
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --prune
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --prune
+          python3 scripts/audit_origins_furries_upstream.py --prune
+          python3 scripts/audit_origins_classes_extended_upstream.py --prune
+          python3 scripts/audit_origins_classes_iss_upstream.py --prune
+          python3 scripts/audit_origin_architect_upstream.py --prune
+
+      - name: Strict audit Maltese NeoOrigins coverage
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref af467a3bc118f6bbc0970d68f7e03fa631d7e6f2 --output build/mt-audit-mc-1.21.1 --locale mt_mt --fallback-namespace-glob 'neoorigins_mt_common_*' --extra-namespace neoorigins_mt_121 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref aa207ef14cf3b938e28b4081162701953957c1d5 --output build/mt-audit-mc-26.1 --locale mt_mt --fallback-namespace-glob 'neoorigins_mt_common_*' --extra-namespace neoorigins_26_1 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 511cadcafe3027d2a56b4448652ec9b74e2f3b07 --output build/mt-audit-mc-26.2 --locale mt_mt --fallback-namespace-glob 'neoorigins_mt_common_*' --extra-namespace neoorigins_26_2 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Strict audit Maltese add-on coverage
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_fantasy_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_furries_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_extended_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origin_architect_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Validate JSON localization structure
+        run: python3 scripts/validate.py
+
+      - name: Sanity-check Maltese text
+        run: |
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+          files = list(Path('src/main/resources/resourcepacks/fallback_localizations/assets').glob('**/lang/mt_mt.json'))
+          if not files:
+              raise SystemExit('No mt_mt localization files found')
+          values = [str(v) for path in files for v in json.loads(path.read_text(encoding='utf-8')).values()]
+          text = '\n'.join(values)
+          low = text.lower().replace('’', "'").replace('‘', "'")
+          markers = len(re.findall(r"(?:għal|biex|mhux|jekk|tista|għand|meta|biss|ħsara|saħħa|veloċità|qawwa|żid|naqqas|waqt|minn|fuq|dan|din)", low))
+          maltese_letters = len(re.findall(r'[ċĊġĠgħGĦħĦżŻ]', text))
+          latin = len(re.findall(r'[A-Za-zÀ-ž]', text))
+          if markers < 900:
+              raise SystemExit(f'Maltese lexical sanity check too low: {markers}')
+          if maltese_letters < 1200:
+              raise SystemExit(f'Maltese-specific letter sanity too low: {maltese_letters}')
+          if latin < 25000:
+              raise SystemExit(f'Maltese Latin sanity too low: {latin}')
+          print(f'Maltese text sanity passed: {markers} lexical markers, {maltese_letters} Maltese-specific letters, {latin} Latin chars across {len(files)} files')
+          PY
+
+      - name: Add Maltese target packaging switch
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('build.gradle')
+          text = path.read_text(encoding='utf-8')
+          if 'includeMaltese121Translations' not in text:
+              anchor = "def includeUzbek121Translations = (project.findProperty('include_uzbek_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()\n"
+              if anchor not in text:
+                  raise SystemExit('Uzbek Gradle definition anchor not found')
+              text = text.replace(anchor, anchor + "def includeMaltese121Translations = (project.findProperty('include_maltese_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()\n", 1)
+              anchor = "    inputs.property 'include_uzbek_121_translations', includeUzbek121Translations\n"
+              if anchor not in text:
+                  raise SystemExit('Uzbek Gradle input anchor not found')
+              text = text.replace(anchor, anchor + "    inputs.property 'include_maltese_121_translations', includeMaltese121Translations\n", 1)
+              anchor = "    if (!includeUzbek121Translations) {\n        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_uz_121/**'\n    }\n"
+              if anchor not in text:
+                  raise SystemExit('Uzbek Gradle exclusion anchor not found')
+              block = anchor + "\n    if (!includeMaltese121Translations) {\n        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_mt_121/**'\n    }\n"
+              text = text.replace(anchor, block, 1)
+              path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Restore temporary audit-script changes
+        if: always()
+        run: git checkout HEAD -- scripts/audit_*_upstream.py
+
+      - name: Upload Maltese audit reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: maltese-localization-audits-${{ github.sha }}
+          path: |
+            build/mt-discovery-*
+            build/mt-audit-*
+            build/*-upstream-audit
+          if-no-files-found: warn
+
+      - name: Commit validated Maltese translations
+        if: success()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name 'mt_mt.json' -print0 | xargs -0 -r git add
+          git add build.gradle
+          if git diff --cached --quiet; then
+            echo 'No Maltese translation changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Add Maltese localization fallback'
+          git fetch origin release/0.9.0-maltese
+          git rebase origin/release/0.9.0-maltese
+          git push origin HEAD:release/0.9.0-maltese

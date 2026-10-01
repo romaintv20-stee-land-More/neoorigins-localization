@@ -1,0 +1,44 @@
+name: Sync Arabic handoff
+
+on:
+  push:
+    branches:
+      - release/0.9.0-beta
+    paths:
+      - scripts/update_handoff_arabic.py
+      - .github/workflows/sync-handoff-arabic.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-beta
+      - name: Update handoff
+        run: python3 scripts/update_handoff_arabic.py
+      - name: Validate handoff
+        run: |
+          grep -F '0.9.0 development currently has 25 locales:' PROJECT_HANDOFF.txt
+          grep -F -- '- 25: Arabic / ar_sa' PROJECT_HANDOFF.txt
+          grep -F 'NEXT LANGUAGE = language 26.' PROJECT_HANDOFF.txt
+          grep -F 'run ID 34263122706: SUCCESS on all three jobs' PROJECT_HANDOFF.txt
+          grep -F 'Arabic-script sanity check passed: 88,611 Arabic-range codepoints across 29 ar_sa source files' PROJECT_HANDOFF.txt
+      - name: Commit handoff
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add PROJECT_HANDOFF.txt
+          if git diff --cached --quiet; then
+            echo 'No handoff changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Finalize Arabic 0.9.0 handoff'
+          git fetch origin release/0.9.0-beta
+          git rebase origin/release/0.9.0-beta
+          git push origin HEAD:release/0.9.0-beta

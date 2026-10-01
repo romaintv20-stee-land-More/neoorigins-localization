@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "تجهیزاتی که می‌سازید ویژگی‌های جایزه را دریافت می‌کنند - چقرمگی، آسیب یا سرعت استخراج.",
+  "power.neoorigins.class_cook_smoker_xp.description": "دو برابر XP از پختن غذا در سیگاری به دست می آورد.",
+  "neoorigins.configuration.title": "پیکربندی NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "گیم پلی",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "تنظیمات بازی NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "مدیر و مجوزها",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "تنظیمات مدیریت NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "قدرت لغو می شود",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "قدرت neoorigins نادیده گرفته می شود",
+  "neoorigins.configuration.section.neoorigins.content.toml": "خاستگاه ها و کلاس ها",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "ضامن‌های مبدا و کلاس neoorigins",
+  "neoorigins.configuration.section.neoorigins.client.toml": "نمایش مشتری",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "تنظیمات کلاینت neoorigins",
+  "neoorigins.configuration.show_cooldown_countdown": "نمایش شمارش معکوس خنک شدن",
+  "neoorigins.configuration.cooldown_countdown_opacity": "کدورت شمارش معکوس (%)",
+  "neoorigins.configuration.hud_ability_display": "قابلیت حالت نمایش HUD",
+  "neoorigins.configuration.always_show_ability_icons": "همیشه نمادهای توانایی را نشان دهید"
+}

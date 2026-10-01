@@ -1,0 +1,181 @@
+name: Final coherent Kabyle 1.3B refinement
+
+on:
+  push:
+    branches: [release/1.0.0-kabyle]
+    paths: [.github/workflows/refine-kabyle-final-fresh.yml]
+
+permissions:
+  contents: write
+
+jobs:
+  shards:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install runtime
+        run: |
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+          pip install 'transformers<5' sentencepiece sacremoses protobuf
+      - name: Configure specialized Kabyle 1.3B
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('scripts/refine_kabyle.py'); t=p.read_text(encoding='utf-8')
+          t=t.replace('MODEL_ID = "facebook/nllb-200-distilled-600M"','MODEL_ID = "mimech011/nllb-200-kabyle-1.3B"')
+          t=t.replace('batch_size = 16','batch_size = 4')
+          t=t.replace('self.tokenizer = AutoTokenizer.from_pretrained(MODEL_ID, src_lang=SOURCE_LANG)','self.tokenizer = AutoTokenizer.from_pretrained("facebook/nllb-200-distilled-1.3B", src_lang=SOURCE_LANG)')
+          p.write_text(t,encoding='utf-8')
+          PY
+      - name: Restrict add-on audits to Kabyle
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          fs=['scripts/audit_medievalorigins_upstream.py','scripts/audit_ibarnorigins_upstream.py','scripts/audit_origins_fantasy_upstream.py','scripts/audit_origins_backgrounds_upstream.py','scripts/audit_origins_more_backgrounds_upstream.py','scripts/audit_origins_backgrounds_iss_upstream.py','scripts/audit_origins_furries_upstream.py','scripts/audit_origins_classes_extended_upstream.py','scripts/audit_origins_classes_iss_upstream.py','scripts/audit_origin_architect_upstream.py']
+          for f in fs:
+            p=Path(f); t=p.read_text(encoding='utf-8'); u,n=re.subn(r'^LOCALES\s*=.*$','LOCALES = ("kab_kab",)',t,count=1,flags=re.M)
+            if n==0: u,n=re.subn(r'^DEFAULT_LOCALES\s*=.*$','DEFAULT_LOCALES = ("kab_kab",)',t,count=1,flags=re.M)
+            if n!=1: raise SystemExit(f'locale patch failed: {f}')
+            p.write_text(u,encoding='utf-8')
+          PY
+      - name: Discover sources
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref af467a3bc118f6bbc0970d68f7e03fa631d7e6f2 --output build/kab-discovery-mc-1.21.1 --locale kab_kab
+          python3 scripts/audit_neoorigins_upstream.py --ref aa207ef14cf3b938e28b4081162701953957c1d5 --output build/kab-discovery-mc-26.1 --locale kab_kab
+          python3 scripts/audit_neoorigins_upstream.py --ref 511cadcafe3027d2a56b4448652ec9b74e2f3b07 --output build/kab-discovery-mc-26.2 --locale kab_kab
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format
+          python3 scripts/audit_origins_fantasy_upstream.py
+          python3 scripts/audit_origins_backgrounds_upstream.py
+          python3 scripts/audit_origins_more_backgrounds_upstream.py
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py
+          python3 scripts/audit_origins_furries_upstream.py
+          python3 scripts/audit_origins_classes_extended_upstream.py
+          python3 scripts/audit_origins_classes_iss_upstream.py
+          python3 scripts/audit_origin_architect_upstream.py
+      - name: Translate shard
+        run: python3 scripts/refine_kabyle.py --shard-index ${{ matrix.shard }} --shard-count 8 --shard-output build/final-kabyle-shards/shard-${{ matrix.shard }}.json
+      - uses: actions/upload-artifact@v7
+        with:
+          name: final-kabyle-shard-${{ matrix.shard }}-${{ github.sha }}
+          path: build/final-kabyle-shards/shard-${{ matrix.shard }}.json
+          if-no-files-found: error
+
+  merge:
+    needs: shards
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install runtime
+        run: |
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+          pip install 'transformers<5' sentencepiece sacremoses protobuf
+      - name: Configure scripts
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('scripts/refine_kabyle.py'); t=p.read_text(encoding='utf-8')
+          t=t.replace('MODEL_ID = "facebook/nllb-200-distilled-600M"','MODEL_ID = "mimech011/nllb-200-kabyle-1.3B"')
+          t=t.replace('batch_size = 16','batch_size = 4')
+          t=t.replace('self.tokenizer = AutoTokenizer.from_pretrained(MODEL_ID, src_lang=SOURCE_LANG)','self.tokenizer = AutoTokenizer.from_pretrained("facebook/nllb-200-distilled-1.3B", src_lang=SOURCE_LANG)')
+          p.write_text(t,encoding='utf-8')
+          fs=['scripts/audit_medievalorigins_upstream.py','scripts/audit_ibarnorigins_upstream.py','scripts/audit_origins_fantasy_upstream.py','scripts/audit_origins_backgrounds_upstream.py','scripts/audit_origins_more_backgrounds_upstream.py','scripts/audit_origins_backgrounds_iss_upstream.py','scripts/audit_origins_furries_upstream.py','scripts/audit_origins_classes_extended_upstream.py','scripts/audit_origins_classes_iss_upstream.py','scripts/audit_origin_architect_upstream.py']
+          for f in fs:
+            q=Path(f); x=q.read_text(encoding='utf-8'); u,n=re.subn(r'^LOCALES\s*=.*$','LOCALES = ("kab_kab",)',x,count=1,flags=re.M)
+            if n==0: u,n=re.subn(r'^DEFAULT_LOCALES\s*=.*$','DEFAULT_LOCALES = ("kab_kab",)',x,count=1,flags=re.M)
+            if n!=1: raise SystemExit(f'locale patch failed: {f}')
+            q.write_text(u,encoding='utf-8')
+          PY
+      - name: Discover sources
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref af467a3bc118f6bbc0970d68f7e03fa631d7e6f2 --output build/kab-discovery-mc-1.21.1 --locale kab_kab
+          python3 scripts/audit_neoorigins_upstream.py --ref aa207ef14cf3b938e28b4081162701953957c1d5 --output build/kab-discovery-mc-26.1 --locale kab_kab
+          python3 scripts/audit_neoorigins_upstream.py --ref 511cadcafe3027d2a56b4448652ec9b74e2f3b07 --output build/kab-discovery-mc-26.2 --locale kab_kab
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format
+          python3 scripts/audit_origins_fantasy_upstream.py
+          python3 scripts/audit_origins_backgrounds_upstream.py
+          python3 scripts/audit_origins_more_backgrounds_upstream.py
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py
+          python3 scripts/audit_origins_furries_upstream.py
+          python3 scripts/audit_origins_classes_extended_upstream.py
+          python3 scripts/audit_origins_classes_iss_upstream.py
+          python3 scripts/audit_origin_architect_upstream.py
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: final-kabyle-shard-*-${{ github.sha }}
+          path: build/final-kabyle-shards
+          merge-multiple: true
+      - name: Repair semantic outliers
+        run: python3 scripts/repair_kabyle_13b_shards.py build/final-kabyle-shards
+      - name: Merge
+        run: python3 scripts/refine_kabyle.py --merge-shards build/final-kabyle-shards
+      - name: Prune overlaps
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --prune
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --prune
+          python3 scripts/audit_origins_fantasy_upstream.py --prune
+          python3 scripts/audit_origins_backgrounds_upstream.py --prune
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --prune
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --prune
+          python3 scripts/audit_origins_furries_upstream.py --prune
+          python3 scripts/audit_origins_classes_extended_upstream.py --prune
+          python3 scripts/audit_origins_classes_iss_upstream.py --prune
+          python3 scripts/audit_origin_architect_upstream.py --prune
+      - name: Strict audits
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref af467a3bc118f6bbc0970d68f7e03fa631d7e6f2 --output build/kab-final-121 --locale kab_kab --fallback-namespace-glob 'neoorigins_kab_common_*' --extra-namespace neoorigins_kab_121 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref aa207ef14cf3b938e28b4081162701953957c1d5 --output build/kab-final-261 --locale kab_kab --fallback-namespace-glob 'neoorigins_kab_common_*' --extra-namespace neoorigins_26_1 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 511cadcafe3027d2a56b4448652ec9b74e2f3b07 --output build/kab-final-262 --locale kab_kab --fallback-namespace-glob 'neoorigins_kab_common_*' --extra-namespace neoorigins_26_2 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_fantasy_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_furries_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_extended_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origin_architect_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/validate.py
+      - name: Final semantic guards
+        run: |
+          python3 - <<'PY'
+          import json,re
+          from pathlib import Path
+          files=sorted(Path('src/main/resources/resourcepacks/fallback_localizations/assets').glob('**/lang/kab_kab.json'))
+          if len(files)!=29: raise SystemExit(f'Expected 29 files, got {len(files)}')
+          vals=[]; seen={}
+          for p in files:
+            d=json.loads(p.read_text(encoding='utf-8')); vals.extend(map(str,d.values())); seen.update(d)
+          text='\n'.join(vals)
+          if 'kab_Latn' in text or '>>kab<<' in text: raise SystemExit('target marker')
+          if 'ablaḍ ablaḍ ablaḍ' in text.casefold(): raise SystemExit('repetition collapse')
+          if seen.get('neoorigins.night_vision.on')==seen.get('neoorigins.night_vision.off'): raise SystemExit('night vision labels identical')
+          print(f'Final Kabyle semantic guards passed: {len(files)} files, {len(vals)} values')
+          PY
+      - name: Commit final Kabyle
+        run: |
+          git checkout HEAD -- scripts/audit_*_upstream.py scripts/refine_kabyle.py
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name 'kab_kab.json' -print0 | xargs -0 -r git add
+          git diff --cached --quiet && exit 0
+          git commit -m 'Finalize Kabyle 1.3B localization'
+          git fetch origin release/1.0.0-kabyle
+          git rebase origin/release/1.0.0-kabyle
+          git push origin HEAD:release/1.0.0-kabyle

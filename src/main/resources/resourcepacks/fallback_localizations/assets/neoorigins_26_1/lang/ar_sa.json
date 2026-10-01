@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "تتلقى المعدات التي تصنعها سمات إضافية - المتانة أو الضرر أو سرعة التعدين.",
+  "power.neoorigins.class_cook_smoker_xp.description": "يكتسب نقاط XP مضاعفة من طهي الطعام في المدخن.",
+  "neoorigins.configuration.title": "تكوين نيو أوريجينز",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "طريقة اللعب",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "إعدادات اللعب في NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "المشرف والأذونات",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "إعدادات إدارة NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "تجاوزات السلطة",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "تجاوزات الطاقة NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.content.toml": "الأصول والطبقات",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "NeoOrigins الأصل وتبديل الطبقة",
+  "neoorigins.configuration.section.neoorigins.client.toml": "عرض العميل",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "إعدادات عميل NeoOrigins",
+  "neoorigins.configuration.show_cooldown_countdown": "عرض العد التنازلي للتبريد",
+  "neoorigins.configuration.cooldown_countdown_opacity": "عتامة العد التنازلي (%)",
+  "neoorigins.configuration.hud_ability_display": "القدرة على وضع عرض HUD",
+  "neoorigins.configuration.always_show_ability_icons": "إظهار أيقونات القدرة دائمًا"
+}

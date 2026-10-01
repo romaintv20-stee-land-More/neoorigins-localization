@@ -1,0 +1,76 @@
+name: Refine Irish localization
+
+on:
+  push:
+    branches:
+      - release/0.9.0-irish
+    paths:
+      - scripts/refine_irish.py
+      - .github/workflows/refine-irish.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-irish
+
+      - name: Apply contextual Irish fixes
+        run: python3 scripts/refine_irish.py
+
+      - name: Validate JSON localization structure
+        run: python3 scripts/validate.py
+
+      - name: Check Irish placeholders against NeoOrigins upstream
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref 860ecdb24e723983e93004ea8ceb5de90ccf0d70 --output build/ga-refine-audit-121 --locale ga_ie --fallback-namespace-glob 'neoorigins_ga_common_*' --extra-namespace neoorigins_ga_121 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 3c1c7365507679c836d3c14af5d4dd0654652e87 --output build/ga-refine-audit-261 --locale ga_ie --fallback-namespace-glob 'neoorigins_ga_common_*' --extra-namespace neoorigins_26_1 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 65864716a5a796fa1c51ec3e8a6d9640abebb4ca --output build/ga-refine-audit-262 --locale ga_ie --fallback-namespace-glob 'neoorigins_ga_common_*' --extra-namespace neoorigins_26_2 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Sanity-check corrected Irish terminology
+        run: |
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+          files = list(Path('src/main/resources/resourcepacks/fallback_localizations/assets').glob('**/lang/ga_ie.json'))
+          text = '\n'.join(str(v) for p in files for v in json.loads(p.read_text(encoding='utf-8')).values())
+          markers = len(re.findall(r'(?i)\b(?:an|na|agus|ar|le|do|de|sa|sé|sí|iad|tá|ní|nach|seo|sin|ann|ag|mar|féidir|chun|ó|faoi|ina|bhfuil|beidh|má|nuair|aon|agat|acu|duit)\b', text))
+          bad = [
+              'Cuir iarratas isteach',
+              'Ní féidir le do bhunús vein-mianach.',
+              '"Nuabheirthe"',
+              '"Nuabhunús (hotkeys)"',
+              '"Ag lasadh"',
+              '"Pábháilte"',
+              'Scoránaigh HUD Ailtire',
+              'Taispeáin leibhéal Ailtire',
+              'soicind.Dóitear',
+              'nóiméad.Gan',
+          ]
+          remaining = [item for item in bad if item in text]
+          if remaining:
+              raise SystemExit(f'Known Irish false-friends remain: {remaining}')
+          if markers < 500:
+              raise SystemExit(f'Irish lexical sanity check too low: {markers}')
+          print(f'Irish refinement sanity passed: {markers} Irish markers across {len(files)} files')
+          PY
+
+      - name: Commit refined Irish translations
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name 'ga_ie.json' -print0 | xargs -0 -r git add
+          if git diff --cached --quiet; then
+            echo 'No Irish refinement changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Refine Irish Minecraft terminology'
+          git fetch origin release/0.9.0-irish
+          git rebase origin/release/0.9.0-irish
+          git push origin HEAD:release/0.9.0-irish

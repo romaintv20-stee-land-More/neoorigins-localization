@@ -1,0 +1,183 @@
+name: Bootstrap Bosnian localization
+
+on:
+  push:
+    branches:
+      - release/0.9.0-bosnian
+    paths:
+      - scripts/bootstrap_bosnian.py
+      - .github/workflows/bootstrap-bosnian.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-bosnian
+
+      - name: Restrict add-on audits to Bosnian
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          scripts = [
+              'scripts/audit_medievalorigins_upstream.py',
+              'scripts/audit_ibarnorigins_upstream.py',
+              'scripts/audit_origins_fantasy_upstream.py',
+              'scripts/audit_origins_backgrounds_upstream.py',
+              'scripts/audit_origins_more_backgrounds_upstream.py',
+              'scripts/audit_origins_backgrounds_iss_upstream.py',
+              'scripts/audit_origins_furries_upstream.py',
+              'scripts/audit_origins_classes_extended_upstream.py',
+              'scripts/audit_origins_classes_iss_upstream.py',
+              'scripts/audit_origin_architect_upstream.py',
+          ]
+          for filename in scripts:
+              path = Path(filename)
+              text = path.read_text(encoding='utf-8')
+              updated, count = re.subn(r'^LOCALES\s*=.*$', 'LOCALES = ("bs_ba",)', text, count=1, flags=re.M)
+              if count == 0:
+                  updated, count = re.subn(r'^DEFAULT_LOCALES\s*=.*$', 'DEFAULT_LOCALES = ("bs_ba",)', text, count=1, flags=re.M)
+              if count != 1:
+                  raise SystemExit(f'Could not patch locale list in {filename}')
+              path.write_text(updated, encoding='utf-8')
+          PY
+
+      - name: Discover Bosnian NeoOrigins coverage
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref af467a3bc118f6bbc0970d68f7e03fa631d7e6f2 --output build/bs-discovery-mc-1.21.1 --locale bs_ba
+          python3 scripts/audit_neoorigins_upstream.py --ref aa207ef14cf3b938e28b4081162701953957c1d5 --output build/bs-discovery-mc-26.1 --locale bs_ba
+          python3 scripts/audit_neoorigins_upstream.py --ref 511cadcafe3027d2a56b4448652ec9b74e2f3b07 --output build/bs-discovery-mc-26.2 --locale bs_ba
+
+      - name: Discover Bosnian add-on coverage and English sources
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format
+          python3 scripts/audit_origins_fantasy_upstream.py
+          python3 scripts/audit_origins_backgrounds_upstream.py
+          python3 scripts/audit_origins_more_backgrounds_upstream.py
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py
+          python3 scripts/audit_origins_furries_upstream.py
+          python3 scripts/audit_origins_classes_extended_upstream.py
+          python3 scripts/audit_origins_classes_iss_upstream.py
+          python3 scripts/audit_origin_architect_upstream.py
+
+      - name: Generate Bosnian fallback files
+        run: python3 scripts/bootstrap_bosnian.py
+
+      - name: Prune add-on keys already translated upstream
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --prune
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --prune
+          python3 scripts/audit_origins_fantasy_upstream.py --prune
+          python3 scripts/audit_origins_backgrounds_upstream.py --prune
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --prune
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --prune
+          python3 scripts/audit_origins_furries_upstream.py --prune
+          python3 scripts/audit_origins_classes_extended_upstream.py --prune
+          python3 scripts/audit_origins_classes_iss_upstream.py --prune
+          python3 scripts/audit_origin_architect_upstream.py --prune
+
+      - name: Strict audit Bosnian NeoOrigins coverage
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref af467a3bc118f6bbc0970d68f7e03fa631d7e6f2 --output build/bs-audit-mc-1.21.1 --locale bs_ba --fallback-namespace-glob 'neoorigins_bs_common_*' --extra-namespace neoorigins_bs_121 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref aa207ef14cf3b938e28b4081162701953957c1d5 --output build/bs-audit-mc-26.1 --locale bs_ba --fallback-namespace-glob 'neoorigins_bs_common_*' --extra-namespace neoorigins_26_1 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 511cadcafe3027d2a56b4448652ec9b74e2f3b07 --output build/bs-audit-mc-26.2 --locale bs_ba --fallback-namespace-glob 'neoorigins_bs_common_*' --extra-namespace neoorigins_26_2 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Strict audit Bosnian add-on coverage
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_fantasy_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_furries_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_extended_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origin_architect_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Validate JSON localization structure
+        run: python3 scripts/validate.py
+
+      - name: Sanity-check Bosnian text
+        run: |
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+          files = list(Path('src/main/resources/resourcepacks/fallback_localizations/assets').glob('**/lang/bs_ba.json'))
+          if not files:
+              raise SystemExit('No bs_ba localization files found')
+          values = [str(v) for path in files for v in json.loads(path.read_text(encoding='utf-8')).values()]
+          text = '\n'.join(values)
+          latin_chars = len(re.findall(r'[A-Za-zČĆĐŠŽčćđšž]', text))
+          bosnian_chars = len(re.findall(r'[ČĆĐŠŽčćđšž]', text))
+          markers = len(re.findall(r'\b(?:je|se|da|na|za|od|do|sa|samo|može|možete|kada|ako|nije|koji|koja|koje|igrač|igrača|snaga|moć|štetu|vrijeme|biće|čarolija)\b', text, flags=re.I))
+          if latin_chars < 70000:
+              raise SystemExit(f'Bosnian Latin-script sanity too low: {latin_chars}')
+          if bosnian_chars < 1000:
+              raise SystemExit(f'Bosnian diacritic sanity too low: {bosnian_chars}')
+          if markers < 500:
+              raise SystemExit(f'Bosnian lexical sanity too low: {markers}')
+          print(f'Bosnian text sanity passed: {latin_chars} Latin chars, {bosnian_chars} Bosnian diacritics, {markers} lexical markers across {len(files)} files')
+          PY
+
+      - name: Add Bosnian target packaging switch
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('build.gradle')
+          text = path.read_text(encoding='utf-8')
+          if 'includeBosnian121Translations' not in text:
+              anchor = "def includeLao121Translations = (project.findProperty('include_lao_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()\n"
+              if anchor not in text:
+                  raise SystemExit('Lao Gradle definition anchor not found')
+              text = text.replace(anchor, anchor + "def includeBosnian121Translations = (project.findProperty('include_bosnian_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()\n", 1)
+              anchor = "    inputs.property 'include_lao_121_translations', includeLao121Translations\n"
+              if anchor not in text:
+                  raise SystemExit('Lao Gradle input anchor not found')
+              text = text.replace(anchor, anchor + "    inputs.property 'include_bosnian_121_translations', includeBosnian121Translations\n", 1)
+              anchor = "    if (!includeLao121Translations) {\n        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_lo_121/**'\n    }\n"
+              if anchor not in text:
+                  raise SystemExit('Lao Gradle exclusion anchor not found')
+              block = anchor + "\n    if (!includeBosnian121Translations) {\n        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_bs_121/**'\n    }\n"
+              text = text.replace(anchor, block, 1)
+              path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Restore temporary audit-script changes
+        if: always()
+        run: git checkout HEAD -- scripts/audit_*_upstream.py
+
+      - name: Upload Bosnian audit reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: bosnian-localization-audits-${{ github.sha }}
+          path: |
+            build/bs-discovery-*
+            build/bs-audit-*
+            build/*-upstream-audit
+          if-no-files-found: warn
+
+      - name: Commit validated Bosnian translations
+        if: success()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name 'bs_ba.json' -print0 | xargs -0 -r git add
+          git add build.gradle
+          if git diff --cached --quiet; then
+            echo 'No Bosnian translation changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Add Bosnian localization fallback'
+          git fetch origin release/0.9.0-bosnian
+          git rebase origin/release/0.9.0-bosnian
+          git push origin HEAD:release/0.9.0-bosnian

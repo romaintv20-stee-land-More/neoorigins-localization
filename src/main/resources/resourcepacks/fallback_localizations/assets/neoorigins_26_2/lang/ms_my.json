@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Peralatan yang anda hasilkan menerima atribut bonus — keliatan, kerosakan atau kelajuan melombong.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Mendapat XP berganda daripada memasak makanan dalam perokok.",
+  "neoorigins.configuration.title": "Konfigurasi NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Permainan",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "Tetapan Permainan NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Pentadbir & Keizinan",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "Tetapan Pentadbir NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Kuasa mengatasi",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "Kuasa neoorigins mengatasi",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Asal-usul & Kelas",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "Togol Asal & Kelas NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Paparan Pelanggan",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "Tetapan Pelanggan NeoOrigins",
+  "neoorigins.configuration.show_cooldown_countdown": "Tunjukkan undur cooldown",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Kelegapan kira detik cooldown (%)",
+  "neoorigins.configuration.hud_ability_display": "Mod paparan HUD keupayaan",
+  "neoorigins.configuration.always_show_ability_icons": "Sentiasa tunjukkan ikon keupayaan"
+}

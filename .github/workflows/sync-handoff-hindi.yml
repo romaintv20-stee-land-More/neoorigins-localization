@@ -1,0 +1,57 @@
+name: Sync Hindi handoff
+
+on:
+  push:
+    branches:
+      - release/0.9.0-hindi
+    paths:
+      - .github/workflows/sync-handoff-hindi.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-hindi
+
+      - name: Update project handoff
+        run: python3 scripts/update_handoff_hindi.py
+
+      - name: Validate Hindi handoff
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          text = Path('PROJECT_HANDOFF.txt').read_text(encoding='utf-8')
+          required = [
+              '0.9.0 development currently has 39 locales:',
+              '- 39: Hindi / hi_in',
+              'THIRTY-NINE IS NOT THE FINAL TARGET.',
+              '27. HINDI 0.9.0 STATUS',
+              'run ID 34309885890: SUCCESS on all three jobs',
+              'NEXT LANGUAGE = language 40.',
+          ]
+          missing = [item for item in required if item not in text]
+          if missing:
+              raise SystemExit(f'Hindi handoff markers missing: {missing}')
+          print('Hindi handoff validation passed')
+          PY
+
+      - name: Commit Hindi handoff
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add PROJECT_HANDOFF.txt
+          if git diff --cached --quiet; then
+            echo 'No Hindi handoff changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Finalize Hindi 0.9.0 handoff'
+          git fetch origin release/0.9.0-hindi
+          git rebase origin/release/0.9.0-hindi
+          git push origin HEAD:release/0.9.0-hindi

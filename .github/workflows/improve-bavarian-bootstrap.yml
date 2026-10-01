@@ -1,0 +1,54 @@
+name: Improve Bavarian corpus alignment
+
+on:
+  push:
+    branches:
+      - release/1.0.0-bavarian
+    paths:
+      - '.github/workflows/improve-bavarian-bootstrap.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  improve:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/1.0.0-bavarian
+
+      - name: Expand high-confidence corpus mappings
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('scripts/bootstrap_bavarian.py')
+          text = path.read_text(encoding='utf-8')
+          old = 'from collections import Counter, defaultdict\nfrom pathlib import Path\n'
+          new = 'from collections import Counter, defaultdict\nfrom difflib import SequenceMatcher\nfrom pathlib import Path\n'
+          if old not in text:
+              raise SystemExit('Import anchor not found')
+          text = text.replace(old, new, 1)
+          old = '''        # Require repeated evidence, except for very strong high-frequency mappings.\n        if (top >= 3 and share >= 0.67) or (top >= 8 and share >= 0.55):\n            learned[source] = target\n'''
+          new = '''        # Prefer repeated evidence, but also admit one-off morphological spellings\n        # when the aligned German/Bavarian tokens are strongly orthographically\n        # related.  These pairs still come exclusively from Minecraft's official\n        # de_de/bar parallel corpus.\n        similarity = SequenceMatcher(None, source, target).ratio()\n        if (\n            (top >= 2 and share >= 0.60)\n            or (top >= 5 and share >= 0.50)\n            or (top == 1 and total == 1 and len(source) >= 4 and len(target) >= 3 and similarity >= 0.55)\n        ):\n            learned[source] = target\n'''
+          if old not in text:
+              raise SystemExit('Mapping threshold block not found')
+          text = text.replace(old, new, 1)
+          path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Check patch
+        run: |
+          python3 -m py_compile scripts/bootstrap_bavarian.py
+          git diff --check
+          git diff -- scripts/bootstrap_bavarian.py
+
+      - name: Commit improved bootstrap
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add scripts/bootstrap_bavarian.py
+          git commit -m 'Improve Bavarian corpus mapping coverage'
+          git push origin HEAD:release/1.0.0-bavarian

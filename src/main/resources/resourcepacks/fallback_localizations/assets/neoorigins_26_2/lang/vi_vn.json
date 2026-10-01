@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Thiết bị bạn chế tạo sẽ nhận được các thuộc tính thưởng - độ bền, sát thương hoặc tốc độ khai thác.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Tăng gấp đôi XP khi nấu thức ăn trong lò hút thuốc.",
+  "neoorigins.configuration.title": "Cấu hình NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "lối chơi",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "Cài đặt trò chơi NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Quản trị & Quyền",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "Cài đặt quản trị NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Ghi đè nguồn",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "Ghi đè nguồn NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Nguồn gốc & Lớp học",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "Chuyển đổi nguồn gốc và lớp của NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Hiển thị khách hàng",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "Cài đặt máy khách NeoOrigins",
+  "neoorigins.configuration.show_cooldown_countdown": "Hiển thị đếm ngược thời gian hồi chiêu",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Độ mờ đếm ngược thời gian hồi chiêu (%)",
+  "neoorigins.configuration.hud_ability_display": "Khả năng chế độ hiển thị HUD",
+  "neoorigins.configuration.always_show_ability_icons": "Luôn hiển thị biểu tượng khả năng"
+}

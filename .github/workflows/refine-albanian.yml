@@ -1,0 +1,122 @@
+name: Refine Albanian localization
+
+on:
+  push:
+    branches: [ release/0.9.0-albanian ]
+    paths:
+      - 'scripts/refine_albanian.py'
+      - '.github/workflows/refine-albanian.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-albanian
+          fetch-depth: 0
+
+      - name: Apply Albanian contextual refinement
+        run: python3 scripts/refine_albanian.py
+
+      - name: Validate JSON localization structure
+        run: python3 scripts/validate.py
+
+      - name: Strict audit Albanian NeoOrigins
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref af467a3bc118f6bbc0970d68f7e03fa631d7e6f2 --output build/sq-refined-mc-1.21.1 --locale sq_al --fallback-namespace-glob 'neoorigins_sq_common_*' --extra-namespace neoorigins_sq_121 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref aa207ef14cf3b938e28b4081162701953957c1d5 --output build/sq-refined-mc-26.1 --locale sq_al --fallback-namespace-glob 'neoorigins_sq_common_*' --extra-namespace neoorigins_26_1 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 511cadcafe3027d2a56b4448652ec9b74e2f3b07 --output build/sq-refined-mc-26.2 --locale sq_al --fallback-namespace-glob 'neoorigins_sq_common_*' --extra-namespace neoorigins_26_2 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Strict audit Albanian add-ons
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re, subprocess
+          scripts=[
+            ('scripts/audit_medievalorigins_upstream.py',['--ref','1.21.1-fabric']),
+            ('scripts/audit_ibarnorigins_upstream.py',['--ref','multiloader-1.21.1-new-pack-format']),
+            ('scripts/audit_origins_fantasy_upstream.py',[]),
+            ('scripts/audit_origins_backgrounds_upstream.py',[]),
+            ('scripts/audit_origins_more_backgrounds_upstream.py',[]),
+            ('scripts/audit_origins_backgrounds_iss_upstream.py',[]),
+            ('scripts/audit_origins_furries_upstream.py',[]),
+            ('scripts/audit_origins_classes_extended_upstream.py',[]),
+            ('scripts/audit_origins_classes_iss_upstream.py',[]),
+            ('scripts/audit_origin_architect_upstream.py',[]),
+          ]
+          originals={name:Path(name).read_text(encoding='utf-8') for name,_ in scripts}
+          try:
+            for name,extra in scripts:
+              path=Path(name); src=originals[name]
+              out,count=re.subn(r'^LOCALES\s*=.*$','LOCALES = ("sq_al",)',src,count=1,flags=re.M)
+              if count==0:
+                out,count=re.subn(r'^DEFAULT_LOCALES\s*=.*$','DEFAULT_LOCALES = ("sq_al",)',src,count=1,flags=re.M)
+              if count!=1:
+                raise SystemExit(f'Could not patch locale in {name}')
+              path.write_text(out,encoding='utf-8')
+              subprocess.run(['python3',name,*extra,'--fail-on-overlap','--fail-on-missing','--fail-on-placeholders'],check=True)
+              path.write_text(src,encoding='utf-8')
+          finally:
+            for name,src in originals.items():
+              Path(name).write_text(src,encoding='utf-8')
+          PY
+
+      - name: Assert Albanian contextual QA
+        run: |
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+          files=list(Path('src/main/resources/resourcepacks/fallback_localizations/assets').glob('**/lang/sq_al.json'))
+          if len(files) != 29:
+            raise SystemExit(f'Expected 29 Albanian source files, got {len(files)}')
+          merged={}; values=[]
+          for path in files:
+            data=json.loads(path.read_text(encoding='utf-8'))
+            merged.update(data); values.extend(str(v) for v in data.values())
+          expected={
+            'origins.layer.origin':'Origin',
+            'neoorigins.toggle.on':'Aftësia u aktivizua',
+            'neoorigins.toggle.off':'Aftësia u çaktivizua',
+            'neoorigins.night_vision.on':'Shikimi i natës u aktivizua',
+            'neoorigins.ultimine.no_power':'Origin-i yt nuk e ka aftësinë Ultimine.',
+            'screen.neoorigins.choose_origin':'Zgjidh një Origin',
+            'key.category.neoorigins.neoorigins':'NeoOrigins',
+            'key.neoorigins.open_mob_creator':'Hap Krijuesin e Mob Origin',
+            'gui.neoorigins.mob_creator.tab.spawn_rules':'Rregullat e shfaqjes',
+            'screen.neoorigins.origin_editor':'Redaktuesi i Origin-it',
+          }
+          bad=[f'{k}={merged.get(k)!r}' for k,v in expected.items() if merged.get(k)!=v]
+          if bad:
+            raise SystemExit(f'Albanian contextual QA failed: {bad}')
+          text='\n'.join(values)
+          latin=len(re.findall(r'[A-Za-zÀ-ž]',text))
+          albanian_letters=len(re.findall(r'[ëËçÇ]',text))
+          markers=len(re.findall(r'\b(?:dhe|është|janë|një|nuk|mund|për|nga|me|të|që|kur|kjo|ky|ju|yt|tuaj|duhet|mbi|nën|aftësi|shikim)\b',text.lower()))
+          if latin < 100000 or albanian_letters < 8000 or markers < 3500:
+            raise SystemExit(f'Albanian sanity too low: Latin={latin}, Albanian letters={albanian_letters}, lexical markers={markers}')
+          suspicious=[v for v in values if 'Night Vision' in v or 'Rotten Flesh' in v or 'Neorigins' in v or 'Neoorigins' in v or 'Neoorigjinat' in v]
+          if suspicious:
+            raise SystemExit(f'Albanian contextual remnants remain: {suspicious[:20]!r}')
+          print('Albanian contextual QA passed across',len(files),'files; Latin',latin,'Albanian-specific',albanian_letters,'lexical markers',markers)
+          PY
+
+      - name: Commit refined Albanian localization
+        if: success()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name 'sq_al.json' -print0 | xargs -0 -r git add
+          if git diff --cached --quiet; then
+            echo 'No Albanian refinement changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Refine Albanian localization context'
+          git fetch origin release/0.9.0-albanian
+          git rebase origin/release/0.9.0-albanian
+          git push origin HEAD:release/0.9.0-albanian

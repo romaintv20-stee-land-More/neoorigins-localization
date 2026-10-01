@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Ekipaĵo, kiun vi fabrikas, ricevas kromajn atributojn - fortikecon, damaĝon aŭ minadrapidecon.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Akiras duoblan XP de kuirado de manĝaĵo en fumanto.",
+  "neoorigins.configuration.title": "NeoOrigins Agordo",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Ludado",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "NeoOrigins-Ludado-Agordoj",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Administranto & Permesoj",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "Admin-Agordoj de NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Potenco Overrides",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "Neoorigins potenco superregas",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Originoj & Klasoj",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "NeoOrigins Origino kaj Klaso Ŝangloj",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Kliento Montro",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "NeoOrigins Klienta Agordoj",
+  "neoorigins.configuration.show_cooldown_countdown": "Montru retronombradon de malvarmigo",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Malvarmiga retronombrado opakeco (%)",
+  "neoorigins.configuration.hud_ability_display": "Kapablo HUD-montra reĝimo",
+  "neoorigins.configuration.always_show_ability_icons": "Ĉiam montru kapablecpikonojn"
+}

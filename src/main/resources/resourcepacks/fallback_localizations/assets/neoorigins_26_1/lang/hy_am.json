@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Սարքավորումները, որոնք դուք պատրաստում եք, ստանում են բոնուսային հատկանիշներ՝ ամրություն, վնաս կամ հանքարդյունաբերության արագություն:",
+  "power.neoorigins.class_cook_smoker_xp.description": "Կրկնակի XP է ստանում ծխողի մոտ կերակուր պատրաստելուց:",
+  "neoorigins.configuration.title": "NeoOrigins կոնֆիգուրացիա",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Խաղախաղ",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "NeoOrigins խաղի կարգավորումներ",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Ադմինիստրատոր և թույլտվություններ",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "NeoOrigins ադմինիստրատորի կարգավորումներ",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Իշխանությունը գերակշռում է",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "Neoorigins իշխանությունը գերազանցում է",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Ծագումներ և դասեր",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "Neoorigins ծագման և դասի փոխարկիչներ",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Հաճախորդի ցուցադրում",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "NeoOrigins հաճախորդի կարգավորումներ",
+  "neoorigins.configuration.show_cooldown_countdown": "Ցույց տալ հովացման հետհաշվարկը",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Սառեցման հետհաշվարկի անթափանցիկություն (%)",
+  "neoorigins.configuration.hud_ability_display": "HUD ցուցադրման ռեժիմի հնարավորություն",
+  "neoorigins.configuration.always_show_ability_icons": "Միշտ ցուցադրեք կարողությունների պատկերակները"
+}

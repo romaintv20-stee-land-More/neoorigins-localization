@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Utrustning du tillverkar får bonusattribut – seghet, skada eller gruvhastighet.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Får dubbel XP på att laga mat i en rökare.",
+  "neoorigins.configuration.title": "NeoOrigins-konfiguration",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Spel",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "NeoOrigins Spelinställningar",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Admin och behörigheter",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "NeoOrigins Admin-inställningar",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Power Overriders",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "NeoOrigins Power Overriders",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Ursprung & klasser",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "NeoOrigins Ursprung & Klass växlar",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Klientvisning",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "NeoOrigins klientinställningar",
+  "neoorigins.configuration.show_cooldown_countdown": "Visa nedräkning",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Nedräkningsgenomskinlighet (%)",
+  "neoorigins.configuration.hud_ability_display": "Möjlighet HUD visningsläge",
+  "neoorigins.configuration.always_show_ability_icons": "Visa alltid förmåga ikoner"
+}

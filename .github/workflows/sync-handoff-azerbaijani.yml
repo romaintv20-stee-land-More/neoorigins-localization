@@ -1,0 +1,63 @@
+name: Sync Azerbaijani 56-locale handoff
+
+on:
+  push:
+    branches:
+      - release/0.9.0-azerbaijani
+    paths:
+      - .github/workflows/sync-handoff-azerbaijani.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-azerbaijani
+
+      - name: Update handoff
+        run: python3 scripts/update_handoff_azerbaijani.py
+
+      - name: Validate handoff state
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          text=Path('PROJECT_HANDOFF.txt').read_text(encoding='utf-8')
+          required=[
+              '0.9.0 development currently has 56 locales:',
+              '- 56: Azerbaijani / az_az',
+              'FIFTY-SIX IS NOT THE FINAL TARGET.',
+              'Azerbaijani locale: az_az / Azərbaycanca.',
+              'workflow run 34373070773: SUCCESS',
+              'final workflow run 34374190590: SUCCESS',
+              'synchronization run 34374657024: SUCCESS',
+              'run ID 34374820982: SUCCESS on all three jobs',
+              'artifact ID 10113468182',
+              'artifact ID 10113449784',
+              'artifact ID 10113440446',
+              'NEXT LANGUAGE = language 57.',
+              'Do not stop permanently at 57;',
+          ]
+          missing=[x for x in required if x not in text]
+          if missing: raise SystemExit(f'Handoff markers missing: {missing}')
+          print('Azerbaijani handoff validation passed: 56 locales, next 57')
+          PY
+
+      - name: Commit handoff
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add PROJECT_HANDOFF.txt
+          if git diff --cached --quiet; then
+            echo 'No Azerbaijani handoff changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Finalize Azerbaijani 0.9.0 handoff'
+          git fetch origin release/0.9.0-azerbaijani
+          git rebase origin/release/0.9.0-azerbaijani
+          git push origin HEAD:release/0.9.0-azerbaijani

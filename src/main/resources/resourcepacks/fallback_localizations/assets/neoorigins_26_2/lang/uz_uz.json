@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Siz yaratgan asbob-uskuna bonus atributlarini oladi - mustahkamlik, shikastlanish yoki qazib olish tezligi.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Chekuvchida ovqat pishirishdan ikki barobar XP ga ega bo‘ladi.",
+  "neoorigins.configuration.title": "NeoOrigins konfiguratsiyasi",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "O'yin jarayoni",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "NeoOrigins o'yin sozlamalari",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Administrator va ruxsatlar",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "NeoOrigins administrator sozlamalari",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Quvvatni bekor qilish",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "NeoOrigins quvvatni bekor qiladi",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Kelib chiqishi va sinflari",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "NeoOrigins Origins va sinf o'tish tugmalari",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Mijoz ekrani",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "NeoOrigins mijoz sozlamalari",
+  "neoorigins.configuration.show_cooldown_countdown": "Sovutish vaqtining ortga hisobini ko'rsatish",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Sovutish vaqtini ortga hisoblash shaffofligi (%)",
+  "neoorigins.configuration.hud_ability_display": "Imkoniyat HUD displey rejimi",
+  "neoorigins.configuration.always_show_ability_icons": "Har doim qobiliyat piktogrammalarini ko'rsating"
+}

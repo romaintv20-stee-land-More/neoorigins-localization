@@ -1,0 +1,188 @@
+name: Build NeoOrigins Localization 0.9.0 Bashkir
+
+on:
+  push:
+    branches:
+      - release/0.9.0-bashkir
+    paths:
+      - 'src/**'
+      - 'build.gradle'
+      - 'gradle.properties'
+      - '.github/workflows/build-0.9.0-bashkir.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: mc-1.21.1
+            java: '21'
+            gradle: '8.14.3'
+            minecraft: '1.21.1'
+            minecraft_range: '[1.21.1]'
+            neoforge: '21.1.248'
+            loader_range: '[1,)'
+            parchment: 'true'
+            pack_format: '34'
+            source_variant: mc1_21_1
+            include_addon_translations: 'true'
+            include_121_batch_translations: 'true'
+            include_26_1_translations: 'false'
+            include_26_2_translations: 'false'
+            include_bashkir_121_translations: 'true'
+            expected_delta: neoorigins_ba_121
+            expected_files: '27'
+            mod_version: 0.9.0-beta+1.21.1
+          - target: mc-26.1.x
+            java: '25'
+            gradle: '9.4.1'
+            minecraft: '26.1.2'
+            minecraft_range: '[26.1,26.2)'
+            neoforge: '26.1.2.29-beta'
+            loader_range: '[4,)'
+            parchment: 'false'
+            pack_format: '84'
+            source_variant: mc26_1
+            include_addon_translations: 'false'
+            include_121_batch_translations: 'true'
+            include_26_1_translations: 'true'
+            include_26_2_translations: 'false'
+            include_bashkir_121_translations: 'false'
+            expected_delta: neoorigins_26_1
+            expected_files: '17'
+            mod_version: 0.9.0-beta+26.1
+          - target: mc-26.2
+            java: '25'
+            gradle: '9.4.1'
+            minecraft: '26.2'
+            minecraft_range: '[26.2,26.3)'
+            neoforge: '26.2.0.3-beta'
+            loader_range: '[4,)'
+            parchment: 'false'
+            pack_format: '84'
+            source_variant: mc26_1
+            include_addon_translations: 'false'
+            include_121_batch_translations: 'false'
+            include_26_1_translations: 'false'
+            include_26_2_translations: 'true'
+            include_bashkir_121_translations: 'false'
+            expected_delta: neoorigins_26_2
+            expected_files: '17'
+            mod_version: 0.9.0-beta+26.2
+
+    name: Build ${{ matrix.target }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Java ${{ matrix.java }}
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+
+      - name: Set up Gradle ${{ matrix.gradle }}
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          gradle-version: ${{ matrix.gradle }}
+
+      - name: Validate localization JSON
+        run: python3 scripts/validate.py
+
+      - name: Build pinned target
+        run: |
+          gradle build --stacktrace \
+            "-Pjava_version=${{ matrix.java }}" \
+            "-Puse_parchment=${{ matrix.parchment }}" \
+            "-Presource_pack_format=${{ matrix.pack_format }}" \
+            "-Psource_variant=${{ matrix.source_variant }}" \
+            "-Pinclude_addon_translations=${{ matrix.include_addon_translations }}" \
+            "-Pinclude_121_batch_translations=${{ matrix.include_121_batch_translations }}" \
+            "-Pinclude_turkish_split_translations=true" \
+            "-Pinclude_bashkir_121_translations=${{ matrix.include_bashkir_121_translations }}" \
+            "-Pinclude_26_1_translations=${{ matrix.include_26_1_translations }}" \
+            "-Pinclude_26_2_translations=${{ matrix.include_26_2_translations }}" \
+            "-Pminecraft_version=${{ matrix.minecraft }}" \
+            "-Pminecraft_version_range=${{ matrix.minecraft_range }}" \
+            "-Pneo_version=${{ matrix.neoforge }}" \
+            "-Ploader_version_range=${{ matrix.loader_range }}" \
+            "-Pmod_version=${{ matrix.mod_version }}"
+
+      - name: Inspect Bashkir files in built JAR
+        env:
+          TARGET: ${{ matrix.target }}
+          EXPECTED_DELTA: ${{ matrix.expected_delta }}
+          EXPECTED_FILES: ${{ matrix.expected_files }}
+          INCLUDE_ADDONS: ${{ matrix.include_addon_translations }}
+        run: |
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+          from zipfile import ZipFile
+
+          jars = [p for p in Path('build/libs').glob('*.jar') if not p.name.endswith('-sources.jar')]
+          if len(jars) != 1:
+              raise SystemExit(f'Expected exactly one runtime JAR, found {[p.name for p in jars]}')
+          jar = jars[0]
+          with ZipFile(jar) as zf:
+              ba = sorted(n for n in zf.namelist() if n.endswith('/lang/ba_ru.json'))
+
+          target = os.environ['TARGET']
+          expected_delta = os.environ['EXPECTED_DELTA']
+          expected_files = int(os.environ['EXPECTED_FILES'])
+          include_addons = os.environ['INCLUDE_ADDONS'] == 'true'
+
+          def present(fragment):
+              return any(fragment in name for name in ba)
+
+          missing_common = [
+              f'neoorigins_ba_common_{index:02d}/lang/ba_ru.json'
+              for index in range(1, 17)
+              if not present(f'neoorigins_ba_common_{index:02d}/lang/ba_ru.json')
+          ]
+          if missing_common:
+              raise SystemExit(f'Missing Bashkir common entries: {missing_common}')
+          if not present(f'{expected_delta}/lang/ba_ru.json'):
+              raise SystemExit(f'Missing expected Bashkir delta: {expected_delta}')
+
+          addon_namespaces = [
+              'medievalorigins', 'ibarnorigins', 'origins_fantasy',
+              'origins_backgrounds', 'origins_backgrounds_two',
+              'origins_backgrounds_iss', 'origins_furries',
+              'origins_classes_ex', 'origins_classes_iss', 'originsmodernui',
+          ]
+          addon_entries = [f'{ns}/lang/ba_ru.json' for ns in addon_namespaces]
+          if include_addons:
+              missing_addons = [entry for entry in addon_entries if not present(entry)]
+              if missing_addons:
+                  raise SystemExit(f'Missing Bashkir add-on entries: {missing_addons}')
+              if present('neoorigins_26_1/lang/ba_ru.json') or present('neoorigins_26_2/lang/ba_ru.json'):
+                  raise SystemExit('1.21.1 JAR contains a 26.x Bashkir delta')
+          else:
+              wrongly_included = [entry for entry in addon_entries if present(entry)]
+              if wrongly_included:
+                  raise SystemExit(f'26.x JAR contains Bashkir add-ons: {wrongly_included}')
+              if present('neoorigins_ba_121/lang/ba_ru.json'):
+                  raise SystemExit('26.x JAR contains the Bashkir 1.21.1 delta')
+              other_delta = 'neoorigins_26_2' if expected_delta == 'neoorigins_26_1' else 'neoorigins_26_1'
+              if present(f'{other_delta}/lang/ba_ru.json'):
+                  raise SystemExit(f'{target} JAR contains wrong Bashkir delta {other_delta}')
+
+          if len(ba) != expected_files:
+              raise SystemExit(f'{target}: expected {expected_files} ba_ru files, got {len(ba)}: {ba}')
+          print(f'JAR inspection passed for {target}: {jar.name}, {len(ba)} Bashkir files, delta={expected_delta}')
+          PY
+
+      - name: Upload built JAR
+        uses: actions/upload-artifact@v7
+        with:
+          name: neoorigins-localization-0.9.0-${{ matrix.target }}-${{ github.sha }}
+          path: build/libs/*.jar
+          if-no-files-found: error

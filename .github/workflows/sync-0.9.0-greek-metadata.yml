@@ -1,0 +1,61 @@
+name: Sync 0.9.0 Greek metadata
+
+on:
+  push:
+    branches:
+      - release/0.9.0-beta
+    paths:
+      - 'src/main/resources/resourcepacks/fallback_localizations/assets/**/el_gr.json'
+      - 'scripts/update_catalog_greek.py'
+      - 'scripts/update_readme_greek.py'
+      - '.github/workflows/sync-0.9.0-greek-metadata.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-beta
+
+      - name: Update catalog and README
+        run: |
+          python3 scripts/update_catalog_greek.py
+          python3 scripts/generate_catalog.py
+          python3 scripts/update_readme_greek.py
+
+      - name: Validate metadata
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          catalog = json.loads(Path('catalog.json').read_text(encoding='utf-8'))
+          if catalog['project']['supported_locale_count'] != 22:
+              raise SystemExit('catalog locale count is not 22')
+          for project in catalog['supported_projects']:
+              if project['languages'].get('el_gr', {}).get('status') != 'supported':
+                  raise SystemExit(f"el_gr missing from {project['id']}")
+          readme = Path('README.md').read_text(encoding='utf-8')
+          if 'Grec (`el_gr`)' not in readme or 'Les vingt-deux langues' not in readme:
+              raise SystemExit('README Greek metadata missing')
+          print('Greek metadata validation passed')
+          PY
+
+      - name: Commit synchronized metadata
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add catalog.json CATALOG.md README.md
+          if git diff --cached --quiet; then
+            echo 'No metadata changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Document Greek localization in 0.9.0 beta'
+          git fetch origin release/0.9.0-beta
+          git rebase origin/release/0.9.0-beta
+          git push origin HEAD:release/0.9.0-beta

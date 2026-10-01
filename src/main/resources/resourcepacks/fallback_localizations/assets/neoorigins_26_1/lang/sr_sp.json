@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Опрема коју израдите добија бонус атрибуте — чврстину, оштећење или брзину рударења.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Добија дупло КСП од кувања хране у пушачима.",
+  "neoorigins.configuration.title": "НеоОригинс Цонфигуратион",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Играње",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "НеоОригинс подешавања игре",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Администратор и дозволе",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "НеоОригинс администраторска подешавања",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Повер Оверридес",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "НеоОригинс Повер Оверридес",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Порекло и класе",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "НеоОригинс Оригин & Цласс Тогглес",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Приказ клијента",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "Подешавања клијента НеоОригинс",
+  "neoorigins.configuration.show_cooldown_countdown": "Прикажи одбројавање времена за хлађење",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Непрозирност одбројавања (%)",
+  "neoorigins.configuration.hud_ability_display": "Способност Худ режим приказа",
+  "neoorigins.configuration.always_show_ability_icons": "Увек прикажи иконе способности"
+}

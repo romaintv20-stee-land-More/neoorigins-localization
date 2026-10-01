@@ -1,0 +1,63 @@
+name: Finalize Somali metadata
+
+on:
+  push:
+    branches: [ release/0.9.0-somali ]
+    paths:
+      - scripts/finalize_somali_metadata.py
+      - .github/workflows/finalize-somali-metadata.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  metadata:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-somali
+          fetch-depth: 0
+      - name: Update metadata to 62 languages
+        run: python3 scripts/finalize_somali_metadata.py
+      - name: Validate metadata
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          c=json.loads(Path('catalog.json').read_text(encoding='utf-8'))
+          assert c['project']['supported_locale_count']==62
+          neo=next(x for x in c['supported_projects'] if x.get('id')=='neoorigins')
+          assert neo['compatibility']['fallback_namespaces']['somali_common_glob']=='neoorigins_so_common_*'
+          assert neo['compatibility']['fallback_namespaces']['somali_mc_1_21_1']=='neoorigins_so_121'
+          count=0
+          def walk(o):
+              global count
+              if isinstance(o,dict):
+                  if 'so_so' in o and isinstance(o['so_so'],dict) and o['so_so'].get('name')=='Soomaali': count+=1
+                  for v in o.values(): walk(v)
+              elif isinstance(o,list):
+                  for v in o: walk(v)
+          walk(c)
+          assert count>=11, count
+          readme=Path('README.md').read_text(encoding='utf-8')
+          assert readme.count('| 62 |')==3
+          assert 'Somali (`so_so`)' in readme
+          assert 'Les soixante-deux langues' in readme
+          assert 'Pour le somali :' in readme
+          catalog=Path('CATALOG.md').read_text(encoding='utf-8')
+          assert catalog.count('Soomaali (`so_so`)')>=11
+          print('Metadata assertions passed:',count,'Somali entries')
+          PY
+          git diff --check
+      - name: Commit metadata
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add catalog.json CATALOG.md README.md
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Register Somali as language 62'
+          git fetch origin release/0.9.0-somali
+          git rebase origin/release/0.9.0-somali
+          git push origin HEAD:release/0.9.0-somali

@@ -1,0 +1,179 @@
+name: Bootstrap Welsh localization
+
+on:
+  push:
+    branches:
+      - release/0.9.0-welsh
+    paths:
+      - scripts/bootstrap_welsh.py
+      - .github/workflows/bootstrap-welsh.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-welsh
+
+      - name: Restrict add-on audits to Welsh
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          scripts = [
+              'scripts/audit_medievalorigins_upstream.py',
+              'scripts/audit_ibarnorigins_upstream.py',
+              'scripts/audit_origins_fantasy_upstream.py',
+              'scripts/audit_origins_backgrounds_upstream.py',
+              'scripts/audit_origins_more_backgrounds_upstream.py',
+              'scripts/audit_origins_backgrounds_iss_upstream.py',
+              'scripts/audit_origins_furries_upstream.py',
+              'scripts/audit_origins_classes_extended_upstream.py',
+              'scripts/audit_origins_classes_iss_upstream.py',
+              'scripts/audit_origin_architect_upstream.py',
+          ]
+          for filename in scripts:
+              path = Path(filename)
+              text = path.read_text(encoding='utf-8')
+              updated, count = re.subn(r'^LOCALES\s*=.*$', 'LOCALES = ("cy_gb",)', text, count=1, flags=re.M)
+              if count == 0:
+                  updated, count = re.subn(r'^DEFAULT_LOCALES\s*=.*$', 'DEFAULT_LOCALES = ("cy_gb",)', text, count=1, flags=re.M)
+              if count != 1:
+                  raise SystemExit(f'Could not patch locale list in {filename}')
+              path.write_text(updated, encoding='utf-8')
+          PY
+
+      - name: Discover Welsh NeoOrigins coverage
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref 860ecdb24e723983e93004ea8ceb5de90ccf0d70 --output build/cy-discovery-mc-1.21.1 --locale cy_gb
+          python3 scripts/audit_neoorigins_upstream.py --ref 3c1c7365507679c836d3c14af5d4dd0654652e87 --output build/cy-discovery-mc-26.1 --locale cy_gb
+          python3 scripts/audit_neoorigins_upstream.py --ref 65864716a5a796fa1c51ec3e8a6d9640abebb4ca --output build/cy-discovery-mc-26.2 --locale cy_gb
+
+      - name: Discover Welsh add-on coverage and English sources
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format
+          python3 scripts/audit_origins_fantasy_upstream.py
+          python3 scripts/audit_origins_backgrounds_upstream.py
+          python3 scripts/audit_origins_more_backgrounds_upstream.py
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py
+          python3 scripts/audit_origins_furries_upstream.py
+          python3 scripts/audit_origins_classes_extended_upstream.py
+          python3 scripts/audit_origins_classes_iss_upstream.py
+          python3 scripts/audit_origin_architect_upstream.py
+
+      - name: Generate Welsh fallback files
+        run: python3 scripts/bootstrap_welsh.py
+
+      - name: Prune add-on keys already translated upstream
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --prune
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --prune
+          python3 scripts/audit_origins_fantasy_upstream.py --prune
+          python3 scripts/audit_origins_backgrounds_upstream.py --prune
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --prune
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --prune
+          python3 scripts/audit_origins_furries_upstream.py --prune
+          python3 scripts/audit_origins_classes_extended_upstream.py --prune
+          python3 scripts/audit_origins_classes_iss_upstream.py --prune
+          python3 scripts/audit_origin_architect_upstream.py --prune
+
+      - name: Strict audit Welsh NeoOrigins coverage
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref 860ecdb24e723983e93004ea8ceb5de90ccf0d70 --output build/cy-audit-mc-1.21.1 --locale cy_gb --fallback-namespace-glob 'neoorigins_cy_common_*' --extra-namespace neoorigins_cy_121 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 3c1c7365507679c836d3c14af5d4dd0654652e87 --output build/cy-audit-mc-26.1 --locale cy_gb --fallback-namespace-glob 'neoorigins_cy_common_*' --extra-namespace neoorigins_26_1 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 65864716a5a796fa1c51ec3e8a6d9640abebb4ca --output build/cy-audit-mc-26.2 --locale cy_gb --fallback-namespace-glob 'neoorigins_cy_common_*' --extra-namespace neoorigins_26_2 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Strict audit Welsh add-on coverage
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_fantasy_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_furries_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_extended_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origin_architect_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Validate JSON localization structure
+        run: python3 scripts/validate.py
+
+      - name: Sanity-check Welsh text
+        run: |
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+          files = list(Path('src/main/resources/resourcepacks/fallback_localizations/assets').glob('**/lang/cy_gb.json'))
+          if not files:
+              raise SystemExit('No cy_gb localization files found')
+          text = '\n'.join(str(v) for path in files for v in json.loads(path.read_text(encoding='utf-8')).values())
+          latin = len(re.findall(r'[A-Za-zÀ-ÿ]', text))
+          markers = len(re.findall(r'(?i)\b(?:y|yr|a|ac|yn|i|o|ar|gyda|gall|eich|chi|pan|nid|mae|cael|neu|hwn|hon|hyn|wedi|fel|gan)\b', text))
+          if latin < 5000:
+              raise SystemExit(f'Welsh Latin-script sanity check too low: {latin}')
+          if markers < 500:
+              raise SystemExit(f'Welsh lexical sanity check too low: {markers}')
+          print(f'Welsh text sanity check passed: {latin} Latin chars, {markers} Welsh markers across {len(files)} files')
+          PY
+
+      - name: Add Welsh target packaging switch
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('build.gradle')
+          text = path.read_text(encoding='utf-8')
+          if 'includeWelsh121Translations' not in text:
+              anchor = "def includeFilipino121Translations = (project.findProperty('include_filipino_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()\n"
+              if anchor not in text:
+                  raise SystemExit('Filipino Gradle definition anchor not found')
+              text = text.replace(anchor, anchor + "def includeWelsh121Translations = (project.findProperty('include_welsh_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()\n", 1)
+              anchor = "    inputs.property 'include_filipino_121_translations', includeFilipino121Translations\n"
+              if anchor not in text:
+                  raise SystemExit('Filipino Gradle input anchor not found')
+              text = text.replace(anchor, anchor + "    inputs.property 'include_welsh_121_translations', includeWelsh121Translations\n", 1)
+              anchor = "    if (!includeFilipino121Translations) {\n        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_fil_121/**'\n    }\n"
+              if anchor not in text:
+                  raise SystemExit('Filipino Gradle exclusion anchor not found')
+              block = anchor + "\n    if (!includeWelsh121Translations) {\n        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_cy_121/**'\n    }\n"
+              text = text.replace(anchor, block, 1)
+              path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Restore temporary audit-script changes
+        if: always()
+        run: git checkout HEAD -- scripts/audit_*_upstream.py
+
+      - name: Upload Welsh audit reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: welsh-localization-audits-${{ github.sha }}
+          path: |
+            build/cy-discovery-*
+            build/cy-audit-*
+            build/*-upstream-audit
+          if-no-files-found: warn
+
+      - name: Commit validated Welsh translations
+        if: success()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name 'cy_gb.json' -print0 | xargs -0 -r git add
+          git add build.gradle
+          if git diff --cached --quiet; then
+            echo 'No Welsh translation changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Add Welsh localization fallback'
+          git fetch origin release/0.9.0-welsh
+          git rebase origin/release/0.9.0-welsh
+          git push origin HEAD:release/0.9.0-welsh

@@ -1,0 +1,67 @@
+name: Sync Irish 46-locale metadata
+
+on:
+  push:
+    branches:
+      - release/0.9.0-irish
+    paths:
+      - .github/workflows/sync-metadata-irish.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-irish
+
+      - name: Update catalog metadata
+        run: |
+          python3 scripts/update_catalog_irish.py
+          python3 scripts/generate_catalog.py
+
+      - name: Update README metadata
+        run: python3 scripts/update_readme_irish.py
+
+      - name: Validate 46-locale metadata
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          catalog = json.loads(Path('catalog.json').read_text(encoding='utf-8'))
+          if catalog['project']['supported_locale_count'] != 46:
+              raise SystemExit('catalog locale count is not 46')
+          for project in catalog['supported_projects']:
+              for locale in ('cy_gb', 'ga_ie'):
+                  if locale not in project['languages']:
+                      raise SystemExit(f"{locale} missing from {project['id']}")
+          readme = Path('README.md').read_text(encoding='utf-8')
+          required = ['Les quarante-six langues', 'Gallois (`cy_gb`)', 'Irlandais (`ga_ie`)', 'Pour le gallois :', 'Pour l’irlandais :', '/ CY / GA']
+          missing = [item for item in required if item not in readme]
+          if missing:
+              raise SystemExit(f'README Irish markers missing: {missing}')
+          catalog_md = Path('CATALOG.md').read_text(encoding='utf-8')
+          for marker in ('cy_gb', 'ga_ie', 'Cymraeg', 'Gaeilge'):
+              if marker not in catalog_md:
+                  raise SystemExit(f'CATALOG.md marker missing: {marker}')
+          print('Irish 46-locale metadata validation passed')
+          PY
+
+      - name: Commit Irish metadata
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add catalog.json CATALOG.md README.md
+          if git diff --cached --quiet; then
+            echo 'No Irish metadata changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Document Irish localization in 0.9.0 beta'
+          git fetch origin release/0.9.0-irish
+          git rebase origin/release/0.9.0-irish
+          git push origin HEAD:release/0.9.0-irish

@@ -1,0 +1,8 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "L'équipement que vous fabriquez ét supérieur — les outils minent pus vite, les armes frappent pus fort, les armures sont pus solides et tout dure pus longtemps.",
+  "power.neoorigins.class_cook_smoker_xp.description": "La nourriture qhete au fumoir ou au fournè gagne un supplément en nutrition.",
+  "neoorigins.configuration.title": "Configuration commune en NeoOrigins",
+  "reward.neoorigins.loot_pool": "NeoOrigins : Accorder eune réserve en butin",
+  "reward.neoorigins.loot_pool.loot_table": "Tabl en butin",
+  "reward.neoorigins.loot_pool.rolls": "Tirages"
+}

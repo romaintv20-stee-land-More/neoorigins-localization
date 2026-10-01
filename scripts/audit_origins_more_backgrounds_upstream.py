@@ -11,9 +11,9 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 PACK_ROOT = ROOT / "src/main/resources/resourcepacks/fallback_localizations/assets"
-LOCALES = ("fr_fr", "de_de", "es_es", "pt_br", "nl_nl", "it_it", "pl_pl", "ru_ru", "tr_tr", "zh_cn", "cs_cz", "hu_hu")
-DEFAULT_FILE_ID = "8650744"
-DEFAULT_FILENAME = "Origins-More-Backgrounds-1.21.1-NeoOrigins-1.0.2.jar"
+CONTEXT_TABLE = ROOT / "localization/background_orb_translations.json"
+DEFAULT_FILE_ID = "8875590"
+DEFAULT_FILENAME = "Origins-More-Backgrounds-1.21.1-NeoOrigins-1.0.4.jar"
 DEFAULT_NAMESPACE = "origins_backgrounds_two"
 SHARED_FALLBACK_NAMESPACES = ("origins_backgrounds",)
 PLACEHOLDER_RE = re.compile(r"%(?:\d+\$)?[sd]")
@@ -83,12 +83,12 @@ def escape_annotation(value: str):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Compare Origins: More Backgrounds for NeoOrigins fallback locales with the pinned upstream CurseForge JAR.")
-    parser.add_argument("--file-id", default=DEFAULT_FILE_ID, help="CurseForge file id")
-    parser.add_argument("--filename", default=DEFAULT_FILENAME, help="Exact CurseForge JAR filename")
-    parser.add_argument("--namespace", default=DEFAULT_NAMESPACE, help="Preferred resource namespace")
+    parser = argparse.ArgumentParser(description="Compare Origins: More Backgrounds for NeoOrigins fallback coverage with the pinned upstream CurseForge JAR.")
+    parser.add_argument("--file-id", default=DEFAULT_FILE_ID)
+    parser.add_argument("--filename", default=DEFAULT_FILENAME)
+    parser.add_argument("--namespace", default=DEFAULT_NAMESPACE)
     parser.add_argument("--output", default=str(ROOT / "build/origins-more-backgrounds-upstream-audit"))
-    parser.add_argument("--prune", action="store_true", help="Remove primary fallback keys that now exist upstream")
+    parser.add_argument("--prune", action="store_true")
     parser.add_argument("--fail-on-overlap", action="store_true")
     parser.add_argument("--fail-on-missing", action="store_true")
     parser.add_argument("--fail-on-placeholders", action="store_true")
@@ -97,6 +97,7 @@ def main():
 
     out_dir = Path(args.output)
     out_dir.mkdir(parents=True, exist_ok=True)
+    context_table = json.loads(CONTEXT_TABLE.read_text(encoding="utf-8"))
     jar_data, source_url = download_jar(args.file_id, args.filename)
 
     with zipfile.ZipFile(io.BytesIO(jar_data)) as jar:
@@ -104,7 +105,13 @@ def main():
         en = read_locale(jar, namespace, "en_us")
         if not en:
             raise SystemExit("Origins More Backgrounds audit failed: upstream en_us.json is missing")
-        official_locales = {locale: read_locale(jar, namespace, locale) for locale in LOCALES}
+        primary_lang = PACK_ROOT / namespace / "lang"
+        locales = sorted(path.stem for path in primary_lang.glob("*.json") if path.stem != "en_us")
+        if not locales:
+            raise SystemExit(f"Origins More Backgrounds audit failed: no fallback locales found in {primary_lang}")
+        if set(context_table) != set(locales):
+            raise SystemExit("Origins More Backgrounds audit failed: contextual table locale set differs from fallback locale set")
+        official_locales = {locale: read_locale(jar, namespace, locale) for locale in locales}
 
     (out_dir / "upstream_en_us.json").write_text(json.dumps(en, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     report = {
@@ -114,14 +121,17 @@ def main():
         "filename": args.filename,
         "namespace": namespace,
         "shared_fallback_namespaces": list(SHARED_FALLBACK_NAMESPACES),
+        "contextual_fallback": str(CONTEXT_TABLE.relative_to(ROOT)),
         "source_url": source_url,
         "english_keys": len(en),
+        "locale_count": len(locales),
         "locales": {},
     }
     any_overlap = any_missing = any_placeholder_error = False
     annotation_keys = set()
+    missing_sources = {}
 
-    for locale in LOCALES:
+    for locale in locales:
         official = official_locales[locale]
         primary_path = PACK_ROOT / namespace / "lang" / f"{locale}.json"
         primary = read_json(primary_path)
@@ -129,6 +139,8 @@ def main():
         for shared_namespace in SHARED_FALLBACK_NAMESPACES:
             combined.update(read_json(PACK_ROOT / shared_namespace / "lang" / f"{locale}.json"))
         combined.update(primary)
+        contextual = {k: v for k, v in context_table[locale].items() if k in en}
+        combined.update(contextual)
         relevant = {k: v for k, v in combined.items() if k in en}
 
         missing_upstream = {k: v for k, v in en.items() if k not in official}
@@ -151,10 +163,14 @@ def main():
                 for shared_namespace in SHARED_FALLBACK_NAMESPACES:
                     combined.update(read_json(PACK_ROOT / shared_namespace / "lang" / f"{locale}.json"))
                 combined.update(primary)
+                combined.update(contextual)
                 relevant = {k: v for k, v in combined.items() if k in en}
                 overlap = sorted(set(relevant) & set(official))
                 stale = sorted(set(primary) - set(en))
                 missing = sorted(set(missing_upstream) - set(relevant))
+
+        for key in missing:
+            missing_sources[key] = en.get(key, "")
 
         any_overlap |= bool(overlap)
         any_missing |= bool(missing)
@@ -163,11 +179,11 @@ def main():
         (out_dir / f"{locale}_overlap.json").write_text(json.dumps(overlap, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         (out_dir / f"{locale}_placeholder_errors.json").write_text(json.dumps(placeholder_errors, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         report["locales"][locale] = {
-            "official_exists": bool(official),
             "official_keys": len(official),
             "missing_upstream_keys": len(missing_upstream),
             "primary_fallback_keys": len(primary),
-            "shared_keys_reused": len(set(relevant) - set(primary)),
+            "shared_keys_reused": len(set(relevant) - set(primary) - set(contextual)),
+            "contextual_keys_reused": len(contextual),
             "covered_upstream_keys": len(relevant),
             "fallback_overlap_with_official": len(overlap),
             "primary_stale_keys": len(stale),
@@ -183,14 +199,19 @@ def main():
 
     (out_dir / "report.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"Origins: More Backgrounds for NeoOrigins audit ({args.filename}, CurseForge file {args.file_id})")
-    print(f"Namespace: {namespace} | English: {len(en)} keys")
+    print(f"Namespace: {namespace} | English: {len(en)} keys | fallback locales: {len(locales)}")
     for locale, stats in report["locales"].items():
         print(
             f"{locale}: official={stats['official_keys']} | primary={stats['primary_fallback_keys']} | "
-            f"shared={stats['shared_keys_reused']} | covered={stats['covered_upstream_keys']} | "
+            f"shared={stats['shared_keys_reused']} | contextual={stats['contextual_keys_reused']} | covered={stats['covered_upstream_keys']} | "
             f"overlap={stats['fallback_overlap_with_official']} | missing={stats['missing_not_yet_in_fallback']} | "
             f"placeholders={stats['placeholder_errors']}"
         )
+
+    if missing_sources:
+        print("Missing English source keys:")
+        for key, value in sorted(missing_sources.items()):
+            print(f"  {key} = {value}")
 
     failures = []
     if args.fail_on_overlap and any_overlap:

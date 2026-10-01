@@ -1,0 +1,82 @@
+name: Rebase Filipino onto current beta
+
+on:
+  push:
+    branches:
+      - release/0.9.0-filipino-rebased
+    paths:
+      - .github/workflows/rebase-filipino-onto-malay.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  transplant:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout combined branch
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-filipino-rebased
+          fetch-depth: 0
+
+      - name: Fetch validated Filipino staging branch
+        run: git fetch origin release/0.9.0-filipino
+
+      - name: Transplant validated Filipino localization files
+        run: |
+          git checkout origin/release/0.9.0-filipino -- \
+            scripts/bootstrap_filipino.py \
+            scripts/refine_filipino.py \
+            .github/workflows/bootstrap-filipino.yml \
+            .github/workflows/refine-filipino.yml
+          while IFS= read -r path; do
+            git checkout origin/release/0.9.0-filipino -- "$path"
+          done < <(git ls-tree -r --name-only origin/release/0.9.0-filipino | grep '/lang/fil_ph\.json$')
+
+      - name: Add Filipino packaging switch without disturbing Malay
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('build.gradle')
+          text = path.read_text(encoding='utf-8')
+          if 'includeFilipino121Translations' not in text:
+              anchor = "def includeMalay121Translations = (project.findProperty('include_malay_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()\n"
+              if anchor not in text:
+                  raise SystemExit('Malay definition anchor not found')
+              text = text.replace(anchor, anchor + "def includeFilipino121Translations = (project.findProperty('include_filipino_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()\n", 1)
+
+              anchor = "    inputs.property 'include_malay_121_translations', includeMalay121Translations\n"
+              if anchor not in text:
+                  raise SystemExit('Malay input anchor not found')
+              text = text.replace(anchor, anchor + "    inputs.property 'include_filipino_121_translations', includeFilipino121Translations\n", 1)
+
+              anchor = "    if (!includeMalay121Translations) {\n        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_ms_121/**'\n    }\n"
+              if anchor not in text:
+                  raise SystemExit('Malay exclusion anchor not found')
+              text = text.replace(anchor, anchor + "\n    if (!includeFilipino121Translations) {\n        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_fil_121/**'\n    }\n", 1)
+              path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Validate transplanted state
+        run: |
+          python3 scripts/validate.py
+          test "$(find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name fil_ph.json | wc -l)" -eq 29
+          grep -q 'includeMalay121Translations' build.gradle
+          grep -q 'includeFilipino121Translations' build.gradle
+
+      - name: Commit combined Malay plus Filipino baseline
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add build.gradle scripts/bootstrap_filipino.py scripts/refine_filipino.py .github/workflows/bootstrap-filipino.yml .github/workflows/refine-filipino.yml
+          find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name fil_ph.json -print0 | xargs -0 -r git add
+          if git diff --cached --quiet; then
+            echo 'No Filipino transplant changes.'
+            exit 0
+          fi
+          git commit -m 'Rebase Filipino localization onto Malay baseline'
+          git fetch origin release/0.9.0-filipino-rebased
+          git rebase origin/release/0.9.0-filipino-rebased
+          git push origin HEAD:release/0.9.0-filipino-rebased

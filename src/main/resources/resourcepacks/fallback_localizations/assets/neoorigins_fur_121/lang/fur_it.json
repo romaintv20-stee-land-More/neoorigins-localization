@@ -1,0 +1,8 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "L'equipaggiamento che fabbrichi è superiore: gli attrezzi scavano plui in fretta, le armi colpiscono plui forte, le armature son plui robuste e tutto dura plui a lungo.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Il cibo cotto in un affumicatore o in une fornace riceve nutrimento extra.",
+  "neoorigins.configuration.title": "Configurazione comune di NeoOrigins",
+  "reward.neoorigins.loot_pool": "NeoOrigins: Concedi pool di bottino",
+  "reward.neoorigins.loot_pool.loot_table": "Tabella dal bottino",
+  "reward.neoorigins.loot_pool.rolls": "Estrazioni"
+}

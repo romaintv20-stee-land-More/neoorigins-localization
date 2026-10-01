@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Awọn ohun elo ti o ṣe iṣẹ gba awọn abuda ajeseku - lile, ibajẹ, tabi iyara iwakusa.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Awọn anfani ni ilopo XP lati sise ounjẹ ni amuga.",
+  "neoorigins.configuration.title": "Iṣeto NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Ere ere",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "Awọn eto imuṣere oriṣere NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Abojuto & Awọn igbanilaaye",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "Awọn Eto Alabojuto NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Agbara Yipada",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "NeoOrigins Agbara Yipada",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Awọn ipilẹṣẹ & Awọn kilasi",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "NeoOrigins Oti & Kilasi Toggles",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Afihan Onibara",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "Awọn Eto Onibara NeoOrigins",
+  "neoorigins.configuration.show_cooldown_countdown": "Ṣe afihan kika itutu agbaiye",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Opaati kika kika (%)",
+  "neoorigins.configuration.hud_ability_display": "Ipo ifihan agbara HUD",
+  "neoorigins.configuration.always_show_ability_icons": "Fi awọn aami agbara han nigbagbogbo"
+}

@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "An dafar a vez savet ganeoc'h a resev perzhioù ouzhpenn — startijenn, distruj pe tizh mengleuziañ.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Gounit a ra daou XP dre boazhañ boued en ur fumer.",
+  "neoorigins.configuration.title": "Kefluniadur NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "C'hoari",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "Arventennoù c'hoari NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Merour & Aotreoù",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "Arventennoù merour NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Treuzskrivadurioù galloud",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "Treuzfurmadurioù neoorigins",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Orinoù ha rummadoù",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "Kemmoù orin ha rummad neoorigins",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Diskouez ar c'hlient",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "Arventennoù arveriad NeoOrigins",
+  "neoorigins.configuration.show_cooldown_countdown": "Diskouez ar c'hontadennoù en-dro",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Teñvalded ar c'hontadennoù en-dro (%)",
+  "neoorigins.configuration.hud_ability_display": "Mod diskouez HUD galloud",
+  "neoorigins.configuration.always_show_ability_icons": "Diskouez arlunoù barregezhioù atav"
+}

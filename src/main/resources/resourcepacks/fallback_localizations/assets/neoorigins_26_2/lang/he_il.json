@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "ציוד שאתה יוצר מקבל תכונות בונוס - קשיחות, נזק או מהירות כרייה.",
+  "power.neoorigins.class_cook_smoker_xp.description": "מרוויח XP כפול מבישול אוכל במעשנת.",
+  "neoorigins.configuration.title": "תצורת NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "משחקיות",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "הגדרות משחק של NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "מנהל והרשאות",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "הגדרות ניהול NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "עקיפות כוח",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "עקיפות כוח של NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.content.toml": "מקורות ושיעורים",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "החלפת מוצא ומעמד של NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.client.toml": "תצוגת לקוח",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "הגדרות לקוח NeoOrigins",
+  "neoorigins.configuration.show_cooldown_countdown": "הצג ספירה לאחור של התקררות",
+  "neoorigins.configuration.cooldown_countdown_opacity": "אטימות הספירה לאחור (%)",
+  "neoorigins.configuration.hud_ability_display": "יכולת תצוגה HUD",
+  "neoorigins.configuration.always_show_ability_icons": "הצג תמיד סמלי יכולת"
+}

@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Oprema, ki jo izdelate, prejme dodatne atribute — žilavost, poškodbe ali hitrost rudarjenja.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Pridobi dvojni XP s kuhanjem hrane v kadilnici.",
+  "neoorigins.configuration.title": "Konfiguracija NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Igranje",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "Nastavitve igranja NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Skrbnik in dovoljenja",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "Skrbniške nastavitve NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Moč preglasi",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "Preglasitve moči NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Izvori in razredi",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "NeoOrigins Izvor in preklopi razreda",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Prikaz odjemalca",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "Nastavitve odjemalca NeoOrigins",
+  "neoorigins.configuration.show_cooldown_countdown": "Prikaži odštevanje ohlajanja",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Motnost odštevanja ohlajanja (%)",
+  "neoorigins.configuration.hud_ability_display": "Način prikaza zmožnosti HUD",
+  "neoorigins.configuration.always_show_ability_icons": "Vedno prikaži ikone sposobnosti"
+}

@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Valmistamasi varusteet saavat lisäominaisuuksia – sitkeyden, vaurion tai kaivosnopeuden.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Ansaitsee kaksinkertaisen XP:n keittämällä ruokaa tupakoitsijassa.",
+  "neoorigins.configuration.title": "NeoOrigins-kokoonpano",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Pelin kulku",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "NeoOriginsin peliasetukset",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Järjestelmänvalvoja ja käyttöoikeudet",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "NeoOrigins-järjestelmänvalvojan asetukset",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Virran ohitukset",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "NeoOrigins Power Overrides",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Alkuperä ja luokat",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "NeoOrigins Origin & Class Vaihtaa",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Asiakasnäyttö",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "NeoOrigins-asiakasasetukset",
+  "neoorigins.configuration.show_cooldown_countdown": "Näytä viilennyslaskenta",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Jäähdytyslaskennan peittävyys (%)",
+  "neoorigins.configuration.hud_ability_display": "Ability HUD -näyttötila",
+  "neoorigins.configuration.always_show_ability_icons": "Näytä aina kykykuvakkeet"
+}

@@ -1,0 +1,78 @@
+name: Finalize 1.0.0 locale 80 metadata
+
+on:
+  push:
+    branches:
+      - release/1.0.0-brabantian
+    paths:
+      - scripts/finalize_locale_80_metadata.py
+      - .github/workflows/finalize-1.0.0-locale-80.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/1.0.0-brabantian
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+
+      - name: Finalize Brabantian metadata
+        run: python3 scripts/finalize_locale_80_metadata.py
+
+      - name: Validate localization JSON
+        run: python3 scripts/validate.py
+
+      - name: Verify metadata state
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          catalog = json.loads(Path('catalog.json').read_text(encoding='utf-8'))
+          assert catalog['project']['supported_locale_count'] == 80
+
+          projects = [p for p in catalog['supported_projects'] if p.get('languages') is not None]
+          assert len(projects) == 11
+          for project in projects:
+              assert 'brb' in project['languages'], project.get('id')
+              assert project['languages']['brb']['name'] == 'Braobans', project.get('id')
+
+          neoorigins = next(p for p in projects if p.get('id') == 'neoorigins')
+          fallbacks = neoorigins['compatibility']['fallback_namespaces']
+          assert fallbacks['brabantian_common_glob'] == 'neoorigins_brb_common_*'
+          assert fallbacks['brabantian_mc_1_21_1'] == 'neoorigins_brb_121'
+
+          readme = Path('README.md').read_text(encoding='utf-8')
+          catalog_md = Path('CATALOG.md').read_text(encoding='utf-8')
+          assert readme.count('Brabançon (`brb`)') == 1
+          assert readme.count('Pour le brabançon :') == 1
+          assert catalog_md.count('Braobans (`brb`)') == 11
+          print('Metadata state verified for locale 80 (Brabantian / brb).')
+          PY
+
+      - name: Check whitespace
+        run: git diff --check
+
+      - name: Commit finalized metadata
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add catalog.json README.md CATALOG.md scripts/finalize_locale_80_metadata.py
+          if git diff --cached --quiet; then
+            echo 'No metadata changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Finalize Brabantian locale 80 metadata'
+          git fetch origin release/1.0.0-brabantian
+          git rebase origin/release/1.0.0-brabantian
+          git push origin HEAD:release/1.0.0-brabantian

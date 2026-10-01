@@ -1,0 +1,68 @@
+name: Finalize 1.0.0 locales 77-78 metadata
+
+on:
+  push:
+    branches:
+      - release/1.0.0-northern-sami
+    paths:
+      - '.github/workflows/finalize-1.0.0-locales-77-78.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/1.0.0-northern-sami
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+
+      - name: Finalize Traditional Chinese and Northern Sami metadata
+        run: python3 scripts/finalize_locales_77_78_metadata.py
+
+      - name: Validate localization JSON
+        run: python3 scripts/validate.py
+
+      - name: Verify metadata state
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path('catalog.json').read_text(encoding='utf-8'))
+          assert data['project']['supported_locale_count'] == 78
+          projects = data['supported_projects']
+          assert len(projects) == 11
+          for project in projects:
+              languages = project.get('languages', {})
+              assert 'zh_tw' in languages, project['id']
+              assert 'se_no' in languages, project['id']
+          readme = Path('README.md').read_text(encoding='utf-8')
+          assert 'Les soixante-dix-huit langues sont disponibles' in readme
+          assert 'Chinois traditionnel (`zh_tw`)' in readme
+          assert 'Same du Nord (`se_no`)' in readme
+          catalog_md = Path('CATALOG.md').read_text(encoding='utf-8')
+          assert catalog_md.count('繁體中文 (`zh_tw`)') == 11
+          assert catalog_md.count('Davvisámegiella (`se_no`)') == 11
+          print('Metadata state verified for locales 77 and 78.')
+          PY
+
+      - name: Commit finalized metadata
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add catalog.json README.md CATALOG.md scripts/finalize_locales_77_78_metadata.py
+          if git diff --cached --quiet; then
+            echo 'No metadata changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Finalize Traditional Chinese and Northern Sami metadata'
+          git push origin HEAD:release/1.0.0-northern-sami

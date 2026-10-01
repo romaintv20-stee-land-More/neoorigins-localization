@@ -1,0 +1,42 @@
+name: Finalize Chuvash metadata
+
+on:
+  push:
+    branches: [ release/0.9.0-chuvash ]
+    paths:
+      - scripts/finalize_chuvash_metadata.py
+      - .github/workflows/finalize-chuvash-metadata.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  metadata:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-chuvash
+      - name: Update Chuvash metadata
+        run: python3 scripts/finalize_chuvash_metadata.py
+      - name: Validate catalog JSON
+        run: python3 -m json.tool catalog.json >/dev/null
+      - name: Verify Chuvash metadata
+        run: |
+          grep -q '"supported_locale_count": 58' catalog.json
+          grep -q '"cv_cu"' catalog.json
+          grep -q 'Чӑвашла (`cv_cu`)' CATALOG.md
+          grep -q 'Tchouvache (`cv_cu`)' README.md
+          grep -q 'Les cinquante-huit langues' README.md
+      - name: Commit metadata
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add catalog.json CATALOG.md README.md
+          if git diff --cached --quiet; then echo 'No metadata changes.'; exit 0; fi
+          git commit -m 'Document Chuvash localization support'
+          git fetch origin release/0.9.0-chuvash
+          git rebase origin/release/0.9.0-chuvash
+          git push origin HEAD:release/0.9.0-chuvash

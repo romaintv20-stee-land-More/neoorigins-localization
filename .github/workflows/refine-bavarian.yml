@@ -1,0 +1,81 @@
+name: Refine Bavarian localization
+
+on:
+  push:
+    branches:
+      - release/1.0.0-bavarian
+    paths:
+      - scripts/refine_bavarian.py
+      - .github/workflows/refine-bavarian.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: release/1.0.0-bavarian
+
+      - name: Apply contextual refinements
+        run: python3 scripts/refine_bavarian.py
+
+      - name: Restrict add-on audits to Bavarian
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          for filename in [
+              'scripts/audit_medievalorigins_upstream.py','scripts/audit_ibarnorigins_upstream.py',
+              'scripts/audit_origins_fantasy_upstream.py','scripts/audit_origins_backgrounds_upstream.py',
+              'scripts/audit_origins_more_backgrounds_upstream.py','scripts/audit_origins_backgrounds_iss_upstream.py',
+              'scripts/audit_origins_furries_upstream.py','scripts/audit_origins_classes_extended_upstream.py',
+              'scripts/audit_origins_classes_iss_upstream.py','scripts/audit_origin_architect_upstream.py',
+          ]:
+              p=Path(filename); t=p.read_text(encoding='utf-8')
+              u,n=re.subn(r'^LOCALES\s*=.*$', 'LOCALES = ("bar",)', t, count=1, flags=re.M)
+              if n == 0: u,n=re.subn(r'^DEFAULT_LOCALES\s*=.*$', 'DEFAULT_LOCALES = ("bar",)', t, count=1, flags=re.M)
+              if n != 1: raise SystemExit(f'Could not patch {filename}')
+              p.write_text(u, encoding='utf-8')
+          PY
+
+      - name: Strict NeoOrigins audits
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref af467a3bc118f6bbc0970d68f7e03fa631d7e6f2 --output build/bar-refine-121 --locale bar --fallback-namespace-glob 'neoorigins_bar_common_*' --extra-namespace neoorigins_bar_121 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref aa207ef14cf3b938e28b4081162701953957c1d5 --output build/bar-refine-261 --locale bar --fallback-namespace-glob 'neoorigins_bar_common_*' --extra-namespace neoorigins_26_1 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 511cadcafe3027d2a56b4448652ec9b74e2f3b07 --output build/bar-refine-262 --locale bar --fallback-namespace-glob 'neoorigins_bar_common_*' --extra-namespace neoorigins_26_2 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Strict add-on audits
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_fantasy_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_furries_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_extended_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origin_architect_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Validate JSON and restore audit helpers
+        run: |
+          python3 scripts/validate.py
+          git checkout HEAD -- scripts/audit_*_upstream.py
+          git diff --check
+
+      - name: Commit refined Bavarian locale
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name 'bar.json' -print0 | xargs -0 -r git add
+          if git diff --cached --quiet; then echo 'No Bavarian refinements to commit.'; exit 0; fi
+          git commit -m 'Refine Bavarian localization context'
+          git fetch origin release/1.0.0-bavarian
+          git rebase origin/release/1.0.0-bavarian
+          git push origin HEAD:release/1.0.0-bavarian
+
+# Triggered after tightening the truncation guard.

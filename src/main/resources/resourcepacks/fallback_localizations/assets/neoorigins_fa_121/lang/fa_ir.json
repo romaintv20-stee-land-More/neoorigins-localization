@@ -1,0 +1,8 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "تجهیزاتی که می‌سازید برتر هستند - ابزارها سریع‌تر استخراج می‌شوند، سلاح‌ها با شدت بیشتری ضربه می‌خورند، زره‌ها سخت‌تر هستند، و همه چیز بیشتر دوام می‌آورد.",
+  "power.neoorigins.class_cook_smoker_xp.description": "غذای پخته شده در یک سیگاری یا کوره تغذیه اضافی دریافت می کند.",
+  "neoorigins.configuration.title": "پیکربندی مشترک NeoOrigins",
+  "reward.neoorigins.loot_pool": "NeoOrigins: اعطای مجموعه لوت",
+  "reward.neoorigins.loot_pool.loot_table": "جدول غارت",
+  "reward.neoorigins.loot_pool.rolls": "رول"
+}

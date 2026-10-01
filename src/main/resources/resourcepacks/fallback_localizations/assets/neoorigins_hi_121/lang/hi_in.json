@@ -1,0 +1,8 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "आपके द्वारा बनाए गए उपकरण श्रेष्ठ हैं - उपकरण तेजी से चलते हैं, हथियारों पर अधिक प्रहार होता है, कवच अधिक सख्त होता है, और सब कुछ लंबे समय तक चलता है।",
+  "power.neoorigins.class_cook_smoker_xp.description": "धुंआघर या भट्टी में पकाए गए भोजन से अतिरिक्त पोषण प्राप्त होता है।",
+  "neoorigins.configuration.title": "NeoOrigins सामान्य कॉन्फ़िगरेशन",
+  "reward.neoorigins.loot_pool": "NeoOrigins: लूट पूल प्रदान करें",
+  "reward.neoorigins.loot_pool.loot_table": "लूट टेबल",
+  "reward.neoorigins.loot_pool.rolls": "रोल्स"
+}

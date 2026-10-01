@@ -1,0 +1,136 @@
+name: Refine Bosnian localization
+
+on:
+  push:
+    branches:
+      - release/0.9.0-bosnian
+    paths:
+      - scripts/refine_bosnian.py
+      - .github/workflows/refine-bosnian.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-bosnian
+          fetch-depth: 0
+
+      - name: Restrict add-on audits to Bosnian
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          scripts = [
+              'scripts/audit_medievalorigins_upstream.py',
+              'scripts/audit_ibarnorigins_upstream.py',
+              'scripts/audit_origins_fantasy_upstream.py',
+              'scripts/audit_origins_backgrounds_upstream.py',
+              'scripts/audit_origins_more_backgrounds_upstream.py',
+              'scripts/audit_origins_backgrounds_iss_upstream.py',
+              'scripts/audit_origins_furries_upstream.py',
+              'scripts/audit_origins_classes_extended_upstream.py',
+              'scripts/audit_origins_classes_iss_upstream.py',
+              'scripts/audit_origin_architect_upstream.py',
+          ]
+          for filename in scripts:
+              path = Path(filename)
+              text = path.read_text(encoding='utf-8')
+              updated, count = re.subn(r'^LOCALES\s*=.*$', 'LOCALES = ("bs_ba",)', text, count=1, flags=re.M)
+              if count == 0:
+                  updated, count = re.subn(r'^DEFAULT_LOCALES\s*=.*$', 'DEFAULT_LOCALES = ("bs_ba",)', text, count=1, flags=re.M)
+              if count != 1:
+                  raise SystemExit(f'Could not patch locale list in {filename}')
+              path.write_text(updated, encoding='utf-8')
+          PY
+
+      - name: Apply Bosnian contextual refinement
+        run: python3 scripts/refine_bosnian.py
+
+      - name: Strict audit Bosnian NeoOrigins coverage
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref af467a3bc118f6bbc0970d68f7e03fa631d7e6f2 --output build/bs-refine-mc-1.21.1 --locale bs_ba --fallback-namespace-glob 'neoorigins_bs_common_*' --extra-namespace neoorigins_bs_121 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref aa207ef14cf3b938e28b4081162701953957c1d5 --output build/bs-refine-mc-26.1 --locale bs_ba --fallback-namespace-glob 'neoorigins_bs_common_*' --extra-namespace neoorigins_26_1 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 511cadcafe3027d2a56b4448652ec9b74e2f3b07 --output build/bs-refine-mc-26.2 --locale bs_ba --fallback-namespace-glob 'neoorigins_bs_common_*' --extra-namespace neoorigins_26_2 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Strict audit Bosnian add-on coverage
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_fantasy_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_furries_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_extended_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origin_architect_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Validate JSON localization structure
+        run: python3 scripts/validate.py
+
+      - name: Bosnian contextual QA
+        run: |
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+          root = Path('src/main/resources/resourcepacks/fallback_localizations/assets')
+          files = list(root.glob('**/lang/bs_ba.json'))
+          if len(files) != 29:
+              raise SystemExit(f'Expected 29 Bosnian source files, got {len(files)}')
+          merged = {}
+          values = []
+          for path in files:
+              data = json.loads(path.read_text(encoding='utf-8'))
+              merged.update(data)
+              values.extend(str(v) for v in data.values())
+          expected = {
+              'neoorigins.toggle.on': 'Sposobnost uključena',
+              'neoorigins.toggle.off': 'Sposobnost isključena',
+              'screen.neoorigins.choose_origin': 'Odaberi Origin',
+              'gui.neoorigins.detail.powers_header': 'Moći',
+              'key.neoorigins.class_skill': 'Vještina klase',
+              'power.neoorigins.class_rogue_backstab.name': 'Udarac s leđa',
+              'power.neoorigins.dwarf_darkvision.name': 'Vid u mraku',
+              'origins.origins_fantasy.orc.name': 'Ork',
+              'origins.origins_classes_iss.shadowcaster.name': 'Čarobnjak sjene',
+          }
+          bad = {k: (merged.get(k), v) for k, v in expected.items() if merged.get(k) != v}
+          if bad:
+              raise SystemExit(f'Bosnian contextual overrides failed: {bad}')
+          text = '\n'.join(values)
+          latin_chars = len(re.findall(r'[A-Za-zČĆĐŠŽčćđšž]', text))
+          diacritics = len(re.findall(r'[ČĆĐŠŽčćđšž]', text))
+          markers = len(re.findall(r'\b(?:je|se|da|na|za|od|do|sa|samo|može|možete|kada|ako|nije|koji|koja|koje|igrač|igrača|snaga|moć|moći|štetu|vrijeme|biće|čarolija|odbrana|vještina)\b', text, flags=re.I))
+          if latin_chars < 70000 or diacritics < 1000 or markers < 500:
+              raise SystemExit(f'Bosnian contextual sanity failed: latin={latin_chars}, diacritics={diacritics}, markers={markers}')
+          print(f'Bosnian contextual QA passed: {len(files)} files, {latin_chars} Latin chars, {diacritics} diacritics, {markers} lexical markers')
+          PY
+
+      - name: Restore temporary audit-script changes
+        if: always()
+        run: git checkout HEAD -- scripts/audit_*_upstream.py
+
+      - name: Check whitespace
+        run: git diff --check
+
+      - name: Commit refined Bosnian localization
+        if: success()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name 'bs_ba.json' -print0 | xargs -0 -r git add
+          if git diff --cached --quiet; then
+            echo 'No Bosnian refinement changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Refine Bosnian localization context'
+          git fetch origin release/0.9.0-bosnian
+          git rebase origin/release/0.9.0-bosnian
+          git push origin HEAD:release/0.9.0-bosnian

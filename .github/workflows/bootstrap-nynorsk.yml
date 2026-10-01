@@ -1,0 +1,205 @@
+name: Bootstrap Nynorsk localization
+
+on:
+  push:
+    branches:
+      - release/0.9.0-nynorsk
+    paths:
+      - scripts/bootstrap_nynorsk.py
+      - .github/workflows/bootstrap-nynorsk.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-nynorsk
+
+      - name: Install Bokmal-Nynorsk translator
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y apertium apertium-nno-nob
+          printf 'Du trenger ikke sove, men du husker dette stedet.\n' | apertium -u nob-nno
+
+      - name: Restrict add-on audits to Nynorsk
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          scripts = [
+              'scripts/audit_medievalorigins_upstream.py',
+              'scripts/audit_ibarnorigins_upstream.py',
+              'scripts/audit_origins_fantasy_upstream.py',
+              'scripts/audit_origins_backgrounds_upstream.py',
+              'scripts/audit_origins_more_backgrounds_upstream.py',
+              'scripts/audit_origins_backgrounds_iss_upstream.py',
+              'scripts/audit_origins_furries_upstream.py',
+              'scripts/audit_origins_classes_extended_upstream.py',
+              'scripts/audit_origins_classes_iss_upstream.py',
+              'scripts/audit_origin_architect_upstream.py',
+          ]
+          for filename in scripts:
+              path = Path(filename)
+              text = path.read_text(encoding='utf-8')
+              updated, count = re.subn(r'^LOCALES\s*=.*$', 'LOCALES = ("nn_no",)', text, count=1, flags=re.M)
+              if count == 0:
+                  updated, count = re.subn(r'^DEFAULT_LOCALES\s*=.*$', 'DEFAULT_LOCALES = ("nn_no",)', text, count=1, flags=re.M)
+              if count != 1:
+                  raise SystemExit(f'Could not patch locale list in {filename}')
+              path.write_text(updated, encoding='utf-8')
+          PY
+
+      - name: Discover Nynorsk NeoOrigins coverage
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref 860ecdb24e723983e93004ea8ceb5de90ccf0d70 --output build/nn-discovery-mc-1.21.1 --locale nn_no
+          python3 scripts/audit_neoorigins_upstream.py --ref 3c1c7365507679c836d3c14af5d4dd0654652e87 --output build/nn-discovery-mc-26.1 --locale nn_no
+          python3 scripts/audit_neoorigins_upstream.py --ref 65864716a5a796fa1c51ec3e8a6d9640abebb4ca --output build/nn-discovery-mc-26.2 --locale nn_no
+
+      - name: Discover Nynorsk add-on coverage and English sources
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format
+          python3 scripts/audit_origins_fantasy_upstream.py
+          python3 scripts/audit_origins_backgrounds_upstream.py
+          python3 scripts/audit_origins_more_backgrounds_upstream.py
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py
+          python3 scripts/audit_origins_furries_upstream.py
+          python3 scripts/audit_origins_classes_extended_upstream.py
+          python3 scripts/audit_origins_classes_iss_upstream.py
+          python3 scripts/audit_origin_architect_upstream.py
+
+      - name: Generate Nynorsk fallback files
+        run: python3 scripts/bootstrap_nynorsk.py
+
+      - name: Prune add-on keys already translated upstream
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --prune
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --prune
+          python3 scripts/audit_origins_fantasy_upstream.py --prune
+          python3 scripts/audit_origins_backgrounds_upstream.py --prune
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --prune
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --prune
+          python3 scripts/audit_origins_furries_upstream.py --prune
+          python3 scripts/audit_origins_classes_extended_upstream.py --prune
+          python3 scripts/audit_origins_classes_iss_upstream.py --prune
+          python3 scripts/audit_origin_architect_upstream.py --prune
+
+      - name: Strict audit Nynorsk NeoOrigins coverage
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref 860ecdb24e723983e93004ea8ceb5de90ccf0d70 --output build/nn-audit-mc-1.21.1 --locale nn_no --fallback-namespace-glob 'neoorigins_nn_common_*' --extra-namespace neoorigins_nn_121 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 3c1c7365507679c836d3c14af5d4dd0654652e87 --output build/nn-audit-mc-26.1 --locale nn_no --fallback-namespace-glob 'neoorigins_nn_common_*' --extra-namespace neoorigins_26_1 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 65864716a5a796fa1c51ec3e8a6d9640abebb4ca --output build/nn-audit-mc-26.2 --locale nn_no --fallback-namespace-glob 'neoorigins_nn_common_*' --extra-namespace neoorigins_26_2 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Strict audit Nynorsk add-on coverage
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_fantasy_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_furries_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_extended_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origin_architect_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Validate JSON localization structure
+        run: python3 scripts/validate.py
+
+      - name: Sanity-check Nynorsk conversion
+        run: |
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+          root = Path('src/main/resources/resourcepacks/fallback_localizations/assets')
+          files = list(root.glob('**/lang/nn_no.json'))
+          if not files:
+              raise SystemExit('No nn_no localization files found')
+          values = [str(v).lower() for path in files for v in json.loads(path.read_text(encoding='utf-8')).values()]
+          text = '\n'.join(values)
+          markers = len(re.findall(r'\b(ikkje|frå|berre|sjølv|kvar|kva|utan|noko|nokon|desse|dei|eit|ein|òg|mykje|mogleg|høg|låg|gjer|vert|opna|forsterking|målar)\b', text))
+          if markers < 250:
+              raise SystemExit(f'Nynorsk lexical sanity check too low: {markers}')
+          changed = 0
+          compared = 0
+          for nn_path in files:
+              ns = nn_path.parents[1].name
+              if ns.startswith('neoorigins_nn_common_'):
+                  no_ns = ns.replace('neoorigins_nn_common_', 'neoorigins_no_common_', 1)
+              elif ns == 'neoorigins_nn_121':
+                  no_ns = 'neoorigins_no_121'
+              else:
+                  no_ns = ns
+              no_path = root / no_ns / 'lang/no_no.json'
+              if not no_path.exists():
+                  continue
+              nn = json.loads(nn_path.read_text(encoding='utf-8'))
+              no = json.loads(no_path.read_text(encoding='utf-8'))
+              for key, value in nn.items():
+                  if key in no:
+                      compared += 1
+                      changed += value != no[key]
+          if changed < 500:
+              raise SystemExit(f'Nynorsk differs from Bokmal in too few strings: {changed}/{compared}')
+          print(f'Nynorsk sanity passed: {markers} lexical markers; {changed}/{compared} compared strings differ across {len(files)} files')
+          PY
+
+      - name: Add Nynorsk target packaging switch
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('build.gradle')
+          text = path.read_text(encoding='utf-8')
+          if 'includeNynorsk121Translations' not in text:
+              anchor = "def includeHindi121Translations = (project.findProperty('include_hindi_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()\n"
+              if anchor not in text:
+                  raise SystemExit('Hindi Gradle definition anchor not found')
+              text = text.replace(anchor, anchor + "def includeNynorsk121Translations = (project.findProperty('include_nynorsk_121_translations') ?: defaultInclude121Translations.toString()).toBoolean()\n", 1)
+              anchor = "    inputs.property 'include_hindi_121_translations', includeHindi121Translations\n"
+              if anchor not in text:
+                  raise SystemExit('Hindi Gradle input anchor not found')
+              text = text.replace(anchor, anchor + "    inputs.property 'include_nynorsk_121_translations', includeNynorsk121Translations\n", 1)
+              anchor = "    if (!includeHindi121Translations) {\n        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_hi_121/**'\n    }\n"
+              if anchor not in text:
+                  raise SystemExit('Hindi Gradle exclusion anchor not found')
+              block = anchor + "\n    if (!includeNynorsk121Translations) {\n        exclude 'resourcepacks/fallback_localizations/assets/neoorigins_nn_121/**'\n    }\n"
+              text = text.replace(anchor, block, 1)
+              path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Restore temporary audit-script changes
+        if: always()
+        run: git checkout HEAD -- scripts/audit_*_upstream.py
+
+      - name: Upload Nynorsk audit reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: nynorsk-localization-audits-${{ github.sha }}
+          path: |
+            build/nn-discovery-*
+            build/nn-audit-*
+            build/*-upstream-audit
+          if-no-files-found: warn
+
+      - name: Commit validated Nynorsk translations
+        if: success()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name 'nn_no.json' -print0 | xargs -0 -r git add
+          git add build.gradle
+          if git diff --cached --quiet; then
+            echo 'No Nynorsk translation changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Add Nynorsk localization fallback'
+          git fetch origin release/0.9.0-nynorsk
+          git rebase origin/release/0.9.0-nynorsk
+          git push origin HEAD:release/0.9.0-nynorsk

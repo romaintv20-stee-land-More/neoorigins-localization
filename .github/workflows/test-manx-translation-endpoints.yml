@@ -1,0 +1,61 @@
+name: Test Manx translation endpoints
+
+on:
+  push:
+    branches:
+      - release/1.0.0-manx
+    paths:
+      - .github/workflows/test-manx-translation-endpoints.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Probe Google Manx endpoints
+        run: |
+          python3 - <<'PY'
+          import json
+          import urllib.parse
+          import urllib.request
+          import urllib.error
+
+          endpoints = [
+              'https://translate.google.com/translate_a/single',
+              'https://translate.googleapis.com/translate_a/single',
+          ]
+          samples = [
+              'Choose your origin',
+              'Your abilities are suppressed.',
+              '%1$s had their soul ripped apart by %2$s',
+          ]
+          text = '\nZXQSEP0000QXZ\n'.join(samples)
+          body = urllib.parse.urlencode({
+              'client': 'gtx', 'sl': 'en', 'tl': 'gv', 'dt': 't',
+              'ie': 'UTF-8', 'oe': 'UTF-8', 'q': text,
+          }).encode('utf-8')
+          for endpoint in endpoints:
+              req = urllib.request.Request(
+                  endpoint,
+                  data=body,
+                  method='POST',
+                  headers={
+                      'User-Agent': 'Mozilla/5.0',
+                      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+                  },
+              )
+              try:
+                  with urllib.request.urlopen(req, timeout=30) as response:
+                      raw = response.read().decode('utf-8')
+                      payload = json.loads(raw)
+                      translated = ''.join(seg[0] for seg in payload[0] if seg and seg[0])
+                      print(endpoint, 'HTTP', response.status)
+                      print(translated)
+              except urllib.error.HTTPError as exc:
+                  print(endpoint, 'HTTP', exc.code, exc.reason)
+              except Exception as exc:
+                  print(endpoint, 'ERROR', repr(exc))
+          PY

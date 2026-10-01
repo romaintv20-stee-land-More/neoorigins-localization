@@ -1,0 +1,65 @@
+name: Sync Persian 0.9.0 metadata
+
+on:
+  push:
+    branches:
+      - release/0.9.0-persian
+    paths:
+      - .github/workflows/sync-metadata-persian.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-persian
+
+      - name: Update catalog metadata
+        run: |
+          python3 scripts/update_catalog_persian.py
+          python3 scripts/generate_catalog.py
+
+      - name: Update README metadata
+        run: python3 scripts/update_readme_persian.py
+
+      - name: Validate Persian metadata
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          catalog = json.loads(Path('catalog.json').read_text(encoding='utf-8'))
+          if catalog['project']['supported_locale_count'] != 41:
+              raise SystemExit('catalog locale count is not 41')
+          for project in catalog['supported_projects']:
+              if 'fa_ir' not in project['languages']:
+                  raise SystemExit(f"fa_ir missing from {project['id']}")
+          readme = Path('README.md').read_text(encoding='utf-8')
+          required = ['Les quarante et une langues', 'Persan (`fa_ir`)', 'Pour le persan :', '2 296/2 296', '2 307/2 307', '/ NN / FA']
+          missing = [item for item in required if item not in readme]
+          if missing:
+              raise SystemExit(f'README Persian markers missing: {missing}')
+          catalog_md = Path('CATALOG.md').read_text(encoding='utf-8')
+          if 'fa_ir' not in catalog_md or 'فارسی' not in catalog_md:
+              raise SystemExit('CATALOG.md Persian markers missing')
+          print('Persian metadata validation passed: 41 locales')
+          PY
+
+      - name: Commit Persian metadata
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add catalog.json CATALOG.md README.md
+          if git diff --cached --quiet; then
+            echo 'No Persian metadata changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Document Persian localization in 0.9.0 beta'
+          git fetch origin release/0.9.0-persian
+          git rebase origin/release/0.9.0-persian
+          git push origin HEAD:release/0.9.0-persian

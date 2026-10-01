@@ -8,7 +8,7 @@ import urllib.request
 
 ROOT = Path(__file__).resolve().parents[1]
 PACK_ROOT = ROOT / "src/main/resources/resourcepacks/fallback_localizations/assets"
-LOCALES = ("fr_fr", "de_de", "es_es", "pt_br", "nl_nl", "it_it", "pl_pl", "ru_ru", "tr_tr", "zh_cn", "cs_cz", "hu_hu")
+LOCALES = ("fr_fr", "de_de", "es_es", "pt_br", "nl_nl", "it_it", "pl_pl", "ru_ru", "tr_tr", "zh_cn", "cs_cz", "hu_hu", "ja_jp", "ko_kr", "uk_ua", "id_id", "sv_se", "nds_de")
 DEFAULT_REF = "f58a6261292942d4123c46ff221fbdade138a329"
 DEFAULT_NAMESPACE = "originsmodernui"
 RAW_BASE = "https://raw.githubusercontent.com/ReoTpak/origin-architect-modern-uI/{ref}/src/main/resources/assets/originsmodernui/lang/{locale}.json"
@@ -36,6 +36,7 @@ def main():
     parser.add_argument("--ref", default=DEFAULT_REF)
     parser.add_argument("--namespace", default=DEFAULT_NAMESPACE)
     parser.add_argument("--output", default=str(ROOT / "build/origin-architect-upstream-audit"))
+    parser.add_argument("--prune", action="store_true")
     parser.add_argument("--fail-on-overlap", action="store_true")
     parser.add_argument("--fail-on-missing", action="store_true")
     parser.add_argument("--fail-on-placeholders", action="store_true")
@@ -64,6 +65,17 @@ def main():
         for key in sorted(set(fallback) & set(en)):
             if placeholders(en[key]) != placeholders(fallback[key]):
                 placeholder_errors.append(key)
+
+        if args.prune and path.exists() and overlap:
+            fallback = {k: v for k, v in fallback.items() if k not in official}
+            if fallback:
+                path.write_text(json.dumps(fallback, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+            else:
+                path.unlink()
+            overlap = []
+            stale = sorted(set(fallback) - set(en))
+            missing = sorted(set(missing_upstream) - set(fallback))
+
         any_overlap |= bool(overlap)
         any_missing |= bool(missing)
         any_placeholder_error |= bool(placeholder_errors)

@@ -46,6 +46,11 @@ try:
             rel = lang.get("file")
             if rel and not (ROOT / rel).exists():
                 errors.append(f"catalog.json: fichier absent pour {project['id']} / {locale}: {rel}")
+            rel_glob = lang.get("files_glob")
+            if rel_glob:
+                matches = sorted(ROOT.glob(rel_glob))
+                if not matches:
+                    errors.append(f"catalog.json: aucun fichier pour {project['id']} / {locale}: {rel_glob}")
 except Exception as exc:
     errors.append(f"catalog.json invalide: {exc}")
 

@@ -1,0 +1,66 @@
+name: Finalize Kyrgyz visible names
+
+on:
+  push:
+    branches:
+      - release/0.9.0-kyrgyz
+    paths:
+      - scripts/finalize_kyrgyz_visible_names.py
+      - .github/workflows/finalize-kyrgyz-visible-names.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-kyrgyz
+
+      - name: Apply final visible-name fixes
+        run: python3 scripts/finalize_kyrgyz_visible_names.py
+
+      - name: Validate JSON localization structure
+        run: python3 scripts/validate.py
+
+      - name: Verify final Kyrgyz terminology
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          expected = {
+              'origins.neoorigins.class_nitwit.name': 'Аңкоо',
+              'origins.neoorigins.kraken.name': 'Кракен',
+              'origins.neoorigins.sculkborn.name': 'Скалкборн',
+              'origins.neoorigins.enderian.name': 'Эндериан',
+              'origins.neoorigins.sylvan.name': 'Сильван',
+              'origins.neoorigins.voidwalker.name': 'Боштук кезгини',
+              'origins.neoorigins.class_lumberjack.name': 'Токойчу',
+              'origins.neoorigins.wraith.name': 'Арбак',
+          }
+          merged = {}
+          for path in Path('src/main/resources/resourcepacks/fallback_localizations/assets').glob('**/lang/ky_kg.json'):
+              merged.update(json.loads(path.read_text(encoding='utf-8')))
+          bad = {k: merged.get(k) for k, v in expected.items() if merged.get(k) != v}
+          if bad:
+              raise SystemExit(f'Final Kyrgyz terminology mismatch: {bad}')
+          print('Final Kyrgyz terminology checks passed')
+          PY
+
+      - name: Commit final Kyrgyz names
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name 'ky_kg.json' -print0 | xargs -0 -r git add
+          if git diff --cached --quiet; then
+            echo 'No final Kyrgyz changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Finalize Kyrgyz visible names'
+          git fetch origin release/0.9.0-kyrgyz
+          git rebase origin/release/0.9.0-kyrgyz
+          git push origin HEAD:release/0.9.0-kyrgyz

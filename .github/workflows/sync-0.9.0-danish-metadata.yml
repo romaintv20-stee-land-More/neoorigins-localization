@@ -1,0 +1,49 @@
+name: Sync 0.9.0 Danish metadata
+
+on:
+  push:
+    branches: [ release/0.9.0-beta ]
+    paths:
+      - 'scripts/update_catalog_danish.py'
+      - 'scripts/update_readme_danish.py'
+      - '.github/workflows/sync-0.9.0-danish-metadata.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-beta
+
+      - name: Update catalog and README
+        run: |
+          python3 scripts/update_catalog_danish.py
+          python3 scripts/update_readme_danish.py
+          python3 scripts/generate_catalog.py
+
+      - name: Validate metadata
+        run: |
+          python3 -m json.tool catalog.json >/dev/null
+          grep -q '"supported_locale_count": 18' catalog.json
+          grep -q '"da_dk"' catalog.json
+          grep -q '0.9.0-beta+1.21.1' catalog.json
+          grep -q 'Danois (`da_dk`)' README.md
+          grep -q 'Dansk (`da_dk`)' CATALOG.md
+
+      - name: Commit synchronized metadata
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add catalog.json CATALOG.md README.md
+          if git diff --cached --quiet; then
+            echo 'Metadata already synchronized.'
+            exit 0
+          fi
+          git commit -m 'Document Danish localization in 0.9.0 beta'
+          git push origin HEAD:release/0.9.0-beta

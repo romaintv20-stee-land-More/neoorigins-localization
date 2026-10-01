@@ -1,0 +1,8 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "อุปกรณ์ที่คุณประดิษฐ์นั้นเหนือกว่า — เครื่องมือขุดเร็วขึ้น อาวุธถูกโจมตีมากขึ้น เกราะแข็งแกร่งขึ้น และทุกอย่างอยู่ได้นานกว่า",
+  "power.neoorigins.class_cook_smoker_xp.description": "อาหารที่ปรุงด้วยเครื่องรมควันหรือเตาไฟจะได้รับสารอาหารเพิ่มเติม",
+  "neoorigins.configuration.title": "การกำหนดค่าทั่วไปของ NeoOrigins",
+  "reward.neoorigins.loot_pool": "NeoOrigins: มอบ Loot Pool",
+  "reward.neoorigins.loot_pool.loot_table": "ตารางปล้น",
+  "reward.neoorigins.loot_pool.rolls": "โรล"
+}

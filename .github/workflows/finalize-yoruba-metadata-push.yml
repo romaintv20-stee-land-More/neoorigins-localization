@@ -1,0 +1,63 @@
+name: Finalize Yoruba metadata push
+
+on:
+  push:
+    branches:
+      - release/0.9.0-yoruba
+    paths:
+      - '.github/workflows/finalize-yoruba-metadata-push.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  metadata:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact metadata source
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Finalize Yoruba metadata
+        run: python3 scripts/finalize_yoruba_metadata.py
+
+      - name: Assert metadata state
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          catalog = json.loads(Path('catalog.json').read_text(encoding='utf-8'))
+          if catalog['project']['supported_locale_count'] != 75:
+              raise SystemExit('catalog supported_locale_count is not 75')
+          projects = catalog['supported_projects']
+          missing = [p.get('id') for p in projects if 'yo_ng' not in p.get('languages', {})]
+          if missing:
+              raise SystemExit(f'yo_ng missing from catalog project languages: {missing}')
+          readme = Path('README.md').read_text(encoding='utf-8')
+          if readme.count('| 75 |') != 3 or 'Yoruba (`yo_ng`)' not in readme:
+              raise SystemExit('README Yoruba/75-language metadata assertion failed')
+          cat = Path('CATALOG.md').read_text(encoding='utf-8')
+          if cat.count('Yorùbá (`yo_ng`)') < 11:
+              raise SystemExit('CATALOG Yoruba entries incomplete')
+          print('Yoruba metadata assertions passed')
+          PY
+
+      - name: Validate repository JSON and whitespace
+        run: |
+          python3 scripts/validate.py
+          git diff --check
+
+      - name: Commit Yoruba metadata
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add catalog.json CATALOG.md README.md
+          if git diff --cached --quiet; then
+            echo 'No Yoruba metadata changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Add Yoruba localization metadata'
+          git fetch origin release/0.9.0-yoruba
+          git rebase origin/release/0.9.0-yoruba
+          git push origin HEAD:release/0.9.0-yoruba

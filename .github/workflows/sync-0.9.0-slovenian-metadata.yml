@@ -1,0 +1,63 @@
+name: Sync 0.9.0 Slovenian metadata
+
+on:
+  push:
+    branches:
+      - release/0.9.0-beta
+    paths:
+      - 'src/main/resources/resourcepacks/fallback_localizations/assets/**/sl_si.json'
+      - 'scripts/update_catalog_slovenian.py'
+      - 'scripts/update_readme_slovenian.py'
+      - '.github/workflows/sync-0.9.0-slovenian-metadata.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-beta
+
+      - name: Update catalog and README
+        run: |
+          python3 scripts/update_catalog_slovenian.py
+          python3 scripts/generate_catalog.py
+          python3 scripts/update_readme_slovenian.py
+
+      - name: Validate metadata
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          catalog = json.loads(Path('catalog.json').read_text(encoding='utf-8'))
+          if catalog['project']['supported_locale_count'] != 29:
+              raise SystemExit('catalog locale count is not 29')
+          for project in catalog['supported_projects']:
+              if project['languages'].get('sl_si', {}).get('status') != 'supported':
+                  raise SystemExit(f"sl_si missing from {project['id']}")
+          readme = Path('README.md').read_text(encoding='utf-8')
+          if 'Slovène (`sl_si`)' not in readme or 'Les vingt-neuf langues' not in readme:
+              raise SystemExit('README Slovenian metadata missing')
+          if 'Couverture CS / HU / JA / KO / UK / ID / SV / DA / FI / NO / RO / EL / BG / VI / AR / HE / TH / SK / SL' not in readme:
+              raise SystemExit('README Slovenian coverage header missing')
+          print('Slovenian metadata validation passed')
+          PY
+
+      - name: Commit synchronized metadata
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add catalog.json CATALOG.md README.md
+          if git diff --cached --quiet; then
+            echo 'No metadata changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Document Slovenian localization in 0.9.0 beta'
+          git fetch origin release/0.9.0-beta
+          git rebase origin/release/0.9.0-beta
+          git push origin HEAD:release/0.9.0-beta

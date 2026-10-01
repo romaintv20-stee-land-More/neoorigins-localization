@@ -1,0 +1,138 @@
+name: Refine Breton localization
+
+on:
+  push:
+    branches:
+      - release/0.9.0-breton
+    paths:
+      - scripts/refine_breton.py
+      - .github/workflows/refine-breton.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-breton
+          fetch-depth: 0
+
+      - name: Restrict add-on audits to Breton
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          scripts = [
+              'scripts/audit_medievalorigins_upstream.py',
+              'scripts/audit_ibarnorigins_upstream.py',
+              'scripts/audit_origins_fantasy_upstream.py',
+              'scripts/audit_origins_backgrounds_upstream.py',
+              'scripts/audit_origins_more_backgrounds_upstream.py',
+              'scripts/audit_origins_backgrounds_iss_upstream.py',
+              'scripts/audit_origins_furries_upstream.py',
+              'scripts/audit_origins_classes_extended_upstream.py',
+              'scripts/audit_origins_classes_iss_upstream.py',
+              'scripts/audit_origin_architect_upstream.py',
+          ]
+          for filename in scripts:
+              path = Path(filename)
+              text = path.read_text(encoding='utf-8')
+              updated, count = re.subn(r'^LOCALES\s*=.*$', 'LOCALES = ("br_fr",)', text, count=1, flags=re.M)
+              if count == 0:
+                  updated, count = re.subn(r'^DEFAULT_LOCALES\s*=.*$', 'DEFAULT_LOCALES = ("br_fr",)', text, count=1, flags=re.M)
+              if count != 1:
+                  raise SystemExit(f'Could not patch locale list in {filename}')
+              path.write_text(updated, encoding='utf-8')
+          PY
+
+      - name: Apply Breton contextual refinement
+        run: python3 scripts/refine_breton.py
+
+      - name: Strict audit Breton NeoOrigins coverage
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref af467a3bc118f6bbc0970d68f7e03fa631d7e6f2 --output build/br-refine-mc-1.21.1 --locale br_fr --fallback-namespace-glob 'neoorigins_br_common_*' --extra-namespace neoorigins_br_121 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref aa207ef14cf3b938e28b4081162701953957c1d5 --output build/br-refine-mc-26.1 --locale br_fr --fallback-namespace-glob 'neoorigins_br_common_*' --extra-namespace neoorigins_26_1 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 511cadcafe3027d2a56b4448652ec9b74e2f3b07 --output build/br-refine-mc-26.2 --locale br_fr --fallback-namespace-glob 'neoorigins_br_common_*' --extra-namespace neoorigins_26_2 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Strict audit Breton add-on coverage
+        run: |
+          python3 scripts/audit_medievalorigins_upstream.py --ref 1.21.1-fabric --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_ibarnorigins_upstream.py --ref multiloader-1.21.1-new-pack-format --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_fantasy_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_more_backgrounds_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_backgrounds_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_furries_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_extended_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origins_classes_iss_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_origin_architect_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Validate JSON localization structure
+        run: python3 scripts/validate.py
+
+      - name: Breton contextual QA
+        run: |
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+          root = Path('src/main/resources/resourcepacks/fallback_localizations/assets')
+          files = list(root.glob('**/lang/br_fr.json'))
+          if len(files) != 29:
+              raise SystemExit(f'Expected 29 Breton source files, got {len(files)}')
+          merged = {}
+          values = []
+          for path in files:
+              data = json.loads(path.read_text(encoding='utf-8'))
+              merged.update(data)
+              values.extend(str(v) for v in data.values())
+          expected = {
+              'neoorigins.toggle.on': 'Galloud gweredekaet',
+              'neoorigins.toggle.off': 'Galloud diweredekaet',
+              'screen.neoorigins.choose_origin': 'Dibabit un Origin',
+              'gui.neoorigins.detail.powers_header': 'Galloudoù',
+              'key.neoorigins.class_skill': "Barregezh ar c'hlas",
+              'power.neoorigins.class_rogue_backstab.name': 'Taol en kein',
+              'power.neoorigins.dwarf_darkvision.name': 'Gwelet en deñvalijenn',
+              'origins.origins_fantasy.orc.name': 'Ork',
+              'origins.origins_classes_iss.shadowcaster.name': 'Hudour ar skeud',
+          }
+          bad = {k: (merged.get(k), v) for k, v in expected.items() if merged.get(k) != v}
+          if bad:
+              raise SystemExit(f'Breton contextual overrides failed: {bad}')
+          text = '\n'.join(values)
+          latin_chars = len(re.findall(r'[A-Za-zÀ-ÿ]', text))
+          breton_signals = len(re.findall(r"(?:c'h|C'h|ñ|Ñ|ù|Ù|ê|Ê|û|Û|ô|Ô)", text))
+          markers = len(re.findall(r"\b(?:ar|an|ur|ul|evit|gant|war|eus|evel|hep|ouzh|dre|da|eo|galloud|galloudoù|tizh|freuz|buhez|krouiñ|gwelet|kreñvder|teñvalijenn|dibabit|klask)\b", text, flags=re.I))
+          if latin_chars < 80000 or breton_signals < 500 or markers < 500:
+              raise SystemExit(f'Breton contextual sanity failed: latin={latin_chars}, signals={breton_signals}, markers={markers}')
+          if 'Neorigins' in text or 'Neoorigins' in text:
+              raise SystemExit('Non-canonical NeoOrigins branding remains in Breton values')
+          print(f'Breton contextual QA passed: {len(files)} files, {latin_chars} Latin chars, {breton_signals} Breton orthographic signals, {markers} lexical markers')
+          PY
+
+      - name: Restore temporary audit-script changes
+        if: always()
+        run: git checkout HEAD -- scripts/audit_*_upstream.py
+
+      - name: Check whitespace
+        run: git diff --check
+
+      - name: Commit refined Breton localization
+        if: success()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name 'br_fr.json' -print0 | xargs -0 -r git add
+          if git diff --cached --quiet; then
+            echo 'No Breton refinement changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Refine Breton localization context'
+          git fetch origin release/0.9.0-breton
+          git rebase origin/release/0.9.0-breton
+          git push origin HEAD:release/0.9.0-breton

@@ -1,0 +1,47 @@
+name: Smoke Limburgish NLLB 1.3B quality
+
+on:
+  push:
+    branches: [release/1.0.0-limburgish]
+    paths: [.github/workflows/smoke-limburgish-13b.yml]
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install runtime
+        run: |
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+          pip install 'transformers<5' sentencepiece protobuf
+      - name: Translate representative Limburgish strings
+        run: |
+          python3 - <<'PY'
+          import torch
+          from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+          model_id='facebook/nllb-200-distilled-1.3B'
+          src='eng_Latn'; tgt='lim_Latn'
+          tests=[
+            'Charging Soul Fireball',
+            'Grant Sand Person Attributes',
+            'Homing Wither Skull',
+            'Choose your origin',
+            'The primordial soul flame burning within you instills fear in all but the bravest Piglins.',
+            'You cannot wear armor higher than iron armor.',
+            'Soul Sorcerers\' soul fireball ability. Fires a soul fireball on effect resolution.',
+            'Half-living half-undead amalgamates who became permanently infused with withering powers as a result of fusions with wither cores.',
+          ]
+          tok=AutoTokenizer.from_pretrained(model_id,src_lang=src)
+          model=AutoModelForSeq2SeqLM.from_pretrained(model_id); model.eval()
+          tid=tok.convert_tokens_to_ids(tgt)
+          enc=tok(tests,return_tensors='pt',padding=True,truncation=True,max_length=512)
+          with torch.inference_mode():
+            out=model.generate(**enc,forced_bos_token_id=tid,num_beams=4,max_new_tokens=256,early_stopping=True)
+          values=tok.batch_decode(out,skip_special_tokens=True)
+          for s,v in zip(tests,values): print(f'SOURCE: {s}\nLIMBURGISH: {v}\n---',flush=True)
+          PY

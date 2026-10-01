@@ -1,0 +1,60 @@
+name: Sync Lithuanian handoff
+
+on:
+  push:
+    branches:
+      - release/0.9.0-beta
+    paths:
+      - scripts/update_handoff_lithuanian.py
+      - .github/workflows/sync-handoff-lithuanian.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-beta
+
+      - name: Update handoff
+        run: python3 scripts/update_handoff_lithuanian.py
+
+      - name: Validate handoff
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          text = Path('PROJECT_HANDOFF.txt').read_text(encoding='utf-8')
+          required = [
+              '0.9.0 development currently has 35 locales:',
+              '- 35: Lithuanian / lt_lt',
+              '23. LITHUANIAN 0.9.0 STATUS',
+              'run ID 34276928531: SUCCESS on all three jobs',
+              'artifact ID 10076110046',
+              'artifact ID 10076111874',
+              'artifact ID 10076117965',
+              'NEXT LANGUAGE = language 36.',
+          ]
+          missing = [x for x in required if x not in text]
+          if missing:
+              raise SystemExit(f'Missing Lithuanian handoff markers: {missing}')
+          print('Lithuanian handoff validation passed')
+          PY
+
+      - name: Commit handoff
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add PROJECT_HANDOFF.txt
+          if git diff --cached --quiet; then
+            echo 'No handoff changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Finalize Lithuanian 0.9.0 handoff'
+          git fetch origin release/0.9.0-beta
+          git rebase origin/release/0.9.0-beta
+          git push origin HEAD:release/0.9.0-beta

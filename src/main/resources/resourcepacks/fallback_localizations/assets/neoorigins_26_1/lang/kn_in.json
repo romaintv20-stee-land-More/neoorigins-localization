@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "ನೀವು ತಯಾರಿಸಿದ ಉಪಕರಣಗಳು ಬೋನಸ್ ಗುಣಲಕ್ಷಣಗಳನ್ನು ಪಡೆಯುತ್ತವೆ - ಕಠಿಣತೆ, ಹಾನಿ ಅಥವಾ ಗಣಿಗಾರಿಕೆ ವೇಗ.",
+  "power.neoorigins.class_cook_smoker_xp.description": "ಧೂಮಪಾನಿಗಳಲ್ಲಿ ಅಡುಗೆ ಮಾಡುವ ಆಹಾರದಿಂದ ಡಬಲ್ ಎಕ್ಸ್‌ಪಿಯನ್ನು ಪಡೆಯುತ್ತದೆ.",
+  "neoorigins.configuration.title": "NeoOrigins ಕಾನ್ಫಿಗರೇಶನ್",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "ಆಟದ ಆಟ",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "NeoOrigins ಗೇಮ್‌ಪ್ಲೇ ಸೆಟ್ಟಿಂಗ್‌ಗಳು",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "ನಿರ್ವಾಹಕರು ಮತ್ತು ಅನುಮತಿಗಳು",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "NeoOrigins ನಿರ್ವಾಹಕ ಸೆಟ್ಟಿಂಗ್‌ಗಳು",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "ಪವರ್ ಅತಿಕ್ರಮಿಸುತ್ತದೆ",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "NeoOrigins ಪವರ್ ಅತಿಕ್ರಮಿಸುತ್ತದೆ",
+  "neoorigins.configuration.section.neoorigins.content.toml": "ಮೂಲಗಳು ಮತ್ತು ತರಗತಿಗಳು",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "NeoOrigins ಮೂಲ ಮತ್ತು ವರ್ಗ ಟಾಗಲ್‌ಗಳು",
+  "neoorigins.configuration.section.neoorigins.client.toml": "ಕ್ಲೈಂಟ್ ಪ್ರದರ್ಶನ",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "NeoOrigins ಕ್ಲೈಂಟ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳು",
+  "neoorigins.configuration.show_cooldown_countdown": "ಕೂಲ್‌ಡೌನ್ ಕೌಂಟ್‌ಡೌನ್ ತೋರಿಸಿ",
+  "neoorigins.configuration.cooldown_countdown_opacity": "ಕೂಲ್‌ಡೌನ್ ಕೌಂಟ್‌ಡೌನ್ ಅಪಾರದರ್ಶಕತೆ (%)",
+  "neoorigins.configuration.hud_ability_display": "ಸಾಮರ್ಥ್ಯ HUD ಪ್ರದರ್ಶನ ಮೋಡ್",
+  "neoorigins.configuration.always_show_ability_icons": "ಯಾವಾಗಲೂ ಸಾಮರ್ಥ್ಯದ ಐಕಾನ್‌ಗಳನ್ನು ತೋರಿಸಿ"
+}

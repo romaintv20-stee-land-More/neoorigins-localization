@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "Įranga, kurią kuriate, gauna papildomų atributų – tvirtumo, žalos ar kasimo greičio.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Gamindami maistą rūkykloje gausite dvigubą XP.",
+  "neoorigins.configuration.title": "NeoOrigins konfigūracija",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Žaidimo eiga",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "„NeoOrigins“ žaidimo nustatymai",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Administratorius ir leidimai",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "„NeoOrigins“ administratoriaus nustatymai",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Galios nepaisymas",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "NeoOrigins galios nepaisymas",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Kilmė ir klasės",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "„NeoOrigins“ kilmės ir klasės perjungimas",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Kliento ekranas",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "„NeoOrigins“ kliento nustatymai",
+  "neoorigins.configuration.show_cooldown_countdown": "Rodyti atvėsimo atgalinį skaičiuoklį",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Atšaldymo atgalinio skaičiavimo neskaidrumas (%)",
+  "neoorigins.configuration.hud_ability_display": "Galimybė HUD rodymo režimas",
+  "neoorigins.configuration.always_show_ability_icons": "Visada rodyti gebėjimų piktogramas"
+}

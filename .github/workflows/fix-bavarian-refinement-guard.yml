@@ -1,0 +1,39 @@
+name: Fix Bavarian refinement truncation guard
+
+on:
+  push:
+    branches:
+      - release/1.0.0-bavarian
+    paths:
+      - '.github/workflows/fix-bavarian-refinement-guard.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: release/1.0.0-bavarian
+      - name: Tighten corruption matcher
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('scripts/refine_bavarian.py')
+          t=p.read_text(encoding='utf-8')
+          old='''    forbidden_fragments = [\n        "zu s",\n        "Herkunft durchsuchen",\n        "Keine Herkunft gefunden",\n        "Wähle einen Ursprung",\n    ]\n    bad = [\n        (str(path), key, value)\n        for path, key, value in rows\n        if any(fragment.casefold() in value.casefold() for fragment in forbidden_fragments)\n    ]\n'''
+          new='''    forbidden_fragments = [\n        "Herkunft durchsuchen",\n        "Keine Herkunft gefunden",\n        "Wähle einen Ursprung",\n    ]\n    truncated_token_re = re.compile(r"\\bzu\\s+s(?:\\s|$|[.,;:!?])", re.I)\n    bad = [\n        (str(path), key, value)\n        for path, key, value in rows\n        if truncated_token_re.search(value)\n        or any(fragment.casefold() in value.casefold() for fragment in forbidden_fragments)\n    ]\n'''
+          if old not in t: raise SystemExit('Expected guard block not found')
+          p.write_text(t.replace(old,new,1), encoding='utf-8')
+          PY
+          python3 -m py_compile scripts/refine_bavarian.py
+          git diff --check
+      - name: Commit fix
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add scripts/refine_bavarian.py
+          git commit -m 'Fix Bavarian refinement truncation guard'
+          git push origin HEAD:release/1.0.0-bavarian

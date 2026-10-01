@@ -1,0 +1,66 @@
+name: Refine Persian localization
+
+on:
+  push:
+    branches:
+      - release/0.9.0-persian
+    paths:
+      - scripts/refine_persian.py
+      - .github/workflows/refine-persian.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-persian
+
+      - name: Apply contextual Persian fixes
+        run: python3 scripts/refine_persian.py
+
+      - name: Validate JSON localization structure
+        run: python3 scripts/validate.py
+
+      - name: Check Persian placeholders against NeoOrigins upstream
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref 860ecdb24e723983e93004ea8ceb5de90ccf0d70 --output build/fa-refine-audit-121 --locale fa_ir --fallback-namespace-glob 'neoorigins_fa_common_*' --extra-namespace neoorigins_fa_121 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 3c1c7365507679c836d3c14af5d4dd0654652e87 --output build/fa-refine-audit-261 --locale fa_ir --fallback-namespace-glob 'neoorigins_fa_common_*' --extra-namespace neoorigins_26_1 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 65864716a5a796fa1c51ec3e8a6d9640abebb4ca --output build/fa-refine-audit-262 --locale fa_ir --fallback-namespace-glob 'neoorigins_fa_common_*' --extra-namespace neoorigins_26_2 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Sanity-check Persian text
+        run: |
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+          files = list(Path('src/main/resources/resourcepacks/fallback_localizations/assets').glob('**/lang/fa_ir.json'))
+          text = '\n'.join(str(v) for p in files for v in json.loads(p.read_text(encoding='utf-8')).values())
+          markers = len(re.findall(r'[\u0600-\u06FF]', text))
+          persian_specific = len(re.findall(r'[پچژگکی]', text))
+          bad = ['برق فعال شد', 'برق غیرفعال است', 'نمی تواند به من مربوط شود', 'حداکثر اسب بخار']
+          remaining = [item for item in bad if item in text]
+          if remaining:
+              raise SystemExit(f'Known Persian false-friends remain: {remaining}')
+          if markers < 3000 or persian_specific < 100:
+              raise SystemExit(f'Persian sanity check too low: script={markers}, specific={persian_specific}')
+          print(f'Persian refinement sanity passed: {markers} Arabic-script chars, {persian_specific} Persian-specific chars across {len(files)} files')
+          PY
+
+      - name: Commit refined Persian translations
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name 'fa_ir.json' -print0 | xargs -0 -r git add
+          if git diff --cached --quiet; then
+            echo 'No Persian refinement changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Refine Persian Minecraft terminology'
+          git fetch origin release/0.9.0-persian
+          git rebase origin/release/0.9.0-persian
+          git push origin HEAD:release/0.9.0-persian

@@ -1,0 +1,19 @@
+{
+  "power.neoorigins.class_blacksmith_quality.description": "L'equip que creeu rep atributs addicionals: duresa, dany o velocitat d'extracció.",
+  "power.neoorigins.class_cook_smoker_xp.description": "Guanya el doble d'XP en cuinar aliments en un fumador.",
+  "neoorigins.configuration.title": "Configuració de NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml": "Joc",
+  "neoorigins.configuration.section.neoorigins.gameplay.toml.title": "Configuració de joc de NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.admin.toml": "Administració i permisos",
+  "neoorigins.configuration.section.neoorigins.admin.toml.title": "Configuració d'administració de NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml": "Anul·lació de poder",
+  "neoorigins.configuration.section.neoorigins.power.overrides.toml.title": "Anul·lacions de poder de NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.content.toml": "Orígens i classes",
+  "neoorigins.configuration.section.neoorigins.content.toml.title": "Commuta l'origen i la classe de NeoOrigins",
+  "neoorigins.configuration.section.neoorigins.client.toml": "Visualització del client",
+  "neoorigins.configuration.section.neoorigins.client.toml.title": "Configuració del client de NeoOrigins",
+  "neoorigins.configuration.show_cooldown_countdown": "Mostra el compte enrere de reutilització",
+  "neoorigins.configuration.cooldown_countdown_opacity": "Opacitat del compte enrere del temps de reutilització (%)",
+  "neoorigins.configuration.hud_ability_display": "Mode de visualització HUD de capacitat",
+  "neoorigins.configuration.always_show_ability_icons": "Mostra sempre les icones d'habilitats"
+}

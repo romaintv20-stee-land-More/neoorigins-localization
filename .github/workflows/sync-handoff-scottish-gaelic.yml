@@ -1,0 +1,63 @@
+name: Sync Scottish Gaelic 47-locale handoff
+
+on:
+  push:
+    branches:
+      - release/0.9.0-scottish-gaelic
+    paths:
+      - .github/workflows/sync-handoff-scottish-gaelic.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-scottish-gaelic
+
+      - name: Update handoff
+        run: python3 scripts/update_handoff_scottish_gaelic.py
+
+      - name: Validate handoff state
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          text = Path('PROJECT_HANDOFF.txt').read_text(encoding='utf-8')
+          required = [
+              '0.9.0 development currently has 47 locales:',
+              '- 47: Scottish Gaelic / gd_gb',
+              'FORTY-SEVEN IS NOT THE FINAL TARGET.',
+              'Scottish Gaelic locale: gd_gb / Gàidhlig.',
+              'workflow run 34343738900: SUCCESS',
+              'workflow run 34344341346: SUCCESS',
+              'run ID 34344582845: SUCCESS on all three jobs',
+              'artifact ID 10101193897',
+              'artifact ID 10101186193',
+              'artifact ID 10101179556',
+              'NEXT LANGUAGE = language 48.',
+              'Do not stop permanently at 48;',
+          ]
+          missing = [x for x in required if x not in text]
+          if missing:
+              raise SystemExit(f'Handoff markers missing: {missing}')
+          print('Scottish Gaelic handoff validation passed: 47 locales, next 48')
+          PY
+
+      - name: Commit handoff
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add PROJECT_HANDOFF.txt
+          if git diff --cached --quiet; then
+            echo 'No handoff changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Finalize Scottish Gaelic 0.9.0 handoff'
+          git fetch origin release/0.9.0-scottish-gaelic
+          git rebase origin/release/0.9.0-scottish-gaelic
+          git push origin HEAD:release/0.9.0-scottish-gaelic

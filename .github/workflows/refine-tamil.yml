@@ -1,0 +1,120 @@
+name: Refine Tamil localization
+
+on:
+  push:
+    branches:
+      - release/0.9.0-tamil
+    paths:
+      - scripts/refine_tamil.py
+      - .github/workflows/refine-tamil.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-tamil
+
+      - name: Apply contextual Tamil fixes
+        run: python3 scripts/refine_tamil.py
+
+      - name: Validate JSON localization structure
+        run: python3 scripts/validate.py
+
+      - name: Strict Tamil NeoOrigins audit
+        run: |
+          python3 scripts/audit_neoorigins_upstream.py --ref af467a3bc118f6bbc0970d68f7e03fa631d7e6f2 --output build/ta-refine-audit-121 --locale ta_in --fallback-namespace-glob 'neoorigins_ta_common_*' --extra-namespace neoorigins_ta_121 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref aa207ef14cf3b938e28b4081162701953957c1d5 --output build/ta-refine-audit-261 --locale ta_in --fallback-namespace-glob 'neoorigins_ta_common_*' --extra-namespace neoorigins_26_1 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+          python3 scripts/audit_neoorigins_upstream.py --ref 511cadcafe3027d2a56b4448652ec9b74e2f3b07 --output build/ta-refine-audit-262 --locale ta_in --fallback-namespace-glob 'neoorigins_ta_common_*' --extra-namespace neoorigins_26_2 --fail-on-overlap --fail-on-missing --fail-on-placeholders
+
+      - name: Strict Tamil add-on audits
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re, subprocess
+          scripts=[
+            ('scripts/audit_medievalorigins_upstream.py',['--ref','1.21.1-fabric']),
+            ('scripts/audit_ibarnorigins_upstream.py',['--ref','multiloader-1.21.1-new-pack-format']),
+            ('scripts/audit_origins_fantasy_upstream.py',[]),
+            ('scripts/audit_origins_backgrounds_upstream.py',[]),
+            ('scripts/audit_origins_more_backgrounds_upstream.py',[]),
+            ('scripts/audit_origins_backgrounds_iss_upstream.py',[]),
+            ('scripts/audit_origins_furries_upstream.py',[]),
+            ('scripts/audit_origins_classes_extended_upstream.py',[]),
+            ('scripts/audit_origins_classes_iss_upstream.py',[]),
+            ('scripts/audit_origin_architect_upstream.py',[]),
+          ]
+          originals={n:Path(n).read_text(encoding='utf-8') for n,_ in scripts}
+          try:
+            for name,extra in scripts:
+              p=Path(name); src=originals[name]
+              out,count=re.subn(r'^LOCALES\s*=.*$','LOCALES = ("ta_in",)',src,count=1,flags=re.M)
+              if count==0: out,count=re.subn(r'^DEFAULT_LOCALES\s*=.*$','DEFAULT_LOCALES = ("ta_in",)',src,count=1,flags=re.M)
+              if count!=1: raise SystemExit(f'Could not patch locale in {name}')
+              p.write_text(out,encoding='utf-8')
+              subprocess.run(['python3',name,*extra,'--fail-on-overlap','--fail-on-missing','--fail-on-placeholders'],check=True)
+              p.write_text(src,encoding='utf-8')
+          finally:
+            for n,src in originals.items(): Path(n).write_text(src,encoding='utf-8')
+          PY
+
+      - name: Tamil contextual sanity and English-residue report
+        run: |
+          python3 - <<'PY'
+          import json,re
+          from pathlib import Path
+          files=list(Path('src/main/resources/resourcepacks/fallback_localizations/assets').glob('**/lang/ta_in.json'))
+          if len(files) != 29:
+              raise SystemExit(f'Expected 29 Tamil files, got {len(files)}')
+          all_data={}; values=[]
+          for p in files:
+              data=json.loads(p.read_text(encoding='utf-8'))
+              all_data.update(data); values.extend((str(k),str(v),str(p)) for k,v in data.items())
+          text='\n'.join(v for _,v,_ in values)
+          tamil=len(re.findall(r'[\u0B80-\u0BFF]',text))
+          expected={
+            'neoorigins.toggle.on':'திறன் இயக்கப்பட்டது',
+            'neoorigins.night_vision.on':'இரவு பார்வை இயக்கப்பட்டது',
+            'origins.layer.origin':'Origin',
+            'screen.neoorigins.choose_origin':'Origin-ஐத் தேர்ந்தெடுக்கவும்',
+            'key.category.neoorigins.neoorigins':'NeoOrigins',
+            'key.neoorigins.open_mob_creator':'Mob Origin உருவாக்கியைத் திற',
+            'gui.neoorigins.mob_creator.tab.spawn_rules':'தோன்றும் விதிகள்',
+            'screen.neoorigins.origin_editor':'Origin திருத்தி',
+          }
+          bad=[f'{k}={all_data.get(k)!r}' for k,v in expected.items() if all_data.get(k)!=v]
+          if bad: raise SystemExit(f'Tamil contextual fixes missing: {bad}')
+          forbidden=['Night Vision','Rotten Flesh','Neorigins','Neoorigins']
+          found=[x for x in forbidden if x in text]
+          if found: raise SystemExit(f'Known bad Tamil residues remain: {found}')
+          if tamil < 100000: raise SystemExit(f'Tamil script sanity too low: {tamil}')
+          suspects=[]
+          for k,v,p in values:
+              stripped=re.sub(r'%\d*\$?[a-zA-Z]|%[sdif]|\\n|§[0-9a-fk-or]','',v)
+              if re.search(r'[A-Za-z]',stripped) and not re.search(r'[\u0B80-\u0BFF]',stripped):
+                  suspects.append((k,v,p))
+          print(f'Tamil refinement sanity passed: {tamil} Tamil-script chars across {len(files)} files')
+          print(f'Latin-only diagnostic values: {len(suspects)}')
+          for k,v,p in suspects:
+              print(f'RESIDUE\t{k}\t{v}\t{p}')
+          PY
+
+      - name: Commit refined Tamil translations
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          find src/main/resources/resourcepacks/fallback_localizations/assets -type f -name 'ta_in.json' -print0 | xargs -0 -r git add
+          if git diff --cached --quiet; then
+            echo 'No Tamil refinement changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Refine Tamil localization terminology'
+          git fetch origin release/0.9.0-tamil
+          git rebase origin/release/0.9.0-tamil
+          git push origin HEAD:release/0.9.0-tamil

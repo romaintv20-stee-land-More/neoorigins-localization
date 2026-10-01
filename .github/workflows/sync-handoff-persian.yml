@@ -1,0 +1,64 @@
+name: Sync Persian handoff
+
+on:
+  push:
+    branches:
+      - release/0.9.0-persian
+    paths:
+      - .github/workflows/sync-handoff-persian.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: release/0.9.0-persian
+
+      - name: Update project handoff
+        run: python3 scripts/update_handoff_persian.py
+
+      - name: Validate Persian handoff
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          text = Path('PROJECT_HANDOFF.txt').read_text(encoding='utf-8')
+          required = [
+              '0.9.0 development currently has 41 locales:',
+              '- 41: Persian / fa_ir',
+              'FORTY-ONE IS NOT THE FINAL TARGET.',
+              '29. PERSIAN 0.9.0 STATUS',
+              'workflow run 34321520710: SUCCESS',
+              'refinement commit 14e06c03a46c638aeb0a8649cb67d9b4529cc7a6',
+              'synchronization run 34322064617 succeeded',
+              'run ID 34322162989: SUCCESS on all three jobs',
+              'artifact ID 10092326980',
+              'artifact ID 10092311911',
+              'artifact ID 10092306159',
+              'catalog.json says 41 supported locales',
+              'NEXT LANGUAGE = language 42.',
+          ]
+          missing = [item for item in required if item not in text]
+          if missing:
+              raise SystemExit(f'Persian handoff markers missing: {missing}')
+          print('Persian handoff validation passed; next language 42')
+          PY
+
+      - name: Commit Persian handoff
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add PROJECT_HANDOFF.txt
+          if git diff --cached --quiet; then
+            echo 'No Persian handoff changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Finalize Persian 0.9.0 handoff'
+          git fetch origin release/0.9.0-persian
+          git rebase origin/release/0.9.0-persian
+          git push origin HEAD:release/0.9.0-persian

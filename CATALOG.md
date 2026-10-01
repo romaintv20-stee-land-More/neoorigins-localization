@@ -4,9 +4,16 @@
 
 | Cible | Version du mod | Java | Contenu inclus | Validation en jeu |
 |---|---|---:|---|---|
-| 1.21.1 | `1.1.1+1.21.1` | 21 | neoorigins, medievalorigins, ibarnorigins, origins_fantasy, origins_backgrounds, origins_backgrounds_two, origins_backgrounds_iss, origins_furries, origins_classes_ex, origins_classes_iss, originsmodernui, pathfinder_origins | Non |
-| 26.1.x | `1.1.1+26.1` | 25 | neoorigins | Non |
-| 26.2 | `1.1.1+26.2` | 25 | neoorigins | Non |
+| 1.21.1 | `1.1.2+1.21.1` | 21 | neoorigins, medievalorigins, ibarnorigins, origins_fantasy, origins_backgrounds, origins_backgrounds_two, origins_backgrounds_iss, origins_furries, origins_classes_ex, origins_classes_iss, originsmodernui, pathfinder_origins | Non |
+| 26.1.x | `1.1.2+26.1` | 25 | neoorigins | Non |
+| 26.2 | `1.1.2+26.2` | 25 | neoorigins | Non |
+
+## Mise à jour 1.1.2 — Origins Furries 1.0.3
+
+Le build **1.21.1** met à jour Origins Furries de **1.0.0 à 1.0.3** : **52 nouvelles clés** sont traduites dans les **93 langues prises en charge**, soit **4 836 nouvelles entrées de fallback**, pour une couverture de **169/169 clés** par locale.
+
+Les builds **26.1.x** et **26.2** gardent le même contenu NeoOrigins que la 1.1.1 ; seuls leurs numéros de version passent en 1.1.2 pour conserver une release synchronisée.
+
 
 ## Projets et langues
 

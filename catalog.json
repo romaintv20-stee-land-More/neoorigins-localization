@@ -14,7 +14,7 @@
     "supported_locale_count": 93,
     "builds": {
       "1.21.1": {
-        "version": "1.1.1+1.21.1",
+        "version": "1.1.2+1.21.1",
         "java": 21,
         "in_game_tested": false,
         "included_projects": [
@@ -38,7 +38,7 @@
           "26.1.1",
           "26.1.2"
         ],
-        "version": "1.1.1+26.1",
+        "version": "1.1.2+26.1",
         "java": 25,
         "in_game_tested": false,
         "included_projects": [
@@ -46,7 +46,7 @@
         ]
       },
       "26.2": {
-        "version": "1.1.1+26.2",
+        "version": "1.1.2+26.2",
         "java": 25,
         "in_game_tested": false,
         "included_projects": [
@@ -63,6 +63,21 @@
         "26.2"
       ],
       "editorial_review": "pending"
+    },
+    "release_notes": {
+      "version": "1.1.2",
+      "date": "2026-10-01",
+      "summary": "Origins Furries for NeoOrigins updated from 1.0.0 to 1.0.3 on Minecraft 1.21.1; 52 new keys translated across all 93 supported locales (4,836 fallback entries). NeoOrigins 2.2.29 language payload remains unchanged from 2.2.28.",
+      "addon_changes": {
+        "origins_furries": {
+          "from": "1.0.0",
+          "to": "1.0.3",
+          "added_source_keys": 52,
+          "source_keys_total": 169,
+          "supported_locales": 93,
+          "added_fallback_entries": 4836
+        }
+      }
     }
   },
   "supported_projects": [

@@ -99,9 +99,9 @@ La notice MIT du projet amont doit être conservée lorsque des portions substan
 - Auteur : DraconicArcher
 - CurseForge : https://www.curseforge.com/minecraft/mc-mods/origins-furries-for-neoorigins
 - Project ID CurseForge : `1592095`
-- Version ciblée : fichier CurseForge `Origins-Furries-1.21.1-NeoOrigins-1.0.0.jar` (file ID `8397352`) pour Minecraft 1.21.1
+- Version ciblée : fichier CurseForge `Origins-Furries-1.21.1-NeoOrigins-1.0.3.jar` (file ID `8891687`) pour Minecraft 1.21.1
 - Namespace : `origins_furries`
-- Utilisation ici : localisations des 17 langues ciblées, dont `sv_se`, des 117 chaînes du fichier anglais `assets/origins_furries/lang/en_us.json`.
+- Utilisation ici : localisations des 93 langues ciblées, couvrant les 169 chaînes du fichier anglais `assets/origins_furries/lang/en_us.json`.
 - Autorisation : couverte par l'autorisation explicite accordée par DraconicArcher le 6 septembre 2026 pour l'intégration des traductions de ses add-ons à NeoOrigins Localization, avec redistribution limitée aux chaînes de localisation traduites, attribution claire et lien vers le projet original.
 - Limite de redistribution : NeoOrigins Localization ne redistribue pas le code, les textures, les modèles, les données de gameplay ni les autres assets de l'add-on ; seuls les fichiers de localisation traduits nécessaires sont inclus.
 - Priorité amont : le JAR ciblé ne fournit actuellement aucune des dix localisations prises en charge ici. Si une traduction officielle apparaît ensuite, elle doit garder la priorité et les clés correspondantes de notre fallback doivent être retirées.

@@ -5,6 +5,7 @@ on:
     branches: [ main, release/0.8.0-japanese, release/0.8.0-korean, release/0.8.0-ukrainian, release/0.8.0-indonesian, release/0.8.0-swedish ]
   pull_request:
     branches: [ main ]
+  pull_request:
   workflow_dispatch:
 
 jobs:
@@ -49,7 +50,7 @@ jobs:
             minecraft_range: '[26.1,26.2)'
             java: '25'
             gradle: '9.4.1'
-            neoforge: '26.1.2.29-beta'
+            neoforge: '26.1.2.31-beta'
             loader_range: '[4,)'
             parchment: 'false'
             pack_format: '84'

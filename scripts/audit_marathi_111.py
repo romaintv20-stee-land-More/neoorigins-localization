@@ -26,7 +26,7 @@ def check(src,localized,label):
 def source_audit():
     c=rj(ROOT/"catalog.json")
     assert c["project"]["supported_locale_count"]==93
-    assert len(c["supported_projects"])==12
+    assert len(c["supported_projects"])==13
     assert all("mr_in" in p["languages"] for p in c["supported_projects"])
     assert all(len(p["languages"])==93 for p in c["supported_projects"] if p["id"]!="pathfinder_origins")
     assert len(next(p for p in c["supported_projects"] if p["id"]=="pathfinder_origins")["languages"])==14
@@ -68,7 +68,8 @@ def source_audit():
     mcmeta=mcmeta.replace("$"+"{resource_pack_format}","34")
     language=json.loads(mcmeta)["language"]["mr_in"]
     assert language=={"region":"भारत","name":"मराठी","bidirectional":False}
-    print("PASS Marathi: 93 registered locales; 3 core inventories; 11 add-ons; 3 Minecraft inventories.")
+    assert len(c["supported_projects"][-1]["languages"])==93
+    print("PASS Marathi: 93 registered locales; 3 core inventories; 12 add-ons (including Anti Magick); 3 Minecraft inventories.")
     return core,addons,coverage
 def jar_audit(jar,target,core,addons,coverage):
     key,version=VER[target]
@@ -108,6 +109,11 @@ def jar_audit(jar,target,core,addons,coverage):
         if key=="121":
             check({k:addons["origins_backgrounds"][k] for k in ctx},get(contextual_path),"Background Orb contextual pack")
         elif contextual_path in files:raise RuntimeError(f"{target}: 1.21.1 contextual pack leaked")
+        anti_path=PACK+"assets/antimagick_neoorigins/lang/mr_in.json"
+        if key=="121":
+            check(rj(ASSETS/"antimagick_neoorigins/lang/mr_in.json"),get(anti_path),"Marathi Anti Magick")
+        elif anti_path in files:
+            raise RuntimeError(f"{target}: Anti Magick add-on leaked into 26.x")
     print(f"PASS JAR {target}: {len(coremap)} NeoOrigins keys, {len(vanilla)} Minecraft keys")
 def main():
     p=argparse.ArgumentParser()

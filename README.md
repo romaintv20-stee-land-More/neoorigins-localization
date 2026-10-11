@@ -6,11 +6,25 @@ Mod client NeoForge fournissant des **traductions complémentaires en priorité 
 
 | Cible | Version | Java | Langues | Contenu empaqueté |
 |---|---|---:|---:|---|
-| Minecraft 1.21.1 | `1.1.2+1.21.1` | 21 | 93 | NeoOrigins + Medieval Origins Revival + ibarn's quartet origins addon + Origins Fantasy + Origins: Backgrounds + Origins: More Backgrounds + Origins: Backgrounds ISS + Origins Furries + Origins: Classes Extended + Origins: Classes ISS + Origin Architect + Pathfinder Origins (Pathfinder : 14 locales) |
-| Minecraft 26.1 / 26.1.1 / 26.1.2 | `1.1.2+26.1` | 25 | 93 | NeoOrigins uniquement + delta 26.1 |
-| Minecraft 26.2 | `1.1.2+26.2` | 25 | 93 | NeoOrigins uniquement + delta 26.2 |
+| Minecraft 1.21.1 | `1.2.0+1.21.1` | 21 | 93 | NeoOrigins + Medieval Origins Revival + ibarn's quartet origins addon + Origins Fantasy + Origins: Backgrounds + Origins: More Backgrounds + Origins: Backgrounds ISS + Origins Furries + Origins: Classes Extended + Origins: Classes ISS + Origin Architect + Pathfinder Origins (Pathfinder : 14 locales) + Anti Magick: NeoOrigins (92 langues fallback et russe officiel) |
+| Minecraft 26.1 / 26.1.1 / 26.1.2 | `1.2.0+26.1` | 25 | 93 | NeoOrigins uniquement + delta 26.1 |
+| Minecraft 26.2 | `1.2.0+26.2` | 25 | 93 | NeoOrigins uniquement + delta 26.2 |
 
 Les builds 26.x n'embarquent aucune traduction des add-ons 1.21.1. La CI construit et audite séparément les trois cibles.
+
+## NeoOrigins Localization 1.2.0 — Language search and addon maintenance
+
+On Minecraft 1.21.1, the language selection screen now has an instant search box
+ported from Beyond & More: filter by name (native, English, French), code, and
+accent-insensitive spelling. Vanilla rows and selection are preserved.
+If Beyond & More is installed, its own search box takes priority to avoid duplicates.
+Minecraft 26.1.x / 26.2 keep their native search unchanged.
+
+- Origins Backgrounds 1.0.4: upstream fix to potion-related power logic, no new English translation keys.
+- Origins Backgrounds ISS 1.0.2: 4 contextual Background Orb strings already translated in our 92-locale contextual table; activate the contextual resource pack even if ISS is the only Backgrounds add-on installed.
+- NeoOrigins 2.2.30: compatible; no changed upstream language files.
+- Anti Magick: NeoOrigins 0.1.2: two new category names translated in 92 low-priority fallback files, with official Russian.
+- All 3 builds retain the 93 supported Minecraft languages. In-game UI validation remains necessary before public release.
 
 ## NeoOrigins Localization 1.1.2 — Origins Furries 1.0.3
 

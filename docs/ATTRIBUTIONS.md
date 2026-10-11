@@ -56,7 +56,7 @@ La notice MIT du projet amont doit être conservée lorsque des portions substan
 - Projet : Origins: Backgrounds for NeoOrigins
 - Auteur : DraconicArcher
 - CurseForge : https://www.curseforge.com/minecraft/mc-mods/origins-backgrounds-for-neoorigins
-- Version ciblée : fichier CurseForge `Origins-Backgrounds-1.21.1-NeoOrigins-1.0.2.jar` (file ID `8397335`) pour Minecraft 1.21.1
+- Version ciblée : fichier CurseForge `Origins-Backgrounds-1.21.1-NeoOrigins-1.0.4.jar` (file ID `8924698`) pour Minecraft 1.21.1
 - Namespace : `origins_backgrounds`
 - Utilisation ici : localisations des 17 langues ciblées, dont `sv_se`, des 65 chaînes du fichier anglais `assets/origins_backgrounds/lang/en_us.json`.
 - Autorisation : couverte par l'autorisation explicite accordée par DraconicArcher le 6 septembre 2026 pour l'intégration des traductions de ses add-ons à NeoOrigins Localization, avec redistribution limitée aux chaînes de localisation traduites, attribution claire et lien vers le projet original.
@@ -70,7 +70,7 @@ La notice MIT du projet amont doit être conservée lorsque des portions substan
 - Auteur : DraconicArcher
 - CurseForge : https://www.curseforge.com/minecraft/mc-mods/origins-more-backgrounds-for-neoorigins
 - Project ID CurseForge : `1578580`
-- Version ciblée : fichier CurseForge `Origins-More-Backgrounds-1.21.1-NeoOrigins-1.0.2.jar` (file ID `8650744`) pour Minecraft 1.21.1
+- Version ciblée : fichier CurseForge `Origins-More-Backgrounds-1.21.1-NeoOrigins-1.0.4.jar` (file ID `8875590`) pour Minecraft 1.21.1
 - Namespace principal : `origins_backgrounds_two`
 - Utilisation ici : localisations des 17 langues ciblées, dont `sv_se`, des 44 chaînes du fichier anglais. Cinq clés partagées avec `Origins: Backgrounds for NeoOrigins` réutilisent les traductions déjà présentes dans `origins_backgrounds`; les 39 nouvelles clés sont stockées dans `origins_backgrounds_two`.
 - Autorisation : couverte par l'autorisation explicite accordée par DraconicArcher le 6 septembre 2026 pour l'intégration des traductions de ses add-ons à NeoOrigins Localization, avec redistribution limitée aux chaînes de localisation traduites, attribution claire et lien vers le projet original.
@@ -84,7 +84,7 @@ La notice MIT du projet amont doit être conservée lorsque des portions substan
 - Auteur : DraconicArcher
 - CurseForge : https://www.curseforge.com/minecraft/mc-mods/origins-backgrounds-iss-for-neoorigins
 - Project ID CurseForge : `1592103`
-- Version ciblée : fichier CurseForge `Origins-ISS-Backgrounds-1.21.1-NeoOrigins-1.0.1.jar` (file ID `8409604`) pour Minecraft 1.21.1
+- Version ciblée : fichier CurseForge `Origins-ISS-Backgrounds-1.21.1-NeoOrigins-1.0.2.jar` (file ID `8875596`) pour Minecraft 1.21.1
 - Namespace principal : `origins_backgrounds_iss`
 - Dépendances amont : NeoOrigins et Iron's Spells 'n Spellbooks.
 - Utilisation ici : localisations des 17 langues ciblées, dont `sv_se`, des 79 chaînes anglaises. Deux clés `Fresh Face` partagées réutilisent les traductions déjà présentes dans `origins_backgrounds`; les 77 autres clés sont stockées dans `origins_backgrounds_iss`.
@@ -168,3 +168,11 @@ La notice MIT du projet amont doit être conservée lorsque des portions substan
 - Limite de redistribution : le datapack/mod original reste requis ; NeoOrigins Localization ne redistribue pas les données de gameplay, textures, modèles ou code de Pathfinder Origins.
 
 Aucune attribution ne signifie que les auteurs amont approuvent ou sponsorisent NeoOrigins Localization au-delà des autorisations explicitement mentionnées ci-dessus.
+
+## Anti Magick: NeoOrigins
+
+- Origine : https://modrinth.com/mod/anti-magick-neoorigins (arcforgelab), version 0.1.2, NeoForge 1.21.1.
+- Licence MIT ; aucun code, image ou autre asset amont redistribué.
+- Deux noms de catégories traduits dans 92 locales de fallback basse priorité ; russe officiel préservé.
+- Anti Magick et NeoOrigins restent nécessaires séparément.
+- Relecture linguistique souhaitée pour les langues rares et dialectes.

@@ -4,9 +4,18 @@
 
 | Cible | Version du mod | Java | Contenu inclus | Validation en jeu |
 |---|---|---:|---|---|
-| 1.21.1 | `1.1.2+1.21.1` | 21 | neoorigins, medievalorigins, ibarnorigins, origins_fantasy, origins_backgrounds, origins_backgrounds_two, origins_backgrounds_iss, origins_furries, origins_classes_ex, origins_classes_iss, originsmodernui, pathfinder_origins | Non |
-| 26.1.x | `1.1.2+26.1` | 25 | neoorigins | Non |
-| 26.2 | `1.1.2+26.2` | 25 | neoorigins | Non |
+| 1.21.1 | `1.2.0+1.21.1` | 21 | neoorigins, medievalorigins, ibarnorigins, origins_fantasy, origins_backgrounds, origins_backgrounds_two, origins_backgrounds_iss, origins_furries, origins_classes_ex, origins_classes_iss, originsmodernui, pathfinder_origins, antimagick_neoorigins | Non |
+| 26.1.x | `1.2.0+26.1` | 25 | neoorigins | Non |
+| 26.2 | `1.2.0+26.2` | 25 | neoorigins | Non |
+
+## Mise à jour 1.2.0 — recherche et nouveaux add-ons
+
+- Minecraft 1.21.1 : recherche par code et nom français, anglais ou natif ; coexistence avec Beyond & More.
+- Backgrounds ISS 1.0.2 : correction du chargement des quatre clés de l'orbe même lorsqu'ISS est seul.
+- Backgrounds 1.0.4 : aucune nouvelle clé anglaise.
+- Anti Magick: NeoOrigins 0.1.2 : nouvel add-on, deux clés pour 92 langues de fallback, russe fourni par le mod amont.
+- NeoOrigins 2.2.30 : aucune nouvelle clé anglaise, 26.x conserve sa recherche native.
+- Validation en jeu encore requise.
 
 ## Mise à jour 1.1.2 — Origins Furries 1.0.3
 
@@ -14,6 +23,8 @@ Le build **1.21.1** met à jour Origins Furries de **1.0.0 à 1.0.3** : **52 nou
 
 Les builds **26.1.x** et **26.2** gardent le même contenu NeoOrigins que la 1.1.1 ; seuls leurs numéros de version passent en 1.1.2 pour conserver une release synchronisée.
 
+
+> Nouveau projet : Anti Magick: NeoOrigins, https://modrinth.com/mod/anti-magick-neoorigins ; NeoForge 1.21.1, 93 langues disponibles dont 92 fallbacks.
 
 ## Projets et langues
 

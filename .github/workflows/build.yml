@@ -24,7 +24,7 @@ jobs:
             pack_format: '34'
             source_variant: 'mc1_21_1'
             upstream_ref: '9a96c9f1a66b2a920f22e083d0563702c70f27c9'
-            mod_version: '1.1.2+1.21.1'
+            mod_version: '1.2.0+1.21.1'
             audit_addons: true
             audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz hu_hu ja_jp ko_kr uk_ua nds_de mr_in'
             audit_extra_namespace: 'neoorigins_121_batch1'
@@ -55,7 +55,7 @@ jobs:
             pack_format: '84'
             source_variant: 'mc26_1'
             upstream_ref: '71e314492848a6f887e91f959c857a29822041d2'
-            mod_version: '1.1.2+26.1'
+            mod_version: '1.2.0+26.1'
             audit_addons: false
             audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz hu_hu ja_jp ko_kr uk_ua nds_de mr_in'
             audit_extra_namespace: ''
@@ -86,7 +86,7 @@ jobs:
             pack_format: '88'
             source_variant: 'mc26_1'
             upstream_ref: '8060d65189739a75785d885a8d87f795679bfd30'
-            mod_version: '1.1.2+26.2'
+            mod_version: '1.2.0+26.2'
             audit_addons: false
             audit_locales: 'fr_fr nl_nl es_es de_de pt_br it_it pl_pl ru_ru tr_tr zh_cn cs_cz hu_hu ja_jp ko_kr uk_ua nds_de mr_in'
             audit_extra_namespace: 'neoorigins_26_2'
@@ -209,6 +209,10 @@ jobs:
         if: matrix.audit_addons
         run: python3 scripts/audit_origins_fantasy_upstream.py --fail-on-overlap --fail-on-missing --fail-on-placeholders
 
+      - name: Audit Anti Magick NeoOrigins 0.1.2 locales
+        if: matrix.audit_addons
+        run: python3 scripts/audit_antimagick_neoorigins_upstream.py
+
       - name: Audit Origins Backgrounds upstream locales
         if: matrix.audit_addons
         run: python3 scripts/audit_origins_backgrounds_upstream.py --annotate-missing --fail-on-overlap --fail-on-missing --fail-on-placeholders
@@ -311,13 +315,14 @@ jobs:
           echo "Japanese localization files in ${{ matrix.target }}: $JA_COUNT"
           test "$JA_COUNT" -gt 0
 
-          ADDON_PATTERN='(^|/)assets/(medievalorigins|medievalorigins_[^/]*|ibarnorigins|origins_fantasy|origins_backgrounds|origins_backgrounds_two|origins_backgrounds_iss|origins_furries|origins_classes_ex|origins_classes_iss|originsmodernui)/'
+          ADDON_PATTERN='(^|/)assets/(medievalorigins|medievalorigins_[^/]*|ibarnorigins|origins_fantasy|origins_backgrounds|origins_backgrounds_two|origins_backgrounds_iss|origins_furries|origins_classes_ex|origins_classes_iss|originsmodernui|antimagick_neoorigins)/'
 
           if [ "${{ matrix.include_addon_translations }}" = "true" ]; then
             grep -Eq '(^|/)assets/medievalorigins_ja_[^/]*/lang/ja_jp\.json$' build/jar-contents-${{ matrix.target }}.txt
             for ns in ibarnorigins origins_fantasy origins_backgrounds origins_backgrounds_two origins_backgrounds_iss origins_furries origins_classes_ex origins_classes_iss originsmodernui; do
               grep -Eq "(^|/)assets/$ns/lang/ja_jp.json$" build/jar-contents-${{ matrix.target }}.txt
             done
+            grep -Eq '(^|/)assets/antimagick_neoorigins/lang/ja_jp\.json$' build/jar-contents-${{ matrix.target }}.txt
             echo "Japanese addon packaging verified for ${{ matrix.target }}."
           else
             if grep -Eq "$ADDON_PATTERN" build/jar-contents-${{ matrix.target }}.txt; then
@@ -337,7 +342,7 @@ jobs:
           echo "Korean localization files in ${{ matrix.target }}: $KO_COUNT"
           test "$KO_COUNT" -gt 0
 
-          ADDON_PATTERN='(^|/)assets/(medievalorigins|medievalorigins_[^/]*|ibarnorigins|origins_fantasy|origins_backgrounds|origins_backgrounds_two|origins_backgrounds_iss|origins_furries|origins_classes_ex|origins_classes_iss|originsmodernui)/'
+          ADDON_PATTERN='(^|/)assets/(medievalorigins|medievalorigins_[^/]*|ibarnorigins|origins_fantasy|origins_backgrounds|origins_backgrounds_two|origins_backgrounds_iss|origins_furries|origins_classes_ex|origins_classes_iss|originsmodernui|antimagick_neoorigins)/'
 
           if [ "${{ matrix.include_addon_translations }}" = "true" ]; then
             grep -Eq '(^|/)assets/medievalorigins/lang/ko_kr\.json$' build/jar-contents-ko-${{ matrix.target }}.txt
@@ -363,7 +368,7 @@ jobs:
           echo "Ukrainian localization files in ${{ matrix.target }}: $UK_COUNT"
           test "$UK_COUNT" -gt 0
 
-          ADDON_PATTERN='(^|/)assets/(medievalorigins|medievalorigins_[^/]*|ibarnorigins|origins_fantasy|origins_backgrounds|origins_backgrounds_two|origins_backgrounds_iss|origins_furries|origins_classes_ex|origins_classes_iss|originsmodernui)/'
+          ADDON_PATTERN='(^|/)assets/(medievalorigins|medievalorigins_[^/]*|ibarnorigins|origins_fantasy|origins_backgrounds|origins_backgrounds_two|origins_backgrounds_iss|origins_furries|origins_classes_ex|origins_classes_iss|originsmodernui|antimagick_neoorigins)/'
 
           if [ "${{ matrix.include_addon_translations }}" = "true" ]; then
             grep -Eq '(^|/)assets/medievalorigins/lang/uk_ua\.json$' build/jar-contents-uk-${{ matrix.target }}.txt
@@ -401,7 +406,7 @@ jobs:
             grep -Eq "(^|/)assets/neoorigins_id_common_${index}/lang/id_id\.json$" build/jar-contents-id-${{ matrix.target }}.txt
           done
 
-          ADDON_PATTERN='(^|/)assets/(medievalorigins|medievalorigins_[^/]*|ibarnorigins|origins_fantasy|origins_backgrounds|origins_backgrounds_two|origins_backgrounds_iss|origins_furries|origins_classes_ex|origins_classes_iss|originsmodernui)/'
+          ADDON_PATTERN='(^|/)assets/(medievalorigins|medievalorigins_[^/]*|ibarnorigins|origins_fantasy|origins_backgrounds|origins_backgrounds_two|origins_backgrounds_iss|origins_furries|origins_classes_ex|origins_classes_iss|originsmodernui|antimagick_neoorigins)/'
 
           if [ "${{ matrix.include_addon_translations }}" = "true" ]; then
             grep -Eq '(^|/)assets/neoorigins_id_121/lang/id_id\.json$' build/jar-contents-id-${{ matrix.target }}.txt
@@ -446,7 +451,7 @@ jobs:
             grep -Eq "(^|/)assets/neoorigins_sv_common_${index}/lang/sv_se\.json$" build/jar-contents-sv-${{ matrix.target }}.txt
           done
 
-          ADDON_PATTERN='(^|/)assets/(medievalorigins|medievalorigins_[^/]*|ibarnorigins|origins_fantasy|origins_backgrounds|origins_backgrounds_two|origins_backgrounds_iss|origins_furries|origins_classes_ex|origins_classes_iss|originsmodernui)/'
+          ADDON_PATTERN='(^|/)assets/(medievalorigins|medievalorigins_[^/]*|ibarnorigins|origins_fantasy|origins_backgrounds|origins_backgrounds_two|origins_backgrounds_iss|origins_furries|origins_classes_ex|origins_classes_iss|originsmodernui|antimagick_neoorigins)/'
 
           if [ "${{ matrix.include_addon_translations }}" = "true" ]; then
             grep -Eq '(^|/)assets/neoorigins_sv_121/lang/sv_se\.json$' build/jar-contents-sv-${{ matrix.target }}.txt
@@ -519,7 +524,7 @@ jobs:
   package-release:
     needs: build
     runs-on: ubuntu-latest
-    name: Package 1.1.2 release bundle
+    name: Package 1.2.0 release bundle
 
     steps:
       - name: Checkout
@@ -541,18 +546,18 @@ jobs:
           JAR_COUNT=$(find build/release -maxdepth 1 -type f -name '*.jar' | wc -l)
           echo "Release JAR count: $JAR_COUNT"
           test "$JAR_COUNT" -eq 3
-          cp docs/CHANGELOG_1.1.2.md build/release/CHANGELOG_1.1.2.md
+          cp docs/CHANGELOG_1.2.0.md build/release/CHANGELOG_1.2.0.md
           (
             cd build/release
-            zip -9 ../NeoOrigins-Localization-1.1.2-release.zip ./*
+            zip -9 ../NeoOrigins-Localization-1.2.0-release.zip ./*
           )
 
       - name: Upload release bundle
         uses: actions/upload-artifact@v7
         with:
-          name: neoorigins-localization-1.1.2-release-${{ github.sha }}
+          name: neoorigins-localization-1.2.0-release-${{ github.sha }}
           path: |
-            build/NeoOrigins-Localization-1.1.2-release.zip
+            build/NeoOrigins-Localization-1.2.0-release.zip
             build/release/*.jar
-            build/release/CHANGELOG_1.1.2.md
+            build/release/CHANGELOG_1.2.0.md
           if-no-files-found: error

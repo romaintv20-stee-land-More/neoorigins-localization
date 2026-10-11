@@ -12,8 +12,8 @@ import zipfile
 ROOT = Path(__file__).resolve().parents[1]
 PACK_ROOT = ROOT / "src/main/resources/resourcepacks/fallback_localizations/assets"
 CONTEXT_TABLE = ROOT / "localization/background_orb_translations.json"
-DEFAULT_FILE_ID = "8875601"
-DEFAULT_FILENAME = "Origins-Backgrounds-1.21.1-NeoOrigins-1.0.3.jar"
+DEFAULT_FILE_ID = "8924698"
+DEFAULT_FILENAME = "Origins-Backgrounds-1.21.1-NeoOrigins-1.0.4.jar"
 DEFAULT_NAMESPACE = "origins_backgrounds"
 PLACEHOLDER_RE = re.compile(r"%(?:\d+\$)?[sd]")
 

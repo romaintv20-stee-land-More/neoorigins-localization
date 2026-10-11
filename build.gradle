@@ -271,6 +271,7 @@ tasks.named('processResources', ProcessResources) {
         exclude 'resourcepacks/fallback_localizations/assets/origins_classes_iss/**'
         exclude 'resourcepacks/fallback_localizations/assets/originsmodernui/**'
         exclude 'resourcepacks/fallback_localizations/assets/pathfinder_origins/**'
+        exclude 'resourcepacks/fallback_localizations/assets/antimagick_neoorigins/**'
         exclude 'resourcepacks/background_orb_localizations/**'
     }
 

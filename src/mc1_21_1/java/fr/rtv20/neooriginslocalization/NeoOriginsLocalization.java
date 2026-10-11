@@ -51,7 +51,8 @@ public final class NeoOriginsLocalization {
     private static boolean hasBackgroundAddon() {
         ModList modList = ModList.get();
         return modList.isLoaded("origins_backgrounds")
-                || modList.isLoaded("origins_backgrounds_two");
+                || modList.isLoaded("origins_backgrounds_two")
+                || modList.isLoaded("origins_backgrounds_iss");
     }
 
     private static void registerPack(AddPackFindersEvent event, String path, String title) {

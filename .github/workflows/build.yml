@@ -393,7 +393,7 @@ jobs:
           ID_COUNT=$(grep -cE '(^|/)lang/id_id\.json$' build/jar-contents-id-${{ matrix.target }}.txt || true)
 
           if [ "${{ matrix.include_addon_translations }}" = "true" ]; then
-            EXPECTED_ID_COUNT=30
+            EXPECTED_ID_COUNT=31
           elif [ "${{ matrix.target }}" = "mc-26.1.x" ]; then
             EXPECTED_ID_COUNT=19
           else
@@ -438,7 +438,7 @@ jobs:
           SV_COUNT=$(grep -cE '(^|/)lang/sv_se\.json$' build/jar-contents-sv-${{ matrix.target }}.txt || true)
 
           if [ "${{ matrix.include_addon_translations }}" = "true" ]; then
-            EXPECTED_SV_COUNT=30
+            EXPECTED_SV_COUNT=31
           elif [ "${{ matrix.target }}" = "mc-26.1.x" ]; then
             EXPECTED_SV_COUNT=19
           else
@@ -483,7 +483,7 @@ jobs:
           NDS_COUNT=$(grep -cE '(^|/)lang/nds_de\.json$' build/jar-contents-nds-${{ matrix.target }}.txt || true)
 
           if [ "${{ matrix.include_addon_translations }}" = "true" ]; then
-            EXPECTED_NDS_COUNT=31
+            EXPECTED_NDS_COUNT=32
           elif [ "${{ matrix.target }}" = "mc-26.1.x" ]; then
             EXPECTED_NDS_COUNT=19
           else
@@ -498,13 +498,13 @@ jobs:
 
           if [ "${{ matrix.include_addon_translations }}" = "true" ]; then
             grep -Eq '(^|/)assets/neoorigins_nds_121/lang/nds_de\.json$' build/jar-contents-nds-${{ matrix.target }}.txt
-            for ns in medievalorigins ibarnorigins origins_fantasy origins_backgrounds origins_backgrounds_two origins_backgrounds_iss origins_furries origins_classes_ex origins_classes_iss originsmodernui pathfinder_origins; do
+            for ns in medievalorigins ibarnorigins origins_fantasy origins_backgrounds origins_backgrounds_two origins_backgrounds_iss origins_furries origins_classes_ex origins_classes_iss originsmodernui pathfinder_origins antimagick_neoorigins; do
               grep -Eq "(^|/)assets/$ns/lang/nds_de.json$" build/jar-contents-nds-${{ matrix.target }}.txt
             done
             grep -Eq '(^|/)resourcepacks/background_orb_localizations/assets/neoorigins/lang/nds_de\.json$' build/jar-contents-nds-${{ matrix.target }}.txt
             ! grep -Eq '(^|/)assets/neoorigins_26_(1|2)/lang/nds_de\.json$' build/jar-contents-nds-${{ matrix.target }}.txt
           else
-            ! grep -Eq '(^|/)assets/(medievalorigins|ibarnorigins|origins_fantasy|origins_backgrounds|origins_backgrounds_two|origins_backgrounds_iss|origins_furries|origins_classes_ex|origins_classes_iss|originsmodernui|pathfinder_origins)/' build/jar-contents-nds-${{ matrix.target }}.txt
+            ! grep -Eq '(^|/)assets/(medievalorigins|ibarnorigins|origins_fantasy|origins_backgrounds|origins_backgrounds_two|origins_backgrounds_iss|origins_furries|origins_classes_ex|origins_classes_iss|originsmodernui|pathfinder_origins|antimagick_neoorigins)/' build/jar-contents-nds-${{ matrix.target }}.txt
             ! grep -Eq '(^|/)assets/neoorigins_nds_121/lang/nds_de\.json$' build/jar-contents-nds-${{ matrix.target }}.txt
             if [ "${{ matrix.target }}" = "mc-26.1.x" ]; then
               grep -Eq '(^|/)assets/neoorigins_26_1/lang/nds_de\.json$' build/jar-contents-nds-${{ matrix.target }}.txt
